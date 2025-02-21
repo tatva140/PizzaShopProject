@@ -11,12 +11,12 @@
                      <h1  style="color: rgb(30, 151, 231);font-weight: 600;">My Profile</h1>
           
                 </div>
-        <div class="row ms-3 " style="background-color: white; border-radius: 8px; ">
+        <div class="row ms-3 me-3" style="background-color: white; border-radius: 8px; ">
             <div style="height: 150px;" class="p-0 ">
             <div class="row " ><img src="~/images/profile_div_bg.jpg" style=" height: 70px;" class="p-0"></div>
             <div class="row">
                 <div class="col-lg-1 d-none d-xxl-block">
-                <img src="~/images/Default_pfp.svg.png" class="profile rounded-pill " alt="Profile Picture"
+                <img src="~/images/Default_pfp.svg.png" class="profile rounded-pill img-fluid" alt="Profile Picture"
                         style="width: 100px; height: 100px;margin-left:10px;position: absolute;  transform: translateY(-40%);background-color: white;">
                         </div>
                         <div class="col col-lg-11 ">
@@ -114,8 +114,8 @@
             </div>
             <div class="d-flex justify-content-end mt-3 mb-3 ">
                 <button type="submit" class="btn  me-2" style="background-color: rgba(9, 9, 172, 0.692);color:white">Update</button>
-                <button type="submit" class="btn" style="border-color:rgba(9, 9, 172, 0.692);  color:rgba(9, 9, 172, 0.692); background-color: white;" asp-action="Index" asp-controller="Dashboard">Cancel</button>
+                <button type="submit" class="btn" style="border-color:rgba(9, 9, 172, 0.692);  color:rgba(9, 9, 172, 0.692); background-color: white;" asp-action="Index" asp-controller="Dashboard" formnovalidate>Cancel</button>
             </div>
-        </form>
-        </div>
+            </form>
+            </div>
 </div>

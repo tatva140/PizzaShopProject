@@ -17,12 +17,14 @@ public class UserRepository: IUserRepository
         {
             return _context.Users.FirstOrDefault(u=>u.Email==email);
         }
-         public List<UserProfileViewModel> GetAllUser()
+         public List<UserProfileViewModel> GetAllUser(string sortOrder,int pageNumber,int pageSize,out int totalRecords)
         {
-            var users=(from u in _context.Users
+            var query=_context.Users;
+            totalRecords=query.Count();
+            var users=from u in _context.Users
             join r in _context.Roles on u.RoleId equals r.RoleId
-            where u.IsActive==true
-            select new UserProfileViewModel{
+            select new UserProfileViewModel
+            {
                 UserId= u.UserId,
                 FirstName=u.FirstName,
                 LastName=u.LastName,
@@ -38,9 +40,17 @@ public class UserRepository: IUserRepository
                 isActive=u.IsActive,
                 ProfileImg=u.ProfileImg
 
-            }).ToList();
-            
-            return users;
+            };
+            switch(sortOrder)
+            {
+                case "desc":
+                users=users.OrderByDescending(u=>u.FirstName);
+                break;
+                default:
+                users=users.OrderBy(u=>u.FirstName);
+                break;
+            }
+            return users.Skip((pageNumber-1)*pageSize).Take(pageSize).ToList();
         }
          public string GetUserRole(string email)
         {
@@ -49,6 +59,7 @@ public class UserRepository: IUserRepository
                         where u.Email==email
                         select r.RoleName)
                         .FirstOrDefault();
+                        Console.Write(role);
             return role;
         }
           public bool DeleteUser(int id)
@@ -63,6 +74,7 @@ public class UserRepository: IUserRepository
          public void ResetPassword(string newPassword,string email)
         {
             var user= _context.Users.FirstOrDefault(u=>u.Email==email);  
+            if(user==null|| user.IsActive==false)return;
            user.Password= newPassword;
            _context.SaveChanges();
         }

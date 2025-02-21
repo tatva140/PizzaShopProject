@@ -76,7 +76,7 @@ public class DashboardController :Controller
      public IActionResult ChangePassword(ResetPasswordViewModel model)
     {
         string email=Request.Cookies["email"];
-    string password=BCrypt.Net.BCrypt.HashPassword(model.newPassword);
+        string password=BCrypt.Net.BCrypt.HashPassword(model.newPassword);
        bool isValid= _userService.ChangePassword(password,email,model.currentPassword);
        if(!isValid)
        {

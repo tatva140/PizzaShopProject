@@ -15,17 +15,20 @@ public class UserController:Controller
     }
 
 [HttpGet]
-      public ActionResult Index()
+      public ActionResult Index(string sortOrder,int pageNumber=1,int pageSize=2)
     {
-        var users=_userService.GetAllUser();
+        ViewBag.sort = String.IsNullOrEmpty(sortOrder) ? "desc" : "";
+        var (users,totalRecords)=_userService.GetAllUser(sortOrder,pageNumber,pageSize);
+        ViewBag.PageNumber=pageNumber;
+        ViewBag.PageSize=pageSize;
+        ViewBag.TotalPages=(int)Math.Ceiling((double)totalRecords/pageSize);
+        ViewBag.AvailableSize=new List<int>{2,4,15,20};
         return View(users);
     }
 
 [HttpPost]
-
       public IActionResult DeleteUser([FromQuery] int id)
     {
-      
         bool deleted=_userService.DeleteUser(id);
         return RedirectToAction("Index","User");
     }

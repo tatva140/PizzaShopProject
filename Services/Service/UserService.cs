@@ -18,9 +18,8 @@ public class UserService
         }
          public bool ValidateUser(string email, string password)
         {
-
             var user = _userRepository.GetByEmail(email);
-           if(user==null){
+           if(user==null || user.IsActive==false){
             return false;
            }
            bool userPassword=BCrypt.Net.BCrypt.Verify(password,user.Password);
@@ -29,7 +28,7 @@ public class UserService
          public bool ValidateUserByEmail(string email)
         {
             var user = _userRepository.GetByEmail(email);
-           if(user==null){
+           if(user==null || user.IsActive==false){
             return false;
            }
            return true;
@@ -39,9 +38,11 @@ public class UserService
             var user = _userRepository.GetByEmail(email);
             return user;
         }
-         public List<UserProfileViewModel> GetAllUser()
+         public (List<UserProfileViewModel>,int totalRecords) GetAllUser(string sortOrder,int pageNumber,int pageSize)
         {
-            return  _userRepository.GetAllUser();
+            int totalRecords;
+            var users=_userRepository.GetAllUser(sortOrder,pageNumber,pageSize,out totalRecords);
+            return  (users,totalRecords);
         }
          public string GetUserRole(string email)
         {

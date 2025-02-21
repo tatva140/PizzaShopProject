@@ -49,6 +49,7 @@ public class HomeController : Controller
         {
             bool isValidUser = _userService.ValidateUser(model.Email,model.Password);
             string roleName= _userService.GetUserRole(model.Email);
+            Console.Write(roleName);
             if(isValidUser)
             {
                 string token =_jwtTokenService.GenerateToken(model.Email,roleName);
@@ -119,8 +120,6 @@ public class HomeController : Controller
         return RedirectToAction("Index");
     }
 
-    
-   
     public IActionResult Privacy()
     {
         return View();

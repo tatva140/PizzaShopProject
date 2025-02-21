@@ -126,11 +126,7 @@ z-index:0;
 #srchicon{
   display: none;
 }
-.modal-content{
-  padding: 20px;
-  text-align: center;
-  width: 300px;
-}
+
 @media (max-width:460px){
   .srch{
     display: none;

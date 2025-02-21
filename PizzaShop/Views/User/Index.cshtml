@@ -28,14 +28,15 @@
       </div>
     </div>
 <div class="row mt-2" style="background-color: white; border-radius: 8px;">
+  
     <div class="table-responsive mt-4 " >
       <table class="table" id="myTable">
         <thead>
           <tr>
-            <th scope="col">Name <i class="fa-solid fa-sort ms-1" id="sort" onclick="sort(0)"></i></th>
+            <th scope="col">Name <a asp-route-sortOrder="@ViewBag.sort" asp-action="Index"><i class="fa-solid fa-sort ms-1"  ></i></a></th>
             <th scope="col">Email</th>
             <th scope="col">Phone</th>
-            <th scope="col">Role <i class="fa-solid fa-sort ms-1" id="sort" onclick="sort(3)"></i></th>
+            <th scope="col">Role</th>
             <th scope="col">Status</th>
             <th scope="col">Action</th>
           </tr>
@@ -54,7 +55,7 @@
             <td>@user.Email</td>
             <td>@user.Phone</td>
             <td>@user.RoleName</td>
-            <td><span class="badge rounded-pill bg-success">@(user.isActive ? "Active" : "NotActive")</span></td>
+            <td><span class="badge rounded-pill bg-success">@(user.isActive ? "Active" : "Inactive")</span></td>
             <td>
               <div class="d-flex align-items-center "> 
                 <i class="fa-solid fa-pen me-3 ms-3" style="cursor: pointer;" asp-action="@Url.Action("EditUser","User",new {id=user.UserId})"></i>
@@ -65,13 +66,31 @@
         </tbody>
       </table>
     </div>
-    <ul class="pagination justify-content-end p-1">
-      <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-      <li class="page-item"><a class="page-link" href="#">1</a></li>
-      <li class="page-item active"><a class="page-link" href="#">2</a></li>
-      <li class="page-item"><a class="page-link" href="#">3</a></li>
-      <li class="page-item"><a class="page-link" href="#">Next</a></li>
-    </ul>
+    <div class="row text-end">
+      <div class="d-flex flex-col justify-content-end mb-2">
+      <form method="get" id="pageSizeForm" >
+    <label for="pageSize">Records per page:</label>
+    <select id="pageSize" name="pageSize" onchange="this.form.submit()">
+      @foreach(var size in ViewBag.AvailableSize)
+      {
+        <option value="@size" selected="@(size==ViewBag.PageSize ? "selected" :null)"#deleteModal>@size</option>      }
+    </select>
+  </form>
+   <div class="ms-2">
+   @if(ViewBag.PageNumber>1)
+   {
+    <a href="@Url.Action("Index",new {pageNumber=ViewBag.PageNumber-1, pageSize=ViewBag.PageSize})">Previous</a>
+   }
+   Page @ViewBag.PageNumber of @ViewBag.TotalPages
+
+   @if(ViewBag.PageNumber<ViewBag.TotalPages)
+   {
+    <a href="@Url.Action("Index",new {pageNumber=ViewBag.PageNumber+1, pageSize=ViewBag.PageSize})">Next</a>
+   }
+   </div>
+  </div>
+ 
+   </div>
   </div>
 
   </div>

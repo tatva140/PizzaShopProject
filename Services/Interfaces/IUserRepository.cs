@@ -8,7 +8,7 @@ public interface IUserRepository
     void ResetPassword(string newPassword, string email);
     string GetUserRole( string email);
     
-    List<UserProfileViewModel> GetAllUser();
+    List<UserProfileViewModel> GetAllUser(string sortOrder,int pageNumber,int pageSize,out int totalRecords);
     bool DeleteUser(int id);
     void UpdateProfile(string Email,string FirstName,string LastName,string UserName,string Phone,string Country,string State,string City,string Address,string ZipCode,string ProfileImg);
 
