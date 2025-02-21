@@ -1,0 +1,84 @@
+﻿@model DAL.ViewModels.LoginViewModel; 
+@{
+   
+    ViewData["HideLayout"]="true";
+}
+
+    <div class="d-flex align-items-center justify-content-center vh-100">
+        <div class="row   " style="height: 100%;" >
+            <div class="col-md-6 " id="background-img">
+                <img src="~/images/dominos_background.jpg" alt="Image" class=" img-fluid  "
+                    style="object-fit: cover; height: 100%; ">
+            </div>
+            <div class="col-md-6 d-flex p-0 align-items-center justify-content-center info">
+                <div class="w-75">
+                    <div class="d-flex overflow-hidden  align-items-center justify-content-center w-auto p-0 mt-3">
+                        <img src="~/images/logos/pizzashop_logo.png" alt="Image" class="img-fluid me-2 "
+                            style="font: 16px; height: 55px;">
+                        <h4 style="color: rgb(59, 161, 230);" >PIZZASHOP</h4>
+                    </div>
+                    <div class="row align-items-center justify-content-center p-0" >
+                        <h4 class=" mt-4 w-75">Welcome,</h4>
+
+                        <form class="w-75" method="post" >
+
+                            <div class=" mt-3 mb-3">
+                             <div class="input-group mb-3">
+                            <input id="email" asp-for="Email" class="form-control " type="text" name="Email"
+                                placeholder="Email" aria-label="Email">
+                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+
+                        </div>
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                            <div class="mb-4">
+                                <div class="input-group mb-3">
+                                    <input asp-for="Password" class="form-control  " placeholder="Password" id="pwd" type="text"
+                                        aria-label="Password" style="position: relative;">
+                                    <span
+                                        class="input-group-text"><i
+                                            class="fa-solid fa-eye" id="eye"></i> </span>
+                                </div>                             
+                                            <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+                            <div class="d-flex">
+                                <div class="flex col"><input class="form-check-control  me-2" asp-for="RememberMe">Remember me</div>
+                                <div class="flex   text-end"><a asp-action="ForgotPassword" id="validate">Forgot Password?</a></div>
+                            </div>
+                            <div class="mt-4 "><button type="submit" class="btn btn-primary w-100 mb-5"
+                                style="border-radius: 5px;">Login</button>
+                            </div>
+                            
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+  @section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+<script>
+    let showPass = 0;
+    const p = document.getElementById("pwd");
+    document.getElementById("eye").addEventListener('click', () => {
+        showPass = !showPass
+        if (showPass) {
+            p.setAttribute('type', 'text');
+        } else {
+            p.setAttribute('type', 'password');
+        }
+    
+    })
+
+    document.getElementById("validate").addEventListener('click',()=>{
+       var email= document.getElementById("email").value;
+       document.getElementById("validate").href+="?email="+email;
+    })
+</script>
+
+
+

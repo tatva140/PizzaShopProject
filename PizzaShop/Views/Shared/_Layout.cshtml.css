@@ -1,0 +1,42 @@
+﻿.profile{
+  display: block;
+}
+.navdropdown{
+  display: none;
+  position: absolute;
+  top: 56px;
+  right: 0px;
+  width: 200px;
+  background-color: white;
+  padding-left: 0;
+}
+.navToggle{
+  display: none;
+}
+
+@media (max-width:780px) {
+  .search{
+      display: none;
+  }
+  
+}
+@media (max-width:450px) {
+  .profile{
+      display: none;
+  }
+  
+}
+@media (max-width:450px) {
+  .navToggle {
+  display: block;
+}
+
+}
+#close{
+  display: none;
+}
+@media (max-width:780px){
+  #close{
+  display: block;
+}
+}

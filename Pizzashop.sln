@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PizzaShop", "PizzaShop\PizzaShop.csproj", "{F45F89D5-E507-4A52-B806-4D02C4B9593E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{6A0D02D3-62FF-4B41-8495-662C93886835}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{F1AFA53C-C126-45E1-807E-70CB727A994D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F45F89D5-E507-4A52-B806-4D02C4B9593E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F45F89D5-E507-4A52-B806-4D02C4B9593E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F45F89D5-E507-4A52-B806-4D02C4B9593E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F45F89D5-E507-4A52-B806-4D02C4B9593E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A0D02D3-62FF-4B41-8495-662C93886835}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A0D02D3-62FF-4B41-8495-662C93886835}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A0D02D3-62FF-4B41-8495-662C93886835}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A0D02D3-62FF-4B41-8495-662C93886835}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1AFA53C-C126-45E1-807E-70CB727A994D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1AFA53C-C126-45E1-807E-70CB727A994D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1AFA53C-C126-45E1-807E-70CB727A994D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1AFA53C-C126-45E1-807E-70CB727A994D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

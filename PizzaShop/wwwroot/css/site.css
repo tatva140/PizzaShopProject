@@ -1,0 +1,141 @@
+.content {
+  margin-top: 70px;
+  margin-left: 280px;
+  margin-right: 50px;
+z-index:0;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 250px;
+  background-color: white;
+  
+  z-index: 2;
+  box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
+  display: block;
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.sidebar ul li {
+  padding: 10px;
+}
+
+.sidebar ul li a {
+  text-decoration: none;
+  color: #000;
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+  color: black;
+}
+
+@media (max-width:1024px){
+  #background-img{
+      width: 100%;
+      top:0;
+      right:0;
+      left:0;
+      bottom: 0;
+      z-index: 0;
+      height: 100%;
+      position: absolute;
+  }
+  .info{
+      position: relative;
+      background-color: rgb(246, 244, 250);
+      z-index: 100;
+      margin: auto;
+      width: auto;
+      height: 70%;
+      opacity:0.8;
+  }
+ 
+  
+}
+.nav-tabs .nav-link{
+  color: black;
+  border: none;
+  font-weight: bold;
+  padding: 10px 20px;
+  font-size: 20px;
+}
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+  color: rgb(30, 151, 231);
+  border-bottom: 3px solid rgb(30, 151, 231);
+  background-color: transparent;
+}
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+  color:rgb(30, 151, 231);
+}
+.profile{
+  display: block;
+}
+.navdropdown{
+  display: none;
+  position: absolute;
+  top: 56px;
+  right: 0px;
+  width: 200px;
+  background-color: white;
+  padding-left: 0;
+}
+.navToggle{
+  display: none;
+}
+
+@media (max-width:780px) {
+  .search{
+      display: none;
+  }
+}
+@media (max-width:450px) {
+  .profile{
+      display: none;
+  }
+}
+@media (max-width:450px) {
+  .navToggle {
+  display: block;
+}
+}
+#close{
+  display: none;
+}
+@media (max-width:780px){
+  #close{
+  display: block;
+}
+}
+/* userlist css */
+#srchicon{
+  display: none;
+}
+.modal-content{
+  padding: 20px;
+  text-align: center;
+  width: 300px;
+}
+@media (max-width:460px){
+  .srch{
+    display: none;
+  }
+  #srchicon{
+    display: block;
+  }
+}

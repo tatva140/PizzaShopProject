@@ -1,0 +1,43 @@
+/* _content/PizzaShopProject/Views/Shared/_Layout.cshtml.rz.scp.css */
+.profile[b-su73l31l7g]{
+  display: block;
+}
+.navdropdown[b-su73l31l7g]{
+  display: none;
+  position: absolute;
+  top: 56px;
+  right: 0px;
+  width: 200px;
+  background-color: white;
+  padding-left: 0;
+}
+.navToggle[b-su73l31l7g]{
+  display: none;
+}
+
+@media (max-width:780px) {
+  .search[b-su73l31l7g]{
+      display: none;
+  }
+  
+}
+@media (max-width:450px) {
+  .profile[b-su73l31l7g]{
+      display: none;
+  }
+  
+}
+@media (max-width:450px) {
+  .navToggle[b-su73l31l7g] {
+  display: block;
+}
+
+}
+#close[b-su73l31l7g]{
+  display: none;
+}
+@media (max-width:780px){
+  #close[b-su73l31l7g]{
+  display: block;
+}
+}
