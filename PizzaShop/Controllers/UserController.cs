@@ -33,6 +33,7 @@ public class UserController:Controller
         return RedirectToAction("Index","User");
     }
 
+[HttpGet]
     public ActionResult AddUser()
     {
         return View();
