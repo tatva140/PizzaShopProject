@@ -15,15 +15,7 @@ public partial class User
 
     public string? Phone { get; set; }
 
-    public string? City { get; set; }
-
-    public string? State { get; set; }
-
-    public string? Country { get; set; }
-
     public string? Address { get; set; }
-
-    public string? ZipCode { get; set; }
 
     public string? ProfileImg { get; set; }
 
@@ -47,11 +39,23 @@ public partial class User
 
     public int RoleId { get; set; }
 
+    public string? ZipCode { get; set; }
+
+    public int? Country { get; set; }
+
+    public int? State { get; set; }
+
+    public int? City { get; set; }
+
     public virtual ICollection<Auditlog> Auditlogs { get; } = new List<Auditlog>();
 
     public virtual ICollection<Category> CategoryCreatedByNavigations { get; } = new List<Category>();
 
     public virtual ICollection<Category> CategoryUpdatedByNavigations { get; } = new List<Category>();
+
+    public virtual City? CityNavigation { get; set; }
+
+    public virtual Country? CountryNavigation { get; set; }
 
     public virtual User? CreatedByNavigation { get; set; }
 
@@ -94,6 +98,8 @@ public partial class User
     public virtual ICollection<Section> SectionCreatedByNavigations { get; } = new List<Section>();
 
     public virtual ICollection<Section> SectionUpdatedByNavigations { get; } = new List<Section>();
+
+    public virtual State? StateNavigation { get; set; }
 
     public virtual ICollection<Table> TableCreatedByNavigations { get; } = new List<Table>();
 

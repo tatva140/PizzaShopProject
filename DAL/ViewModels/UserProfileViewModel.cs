@@ -1,3 +1,5 @@
+using DAL.Models;
+
 namespace DAL.ViewModels;
 
 public class UserProfileViewModel
@@ -10,11 +12,15 @@ public class UserProfileViewModel
     public string Email { get; set; }
 
     public string Phone { get; set; }
-    public string City { get; set; }
+    public string Password { get; set; }
+    public int? City { get; set; }
 
-    public string State { get; set; }
+    public int? State { get; set; }
 
-    public string Country { get; set; }
+    public int? Country { get; set; }
+    public string CountryName {get;set;}
+    public string StateName {get;set;}
+    public string CityName {get;set;}
 
     public string Address { get; set; }
 
@@ -26,6 +32,7 @@ public class UserProfileViewModel
     public string RoleName { get; set; }
 
     public bool isActive {get;set;}
+    
     
 
 

@@ -19,7 +19,7 @@ public class UserService
          public bool ValidateUser(string email, string password)
         {
             var user = _userRepository.GetByEmail(email);
-           if(user==null || user.IsActive==false){
+           if(user==null || user.isActive==false){
             return false;
            }
            bool userPassword=BCrypt.Net.BCrypt.Verify(password,user.Password);
@@ -28,12 +28,12 @@ public class UserService
          public bool ValidateUserByEmail(string email)
         {
             var user = _userRepository.GetByEmail(email);
-           if(user==null || user.IsActive==false){
+           if(user==null || user.isActive==false){
             return false;
            }
            return true;
         }
-         public User GetUserInfo(string email)
+         public UserProfileViewModel GetUserInfo(string email)
         {
             var user = _userRepository.GetByEmail(email);
             return user;
@@ -71,10 +71,30 @@ public class UserService
             return false;
           
         }
-         public void UpdateProfile(string Email,string FirstName,string LastName,string UserName,string Phone,string Country,string State,string City,string Address,string ZipCode,string ProfileImg)
+         public void UpdateProfile(UserProfileViewModel userProfileViewModel)
         {
-             _userRepository.UpdateProfile(Email,FirstName,LastName,UserName,Phone,Country,State,City,Address,ZipCode,ProfileImg);
+             _userRepository.UpdateProfile(userProfileViewModel);
           
+        }
+        public List<Country> GetCountries()
+        {
+            return _userRepository.GetCountries();
+        }
+        public List<State> GetStateByCountry(int countryId)
+        {
+            return _userRepository.GetStateByCountry(countryId);
+        }
+        public List<City> GetCityByState(int stateId)
+        {
+            return _userRepository.GetCityByState(stateId);
+        }
+        public List<Role> GetRoles()
+        {
+            return _userRepository.GetRoles();
+        }
+        public void AddUser(AddUserViewModel addUserViewModel)
+        {
+            _userRepository.AddUser(addUserViewModel);
         }
     
 }

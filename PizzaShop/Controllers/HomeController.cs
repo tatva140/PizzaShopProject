@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Net.Http.Headers;
 namespace PizzaShop.Controllers;
 
+[Route("Home")]
 public class HomeController : Controller
 {
     private readonly UserService _userService;
@@ -33,6 +34,7 @@ public class HomeController : Controller
         
     }
 
+[Route("Index")]
     public IActionResult Index()
     {
         if(Request.Cookies.ContainsKey("jwtToken"))

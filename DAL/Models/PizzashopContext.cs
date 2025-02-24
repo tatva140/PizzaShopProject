@@ -21,6 +21,10 @@ public partial class PizzashopContext : DbContext
 
     public virtual DbSet<Category> Categories { get; set; }
 
+    public virtual DbSet<City> Cities { get; set; }
+
+    public virtual DbSet<Country> Countries { get; set; }
+
     public virtual DbSet<Customer> Customers { get; set; }
 
     public virtual DbSet<Item> Items { get; set; }
@@ -48,6 +52,8 @@ public partial class PizzashopContext : DbContext
     public virtual DbSet<Role> Roles { get; set; }
 
     public virtual DbSet<Section> Sections { get; set; }
+
+    public virtual DbSet<State> States { get; set; }
 
     public virtual DbSet<Table> Tables { get; set; }
 
@@ -156,6 +162,35 @@ public partial class PizzashopContext : DbContext
             entity.HasOne(d => d.UpdatedByNavigation).WithMany(p => p.CategoryUpdatedByNavigations)
                 .HasForeignKey(d => d.UpdatedBy)
                 .HasConstraintName("category_updated_by_fkey");
+        });
+
+        modelBuilder.Entity<City>(entity =>
+        {
+            entity.HasKey(e => e.CityId).HasName("city_pkey");
+
+            entity.ToTable("city");
+
+            entity.Property(e => e.CityId)
+                .ValueGeneratedNever()
+                .HasColumnName("city_id");
+            entity.Property(e => e.CityName)
+                .HasMaxLength(200)
+                .HasColumnName("city_name");
+            entity.Property(e => e.StateId).HasColumnName("state_id");
+        });
+
+        modelBuilder.Entity<Country>(entity =>
+        {
+            entity.HasKey(e => e.CountryId).HasName("country_pkey");
+
+            entity.ToTable("country");
+
+            entity.Property(e => e.CountryId)
+                .ValueGeneratedNever()
+                .HasColumnName("country_id");
+            entity.Property(e => e.CountryName)
+                .HasMaxLength(200)
+                .HasColumnName("country_name");
         });
 
         modelBuilder.Entity<Customer>(entity =>
@@ -690,6 +725,26 @@ public partial class PizzashopContext : DbContext
                 .HasConstraintName("sections_updated_by_fkey");
         });
 
+        modelBuilder.Entity<State>(entity =>
+        {
+            entity.HasKey(e => e.StateId).HasName("state_pkey");
+
+            entity.ToTable("state");
+
+            entity.Property(e => e.StateId)
+                .ValueGeneratedNever()
+                .HasColumnName("state_id");
+            entity.Property(e => e.CountryId).HasColumnName("country_id");
+            entity.Property(e => e.StateName)
+                .HasMaxLength(200)
+                .HasColumnName("state_name");
+
+            entity.HasOne(d => d.Country).WithMany(p => p.States)
+                .HasForeignKey(d => d.CountryId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("country_id");
+        });
+
         modelBuilder.Entity<Table>(entity =>
         {
             entity.HasKey(e => e.TableId).HasName("tables_pkey");
@@ -795,12 +850,8 @@ public partial class PizzashopContext : DbContext
 
             entity.Property(e => e.UserId).HasColumnName("user_id");
             entity.Property(e => e.Address).HasColumnName("address");
-            entity.Property(e => e.City)
-                .HasMaxLength(100)
-                .HasColumnName("city");
-            entity.Property(e => e.Country)
-                .HasMaxLength(100)
-                .HasColumnName("country");
+            entity.Property(e => e.City).HasColumnName("city");
+            entity.Property(e => e.Country).HasColumnName("country");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("now()")
                 .HasColumnType("timestamp without time zone")
@@ -813,6 +864,7 @@ public partial class PizzashopContext : DbContext
                 .HasMaxLength(100)
                 .HasColumnName("first_name");
             entity.Property(e => e.IsActive)
+                .IsRequired()
                 .HasDefaultValueSql("true")
                 .HasColumnName("is_active");
             entity.Property(e => e.LastName)
@@ -829,9 +881,7 @@ public partial class PizzashopContext : DbContext
                 .HasColumnType("character varying")
                 .HasColumnName("reset_code");
             entity.Property(e => e.RoleId).HasColumnName("role_id");
-            entity.Property(e => e.State)
-                .HasMaxLength(100)
-                .HasColumnName("state");
+            entity.Property(e => e.State).HasColumnName("state");
             entity.Property(e => e.UpdatedAt)
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("updated_at");
@@ -842,7 +892,17 @@ public partial class PizzashopContext : DbContext
             entity.Property(e => e.Username1)
                 .HasColumnType("character varying")
                 .HasColumnName("username");
-            entity.Property(e => e.ZipCode).HasColumnName("zip_code");
+            entity.Property(e => e.ZipCode)
+                .HasColumnType("character varying")
+                .HasColumnName("zip_code");
+
+            entity.HasOne(d => d.CityNavigation).WithMany(p => p.Users)
+                .HasForeignKey(d => d.City)
+                .HasConstraintName("city");
+
+            entity.HasOne(d => d.CountryNavigation).WithMany(p => p.Users)
+                .HasForeignKey(d => d.Country)
+                .HasConstraintName("country_id_fkey");
 
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.InverseCreatedByNavigation)
                 .HasForeignKey(d => d.CreatedBy)
@@ -852,6 +912,10 @@ public partial class PizzashopContext : DbContext
                 .HasForeignKey(d => d.RoleId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("users_role_id_fkey");
+
+            entity.HasOne(d => d.StateNavigation).WithMany(p => p.Users)
+                .HasForeignKey(d => d.State)
+                .HasConstraintName("state_id_fkey");
 
             entity.HasOne(d => d.UpdatedByNavigation).WithMany(p => p.InverseUpdatedByNavigation)
                 .HasForeignKey(d => d.UpdatedBy)

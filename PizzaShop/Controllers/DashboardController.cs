@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using DAL.ViewModels;
 using Services.Service;
 using Microsoft.AspNetCore.Authorization;
+using System.Net.Http.Headers;
+using DAL.Models;
 
 
 [Authorize]
@@ -31,24 +33,7 @@ public class DashboardController :Controller
     {
         string email=Request.Cookies["email"];
         var user = _userService.GetUserInfo(email);
-        string roleName= _userService.GetUserRole(email);
-        
-        var model= new UserProfileViewModel
-        {
-           Email=user.Email,
-           FirstName=user.FirstName,
-           LastName=user.LastName,
-           UserName=user.UserName,
-           Phone=user.Phone,
-           Address=user.Address,
-           ZipCode=user.ZipCode,
-           State=user.State,
-           Country=user.Country,
-           City=user.City,
-           RoleName=roleName
-
-        };
-          return View(model);
+          return View(user);
       
     }
      public IActionResult Logout()
@@ -62,8 +47,8 @@ public class DashboardController :Controller
     public IActionResult UserProfile(UserProfileViewModel model)
     {
         string email=Request.Cookies["email"];
-
-        _userService.UpdateProfile(email,model.FirstName,model.LastName,model.UserName,model.Phone,model.Country,model.State,model.City,model.Address,model.ZipCode,model.ProfileImg);
+        model.Email=email;
+        _userService.UpdateProfile(model);
         return RedirectToAction("Index","Dashboard");
 
     }

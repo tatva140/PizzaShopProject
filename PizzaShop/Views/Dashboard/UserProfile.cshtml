@@ -1,5 +1,6 @@
  @model DAL.ViewModels.UserProfileViewModel; 
 
+
 @{
     ViewData["Title"] = "UserProfile";
     ViewData["HideLayout"]="false";
@@ -28,7 +29,7 @@
                         </div>
             </div>
             </div>
-            <form asp-action="UserProfile" asp-controller="Dashboard">
+            <form asp-action="UserProfile" asp-controller="Dashboard" method="post" >
             <div class="row mt-2    ">
                 <div class="col-md-6">
                     <div class="form-floating mb-3">
@@ -66,9 +67,7 @@
 
                     <div class="form-floating mb-3">
                         <select class="form-select" id="country" name="Country" asp-for="Country">
-                            <option>Admin</option>
-                            <option>Chef</option>
-                            <option>Manager</option>
+                            <option value="@Model.Country">@Model.CountryName</option>
                         </select>
                         <label for="country" class="form-label">Country</label>
                     </div>
@@ -76,10 +75,8 @@
                 <div class="col-md-4">
 
                     <div class="form-floating mb-3">
-                        <select class="form-select" id="state" name="State" asp-for="State">
-                            <option>Admin</option>
-                            <option>Chef</option>
-                            <option>Manager</option>
+                        <select class="form-select" id="state" name="State" asp-for="State"  >
+                             <option value="@Model.State">@Model.StateName</option>
                         </select>
                         <label for="state" class="form-label">State</label>
                     </div>
@@ -87,10 +84,8 @@
                 <div class="col-md-4">
 
                     <div class="form-floating mb-3">
-                        <select class="form-select" id="city" name="City" asp-for="City">
-                            <option>Admin</option>
-                            <option>Chef</option>
-                            <option>Manager</option>
+                        <select class="form-select" id="city" name="City" asp-for="City" >
+                              <option value="@Model.City">@Model.CityName</option>
                         </select>
                         <label for="city" class="form-label">City</label>
                     </div>
@@ -119,3 +114,71 @@
             </form>
             </div>
 </div>
+@section Scripts{
+   <script>
+   
+    $(document).ready(function(){
+
+    $.ajax({
+        url:"@Url.Action("GetRoles","User")",
+        type:"GET",
+        accepts:"application/json",
+        contentType:"application/json",
+        success:function(data){
+            $.each(data,function(i,item){  
+                $("#role").append('<option value="'+item.roleId+'">'+item.roleName+'</option>');
+            })
+        }
+    })
+    $.ajax({
+        url:"@Url.Action("GetCountries","User")",
+        type:"GET",
+        accepts:"application/json",
+        contentType:"application/json",
+        success:function(data){
+            $.each(data,function(i,item){         
+                $("#country").append('<option value="'+item.countryId+'">'+item.countryName+'</option>');
+            })
+        }
+    })
+         $('#country').change(function()
+            {
+                let countryId=$(this).val();
+                $("#state").empty();
+                $("#city").empty();
+
+                if(countryId){
+                   $.ajax({
+                    url:"@Url.Action("GetStateByCountry","User")",
+                    data:{countryId:countryId},
+                    success:function(data){
+                        $.each(data,function(index,state){
+                            $("#state").append('<option value="'+state.stateId+'">'+state.stateName+'</option>');
+                        })
+                    }
+                   })
+                }
+            })
+   
+    $('#state').change(function()
+            {
+                let stateId=$(this).val();
+                $("#city").empty();
+
+                if(stateId){
+                   $.ajax({
+                    url:"@Url.Action("GetCityByState","User")",
+                    data:{stateId:stateId},
+                    success:function(data){
+                        $.each(data,function(index,city){
+                            $("#city").append('<option value="'+city.cityId+'">'+city.cityName+'</option>');
+                        })
+                    }
+                   })
+                }
+            })
+   });
+
+    </script>
+}
+

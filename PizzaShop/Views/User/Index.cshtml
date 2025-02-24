@@ -58,7 +58,7 @@
             <td><span class="badge rounded-pill bg-success">@(user.isActive ? "Active" : "Inactive")</span></td>
             <td>
               <div class="d-flex align-items-center "> 
-                <i class="fa-solid fa-pen me-3 ms-3" style="cursor: pointer;" asp-action="@Url.Action("EditUser","User",new {id=user.UserId})"></i>
+               <a asp-action="EditUsers" asp-controller="User" ><i class="fa-solid fa-pen me-3 ms-3" style="cursor: pointer;"></i></a>
                   <i class="fa-solid fa-trash" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="setDeleteId(@user.UserId)"></i></div>
             </td> 
           </tr>
