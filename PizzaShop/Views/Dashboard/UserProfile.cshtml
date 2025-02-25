@@ -16,10 +16,15 @@
             <div style="height: 150px;" class="p-0 ">
             <div class="row " ><img src="~/images/profile_div_bg.jpg" style=" height: 70px;" class="p-0"></div>
             <div class="row">
-                <div class="col-lg-1 d-none d-xxl-block">
-                <img src="~/images/Default_pfp.svg.png" class="profile rounded-pill img-fluid" alt="Profile Picture"
-                        style="width: 100px; height: 100px;margin-left:10px;position: absolute;  transform: translateY(-40%);background-color: white;">
-                        </div>
+               <div class="col-lg-1 d-none d-xxl-block  position-relative">
+                        <img src="~/images/Default_pfp.svg.png" class="profile rounded-pill img-fluid" alt="Profile Picture"
+                            style="width: 100px; height: 100px;margin-left:10px;position: absolute;  transform: translateY(-40%);background-color: white;">
+                        <div  style="bottom:20px;right:15px;position: absolute;">
+                        <i class="fa-solid fa-camera  "style="font-size:20px;"></i>
+                    <input type="file" id="filename" class="form-control "  name="ProfileImg" asp-for="ProfileImg" accept="image/*"
+                        style="opacity: 0.0; position: absolute; top:0; left: 0; bottom: 0; right:0; width: 100%; height:100%;" />
+                    </div>
+                    </div>
                         <div class="col col-lg-11 ">
                         <div class="d-flex align-items-center justify-content-between">
                         <h5 class="  mt-1">@Model.FirstName @Model.LastName</h5>
@@ -29,7 +34,9 @@
                         </div>
             </div>
             </div>
-            <form asp-action="UserProfile" asp-controller="Dashboard" method="post" >
+            <form asp-action="UserProfile" asp-controller="Dashboard" method="post" enctype="multipart/form-data">
+                <input type="text" class="form-control" id="email" name="Email" asp-for="Email"
+                            hidden>
             <div class="row mt-2    ">
                 <div class="col-md-6">
                     <div class="form-floating mb-3">
@@ -37,6 +44,7 @@
                             placeholder="First Name" >
                         <label for="firstname">First Name</label>
                     </div>
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
 
                 </div>
                 <div class="col-md-6">
@@ -44,6 +52,8 @@
                         <input type="text" class="form-control" id="LastName" placeholder="Last Name" asp-for="LastName">
                         <label for="lastname">Last Name</label>
                     </div>
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+
                 </div>
             </div>
             <div class="row mt-2 ">
@@ -60,6 +70,8 @@
                              asp-for="Phone">
                         <label for="phone">Phone</label>
                     </div>
+                        <span asp-validation-for="Phone" class="text-danger"></span>
+
                 </div>
             </div>
             <div class="row mt-2 ">
@@ -104,6 +116,8 @@
                         <input type="text" class="form-control" id="zipcode" name="ZipCode" placeholder="Zipcode" asp-for="ZipCode">
                         <label for="zipcode">Zipcode</label>
                     </div>
+                        <span asp-validation-for="ZipCode" class="text-danger"></span>
+
                 </div>
                
             </div>
@@ -115,6 +129,8 @@
             </div>
 </div>
 @section Scripts{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
    <script>
    
     $(document).ready(function(){
@@ -179,6 +195,20 @@
             })
    });
 
+    </script>
+    <script>
+        document.getElementById("filename").addEventListener('change',function(e)
+        {
+            const file=e.target.files[0];
+    if(file)
+    {
+        const reader=new FileReader();
+        reader.onload=function(e){
+            document.getElementById("filename").src=e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+        })
     </script>
 }
 

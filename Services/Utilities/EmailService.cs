@@ -15,7 +15,6 @@ public class EmailService
         
      }
       public async Task SendForgotPasswordEmail(string toEmail,string host, string SenderEmail,string SenderPassword,int SMTPPort,string resetLink)
-
      {
         var message= new MimeMessage();
         message.From.Add (new MailboxAddress ("PizzaShop", SenderEmail));
@@ -24,8 +23,7 @@ public class EmailService
 
         message.Body = new TextPart ("html") {
         Text = $"<p>Click <a href={resetLink}>here</a> to reset your password</p>"
-    
-};
+      };
      using (var smtp = new SmtpClient())
       {
         smtp.Connect(host, SMTPPort, false);

@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace DAL.ViewModels;
 
 public class AddUserViewModel
@@ -9,6 +11,7 @@ public class AddUserViewModel
 
     public string Email { get; set; }
 
+    [RegularExpression(@"^\d{10}$", ErrorMessage = "Invalid Mobile Number.")]
     public string? Phone { get; set; }
     public int? City { get; set; }
 
@@ -18,6 +21,7 @@ public class AddUserViewModel
 
     public string? Address { get; set; }
 
+    [RegularExpression(@"^[0-9]{6}$", ErrorMessage = "Invalid ZipCode")]
     public string? ZipCode { get; set; }
 
     public string? ProfileImg { get; set; }

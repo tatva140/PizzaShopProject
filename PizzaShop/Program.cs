@@ -30,6 +30,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IUserRepository,UserRepository>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<EmailService>();
+builder.Services.AddScoped<FileUploads>();
 builder.Services.AddScoped<IJwtService, JwtTokenService>();
 builder.Services.AddScoped<EncryptDecrypt>();
 
@@ -58,7 +59,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 builder.Services.AddAuthorization();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -76,17 +76,7 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
-// app.Use(async (context,next)=>{
-//     if(!context.Request.Headers.ContainsKey("Authorization"))
-//     {
-//          var token=context.Request.Cookies["jwtToken"];
-//                 if(!string.IsNullOrEmpty(token))
-//                 {
-//                     context.Request.Headers.Append("Authorization",$"Bearer{token}");
-//                 }
-//     }
-//     await next();
-// });
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

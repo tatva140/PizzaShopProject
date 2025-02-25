@@ -74,7 +74,6 @@ public class UserService
          public void UpdateProfile(UserProfileViewModel userProfileViewModel)
         {
              _userRepository.UpdateProfile(userProfileViewModel);
-          
         }
         public List<Country> GetCountries()
         {
@@ -94,6 +93,8 @@ public class UserService
         }
         public void AddUser(AddUserViewModel addUserViewModel)
         {
+            string password=BCrypt.Net.BCrypt.HashPassword(addUserViewModel.Password);
+            addUserViewModel.Password=password;
             _userRepository.AddUser(addUserViewModel);
         }
     

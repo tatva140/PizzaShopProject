@@ -20,8 +20,6 @@
         <nav class="navbar navbar-expand-lg " style="background-color: rgba(9, 9, 172, 0.692);">
         <div class="container-fluid">
             <a class="navbar-brand" href="#" id="toggle" onclick="toggleFunc()"><i class="fa-solid fa-bars" style="color: #c4e1f7;font-size: 20px;"></i></a>
-
-           
             <div class=" d-flex align-items-center justify-content-center">
                 <div class="btn-group profile">
                     <button type="button" class="btn  " data-bs-toggle="dropdown" aria-expanded="false">
@@ -36,14 +34,13 @@
                     </ul>
                   </div>
                 <a class="navToggle navbar-brand " id="navToggle"><i class="fa-solid fa-bars" style="color: #c4e1f7;font-size: 20px;"></i></a>
-               
             </div>
         </div>
         <div class="navdropdown " id="navDropdown">
             <ul style="list-style-type: none;" >
                 <li><a  asp-action="UserProfile" asp-controller="Dashboard" style="text-decoration: none  ; color: black;"><i class="fa-solid fa-user me-1" ></i>My Profile</a></li>
                 <li><a  asp-action="ChangePassword" asp-controller="Dashboard" style="text-decoration: none  ; color: black;"> <i class=" fa-regular fa-bell  w-20 h-20 me-1"></i>Change Password</a></li>
-            <li><a data-bs-toggle="modal" data-bs-target="#myModal" style="text-decoration: none  ; color: black;"><i class=" fa-regular fa-user  w-20 h-20 me-1"></i>Logout</a></li>
+                <li><a data-bs-toggle="modal" data-bs-target="#myModal" style="text-decoration: none  ; color: black;"><i class=" fa-regular fa-user  w-20 h-20 me-1"></i>Logout</a></li>
             </ul>
         </div>
     </nav>

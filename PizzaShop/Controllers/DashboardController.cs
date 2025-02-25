@@ -13,12 +13,15 @@ public class DashboardController :Controller
 {
     private readonly UserService _userService;
     private readonly EncryptDecrypt _encryptDecrypt;
+    private readonly FileUploads _fileUploads;
+
 
     
-    public DashboardController(UserService userService,EncryptDecrypt encryptDecrypt)
+    public DashboardController(UserService userService,EncryptDecrypt encryptDecrypt,FileUploads fileUploads)
     {
         _userService=userService;
         _encryptDecrypt=encryptDecrypt;
+        _fileUploads=fileUploads;
     }
 
     public IActionResult Index()
@@ -44,8 +47,27 @@ public class DashboardController :Controller
     }
 
     [HttpPost]
-    public IActionResult UserProfile(UserProfileViewModel model)
+    public IActionResult UserProfile(UserProfileViewModel model,IFormFile profileImg)
     {
+        Console.Write(profileImg);
+        // if(!ModelState.IsValid)
+        // {
+        // var errors = ModelState.Values.SelectMany(v => v.Errors);
+        // foreach (var error in errors)
+        // {
+        //     Console.WriteLine(error.ErrorMessage);
+        // }
+        // return RedirectToAction("UserProfile","Dashboard");
+        // }
+
+        if(profileImg!=null && profileImg.Length>0)
+        {
+            string filename=_fileUploads.UploadProfileImage(profileImg,model.UserId);
+            if(filename !=null)
+            {
+                model.ProfileImg=$"/images/{filename}";
+            }
+        }
         string email=Request.Cookies["email"];
         model.Email=email;
         _userService.UpdateProfile(model);

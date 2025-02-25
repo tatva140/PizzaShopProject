@@ -70,7 +70,6 @@ public class UserRepository: IUserRepository
                 ZipCode=u.ZipCode,
                 isActive=u.IsActive,
                 ProfileImg=u.ProfileImg
-
             };
             switch(sortOrder)
             {
@@ -128,14 +127,29 @@ public class UserRepository: IUserRepository
             user.FirstName=userProfileViewModel.FirstName?? user.FirstName;
             user.LastName=userProfileViewModel.LastName ?? user.LastName;
             user.UserName=userProfileViewModel.UserName ?? user.UserName;
-            user.Country=userProfileViewModel.Country ;
-            user.State=userProfileViewModel.State;
-            user.City=userProfileViewModel.City;
             user.Address=userProfileViewModel.Address ?? user.Address;
             user.ZipCode=userProfileViewModel.ZipCode ?? user.ZipCode;
             user.ProfileImg=userProfileViewModel.ProfileImg ?? user.ProfileImg;
             user.Phone=userProfileViewModel.Phone ?? user.Phone ;
+            if (userProfileViewModel.RoleId != 0)
+            {
+                user.RoleId = userProfileViewModel.RoleId;
+            }
+            if (userProfileViewModel.Country != 0)
+            {
+                user.Country = userProfileViewModel.Country;
+            }
+            if (userProfileViewModel.State != 0)
+            {
+                user.State = userProfileViewModel.State;
+            }
+            if (userProfileViewModel.City != 0)
+            {
+                user.City = userProfileViewModel.City;
+            }
+            user.IsActive=userProfileViewModel.isActive? userProfileViewModel.isActive: user.IsActive;
 
+            
             _context.Users.Update(user);
             _context.SaveChanges();
         }
@@ -159,9 +173,17 @@ public class UserRepository: IUserRepository
                 Address=addUserViewModel.Address?? "",
                 ZipCode=addUserViewModel.ZipCode?? "",
                 ProfileImg=addUserViewModel.ProfileImg?? "",
-                RoleId=addUserViewModel.RoleId
+                RoleId=addUserViewModel.RoleId,
+                Password=addUserViewModel.Password
             };
              _context.Users.Add(user);
+            _context.SaveChanges();
+        }
+
+        public void SaveProfileImage(string filename,int id)
+        {
+            var user=_context.Users.Find(id);
+            user.ProfileImg=filename;
             _context.SaveChanges();
         }
     }

@@ -1,4 +1,4 @@
-@model DAL.ViewModels.AddUserViewModel;
+@model DAL.ViewModels.UserProfileViewModel;
 @{
      ViewData["HideLayout"]="false";
 }
@@ -19,7 +19,7 @@
               </div>
  
         <div class="row  mt-2" style="background-color: white; border-radius: 8px;">
-            <form asp-action="EditUser" asp-controller="User" method="post">
+            <form asp-action="EditUsers" asp-controller="User" method="post">
             <div class="row mt-2    ">
                 <div class="col-md-6">
                         <div class="input-group mb-3">
@@ -48,7 +48,7 @@
                 </div>
                 <div class="col-md-6">
                    <select class="form-select" id="role" name="RoleId" asp-for="RoleId">
-                            <option value="">Select Role</option>
+                            <option value="@Model.RoleId">@Model.RoleName</option>
                     </select>
                         <span asp-validation-for="RoleId" class="text-danger"></span>
 
@@ -58,7 +58,7 @@
                 <div class="col-md-6">
                      <div class="input-group mb-3">
                             <input id="Email" asp-for="Email" class="form-control " type="email" name="Email"
-                                placeholder="Email" aria-label="Email">
+                                placeholder="Email" aria-label="Email" readonly>
                             <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                         </div>
                         <span asp-validation-for="Email" class="text-danger"></span>
@@ -67,7 +67,6 @@
                      <div class="input-group mb-3">
                       <select class="form-select" id="status" name="isActive" asp-for="isActive" >
                             <option value="@Model.isActive">@(Model.isActive?"Active":"InActive")</option>
-                            <option value="true">Active</option>
                             <option value="false">InActive</option>
                         </select>
                 </div>
@@ -83,21 +82,21 @@
                         style="opacity: 0.0; position: absolute; top:0; left: 0; bottom: 0; right:0; width: 100%; height:100%;" />
                 </div>
             </div>
-            <div class="row mt-2 ">
+            <div class="row mt-3 ">
                 <div class="col-md-4">
 
                     <div class="form-floating mb-3">
                         <select class="form-select" id="country" name="Country" asp-for="Country" >
-                            <option value="">Select Country</option>
+                            <option value="@Model.Country">@Model.CountryName</option>
                         </select>
-                        <label for="country" class="form-label">Country</label>
+                        
                     </div>
                 </div>
                 <div class="col-md-4">
 
                     <div class="form-floating mb-3">
                           <select class="form-select" id="state" name="State" asp-for="State"  >
-                             <option value="">Select State</option>
+                             <option value="@Model.State">@Model.StateName</option>
                         </select>
                         <label for="state" class="form-label">State</label>
                     </div>
@@ -106,7 +105,7 @@
 
                     <div class="form-floating mb-3">
                          <select class="form-select" id="city" name="City" asp-for="City" >
-                              <option value="">Select City</option>
+                              <option value="@Model.City">@Model.CityName</option>
                         </select>
                         <label for="city" class="form-label">City</label>
                     </div>
@@ -118,6 +117,8 @@
                             <input id="ZipCode" asp-for="ZipCode" class="form-control " type="number" name="ZipCode"
                                 placeholder="ZipCode" aria-label="ZipCode" >
                         </div>
+                        <span asp-validation-for="ZipCode" class="text-danger"></span>
+
                 </div>
                 
                 <div class="col-md-4">
@@ -132,10 +133,12 @@
                             <input id="Phone" asp-for="Phone" class="form-control " type="number" name="Phone"
                                 placeholder="Phone" aria-label="Phone" >
                         </div>
+                        <span asp-validation-for="Phone" class="text-danger"></span>
+
                 </div>
             </div>
             <div class="d-flex justify-content-end mt-3 mb-3 ">
-                <button type="submit" class="btn  me-2" style="background-color: rgba(9, 9, 172, 0.692);color:white">Create</button>
+                <button type="submit" class="btn  me-2" style="background-color: rgba(9, 9, 172, 0.692);color:white">Edit</button>
                 <a type="submit" class="btn" style="border-color:rgba(9, 9, 172, 0.692);  color:rgba(9, 9, 172, 0.692); background-color: white;"  asp-action="Index" asp-controller="User" formnovalidate>Cancel</a>
             </div>
         </form>
