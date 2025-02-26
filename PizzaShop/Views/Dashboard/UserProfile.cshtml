@@ -12,16 +12,17 @@
                      <h1  style="color: rgb(30, 151, 231);font-weight: 600;">My Profile</h1>
           
                 </div>
-        <div class="row ms-3 me-3" style="background-color: white; border-radius: 8px; ">
+            <form asp-action="UserProfile" asp-controller="Dashboard" method="post" enctype="multipart/form-data">
+            <div class="row ms-3 me-3" style="background-color: white; border-radius: 8px; ">
             <div style="height: 150px;" class="p-0 ">
-            <div class="row " ><img src="~/images/profile_div_bg.jpg" style=" height: 70px;" class="p-0"></div>
+            <div class="row " ><img src="~/images/profile_div_bg.jpg" style=" height: 70px;" class=""></div>
             <div class="row">
                <div class="col-lg-1 d-none d-xxl-block  position-relative">
-                        <img src="~/images/Default_pfp.svg.png" class="profile rounded-pill img-fluid" alt="Profile Picture"
+                        <img src="~/images/{@Model.ProfileImg}" class="profile rounded-pill img-fluid" alt="Profile Picture"
                             style="width: 100px; height: 100px;margin-left:10px;position: absolute;  transform: translateY(-40%);background-color: white;">
                         <div  style="bottom:20px;right:15px;position: absolute;">
                         <i class="fa-solid fa-camera  "style="font-size:20px;"></i>
-                    <input type="file" id="filename" class="form-control "  name="ProfileImg" asp-for="ProfileImg" accept="image/*"
+                    <input type="file" id="filename" class="form-control "  name="ProfileImg" accept="image/*" asp-for="ProfileImg"
                         style="opacity: 0.0; position: absolute; top:0; left: 0; bottom: 0; right:0; width: 100%; height:100%;" />
                     </div>
                     </div>
@@ -34,7 +35,6 @@
                         </div>
             </div>
             </div>
-            <form asp-action="UserProfile" asp-controller="Dashboard" method="post" enctype="multipart/form-data">
                 <input type="text" class="form-control" id="email" name="Email" asp-for="Email"
                             hidden>
             <div class="row mt-2    ">
@@ -53,7 +53,6 @@
                         <label for="lastname">Last Name</label>
                     </div>
                         <span asp-validation-for="LastName" class="text-danger"></span>
-
                 </div>
             </div>
             <div class="row mt-2 ">
@@ -62,7 +61,6 @@
                         <input type="text" class="form-control" id="username" name="UserName" placeholder="User Name" asp-for="UserName">
                         <label for="username">Username</label>
                     </div>
-
                 </div>
                  <div class="col-md-6">
                     <div class="form-floating mb-3">
@@ -71,12 +69,10 @@
                         <label for="phone">Phone</label>
                     </div>
                         <span asp-validation-for="Phone" class="text-danger"></span>
-
                 </div>
             </div>
             <div class="row mt-2 ">
                 <div class="col-md-4">
-
                     <div class="form-floating mb-3">
                         <select class="form-select" id="country" name="Country" asp-for="Country">
                             <option value="@Model.Country">@Model.CountryName</option>
@@ -85,7 +81,6 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-
                     <div class="form-floating mb-3">
                         <select class="form-select" id="state" name="State" asp-for="State"  >
                              <option value="@Model.State">@Model.StateName</option>
@@ -94,7 +89,6 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-
                     <div class="form-floating mb-3">
                         <select class="form-select" id="city" name="City" asp-for="City" >
                               <option value="@Model.City">@Model.CityName</option>
@@ -104,7 +98,6 @@
                 </div>
             </div>
             <div class="row mt-2 ">
-               
                 <div class="col-md-7">
                     <div class="form-floating mb-4 mb-md-0">
                         <input type="text" class="form-control" id="address" name="Address" placeholder="Address" asp-for="Address">

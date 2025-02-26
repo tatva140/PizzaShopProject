@@ -6,7 +6,7 @@ using Services.Service;
 using Microsoft.AspNetCore.Authorization;
 using System.Net.Http.Headers;
 using DAL.Models;
-
+using Microsoft.Extensions.FileProviders;
 
 [Authorize]
 public class DashboardController :Controller
@@ -36,7 +36,7 @@ public class DashboardController :Controller
     {
         string email=Request.Cookies["email"];
         var user = _userService.GetUserInfo(email);
-          return View(user);
+        return View(user);
       
     }
      public IActionResult Logout()
@@ -49,28 +49,26 @@ public class DashboardController :Controller
     [HttpPost]
     public IActionResult UserProfile(UserProfileViewModel model,IFormFile profileImg)
     {
-        Console.Write(profileImg);
-        // if(!ModelState.IsValid)
-        // {
-        // var errors = ModelState.Values.SelectMany(v => v.Errors);
-        // foreach (var error in errors)
-        // {
-        //     Console.WriteLine(error.ErrorMessage);
-        // }
-        // return RedirectToAction("UserProfile","Dashboard");
-        // }
-
-        if(profileImg!=null && profileImg.Length>0)
-        {
-            string filename=_fileUploads.UploadProfileImage(profileImg,model.UserId);
-            if(filename !=null)
+          if (profileImg != null)
             {
-                model.ProfileImg=$"/images/{filename}";
+             if (profileImg.Length > 0)
+            {
+                string fileName=_fileUploads.UploadProfileImage(profileImg);
+                model.ProfileImg=fileName;
             }
-        }
+     }
+       
         string email=Request.Cookies["email"];
         model.Email=email;
-        _userService.UpdateProfile(model);
+        bool isUpdated=_userService.UpdateProfile(model);
+        if(isUpdated)
+        {
+            TempData["Message"]="Profile Updated Successfully";
+            TempData["MessageType"]="success";
+        }else{
+            TempData["Message"]="Could not update profile";
+            TempData["MessageType"]="error";
+        }
         return RedirectToAction("Index","Dashboard");
 
     }
@@ -88,8 +86,12 @@ public class DashboardController :Controller
        if(!isValid)
        {
         ViewBag.Message="Current Password does not match";
+        TempData["Message"]="Could not change password";
+        TempData["MessageType"]="error";
         return View();
        }
-        return RedirectToAction("Index","Dashboard");
+        TempData["Message"]="Changed Password Successfully";
+        TempData["MessageType"]="success";
+        return View();
     }
 }

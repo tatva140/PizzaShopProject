@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
         integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" asp-append-version="true"/>
+       
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>
     
 </head>
 <body style="background-color: rgb(250, 250, 250)">
@@ -56,7 +58,7 @@
             </li>
             <a asp-action="Index" asp-controller="Dashboard" style="text-decoration: none; color: black;"> <li><i class="fa-solid fa-table me-2"></i>Dashboard</li></a>
                 <a asp-action="Index" asp-controller="User" style="text-decoration: none; color: black;"><li><i class="fa-solid fa-users me-2"></i>Users</li></a>
-                <a href="roles.html" style="text-decoration: none; color: black;"><li><i class="fa-solid fa-user-plus me-2"></i>Role and Permission</li></a>
+                <a asp-action="Index" asp-controller="RolesAndPermissions" style="text-decoration: none; color: black;"><li><i class="fa-solid fa-user-plus me-2"></i>Role and Permission</li></a>
                 <a href="menu.html" style="text-decoration: none; color: black;"><li><i class="fa-regular fa-rectangle-list me-2"></i>Menu</li></a>
                 <a href="#" style="text-decoration: none; color: black;"><li><i class="fa-solid fa-file-invoice me-2"></i>Taxes and Fees</li></a>
                 <a href="#" style="text-decoration: none; color: black;"><li><i class="fa-solid fa-table me-2"></i>Tables and Sections</li></a>
@@ -87,9 +89,36 @@
     @RenderBody()
 
 </div>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <script>
+        
+        $(document).ready(function () {
+            var message = "@TempData["Message"]";
+            var messageType = "@TempData["MessageType"]";
+
+            if (message) {
+                switch (messageType) {
+                    case "success":
+                        toastr.success(message);
+                        break;
+                    case "error":
+                        toastr.error(message);
+                        break;
+                    case "warning":
+                        toastr.warning(message);
+                        break;
+                    case "info":
+                        toastr.info(message);
+                        break;
+                }
+            }
+        });
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

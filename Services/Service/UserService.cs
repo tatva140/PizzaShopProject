@@ -27,7 +27,7 @@ public class UserService
         }
          public bool ValidateUserByEmail(string email)
         {
-            var user = _userRepository.GetByEmail(email);
+        var user = _userRepository.GetByEmail(email);
            if(user==null || user.isActive==false){
             return false;
            }
@@ -67,13 +67,11 @@ public class UserService
             _userRepository.ResetPassword(newPassword,email);
             return true;
            }
-
-            return false;
-          
+            return false;      
         }
-         public void UpdateProfile(UserProfileViewModel userProfileViewModel)
+         public bool UpdateProfile(UserProfileViewModel userProfileViewModel)
         {
-             _userRepository.UpdateProfile(userProfileViewModel);
+             return _userRepository.UpdateProfile(userProfileViewModel);
         }
         public List<Country> GetCountries()
         {
@@ -91,11 +89,11 @@ public class UserService
         {
             return _userRepository.GetRoles();
         }
-        public void AddUser(AddUserViewModel addUserViewModel)
+        public bool AddUser(AddUserViewModel addUserViewModel)
         {
             string password=BCrypt.Net.BCrypt.HashPassword(addUserViewModel.Password);
             addUserViewModel.Password=password;
-            _userRepository.AddUser(addUserViewModel);
+            return _userRepository.AddUser(addUserViewModel);
         }
     
 }

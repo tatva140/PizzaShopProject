@@ -76,6 +76,7 @@ if(close){
     let showPass = 0;
     const p = document.getElementById("pwd");
     document.getElementById("eye").addEventListener('click', () => {
+        console.log("hi");
         showPass = !showPass
         if (showPass) {
             p.setAttribute('type', 'text');
@@ -85,6 +86,28 @@ if(close){
     
     })
 
+    let showpass1 = 0;
+let showpass2 = 0;
+const cp = document.getElementById("confirmpwd");
+const curp = document.getElementById("curpwd");
+
+document.getElementById("confirmeye").addEventListener('click', () => {
+showpass1 = !showpass1
+if (showpass1) {
+cp.setAttribute('type', 'text');
+} else {
+cp.setAttribute('type', 'password');
+}
+})
+document.getElementById("cureye").addEventListener('click', () => {
+showpass2 = !showpass2
+if (showpass2) {
+curp.setAttribute('type', 'text');
+} else {
+curp.setAttribute('type', 'password');
+}
+
+})
     
 // function save() {
 
@@ -109,62 +132,6 @@ if(close){
 
 
 
-
-// function sort(n){
-//     var table, rows, flag, i, x, y, swap, dir, swapcnt = 0;
-//     table = document.getElementById("myTable");
-//     flag = true;
-//     // Set the sorting direction to ascending:
-//     dir = "asc";
-//     /* Make a loop that will continue until
-//     no switching has been done: */
-//     while (flag) {
-//       // Start by saying: no switching is done:
-//       flag = false;
-//       rows = table.rows;
-//       /* Loop through all table rows (except the
-//       first, which contains table headers): */
-//       for (i = 1; i < (rows.length - 1); i++) {
-//         // Start by saying there should be no switching:
-//         swap = false;
-//         /* Get the two elements you want to compare,
-//         one from current row and one from the next: */
-//         x = rows[i].getElementsByTagName("TD")[n];
-//         y = rows[i + 1].getElementsByTagName("TD")[n];
-//         /* Check if the two rows should switch place,
-//         based on the direction, asc or desc: */
-//         if (dir == "asc") {
-//           if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-//             // If so, mark as a switch and break the loop:
-//             swap = true;
-//             break;
-//           }
-//         } else if (dir == "desc") {
-//           if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-//             // If so, mark as a switch and break the loop:
-//             swap = true;
-//             break;
-//           }
-//         }
-//       }
-//       if (swap) {
-//         /* If a switch has been marked, make the switch
-//         and mark that a switch has been done: */
-//         rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-//         flag = true;
-//         // Each time a switch is done, increase this count by 1:
-//         swapcnt ++;
-//       } else {
-//         /* If no switching has been done AND the direction is "asc",
-//         set the direction to "desc" and run the while loop again. */
-//         if (swapcnt == 0 && dir == "asc") {
-//           dir = "desc";
-//           flag = true;
-//         }
-//       }
-//     }
-//   }
-
 function search(){
     var input, filter, table, tr, td, i, txtValue;
     input = document.getElementById("search");
@@ -184,6 +151,7 @@ function search(){
       }       
     }
 }
+
 
 
 // const filename = document.getElementById('filename');

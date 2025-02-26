@@ -51,7 +51,6 @@ public class HomeController : Controller
         {
             bool isValidUser = _userService.ValidateUser(model.Email,model.Password);
             string roleName= _userService.GetUserRole(model.Email);
-            Console.Write(roleName);
             if(isValidUser)
             {
                 string token =_jwtTokenService.GenerateToken(model.Email,roleName);
@@ -68,9 +67,8 @@ public class HomeController : Controller
                     HttpOnly=true,
                     Secure=true,
                     Expires=DateTime.UtcNow.AddDays(30)
-                });
-                return RedirectToAction("Index","Dashboard");  
-               
+                });       
+                return RedirectToAction("Index","Dashboard");      
             }
             ViewBag.Message="Invalid credentials";
         return View(model);

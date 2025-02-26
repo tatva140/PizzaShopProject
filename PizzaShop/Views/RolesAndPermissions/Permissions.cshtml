@@ -1,0 +1,243 @@
+@model DAL.Models.Permission;
+@{
+     ViewData["HideLayout"]="false";
+}
+ 
+ <div class="content p-3" id="content">
+    <h1  style="color: rgb(30, 151, 231);font-weight: 600;">Permissions</h1>
+    <div style="background-color: white; border-radius: 8px;">
+      <div class="p-3">
+        <div class="form-floating col-md-6">
+          <input type="text" class="form-control " id="role" name="role" placeholder="First Name" readonly style="background-color: rgb(250, 250, 250);">
+          <label for="role">Role</label>
+        </div>
+      </div>
+      <div class="table-responsive me-2 ms-2 ">
+        <table class="table ">
+          <thead>
+            <tr>
+              <th>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                  <label class="form-check-label" for="flexCheckDefault">
+                    Permission
+                  </label>
+                </div>
+              </th>
+              <th>Can View</th>
+              <th>Can Add/Edit</th>
+              <th>Can Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                  <label class="form-check-label" for="flexCheckDefault">
+                    Users
+                  </label>
+                </div>
+              </td>
+              <td>
+                <div class="form-check form-switch ">
+                  <input class="form-check-input" type="checkbox" id="mySwitch" name="darkmode" value="yes" >
+                </div>
+
+              </td>
+              <td>
+                <div class="form-check form-switch ">
+                  <input class="form-check-input" type="checkbox" id="mySwitch" name="darkmode" value="yes" >
+                </div>
+
+              </td>
+              <td>
+                <div class="form-check form-switch ">
+                  <input class="form-check-input" type="checkbox" id="mySwitch" name="darkmode" value="yes" >
+                </div>
+
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                  <label class="form-check-label" for="flexCheckDefault">
+                    RoleAndPermission
+                  </label>
+                </div>
+              </td>
+
+              <td>
+                <div class="form-check form-switch ">
+                  <input class="form-check-input" type="checkbox" id="mySwitch" name="darkmode" value="yes" >
+                </div>
+
+              </td>
+              <td>
+                <div class="form-check form-switch ">
+                  <input class="form-check-input" type="checkbox" id="mySwitch" name="darkmode" value="yes" >
+                </div>
+
+              </td>
+              <td>
+                <div class="form-check form-switch ">
+                  <input class="form-check-input" type="checkbox" id="mySwitch" name="darkmode" value="yes" >
+                </div>
+
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                  <label class="form-check-label" for="flexCheckDefault">
+                    Menu
+                  </label>
+                </div>
+              </td>
+              <td>
+                <div class="form-check form-switch ">
+                  <input class="form-check-input" type="checkbox" id="mySwitch" name="darkmode" value="yes" checked>
+                </div>
+
+              </td>
+              <td>
+                <div class="form-check form-switch ">
+                  <input class="form-check-input" type="checkbox" id="mySwitch" name="darkmode" value="yes" checked>
+                </div>
+
+              </td>
+              <td>
+                <div class="form-check form-switch ">
+                  <input class="form-check-input" type="checkbox" id="mySwitch" name="darkmode" value="yes" checked>
+                </div>
+
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                  <label class="form-check-label" for="flexCheckDefault">
+                    TableAndSection
+                  </label>
+                </div>
+              </td>
+              <td>
+                <div class="form-check form-switch ">
+                  <input class="form-check-input" type="checkbox" id="mySwitch" name="darkmode" value="yes" checked>
+                </div>
+
+              </td>
+              <td>
+                <div class="form-check form-switch ">
+                  <input class="form-check-input" type="checkbox" id="mySwitch" name="darkmode" value="yes" checked>
+                </div>
+
+              </td>
+              <td>
+                <div class="form-check form-switch ">
+                  <input class="form-check-input" type="checkbox" id="mySwitch" name="darkmode" value="yes" checked>
+                </div>
+
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                  <label class="form-check-label" for="flexCheckDefault">
+                    TaxAndFee
+                  </label>
+                </div>
+              </td>
+              <td>
+                <div class="form-check form-switch ">
+                  <input class="form-check-input" type="checkbox" id="mySwitch" name="darkmode" value="yes" checked>
+                </div>
+
+              </td>
+              <td>
+                <div class="form-check form-switch ">
+                  <input class="form-check-input" type="checkbox" id="mySwitch" name="darkmode" value="yes" checked>
+                </div>
+
+              </td>
+              <td>
+                <div class="form-check form-switch ">
+                  <input class="form-check-input" type="checkbox" id="mySwitch" name="darkmode" value="yes" checked>
+                </div>
+
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                  <label class="form-check-label" for="flexCheckDefault">
+                    Order
+                  </label>
+                </div>
+              </td>
+              <td>
+                <div class="form-check form-switch ">
+                  <input class="form-check-input" type="checkbox" id="mySwitch" name="darkmode" value="yes" checked>
+                </div>
+
+              </td>
+              <td>
+                <div class="form-check form-switch ">
+                  <input class="form-check-input" type="checkbox" id="mySwitch" name="darkmode" value="yes" checked>
+                </div>
+
+              </td>
+              <td>
+                <div class="form-check form-switch ">
+                  <input class="form-check-input" type="checkbox" id="mySwitch" name="darkmode" value="yes" checked>
+                </div>
+
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                  <label class="form-check-label" for="flexCheckDefault">
+                    Customers
+                  </label>
+                </div>
+              </td>
+              <td>
+                <div class="form-check form-switch ">
+                  <input class="form-check-input" type="checkbox" id="mySwitch" name="darkmode" value="yes" checked>
+                </div>
+
+              </td>
+              <td>
+                <div class="form-check form-switch ">
+                  <input class="form-check-input" type="checkbox" id="mySwitch" name="darkmode" value="yes" checked>
+                </div>
+
+              </td>
+              <td>
+                <div class="form-check form-switch ">
+                  <input class="form-check-input" type="checkbox" id="mySwitch" name="darkmode" value="yes" checked>
+                </div>
+
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+      <div class="d-flex  ms-3 mt-2 p-3 justify-content-end ">
+        <button type="submit" class="btn btn-primary me-2">Save</button>
+
+        <button type="submit"
+          style="border-color:rgb(30, 151, 231); ; color:rgb(30, 151, 231); background-color: white;"
+          onclick="window.open('roles.html','_self')">Cancel</button>
+
+      </div>
+    </div>
+  </div>

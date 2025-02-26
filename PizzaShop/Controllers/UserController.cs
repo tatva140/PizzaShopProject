@@ -13,13 +13,16 @@ public class UserController:Controller
     private readonly EmailService _emailService;
     private readonly EncryptDecrypt _encryptDecrypt;
     private readonly EmailSettings _emailSettings;
+    private readonly FileUploads _fileUploads;
 
-    public UserController(UserService userService,EmailService emailService,EncryptDecrypt encryptDecrypt,EmailSettings emailSettings)
+
+    public UserController(UserService userService,EmailService emailService,EncryptDecrypt encryptDecrypt,EmailSettings emailSettings,FileUploads fileUploads)
     {
         _userService=userService;
         _emailService=emailService;
         _encryptDecrypt=encryptDecrypt;
         _emailSettings=emailSettings;
+        _fileUploads=fileUploads;
     }
 
 [HttpGet]
@@ -40,6 +43,16 @@ public class UserController:Controller
       public IActionResult DeleteUser([FromQuery] int id)
     {
         bool deleted=_userService.DeleteUser(id);
+        if(deleted)
+        {
+            TempData["Message"]="User Deleted Successfully";
+            TempData["MessageType"]="success";
+        }
+        else
+        {
+            TempData["Message"]="User does not exist";
+            TempData["MessageType"]="error";
+        }
         return RedirectToAction("Index","User");
     }
 
@@ -50,12 +63,31 @@ public class UserController:Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult>  AddUser(AddUserViewModel addUserViewModel)
+    public async Task<IActionResult>  AddUser(AddUserViewModel addUserViewModel,IFormFile profileImg)
     {
-        _userService.AddUser(addUserViewModel);
+        if (profileImg != null)
+        {
+            if (profileImg.Length > 0)
+            {
+                string fileName=_fileUploads.UploadProfileImage(profileImg);
+                Console.Write(fileName);
+                addUserViewModel.ProfileImg=fileName;
+            }
+        }
+        bool userValid=_userService.AddUser(addUserViewModel);
+        if(userValid)
+        {
+            TempData["Message"]="User Added Successfully";
+            TempData["MessageType"]="success";
+        }
+        else
+        {
+            TempData["Message"]="User Already Exists";
+            TempData["MessageType"]="error";
+        }
         string email=_encryptDecrypt.Encrypt(addUserViewModel.Email);
         string resetLink= Url.Action("ResetPassword","Home",new  {email=email}, Request.Scheme);
-        await _emailService.SendForgotPasswordEmail(addUserViewModel.Email,_emailSettings.host,_emailSettings.SenderEmail,_emailSettings.SenderPassword,_emailSettings.SMTPPort,resetLink);
+        await _emailService.SendForgotPasswordEmail(addUserViewModel.Email,_emailSettings.host,_emailSettings.SenderEmail,_emailSettings.SenderPassword,_emailSettings.SMTPPort,resetLink,addUserViewModel.Email,addUserViewModel.Password);
         return RedirectToAction("Index","User");
     }
     public ActionResult GetCountries()
@@ -82,25 +114,33 @@ public class UserController:Controller
 [HttpGet]
     public IActionResult EditUsers([FromQuery] string email)
     {
-        //   if(!ModelState.IsValid)
-        // {
-        // var errors = ModelState.Values.SelectMany(v => v.Errors);
-        // foreach (var error in errors)
-        // {
-        //     Console.WriteLine(error.ErrorMessage);
-        // }
-        // return RedirectToAction("UserProfile","Dashboard");
-        // }
         var user = _userService.GetUserInfo(email);
-        Console.Write(user.StateName);
         return View(user);   
     }
 
   [HttpPost]
-    public IActionResult EditUsers(UserProfileViewModel model)
+    public IActionResult EditUsers(UserProfileViewModel model,IFormFile profileImg)
     {
-        _userService.UpdateProfile(model);
-        return RedirectToAction("Index","Dashboard");
+         if (profileImg != null)
+        {
+            if (profileImg.Length > 0)
+            {
+                string fileName=_fileUploads.UploadProfileImage(profileImg);
+                Console.Write(fileName);
+                model.ProfileImg=fileName;
+            }
+        }
+        bool isUpdated=_userService.UpdateProfile(model);
+        if(isUpdated)
+        {
+            TempData["Message"]="User edited Successfully";
+            TempData["MessageType"]="success";
+        }else
+        {
+            TempData["Message"]="Could not edit user";
+            TempData["MessageType"]="error";
+        }
+        return RedirectToAction("Index","User");
     }  
 }
 

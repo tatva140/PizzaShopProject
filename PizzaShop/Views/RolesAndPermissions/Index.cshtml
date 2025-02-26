@@ -1,0 +1,25 @@
+@model List<DAL.Models.Role>;
+@{
+     ViewData["HideLayout"]="false";
+}
+ <div class="content p-3" id="content">
+     
+      <div class="col col-lg-6 mt-3 p-3 " style="background-color: white; border-radius: 8px;">
+      <div class="row ">
+     <div class="col d-flex justify-content-between align-items-center ">
+            <h3 class="text-muted">Role</h3>
+            <h3 class="text-muted">Action</h3>
+        </div>
+      </div>
+      <hr>
+        @foreach(var role in Model)
+        {
+            <div class="col   d-flex justify-content-between align-items-center">
+                <h5>@role.RoleName</h5>
+                <a href="@Url.Action("Permissions","RolesAndPermissions",new {id=role.RoleId})" ><i class="fa-solid fa-pen me-3 " style="cursor: pointer;"></i></a>
+            </div>
+            <hr>
+        }  
+        </div> 
+        </div>
+ </div>

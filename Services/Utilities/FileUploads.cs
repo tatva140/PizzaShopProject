@@ -12,21 +12,38 @@ public class FileUploads
             _userRepository=userRepository;
         }
 
-        public string UploadProfileImage(IFormFile file, int id)
-        {
-            if(file!=null && file.Length>0)
-        {
-            return null;
-        }
-        string uploadsFolder=Path.Combine(Directory.GetCurrentDirectory(),"wwwroot","images");
-        string filename=$"{id}_{Path.GetExtension(file.FileName)}";
-        string filePath=Path.Combine(uploadsFolder,filename);
+        public string UploadProfileImage(IFormFile profileImg)
+        { 
+                var fileName = Path.GetFileName(profileImg.FileName);
 
-        using (var stream=new FileStream(filePath,FileMode.Create))
-        {
-            file.CopyTo(stream);
+                var myUniqueFileName = Convert.ToString(Guid.NewGuid());
+
+                var fileExtension = Path.GetExtension(fileName);
+
+                var newFileName = String.Concat(myUniqueFileName, fileExtension);
+
+                var filepath = 
+                    new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images")).Root + $@"\{newFileName}";
+
+                using (FileStream fs = System.IO.File.Create(filepath))
+                {
+                     profileImg.CopyTo(fs);
+                     fs.Flush();
+                }
+                return newFileName;
         }
-        _userRepository.SaveProfileImage(filename,id);
-        return filename;
-        }
+        
+}
+
+internal class PhysicalFileProvider
+{
+    private string v;
+
+    public PhysicalFileProvider(string v)
+    {
+        this.v = v;
+    }
+
+    public string Root { get; internal set; }
+
 }

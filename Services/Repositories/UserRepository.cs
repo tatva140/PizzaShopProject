@@ -13,6 +13,7 @@ public class UserRepository: IUserRepository
         {
             _context=context;
         }
+        
        public UserProfileViewModel GetByEmail(string email)
 {
     var user = (from u in _context.Users
@@ -89,12 +90,11 @@ public class UserRepository: IUserRepository
                         where u.Email==email
                         select r.RoleName)
                         .FirstOrDefault();
-                        Console.Write(role);
             return role;
         }
           public bool DeleteUser(int id)
         {
-            var user=_context.Users.Find(id);
+            var user=_context.Users.FirstOrDefault(u=>u.UserId==id && u.IsActive==true);
             if(user==null)return false;
             user.IsActive=false;
             _context.Users.Update(user);
@@ -121,9 +121,10 @@ public class UserRepository: IUserRepository
         {
             return _context.Cities.Where(c=>c.StateId==stateId).ToList();
         }
-        public void UpdateProfile(UserProfileViewModel userProfileViewModel)
+        public bool UpdateProfile(UserProfileViewModel userProfileViewModel)
         {
             var user=_context.Users.FirstOrDefault(u=>u.Email==userProfileViewModel.Email);
+            if(user==null)return false;
             user.FirstName=userProfileViewModel.FirstName?? user.FirstName;
             user.LastName=userProfileViewModel.LastName ?? user.LastName;
             user.UserName=userProfileViewModel.UserName ?? user.UserName;
@@ -147,19 +148,22 @@ public class UserRepository: IUserRepository
             {
                 user.City = userProfileViewModel.City;
             }
-            user.IsActive=userProfileViewModel.isActive? userProfileViewModel.isActive: user.IsActive;
+            user.IsActive=userProfileViewModel.isActive;
+            user.UpdatedAt=DateTime.Now;
 
             
             _context.Users.Update(user);
             _context.SaveChanges();
+            return true;
         }
         public List<Role> GetRoles()
         {
             return _context.Roles.ToList();
         }
-        public void AddUser(AddUserViewModel addUserViewModel)
+        public bool AddUser(AddUserViewModel addUserViewModel)
         {
-         
+            bool userExists=_context.Users.Any(u=>u.Email==addUserViewModel.Email);
+            if(userExists)return false;
             var user=new User{
                 UserId=new Guid().GetHashCode(),
                 FirstName=addUserViewModel.FirstName,
@@ -174,12 +178,13 @@ public class UserRepository: IUserRepository
                 ZipCode=addUserViewModel.ZipCode?? "",
                 ProfileImg=addUserViewModel.ProfileImg?? "",
                 RoleId=addUserViewModel.RoleId,
-                Password=addUserViewModel.Password
+                Password=addUserViewModel.Password,
+                UpdatedAt=DateTime.Now,
             };
-             _context.Users.Add(user);
+            _context.Users.Add(user);
             _context.SaveChanges();
+            return true;
         }
-
         public void SaveProfileImage(string filename,int id)
         {
             var user=_context.Users.Find(id);

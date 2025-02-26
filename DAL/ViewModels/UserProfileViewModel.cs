@@ -30,7 +30,7 @@ public class UserProfileViewModel
     [RegularExpression(@"^[0-9]{6}$", ErrorMessage = "Invalid ZipCode")]
     public string? ZipCode { get; set; }
     public string? ProfileImg { get; set; }
-    public string UserName { get; set; }
+    public string? UserName { get; set; }
     public string? RoleName { get; set; } 
     public int RoleId { get; set; }
     public bool isActive { get; set; }

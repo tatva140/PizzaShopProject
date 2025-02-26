@@ -11,13 +11,13 @@ public interface IUserRepository
     
     List<UserProfileViewModel> GetAllUser(string sortOrder,int pageNumber,int pageSize,out int totalRecords);
     bool DeleteUser(int id);
-    void UpdateProfile(UserProfileViewModel userProfileViewModel);
+    bool UpdateProfile(UserProfileViewModel userProfileViewModel);
 
     List<Country> GetCountries();
     List<State> GetStateByCountry(int countryId);
     List<City> GetCityByState(int stateId);
 
-    void AddUser(AddUserViewModel addUserViewModel);
+    bool AddUser(AddUserViewModel addUserViewModel);
     void SaveProfileImage(string filename,int id);
 
 }
