@@ -36,6 +36,7 @@ public class UserController:Controller
         ViewBag.PageSize=pageSize;
         ViewBag.TotalPages=(int)Math.Ceiling((double)totalRecords/pageSize);
         ViewBag.AvailableSize=new List<int>{2,4,15,20};
+       
         return View(users);
     }
 
@@ -70,8 +71,8 @@ public class UserController:Controller
             if (profileImg.Length > 0)
             {
                 string fileName=_fileUploads.UploadProfileImage(profileImg);
-                Console.Write(fileName);
-                addUserViewModel.ProfileImg=fileName;
+                addUserViewModel.ProfileImg="/images/"+fileName;
+
             }
         }
         bool userValid=_userService.AddUser(addUserViewModel);
@@ -126,8 +127,8 @@ public class UserController:Controller
             if (profileImg.Length > 0)
             {
                 string fileName=_fileUploads.UploadProfileImage(profileImg);
-                Console.Write(fileName);
-                model.ProfileImg=fileName;
+                model.ProfileImg="/images/"+fileName;
+
             }
         }
         bool isUpdated=_userService.UpdateProfile(model);

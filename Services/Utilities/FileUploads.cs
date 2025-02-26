@@ -7,6 +7,7 @@ namespace Services.Utilities;
 public class FileUploads
 {
         private readonly IUserRepository _userRepository;
+        private readonly string _imageFolderPath="wwwroot/images/";
         public FileUploads(IUserRepository userRepository)
         {
             _userRepository=userRepository;
@@ -14,23 +15,18 @@ public class FileUploads
 
         public string UploadProfileImage(IFormFile profileImg)
         { 
-                var fileName = Path.GetFileName(profileImg.FileName);
 
-                var myUniqueFileName = Convert.ToString(Guid.NewGuid());
+            var uniqueFileName = Guid.NewGuid().ToString() + "_" + profileImg.FileName;
+            var filePath = Path.Combine(_imageFolderPath, uniqueFileName);
 
-                var fileExtension = Path.GetExtension(fileName);
+            Directory.CreateDirectory(_imageFolderPath); // Ensure directory exists
 
-                var newFileName = String.Concat(myUniqueFileName, fileExtension);
-
-                var filepath = 
-                    new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images")).Root + $@"\{newFileName}";
-
-                using (FileStream fs = System.IO.File.Create(filepath))
-                {
-                     profileImg.CopyTo(fs);
-                     fs.Flush();
-                }
-                return newFileName;
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                profileImg.CopyToAsync(stream)
+;
+            }
+                return uniqueFileName;
         }
         
 }

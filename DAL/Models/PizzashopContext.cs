@@ -630,6 +630,7 @@ public partial class PizzashopContext : DbContext
             entity.HasIndex(e => e.UpdatedBy, "IX_permissions_updated_by");
 
             entity.Property(e => e.PermissionId).HasColumnName("permission_id");
+            entity.Property(e => e.Name).HasColumnName("name");
             entity.Property(e => e.CanAddEdit)
                 .HasDefaultValueSql("true")
                 .HasColumnName("can_add_edit");
@@ -647,6 +648,7 @@ public partial class PizzashopContext : DbContext
             entity.Property(e => e.IsActive)
                 .HasDefaultValueSql("true")
                 .HasColumnName("is_active");
+            entity.Property(e => e.RoleId).HasColumnName("role_id");
             entity.Property(e => e.UpdatedAt)
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("updated_at");
@@ -655,6 +657,11 @@ public partial class PizzashopContext : DbContext
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.PermissionCreatedByNavigations)
                 .HasForeignKey(d => d.CreatedBy)
                 .HasConstraintName("permissions_created_by_fkey");
+
+            entity.HasOne(d => d.Role).WithMany(p => p.Permissions)
+                .HasForeignKey(d => d.RoleId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("role_id_fkey");
 
             entity.HasOne(d => d.UpdatedByNavigation).WithMany(p => p.PermissionUpdatedByNavigations)
                 .HasForeignKey(d => d.UpdatedBy)

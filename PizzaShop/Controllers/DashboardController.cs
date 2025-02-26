@@ -54,7 +54,7 @@ public class DashboardController :Controller
              if (profileImg.Length > 0)
             {
                 string fileName=_fileUploads.UploadProfileImage(profileImg);
-                model.ProfileImg=fileName;
+                model.ProfileImg="/images/"+fileName;
             }
      }
        

@@ -47,8 +47,9 @@
             <tr>
             <td>
               <div class="d-flex   align-items-center w-auto p-0 ">
-                <img src="images/Default_pfp.svg.png" alt="Image" class="img-fluid me-2 "
-                  style="font: 10px; height: 20px;">
+                <img src="@(user.ProfileImg ?? "~/images/Default_pfp.svg.png")" class="rounded-pill img-fluid me-2"
+                  style="width: 30px; height: 30px" > 
+                
                 <div style="word-wrap: break-word;">@user.FirstName @user.LastName</div>
               </div>
             </td>

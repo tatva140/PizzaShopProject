@@ -28,8 +28,10 @@ builder.Services.AddSingleton<JwtTokenService>();
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IUserRepository,UserRepository>();
+builder.Services.AddScoped<IRolesAndPermissions,RolesAndPermissions>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<EmailService>();
+builder.Services.AddScoped<RolesAndPermissionsServices>();
 builder.Services.AddScoped<FileUploads>();
 builder.Services.AddScoped<IJwtService, JwtTokenService>();
 builder.Services.AddScoped<EncryptDecrypt>();
