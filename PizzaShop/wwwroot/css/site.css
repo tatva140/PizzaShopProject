@@ -160,3 +160,40 @@ z-index:0;
   height: 100%;
   cursor: pointer;
 }
+
+.actions i{
+  visibility: hidden;
+}
+.actionshover:hover .actions i{
+visibility: visible;
+}
+#categoryaccordian{
+ display: none;
+
+  }
+@media (max-width:1400px){
+  #category{
+      display: none;
+  }
+  #categoryaccordian{
+      display: block;
+  }
+}
+.srchicon{
+visibility: hidden;
+}
+.dltbtn{
+display: block;
+}
+@media (max-width:550px){
+.srch{
+display: none;
+}
+.srchicon{
+visibility: visible;
+}
+.dltbtn{
+display: none;
+
+}
+}

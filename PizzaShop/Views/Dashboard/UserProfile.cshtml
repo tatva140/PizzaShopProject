@@ -6,14 +6,11 @@
     ViewData["HideLayout"]="false";
 }
 
-<div class="content" id="content">
+<div class="content p-3" id="content">
       <div class="row ">
-                <div class="col-md-6 mt-3 mb-3 col-8 ">
-                     <h1  style="color: rgb(30, 151, 231);font-weight: 600;">My Profile</h1>
-          
-                </div>
+                 <h1  style="color: rgb(30, 151, 231);font-weight: 600;">My Profile</h1>
             <form asp-action="UserProfile" asp-controller="Dashboard" method="post" enctype="multipart/form-data">
-            <div class="row ms-3 me-3" style="background-color: white; border-radius: 8px; ">
+            <div class="row ms-2 me-2 shadow rounded-lg mt-2" style="background-color: white; border-radius: 8px; ">
             <div style="height: 150px;" class="p-0 ">
             <div class="row " ><img src="~/images/profile_div_bg.jpg" style=" height: 70px;" class=""></div>
             <div class="row">
