@@ -82,7 +82,7 @@ public class DashboardController :Controller
             LayoutViewModel layoutViewModel =new LayoutViewModel
             {
                 Email=user.Email,
-                ProfileImg=user.ProfileImg
+                ProfileImg=user.ProfileImg?? "~/images/Default_pfp.svg.png"
             };
        
             return PartialView("_UserInfo",layoutViewModel);

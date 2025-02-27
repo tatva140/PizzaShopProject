@@ -24,7 +24,7 @@
                 <div class="btn-group profile">
                     <button type="button" class="btn  " data-bs-toggle="dropdown" aria-expanded="false">
                         <img src="~/images/Default_pfp.svg.png" class="profile rounded-pill" alt="Profile Picture"
-                        style="width: 40px; height: 40px; margin-right: 10px;">
+                        style="width: 40px; height: 40px; margin-right: 10px;" id="profileImg">
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end">
                     <div id="partialViewRender"></div>
@@ -59,7 +59,7 @@
             <a asp-action="Index" asp-controller="Dashboard" style="text-decoration: none; color: black;"> <li><i class="fa-solid fa-table me-2"></i>Dashboard</li></a>
                 <a asp-action="Index" asp-controller="User" style="text-decoration: none; color: black;"><li><i class="fa-solid fa-users me-2"></i>Users</li></a>
                 <a asp-action="Index" asp-controller="RolesAndPermissions" style="text-decoration: none; color: black;"><li><i class="fa-solid fa-user-plus me-2"></i>Role and Permission</li></a>
-                <a href="menu.html" style="text-decoration: none; color: black;"><li><i class="fa-regular fa-rectangle-list me-2"></i>Menu</li></a>
+                <a asp-action="Index" asp-controller="Menu" style="text-decoration: none; color: black;"><li><i class="fa-regular fa-rectangle-list me-2"></i>Menu</li></a>
                 <a href="#" style="text-decoration: none; color: black;"><li><i class="fa-solid fa-file-invoice me-2"></i>Taxes and Fees</li></a>
                 <a href="#" style="text-decoration: none; color: black;"><li><i class="fa-solid fa-table me-2"></i>Tables and Sections</li></a>
                 <a href="#" style="text-decoration: none; color: black;"><li><i class="fa-solid fa-bag-shopping me-2"></i>Orders</li></a>

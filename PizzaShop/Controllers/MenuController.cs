@@ -8,4 +8,10 @@ public class MenuController:Controller
     {
         return View();
     }
+
+[HttpGet]
+    public IActionResult MenuItems()
+    {
+        return PartialView("_MenuItems");
+    }
 }
