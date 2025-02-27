@@ -1,4 +1,5 @@
 using DAL.Models;
+using DAL.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Services.Interfaces;
 
@@ -13,23 +14,44 @@ public class RolesAndPermissions:IRolesAndPermissions
         _context = context;
     }
 
-    public List<Permission> GetPermissions(int id)
+    public PermissionsViewModel GetPermissions(int id)
     {
-        return _context.Permissions.Where(p=>p.RoleId==id).ToList();
+        var roleName= (from r in _context.Roles
+                        where r.RoleId==id
+                        select r.RoleName 
+                        ).FirstOrDefault();
+
+    var permissions=(from p in _context.Permissions
+                    where p.RoleId==id
+                    select new Permission
+                    {
+                        PermissionId=p.PermissionId,
+                        CanAddEdit=p.CanAddEdit,
+                        CanDelete=p.CanDelete,
+                        CanView=p.CanView,
+                        Name=p.Name
+                    }).ToList();
+        return new PermissionsViewModel
+        {
+            RoleName=roleName,
+            permission=permissions,
+            RoleId=id
+        };
     }
-    public void EditPermissions(List<Permission> permissions)
+    public bool EditPermissions(List<Permission> permissions)
     {
         foreach(var p in permissions)
         {
-        var permission=_context.Permissions.FirstOrDefault(c=>c.PermissionId==p.PermissionId);
+        Permission permission=_context.Permissions.FirstOrDefault(c=>c.PermissionId==p.PermissionId);
+        if(permission==null)return false;
         if(permission!=null)
         {
             permission.CanAddEdit=p.CanAddEdit;
             permission.CanDelete=p.CanDelete;
             permission.CanView=p.CanView;
         }
-
         }
-        _context.SaveChanges();
+            _context.SaveChanges();
+            return true;
     }
 }

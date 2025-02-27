@@ -1,4 +1,5 @@
 using DAL.Models;
+using DAL.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Services.Interfaces;
 
@@ -13,13 +14,13 @@ public class RolesAndPermissionsServices
         _rolesAndPermissions = rolesAndPermissions;
     }
 
-    public List<Permission> GetPermissions([FromQuery] int id)
+    public PermissionsViewModel GetPermissions([FromQuery] int id)
     {
         return _rolesAndPermissions.GetPermissions(id);
     }
 
-    public void EditPermissions(List<Permission> permissions)
+    public bool EditPermissions(List<Permission> permissions)
     {
-        _rolesAndPermissions.EditPermissions(permissions);
+        return _rolesAndPermissions.EditPermissions(permissions);
     }
 }

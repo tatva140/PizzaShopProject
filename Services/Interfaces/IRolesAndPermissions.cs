@@ -1,10 +1,11 @@
 using DAL.Models;
+using DAL.ViewModels;
 
 namespace Services.Interfaces;
 
 public interface IRolesAndPermissions
 {
-    List<Permission> GetPermissions(int id);
+  PermissionsViewModel GetPermissions(int id);
   
-  void EditPermissions(List<Permission> permissions);
+  bool EditPermissions(List<Permission> permissions);
 }

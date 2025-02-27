@@ -1,5 +1,7 @@
 using DAL.Models;
+using DAL.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Services.Service;
 
@@ -23,14 +25,27 @@ public class RolesAndPermissionsController:Controller
     }
     public ActionResult Permissions(int id)
     {
-        var permissions= _rolesAndPermissionsServices.GetPermissions(id).ToList();
+        var permissions= _rolesAndPermissionsServices.GetPermissions(id);
+
         return View(permissions);
     }
 
     [HttpPost]
-    public ActionResult EditPermissions([FromBody] List<Permission> permissions)
+    public ActionResult EditPermissions([FromQuery] int roleId,[FromBody] List<Permission> permissions)
     {
-        _rolesAndPermissionsServices.EditPermissions(permissions);
-        return RedirectToAction("Permissions","RolesAndPermissions");
+        Console.Write(roleId);
+        bool isUpdated=_rolesAndPermissionsServices.EditPermissions(permissions);
+
+        if(isUpdated)
+        {
+            TempData["Message"]="Permissions edited Successfully";
+            TempData["MessageType"]="success";
+        }
+        else
+        {
+            TempData["Message"]="Could not edit the permissions";
+            TempData["MessageType"]="error";
+        }
+        return Ok(new {redirectUrl=@Url.Action("Permissions","RolesAndPermissions",new{id=roleId})});
     }
 }

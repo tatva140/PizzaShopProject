@@ -49,6 +49,7 @@ public class DashboardController :Controller
     [HttpPost]
     public IActionResult UserProfile(UserProfileViewModel model,IFormFile profileImg)
     {
+        Console.Write(model.isActive);
           if (profileImg != null)
             {
              if (profileImg.Length > 0)

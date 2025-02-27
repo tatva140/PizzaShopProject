@@ -47,8 +47,15 @@
             <tr>
             <td>
               <div class="d-flex   align-items-center w-auto p-0 ">
-                <img src="@(user.ProfileImg ?? "~/images/Default_pfp.svg.png")" class="rounded-pill img-fluid me-2"
+                @if(user.ProfileImg==null || user.ProfileImg.Length==0)
+                {
+                  <img src="~/images/Default_pfp.svg.png" class="rounded-pill img-fluid me-2"
                   style="width: 30px; height: 30px" > 
+                }
+                else{
+                <img src="@(Url.Content(user.ProfileImg ))" class="rounded-pill img-fluid me-2"
+                  style="width: 30px; height: 30px" > 
+                }
                 
                 <div style="word-wrap: break-word;">@user.FirstName @user.LastName</div>
               </div>

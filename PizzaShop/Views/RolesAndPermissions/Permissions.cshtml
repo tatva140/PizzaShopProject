@@ -1,4 +1,4 @@
-@model List<DAL.Models.Permission>;
+@model DAL.ViewModels.PermissionsViewModel;
 @{
      ViewData["HideLayout"]="false";
 }
@@ -9,7 +9,7 @@
       <div class="p-3">
         <div class="form-floating col-md-6">
           <input type="text" class="form-control " id="role" name="role" placeholder="First Name" readonly style="background-color: rgb(250, 250, 250);">
-          <label for="role">Role</label>
+          <label for="role">@Model.RoleName</label>
         </div>
       </div>
       <div class="table-responsive me-2 ms-2 ">
@@ -18,7 +18,7 @@
             <tr>
               <th>
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                  <input class="form-check-input allChecked" type="checkbox" value="" id="allChecked" onclick="selectPermissions()">
                   <label class="form-check-label" for="flexCheckDefault">
                     Permission
                   </label>
@@ -30,7 +30,7 @@
             </tr>
           </thead>
           <tbody>
-            @foreach (var item in Model)
+            @foreach (var item in Model.permission)
             {
 
             <tr class="check" data-id="@item.PermissionId">
@@ -67,54 +67,62 @@
 
       </div>
       <div class="d-flex  ms-3 mt-2 p-3 justify-content-end ">
-        <button type="submit" class="btn btn-primary me-2" onclick="savePermissions()">Save</button>
-
-        <button type="submit"
-          style="border-color:rgb(30, 151, 231); ; color:rgb(30, 151, 231); background-color: white;"
-          onclick="window.open('roles.html','_self')">Cancel</button>
-
+       <button type="submit" class="btn  me-2" style="background-color: rgba(9, 9, 172, 0.692);color:white" onclick="savePermissions()">Save</button>
+      <a type="submit" class="btn" style="border-color:rgba(9, 9, 172, 0.692);  color:rgba(9, 9, 172, 0.692); background-color: white;" asp-action="Index" asp-controller="RolesAndPermissions" formnovalidate>Cancel</a>
       </div>
     </div>
   </div>
   @section Scripts{
     <script>
-     
+      function selectPermissions(){
+
+        let checkboxes=document.querySelectorAll(".isSelected");
+        if(document.querySelector(".allChecked").checked)
+        { 
+            checkboxes.forEach(i=>{
+              i.checked="true";
+            });
+        }
+        return checkboxes;
+      }
       function checkedPermissions()
       {
         let selectedPermissions=[];
-        let checkboxes=document.querySelectorAll(".isSelected");
+        let checkboxes=selectPermissions();
         checkboxes.forEach(checkbox=>{
           if(checkbox.checked)
           {
             let row=checkbox.closest(".check");
             let permissionId=row.dataset.id;
-
             let canAddEdit=row.querySelector(".can-add-edit").checked;
             let canView=row.querySelector(".can-view").checked;
             let canDelete=row.querySelector(".can-delete").checked;
 
             selectedPermissions.push({
-              id:permissionId,
+              permissionId:permissionId,
               canAddEdit:canAddEdit,
               canDelete:canDelete,
               canView:canView
             })
           }
         })
-        console.log(selectedPermissions);
       return selectedPermissions;
       }
 
       function savePermissions()
       {
         let data=checkedPermissions();
+        console.log("@Model.RoleId");
         $.ajax({
-          url:"@Url.Action("EditPermissions","RolesAndPermissions")",
+          url:"@Url.Action("EditPermissions","RolesAndPermissions",new{roleId=@Model.RoleId})",
           type:"POST",
-          contentType:"application/json",
+          contentType:"application/json ",
           data:JSON.stringify(data),
           success:function(response){
-            console.log(response);
+            if(response.redirectUrl)
+            {
+              window.location.href=response.redirectUrl;
+            }
           }
         })
       }

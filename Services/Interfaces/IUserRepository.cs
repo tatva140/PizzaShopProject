@@ -18,7 +18,6 @@ public interface IUserRepository
     List<City> GetCityByState(int stateId);
 
     bool AddUser(AddUserViewModel addUserViewModel);
-    void SaveProfileImage(string filename,int id);
 
 }
 

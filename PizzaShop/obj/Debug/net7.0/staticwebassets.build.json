@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "wzGarCuwZ3EFWnF5kbXGAs7GAYrngOVWVUFl3Xm4mqQ=",
+  "Hash": "6U2mlQST9WaX7mfb1LUYqFOWiHYWMTIRDltL/vP2q/w=",
   "Source": "PizzaShop",
   "BasePath": "_content/PizzaShop",
   "Mode": "Default",
@@ -83,6 +83,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "C:\\Users\\pca140\\Desktop\\RMSProject\\PizzaShop\\wwwroot\\images\\1263624c-51b8-40cb-832a-0f14539e5ce3_Screenshot 2025-02-25 150043.png",
+      "SourceId": "PizzaShop",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\pca140\\Desktop\\RMSProject\\PizzaShop\\wwwroot\\",
+      "BasePath": "_content/PizzaShop",
+      "RelativePath": "images/1263624c-51b8-40cb-832a-0f14539e5ce3_Screenshot 2025-02-25 150043.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\1263624c-51b8-40cb-832a-0f14539e5ce3_Screenshot 2025-02-25 150043.png"
     },
     {
       "Identity": "C:\\Users\\pca140\\Desktop\\RMSProject\\PizzaShop\\wwwroot\\images\\272eb787-5b58-4a8b-9248-33bde5cb0754_download.jfif",

@@ -185,11 +185,6 @@ public class UserRepository: IUserRepository
             _context.SaveChanges();
             return true;
         }
-        public void SaveProfileImage(string filename,int id)
-        {
-            var user=_context.Users.Find(id);
-            user.ProfileImg=filename;
-            _context.SaveChanges();
-        }
+        
     }
 
