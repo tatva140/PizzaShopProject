@@ -73,6 +73,20 @@ public class DashboardController :Controller
         return RedirectToAction("Index","Dashboard");
 
     }
+
+    [HttpGet]
+      public IActionResult UserInfo()
+        {
+            string email=Request.Cookies["email"];
+            var user=_userService.GetUserInfo(email);
+            LayoutViewModel layoutViewModel =new LayoutViewModel
+            {
+                Email=user.Email,
+                ProfileImg=user.ProfileImg
+            };
+       
+            return PartialView("_UserInfo",layoutViewModel);
+        }
      public IActionResult ChangePassword()
     {
         return View();

@@ -18,7 +18,7 @@
             <tr>
               <th>
                 <div class="form-check">
-                  <input class="form-check-input allChecked" type="checkbox" value="" id="allChecked" onclick="selectPermissions()">
+                  <input class="form-check-input allChecked" type="checkbox" value="" id="allChecked" >
                   <label class="form-check-label" for="flexCheckDefault">
                     Permission
                   </label>
@@ -32,7 +32,6 @@
           <tbody>
             @foreach (var item in Model.permission)
             {
-
             <tr class="check" data-id="@item.PermissionId">
               <td>
                 <div class="form-check">
@@ -74,21 +73,33 @@
   </div>
   @section Scripts{
     <script>
-      function selectPermissions(){
-
+        let parentCheckbox=document.querySelector(".allChecked");
         let checkboxes=document.querySelectorAll(".isSelected");
-        if(document.querySelector(".allChecked").checked)
-        { 
-            checkboxes.forEach(i=>{
-              i.checked="true";
-            });
-        }
-        return checkboxes;
-      }
+
+      parentCheckbox.addEventListener("change",function(){
+        let isChecked=this.checked;
+        checkboxes.forEach(i=>{
+            i.checked=isChecked;
+          });
+      })
+      
+      checkboxes.forEach(function(i){
+      i.addEventListener("change",function(){
+        let allChecked=true;
+        checkboxes.forEach(i=>{
+            if(!i.checked)
+            {
+              allChecked=false;
+              return;
+            }
+        });
+        parentCheckbox.checked=allChecked;
+      })
+      })
+    
       function checkedPermissions()
       {
         let selectedPermissions=[];
-        let checkboxes=selectPermissions();
         checkboxes.forEach(checkbox=>{
           if(checkbox.checked)
           {

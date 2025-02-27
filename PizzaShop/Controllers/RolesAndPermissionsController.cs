@@ -33,7 +33,6 @@ public class RolesAndPermissionsController:Controller
     [HttpPost]
     public ActionResult EditPermissions([FromQuery] int roleId,[FromBody] List<Permission> permissions)
     {
-        Console.Write(roleId);
         bool isUpdated=_rolesAndPermissionsServices.EditPermissions(permissions);
 
         if(isUpdated)

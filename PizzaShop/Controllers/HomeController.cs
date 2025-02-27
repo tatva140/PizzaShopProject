@@ -33,7 +33,7 @@ public class HomeController : Controller
          _encryptDecrypt=encryptDecrypt;
         
     }
-
+  
 
     public IActionResult Index()
     {
@@ -75,7 +75,7 @@ public class HomeController : Controller
         }
         return RedirectToAction("Index");
     }
-
+        
 [HttpGet]
     public IActionResult ForgotPassword(string? email)
     {
