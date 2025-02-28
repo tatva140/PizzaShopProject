@@ -8,6 +8,7 @@ C:\Users\pca140\Desktop\RMSProject\PizzaShop\bin\Debug\net7.0\PizzaShop.dll
 C:\Users\pca140\Desktop\RMSProject\PizzaShop\bin\Debug\net7.0\PizzaShop.pdb
 C:\Users\pca140\Desktop\RMSProject\PizzaShop\bin\Debug\net7.0\Azure.Core.dll
 C:\Users\pca140\Desktop\RMSProject\PizzaShop\bin\Debug\net7.0\Azure.Identity.dll
+C:\Users\pca140\Desktop\RMSProject\PizzaShop\bin\Debug\net7.0\BCrypt.Net-Next.dll
 C:\Users\pca140\Desktop\RMSProject\PizzaShop\bin\Debug\net7.0\BouncyCastle.Cryptography.dll
 C:\Users\pca140\Desktop\RMSProject\PizzaShop\bin\Debug\net7.0\Humanizer.dll
 C:\Users\pca140\Desktop\RMSProject\PizzaShop\bin\Debug\net7.0\MailKit.dll
@@ -317,4 +318,3 @@ C:\Users\pca140\Desktop\RMSProject\PizzaShop\obj\Debug\net7.0\refint\PizzaShop.d
 C:\Users\pca140\Desktop\RMSProject\PizzaShop\obj\Debug\net7.0\PizzaShop.pdb
 C:\Users\pca140\Desktop\RMSProject\PizzaShop\obj\Debug\net7.0\PizzaShop.genruntimeconfig.cache
 C:\Users\pca140\Desktop\RMSProject\PizzaShop\obj\Debug\net7.0\ref\PizzaShop.dll
-C:\Users\pca140\Desktop\RMSProject\PizzaShop\bin\Debug\net7.0\BCrypt.Net-Next.dll

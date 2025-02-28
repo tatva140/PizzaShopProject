@@ -1,0 +1,65 @@
+@model List<DAL.Models.Item>;
+<div class="table-responsive me-2 ms-2 mt-3">
+    <table class="table ">
+        <thead>
+            <tr>
+                <th>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                        <label class="form-check-label" for="flexCheckDefault">
+                            <div class="ms-2">Name</div>
+                        </label>
+                    </div>
+                </th>
+                <th>Item Type</th>
+                <th>Rate</th>
+                <th>Quantity</th>
+                <th>Available</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var item in Model){
+            <tr>
+                <td>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                        <label class="form-check-label" for="flexCheckDefault">
+                            <div class="d-flex   align-items-center w-auto p-0 ">
+                                <img src="images/dining-menu.png" alt="Image"
+                                    class="img-fluid me-2 ms-2" style="font: 10px; height: 25px;">
+                                <div style="word-wrap: break-word;">@item.Name
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                </td>
+                <td>
+                    <img src="images/icons/veg-icon.svg" alt="Image" class="img-fluid me-2 ms-2"
+                        style="font: 10px; height: 25px;">
+                </td>
+                <td>
+                    @item.Rate
+                </td>
+                <td>
+                    @item.Quantity
+                </td>
+                 <td>
+                <div class="form-check form-switch ">
+                  <input class="form-check-input can-add-edit" type="checkbox" id="can-add-edit" name="darkmode"   asp-for="@item.IsAvailable" >
+                </div>
+
+              </td>
+                <td>
+                    <div class="d-flex align-items-center ">
+                        <i class="fa-solid fa-pen me-3 ms-3"></i>
+
+                        <i class="fa-solid fa-trash" data-bs-toggle="modal"
+                            data-bs-target="#deleteItem"></i>
+                    </div>
+                </td>
+            </tr>
+             }
+        </tbody>
+    </table>
+</div>

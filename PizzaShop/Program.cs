@@ -31,9 +31,11 @@ builder.Services.AddScoped<IUserRepository,UserRepository>();
 builder.Services.AddScoped<IRolesAndPermissions,RolesAndPermissions>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<EmailService>();
+builder.Services.AddScoped<MenuService>();
 builder.Services.AddScoped<RolesAndPermissionsServices>();
 builder.Services.AddScoped<FileUploads>();
 builder.Services.AddScoped<IJwtService, JwtTokenService>();
+builder.Services.AddScoped<IMenuRepository, MenuRepository>();
 builder.Services.AddScoped<EncryptDecrypt>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

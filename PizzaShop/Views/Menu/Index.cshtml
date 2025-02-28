@@ -29,7 +29,6 @@
                 url:"@Url.Action("MenuItems","Menu")",
                 method:"GET",
                 success:function(response){
-                    console.log(response);
                     $("#items").html(response);
                 }
             })
