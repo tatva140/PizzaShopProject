@@ -22,10 +22,11 @@ public partial class Item
     public string? ItemImg { get; set; }
 
     public decimal? TaxPercentage { get; set; }
+    public bool DefaultTax { get; set; }
 
     public int? CategoryId { get; set; }
 
-    public bool? IsActive { get; set; }
+    public bool IsActive { get; set; }
 
     public bool? Isfavourite { get; set; }
 

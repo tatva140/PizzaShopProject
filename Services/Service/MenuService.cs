@@ -16,8 +16,10 @@ public class MenuService
        return _menuRepository.GetCategories();
     }
 
-    public List<Item> GetCategoryItems(int id){
-        return _menuRepository.GetCategoryItems(id);
+    public (List<Item>,int totalRecords) GetCategoryItems(int id,int pageNumber,int pageSize){
+        int totalRecords;
+        var items=_menuRepository.GetCategoryItems(id,pageNumber,pageSize,out totalRecords);
+        return  (items,totalRecords);
     }
 
     public bool AddCategory(Category category){
@@ -34,5 +36,8 @@ public class MenuService
     public bool DeleteCategory(int id){
         Console.Write("here");
         return _menuRepository.DeleteCategory(id);
+    }
+    public List<ModifierGroup> GetModifierGroups(int id){
+        return _menuRepository.GetModifierGroups(id);
     }
 }

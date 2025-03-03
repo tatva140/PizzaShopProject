@@ -28,15 +28,22 @@ public class MenuController:Controller
     }
 
 [HttpGet]
-    public IActionResult CategoryItems(int id){
-    
-        var items=_menuService.GetCategoryItems(id);
-        return PartialView("_Items",items);
+    public IActionResult CategoryItems(int id,int pageNumber=1,int pageSize=2,int selectedPage=2){
+        var category=_menuService.GetCategories();
+        var (items,totalRecords)=_menuService.GetCategoryItems(id,pageNumber,selectedPage);
+        var totalPage=(int)Math.Ceiling((double)totalRecords/selectedPage);
+         MenuItemsViewModel menuItemsViewModel = new MenuItemsViewModel{
+            categories=category,
+            items=items,
+            PageNumber=pageNumber,
+            PageSize=pageSize,
+            TotalPages=totalPage,
+            SelectedPage=selectedPage
+        };
+        return PartialView("_Items",menuItemsViewModel);
     }
-
 [HttpPost]
     public IActionResult AddCategory(Category category){
-        Console.WriteLine(category.Name);
         bool isAdded= _menuService.AddCategory(category);
         if(isAdded){
             TempData["Message"]="Category Added Successfully";
@@ -49,7 +56,7 @@ public class MenuController:Controller
     }
 
     [HttpPost]
-     public IActionResult EditCategory([FromQuery] int id,Category category){
+     public IActionResult EditCategory(int id,Category category){
         category.CategoryId=id;
         bool isEdited= _menuService.EditCategory(category);
         if(isEdited){
@@ -81,5 +88,11 @@ public class MenuController:Controller
             TempData["MessageType"]="error";
         }
         return RedirectToAction("Index","Menu");
+    }
+
+[HttpGet]
+    public IActionResult GetModifierGroups(int id){
+        List<ModifierGroup> modifierGroup = _menuService.GetModifierGroups(id);
+        return Json(modifierGroup);
     }
 }

@@ -264,6 +264,8 @@ public partial class PizzashopContext : DbContext
             entity.Property(e => e.IsActive)
                 .HasDefaultValueSql("true")
                 .HasColumnName("is_active");
+            entity.Property(e => e.DefaultTax)
+                .HasColumnName("default_tax");
             entity.Property(e => e.IsAvailable)
                 .HasDefaultValueSql("true")
                 .HasColumnName("is_available");

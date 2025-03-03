@@ -14,11 +14,13 @@ public class MenuRepository:IMenuRepository
     }
 
     public List<Category> GetCategories(){
-        return _context.Categories.Where(c=>c.IsActive).ToList();
+        return _context.Categories.Where(c=>c.IsActive).OrderBy(c=>c.CreatedAt).ToList();
     }
 
-    public List<Item> GetCategoryItems(int id){
-        return _context.Items.Where(i=>i.CategoryId==id && i.IsActive==true).ToList();
+    public List<Item> GetCategoryItems(int id,int pageNumber,int pageSize,out int totalRecords){
+        var items=_context.Items.Where(i=>i.CategoryId==id && i.IsActive==true).OrderBy(i=>i.CreatedAt);
+        totalRecords=items.Count();
+        return items.Skip((pageNumber-1)*pageSize).Take(pageSize).ToList();
     }
 
     public bool AddCategory(Category category){
@@ -58,5 +60,9 @@ public class MenuRepository:IMenuRepository
             _context.Categories.Update(category);
             _context.SaveChanges();
             return true;
+    }
+
+    public List<ModifierGroup> GetModifierGroups(int id){
+        return _context.ModifierGroups.Where(m=>m.CategoryId==id && m.IsActive==true).ToList();
     }
 }
