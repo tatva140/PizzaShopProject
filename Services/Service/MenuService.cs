@@ -1,3 +1,4 @@
+using System.Text.Json.Nodes;
 using DAL.Models;
 using DAL.ViewModels;
 using Services.Interfaces;
@@ -34,10 +35,15 @@ public class MenuService
     }
 
     public bool DeleteCategory(int id){
-        Console.Write("here");
         return _menuRepository.DeleteCategory(id);
     }
     public List<ModifierGroup> GetModifierGroups(int id){
         return _menuRepository.GetModifierGroups(id);
+    }
+    public bool DeleteItem(int id){
+        return _menuRepository.DeleteItem(id);
+    }
+    public bool DeleteItems(JsonArray ids){
+        return _menuRepository.DeleteItems(ids);
     }
 }

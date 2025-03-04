@@ -123,15 +123,15 @@ z-index:0;
 }
 }
 /* userlist css */
-#srchicon{
+.addItembtn{
   display: none;
 }
 
-@media (max-width:460px){
-  .srch{
+@media (max-width:560px){
+  .addItem{
     display: none;
   }
-  #srchicon{
+  .addItembtn{
     display: block;
   }
 }
@@ -179,21 +179,16 @@ visibility: visible;
       display: block;
   }
 }
-.srchicon{
-visibility: hidden;
-}
-.dltbtn{
-display: block;
-}
-@media (max-width:550px){
-.srch{
-display: none;
-}
-.srchicon{
-visibility: visible;
-}
-.dltbtn{
-display: none;
 
+#srchicon{
+  display: none;
 }
+
+@media (max-width:460px){
+  .srch{
+    display: none;
+  }
+  #srchicon{
+    display: block;
+  }
 }

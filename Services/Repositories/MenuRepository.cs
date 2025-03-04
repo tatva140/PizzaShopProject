@@ -1,3 +1,4 @@
+using System.Text.Json.Nodes;
 using DAL.Models;
 using DAL.ViewModels;
 using Services.Interfaces;
@@ -14,7 +15,7 @@ public class MenuRepository:IMenuRepository
     }
 
     public List<Category> GetCategories(){
-        return _context.Categories.Where(c=>c.IsActive).OrderBy(c=>c.CreatedAt).ToList();
+        return _context.Categories.Where(c=>c.IsActive==true).OrderBy(c=>c.CreatedAt).ToList();
     }
 
     public List<Item> GetCategoryItems(int id,int pageNumber,int pageSize,out int totalRecords){
@@ -24,15 +25,15 @@ public class MenuRepository:IMenuRepository
     }
 
     public bool AddCategory(Category category){
-        if(category.Name==null)return false;
+        var isCategory=_context.Categories.FirstOrDefault(c=>c.Name==category.Name);
+        if(isCategory!=null)return false;
         category.IsActive=true;
         _context.Categories.Add(category);
         _context.SaveChanges();
         return true;
     }
     public bool EditCategory(Category category){
-        Console.Write(category.CategoryId);
-        Category category1=_context.Categories.Find(category.CategoryId);
+        Category category1=_context.Categories.FirstOrDefault(c=>c.CategoryId==category.CategoryId);
         if(category1==null)return false;
         category1.IsActive=true;
         category1.Description=category.Description?? category1.Description;
@@ -57,9 +58,34 @@ public class MenuRepository:IMenuRepository
             {
                 item.IsActive=false;
             }
+
+            var modifierGroups=_context.ModifierGroups.Where(mg=>mg.CategoryId==id && mg.IsActive==true).ToList();
+            foreach (var modifierGroup in modifierGroups)
+            {
+                modifierGroup.IsActive=false;
+            }
             _context.Categories.Update(category);
             _context.SaveChanges();
             return true;
+    }
+
+    public bool DeleteItem(int id){
+        Item item=_context.Items.FirstOrDefault(i=>i.ItemId==id && i.IsActive==true);
+        if(item==null)return false;
+        item.IsActive=false;
+        _context.Items.Update(item);
+        _context.SaveChanges();
+        return true;
+    }
+    public bool DeleteItems(JsonArray ids){
+        if(ids.Count==0)return false;
+        foreach(int itemId in ids){
+            Item item=_context.Items.FirstOrDefault(i=>i.ItemId==itemId && i.IsActive==true);
+            if(item==null)return false;
+            item.IsActive=false;
+        }
+        _context.SaveChanges();
+        return true;
     }
 
     public List<ModifierGroup> GetModifierGroups(int id){

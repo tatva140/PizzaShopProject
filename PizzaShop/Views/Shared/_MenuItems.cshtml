@@ -1,5 +1,5 @@
  @model DAL.ViewModels.MenuItemsViewModel;
- <div>
+
         <div class="row mt-3 ms-1 ">
             <div class="row mt-3 mb-3" id="categoryaccordian">
             <div class=" col p-0">
@@ -13,20 +13,20 @@
                   <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
                     <div class="accordion-body ">
                         <div class="text-end">
-                        <button class=" ms-3 " id="add" data-bs-toggle="modal" data-bs-target="#addModal"
+                        <button class="me-3" id="add"  data-bs-toggle="modal" data-bs-target="#addCategory"
                         style=" color: rgb(30, 151, 231); border: 2px solid rgb(30, 151, 231);background-color: rgb(250, 250, 250); "><i
-                            class="fa-regular fa-plus"></i></button></div>
+                            class="fa-regular fa-plus me-2"></i>Add Category</button></div>
                         <ul class=" overflow-auto mt-2 p-0" style="max-height: 500px;">
                              @foreach(var category in Model.categories)
                                 {
                             <a  style="text-decoration: none; color: black;cursor: pointer;" onclick="fetchItems(@category.CategoryId)">
                                 <li style="list-style: none;">
                                     <div class="d-flex align-items-center justify-content-between actionshover">
-                                        <div class="d-flex align-items-center justify-content-center">
+                                        <div class="d-flex align-items-center justify-content-center mt-3">
                                             <i class="fa-solid fa-table me-2"></i>
                                             <div>@category.Name</div>
                                         </div>
-                                        <div class="d-flex align-items-center justify-content-end me-2 actions"  >
+                                        <div class="d-flex align-items-center justify-content-end me-2 actions mt-3"  >
                                             <i class="fa-solid fa-pen me-3 ms-3" style="cursor: pointer; " data-bs-toggle="modal"
                                             data-bs-target="#editCategory" onclick="fetchCategoryDetails(@category.CategoryId)"></i>
                                             <i class="fa-solid fa-trash" style="cursor: pointer;" data-bs-toggle="modal"
@@ -52,17 +52,17 @@
                         style=" color: rgb(30, 151, 231); border: 2px solid rgb(30, 151, 231);background-color: rgb(250, 250, 250); "><i
                             class="fa-regular fa-plus"></i></button>
                 </div>
-                <ul class="p-2 overflow-auto mt-2" style="max-height: 500px;">
+                <ul class="p-2 overflow-auto mt-2" style="max-height: 400px;">
                       @foreach(var category in Model.categories)
                     {
                     <a style="text-decoration: none; color: black;cursor: pointer;" onclick="fetchItems(@category.CategoryId)">
                         <li style="list-style: none;">
                             <div class="d-flex align-items-center justify-content-between actionshover">
-                                <div class="d-flex align-items-center justify-content-center mt-2">
+                                <div class="d-flex align-items-center justify-content-center mt-3">
                                     <i class="fa-solid fa-table me-2"></i>
                                     <div>@category.Name</div>
                                 </div>
-                                <div class="d-flex align-items-center justify-content-end me-2 actions"  >
+                                <div class="d-flex align-items-center justify-content-end me-2 actions mt-3"  >
                                     <i class="fa-solid fa-pen me-3 ms-3" style="cursor: pointer; " data-bs-toggle="modal"
                                     data-bs-target="#editCategory"  onclick="fetchCategoryDetails(@category.CategoryId)"></i>
                                     <i class="fa-solid fa-trash" style="cursor: pointer;" data-bs-toggle="modal"
@@ -75,36 +75,20 @@
                   
                 </ul>
             </div>
-            <div class="col-xl-9 col border bg-white shadow rounded-lg">
+            <div class="col border bg-white shadow rounded-lg">
                 <div class="row">
-                <div class="col-md-6 p-2  ">
+                <div class="col  p-2  ">
                  <div class="d-flex align-items-center justify-content-between p-2" >
                     <div style="color: rgb(30, 151, 231); font-weight: 700; font-size: 25px; ">Items
                     </div>
-                 <div class=" srchicon d-flex align-items-center justify-content-end p-2">
-                    <span style=" font: 15px;"  ><i
-                        class="fa-solid fa-search  me-2" ></i> </span>
-                        <button class=" me-2 " data-bs-toggle="modal" data-bs-target="#deleteItem" style="background-color: white; border-radius: 5px;"><i
-                            class="fa fa-trash"></i></button></div>
-                            </div>
-               </div>   
-               <div class="col-xl-6 text-end p-2">
-                 <div class="d-flex align-items-center justify-content-end p-2">
-                 <div class="srch ms-2 " style="position:relative; ">
-                   <input type="text" class="form-control " id="search" placeholder="Search" name="search"
-                     style="position: relative;right: 10px;" onkeyup="search()">
-                   <span style="position: absolute; right: 20px;top:50%; transform: translateY(-60%); font: 15px;"><i
-                       class="fa-solid fa-search"></i> </span>
-                 </div>
-                 <button class=" dltbtn me-2 " data-bs-toggle="modal" data-bs-target="#deleteItem" style="background-color: white; border-radius: 5px;"><i
-                    class="fa fa-trash"></i></button>
-                 <button class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#addItem">+ New Item</button>
-               </div>
-            </div>
-               </div>
+                    <button class="addItembtn btn btn-primary " data-bs-toggle="modal" data-bs-target="#addItem">+ New Item</button>
+                    </div>
+                </div>   
+                </div>
                <div id="renderitems" ></div>
+               </div>
             </div>
-        </div>
+     
     </div>
     <div class="modal" id="addCategory">
         <div class="modal-dialog modal-dialog-centered ">
@@ -188,18 +172,17 @@
             $.ajax({
                 url:"/Menu/CategoryItems",
                 type: "GET",
-                data:{id:categoryId},
+                data:{categoryId:categoryId},
                 success:function(response){
                     $("#renderitems").html(response);
                 }
             });
-            
             });
             function fetchItems(id){
                 $.ajax({
                 url:"/Menu/CategoryItems",
                 type: "GET",
-                data:{id:id},
+                data:{categoryId:id},
                 success:function(response){
                     $("#renderitems").html(response);
                 }
@@ -217,9 +200,10 @@
             });
                 document.getElementById("editForm").action='@Url.Action("EditCategory","Menu")' + '?id=' + id;
             }
-             function setDeleteId(id)
-    {
-      document.getElementById("deleteForm").action='@Url.Action("DeleteCategory","Menu")' + '?id=' + id;
-    }
+
+            function setDeleteId(id)
+            {
+                document.getElementById("deleteForm").action='@Url.Action("DeleteCategory","Menu")' + '?id=' + id;
+            }
         </script>
     

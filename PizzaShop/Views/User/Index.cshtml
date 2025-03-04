@@ -65,7 +65,7 @@
             <td><span class="badge rounded-pill bg-success">@(user.isActive ? "Active" : "Inactive")</span></td>
             <td>
               <div class="d-flex align-items-center "> 
-               <a asp-action="EditUsers" asp-controller="User" asp-route-email="@user.Email"><i class="fa-solid fa-pen me-3 ms-3" style="cursor: pointer;"></i></a>
+               <a asp-action="EditUsers" asp-controller="User" asp-route-email="@user.Email" asp-route-pageNumber="@ViewBag.PageNumber" asp-route-pageSize="@ViewBag.PageSize"><i class="fa-solid fa-pen me-3 ms-3" style="cursor: pointer;"></i></a>
                   <i class="fa-solid fa-trash" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="setDeleteId(@user.UserId)"></i></div>
             </td> 
           </tr>
@@ -122,7 +122,18 @@
   <script>
     function setDeleteId(id)
     {
-      document.getElementById("deleteForm").action='@Url.Action("DeleteUser","User")' + '?id=' + id;
+      document.getElementById("deleteForm").action='@Url.Action("DeleteUser","User")' + '?id=' + id +'&pageNumber=' + @ViewBag.PageNumber + '&pageSize=' + @ViewBag.PageSize;
+    }
+
+    function search(){
+      let srchvalue=document.getElementById("search").value;
+      console.log(srchvalue);
+      $.ajax({
+        url:"@Url.Action("Index","Users")",
+        method:"get",
+        data:{search:srchvalue,sortOrder:"@ViewBag.sort",pageNumber:@ViewBag.pageNumber,pageSize:@ViewBag.pageSize},
+        
+      })
     }
   </script>
 }

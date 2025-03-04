@@ -1,3 +1,4 @@
+using System.Text.Json.Nodes;
 using DAL.Models;
 using DAL.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -28,10 +29,11 @@ public class MenuController:Controller
     }
 
 [HttpGet]
-    public IActionResult CategoryItems(int id,int pageNumber=1,int pageSize=2,int selectedPage=2){
+    public IActionResult CategoryItems(int categoryId,int pageNumber=1,int pageSize=2,int selectedPage=2){
         var category=_menuService.GetCategories();
-        var (items,totalRecords)=_menuService.GetCategoryItems(id,pageNumber,selectedPage);
+        var (items,totalRecords)=_menuService.GetCategoryItems(categoryId,pageNumber,selectedPage);
         var totalPage=(int)Math.Ceiling((double)totalRecords/selectedPage);
+        Console.Write(totalPage);
          MenuItemsViewModel menuItemsViewModel = new MenuItemsViewModel{
             categories=category,
             items=items,
@@ -40,6 +42,7 @@ public class MenuController:Controller
             TotalPages=totalPage,
             SelectedPage=selectedPage
         };
+        ViewBag.categoryId=categoryId;
         return PartialView("_Items",menuItemsViewModel);
     }
 [HttpPost]
@@ -49,7 +52,7 @@ public class MenuController:Controller
             TempData["Message"]="Category Added Successfully";
             TempData["MessageType"]="success";
         }else{
-            TempData["Message"]="Cannot Add Category";
+            TempData["Message"]="Category Already Exists";
             TempData["MessageType"]="error";
         }
         return RedirectToAction("Index","Menu");
@@ -63,7 +66,7 @@ public class MenuController:Controller
             TempData["Message"]="Category Edited Successfully";
             TempData["MessageType"]="success";
         }else{
-            TempData["Message"]="Cannot Edit Category";
+            TempData["Message"]="Cannot Edit Category, it already Exists";
             TempData["MessageType"]="error";
         }
         return RedirectToAction("Index","Menu");
@@ -74,17 +77,17 @@ public class MenuController:Controller
         return Json(new {name=category.Name, description=category.Description});
     }
 
+[HttpPost]
     public IActionResult DeleteCategory([FromQuery] int id){
-        Console.Write(id);
         bool deleted=_menuService.DeleteCategory(id);
         if(deleted)
         {
-            TempData["Message"]="User Deleted Successfully";
+            TempData["Message"]="Category Deleted Successfully";
             TempData["MessageType"]="success";
         }
         else
         {
-            TempData["Message"]="User does not exist";
+            TempData["Message"]="Category does not exist";
             TempData["MessageType"]="error";
         }
         return RedirectToAction("Index","Menu");
@@ -94,5 +97,37 @@ public class MenuController:Controller
     public IActionResult GetModifierGroups(int id){
         List<ModifierGroup> modifierGroup = _menuService.GetModifierGroups(id);
         return Json(modifierGroup);
+    }
+
+[HttpPost]
+    public IActionResult DeleteItem(int itemId){
+        bool isDeleted=_menuService.DeleteItem(itemId);
+        if(isDeleted)
+        {
+            TempData["Message"]="Item Deleted Successfully";
+            TempData["MessageType"]="success";
+        }
+        else
+        {
+            TempData["Message"]="Item cannot be deleted";
+            TempData["MessageType"]="error";
+        }
+        return Ok(new {message="Deleted"});
+    }
+
+    [HttpPost]
+    public IActionResult DeleteItems([FromBody] JsonArray ids){ 
+        bool isDeleted=_menuService.DeleteItems(ids);
+        if(isDeleted)
+        {
+            TempData["Message"]="All Items Deleted Successfully";
+            TempData["MessageType"]="success";
+        }
+        else
+        {
+            TempData["Message"]="Items cannot be deleted";
+            TempData["MessageType"]="error";
+        }
+         return Ok(new {redirectUrl=@Url.Action("Index","Menu")});
     }
 }

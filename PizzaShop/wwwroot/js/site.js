@@ -86,7 +86,7 @@ if(close){
     
     })
 
-    let showpass1 = 0;
+let showpass1 = 0;
 let showpass2 = 0;
 const cp = document.getElementById("confirmpwd");
 const curp = document.getElementById("curpwd");
@@ -109,28 +109,6 @@ curp.setAttribute('type', 'password');
 
 })
     
-// function save() {
-
-//     const email = document.getElementById("email");
-//     email.addEventListener('keypress', () => {
-//         if (email.value.length != 0) {
-//             emailnewDiv.innerHTML = "";
-
-//         } else {
-//             emailnewDiv.innerHTML = "Please enter a valid email";
-
-//         }
-//     })
-
-//     const emailnewDiv = document.getElementById("emailerror");
-//     if (email.value == '') {
-//         emailnewDiv.innerHTML = "Please enter a valid email";
-//     } else {
-//         emailnewDiv.innerHTML = "";
-//     }
-// }
-
-
 
 function search(){
     var input, filter, table, tr, td, i, txtValue;
@@ -152,27 +130,3 @@ function search(){
     }
 }
 
-
-
-// const filename = document.getElementById('filename');
-// const fileinfo = document.getElementById('fileinfo');
-
-// filename.addEventListener('change', (e) => {
-    
-//     fileinfo.innerHTML = "Selected File: " + e.target.files[0].name;
-// })
-
-// function deleteUser(){
-//     const modal=document.getElementById('myModal');
-//     modal.style.display="flex";
-// }
-// function closeModal(n){
-//     const modal=document.getElementById('myModal');
-//     if(n==1){
-
-//         modal.style.display="none";
-//     }else{
-//         modal.style.display="none";
-
-//     }
-// }

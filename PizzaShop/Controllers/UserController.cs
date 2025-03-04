@@ -27,9 +27,9 @@ public class UserController:Controller
 
 [HttpGet]
 
-      public ActionResult Index(string sortOrder,int pageNumber=1,int pageSize=2)
+      public ActionResult Index(string search,string sortOrder,int pageNumber=1,int pageSize=2)
     {
-        
+        Console.Write(search);
         ViewBag.sort = String.IsNullOrEmpty(sortOrder) ? "desc" : "";
         var (users,totalRecords)=_userService.GetAllUser(sortOrder,pageNumber,pageSize);
         ViewBag.PageNumber=pageNumber;
@@ -41,7 +41,7 @@ public class UserController:Controller
     }
 
 [HttpPost]
-      public IActionResult DeleteUser([FromQuery] int id)
+      public IActionResult DeleteUser([FromQuery] int id,[FromQuery] int pageNumber,[FromQuery] int pageSize)
     {
         bool deleted=_userService.DeleteUser(id);
         if(deleted)
@@ -54,7 +54,7 @@ public class UserController:Controller
             TempData["Message"]="User does not exist";
             TempData["MessageType"]="error";
         }
-        return RedirectToAction("Index","User");
+        return RedirectToAction("Index","User",new{pageNumber=pageNumber, pageSize=pageSize});
     }
 
 [HttpGet]
@@ -113,22 +113,25 @@ public class UserController:Controller
     }
 
 [HttpGet]
-    public IActionResult EditUsers([FromQuery] string email)
+    public IActionResult EditUsers([FromQuery] string email,[FromQuery] int pageNumber,[FromQuery] int pageSize)
     {
         var user = _userService.GetUserInfo(email);
+        ViewBag.PageNumber=pageNumber;
+        ViewBag.PageSize=pageSize;
         return View(user);   
     }
 
   [HttpPost]
-    public IActionResult EditUsers(UserProfileViewModel model,IFormFile profileImg)
+    public IActionResult EditUsers([FromQuery] int pageNumber,[FromQuery] int pageSize,UserProfileViewModel model,IFormFile profileImg)
     {
+        Console.Write(pageNumber);
+        Console.Write(pageSize);
          if (profileImg != null)
         {
             if (profileImg.Length > 0)
             {
                 string fileName=_fileUploads.UploadProfileImage(profileImg);
                 model.ProfileImg="/images/"+fileName;
-
             }
         }
         bool isUpdated=_userService.UpdateProfile(model);
@@ -141,7 +144,7 @@ public class UserController:Controller
             TempData["Message"]="Could not edit user";
             TempData["MessageType"]="error";
         }
-        return RedirectToAction("Index","User");
+        return RedirectToAction("Index","User",new{pageNumber=pageNumber, pageSize=pageSize});
     }  
 }
 

@@ -1,3 +1,4 @@
+using System.Text.Json.Nodes;
 using DAL.Models;
 using DAL.ViewModels;
 
@@ -11,5 +12,7 @@ public interface IMenuRepository
     bool EditCategory(Category category);
     Category CategoryDetails(int id);
     bool DeleteCategory(int id);
+    bool DeleteItem(int id);
+    bool DeleteItems(JsonArray ids);
     List<ModifierGroup> GetModifierGroups(int id);
 }
