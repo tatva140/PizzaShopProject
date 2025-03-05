@@ -22,9 +22,17 @@ public class MenuService
         var items=_menuRepository.GetCategoryItems(id,pageNumber,pageSize,out totalRecords);
         return  (items,totalRecords);
     }
+    public (List<Modifier>,int totalRecords) GetModifiers(int id,int pageNumber,int pageSize){
+        int totalRecords;
+        var modifiers=_menuRepository.GetModifiers(id,pageNumber,pageSize,out totalRecords);
+        return  (modifiers,totalRecords);
+    }
 
     public bool AddCategory(Category category){
         return _menuRepository.AddCategory(category);
+    }
+    public bool AddModifier(Modifier modifier){
+        return _menuRepository.AddModifier(modifier);
     }
     public bool EditCategory(Category category){
         return _menuRepository.EditCategory(category);
@@ -33,17 +41,33 @@ public class MenuService
     public Category CategoryDetails(int id){
         return _menuRepository.CategoryDetails(id);
     }
+    public Modifier ModifierDetails(int id){
+        return _menuRepository.ModifierDetails(id);
+    }
 
     public bool DeleteCategory(int id){
         return _menuRepository.DeleteCategory(id);
     }
-    public List<ModifierGroup> GetModifierGroups(int id){
-        return _menuRepository.GetModifierGroups(id);
+    public List<ModifierGroup> GetModifierGroups(){
+        return _menuRepository.GetModifierGroups();
     }
     public bool DeleteItem(int id){
         return _menuRepository.DeleteItem(id);
     }
     public bool DeleteItems(JsonArray ids){
         return _menuRepository.DeleteItems(ids);
+    }
+    public bool DeleteModifiers(JsonArray ids){
+        return _menuRepository.DeleteModifiers(ids);
+    }
+    public bool DeleteModifier(int id){
+        return _menuRepository.DeleteModifier(id);
+    }
+
+    public bool AddItem(MenuItemsViewModel menuItemsViewModel){
+        return _menuRepository.AddItem(menuItemsViewModel);
+    }
+     public bool EditModifier(Modifier modifier){
+        return _menuRepository.EditModifier(modifier);
     }
 }

@@ -86,7 +86,7 @@
     </select>
   </form>
    <div class="ms-2">
-   @if( @Model.PageNumber<=@Model.TotalPages  && @Model.PageNumber>1)
+   @if(  @Model.PageNumber>1)
    {
     <a onclick="fetch(@Model.PageNumber-1,@Model.PageSize,@Model.TotalPages)" style="cursor:pointer;color:blue;">Previous</a>
    }
@@ -100,8 +100,8 @@
   </div>
    </div>
 </div>
- <div class="modal" id="addItem">
-        <div class="modal-dialog modal-dialog-centered modal-xl">
+ <div class="modal " id="addItem">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered  modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" style="color:rgba(9, 9, 172, 0.692) ;">Add New Menu Item</h5>
@@ -111,82 +111,90 @@
                 <div class="modal-body "> 
                     <div class="container-fluid">
                     <div class="row">
-                        <div class="col-10 col-md-9 col-sm-12">
+                        <div class="col-12 col-lg-9">
                             <div class="row">
-                                <div class="col col-md-6">
+                                <div class="col-12 col-lg-6">
                                     <div class="form-floating mb-3">
-                                    <select class="form-select" id="catgory" name="catgory"  asp-for="@Model.item.CategoryId" onchange="fetchModifiers(this)">
+                                    <select class="form-select" id="CategoryId" name="CategoryId"  asp-for="@Model.CategoryId" >
                                     @foreach(var category in Model.categories){
                                     <option value="@category.CategoryId">@category.Name</option>
                                     }
                                     </select>
-                                    <label for="category" class="form-label">Category</label>
+                                    <label for="CategoryId" class="form-label">Category</label>
                                     </div>
                                 </div>
-                                <div class="col col-md-6">
+                                <div class="col-12 col-lg-6">
                                     <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="Name" name="Name" placeholder="Name" asp-for="@Model.item.Name">
+                                    <input type="text" class="form-control" id="Name" name="Name" placeholder="Name" asp-for="@Model.Name">
                                     <label for="name">Name</label>
+                                    <span asp-validation-for="Name" class="text-danger"></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col col-md-3">
+                                <div class="col col-lg-3">
                                     <div class="form-floating mb-3">
-                                    <select class="form-select" id="itemType" name="itemType" asp-for="@Model.item.ItemType" >
-                                    <option value="">Item Type</option>
+                                    <select class="form-select" id="ItemType" name="ItemType" asp-for="@Model.ItemType" >
                                     <option value="veg">Vegetarian</option>
                                     <option value="non-veg">Non-Vegeterian</option>
                                     <option value="vegan">Vegan</option>
                                     </select>
-                                    <label for="category" class="form-label">Item Type</label>
+                                    <label for="ItemType" class="form-label">Item Type</label>
                                     </div>
+                                    <span asp-validation-for="ItemType" class="text-danger "></span>
                                 </div>
-                                <div class="col col-md-3">
+                                <div class="col-12 col-lg-3 col-md-6">
                                     <div class="form-floating mb-3">
-                                    <input type="number" class="form-control" id="Rate" name="Rate" placeholder="Rate" asp-for="@Model.item.Rate">
+                                    <input type="text" class="form-control" id="Rate" name="Rate" placeholder="Rate" asp-for="@Model.Rate">
                                     <label for="Rate">Rate</label>
+                                    <span asp-validation-for="Rate" class="text-danger"></span>
                                     </div>
                                 </div>
-                                <div class="col col-md-3">
+                                <div class="col-12 col-lg-3 col-md-6">
                                     <div class="form-floating mb-3">
-                                    <input type="number" class="form-control" id="Quantity" name="Quantity" placeholder="Quantity" asp-for="@Model.item.Quantity">
+                                    <input type="text" class="form-control" id="Quantity" name="Quantity" placeholder="Quantity" asp-for="@Model.Quantity">
                                     <label for="Quantity">Quantity</label>
+                                    <span asp-validation-for="Quantity" class="text-danger "></span>
                                     </div>
                                 </div>
-                                 <div class="col col-md-3">
+                                 <div class="col-12 col-lg-3 col-md-6">
                                     <div class="form-floating mb-3">
-                                    <select class="form-select" id="unit" name="unit"  asp-for="@Model.item.Unit">
-                                    <option value="">Select Unit</option>
+                                    <select class="form-select" id="unit" name="unit"  asp-for="@Model.Unit">
+                                    <option value="pieces">Pieces</option>
+                                    <option value="kg">kg</option>
+                                    <option value="litre">litre</option>
                                     </select>
                                     <label for="unit" class="form-label">Unit</label>
+                                    <span asp-validation-for="Unit" class="text-danger "></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col col-md-3">
-                                    <div class="form-check form-switch ">
-                                    <input class="form-check-input can-delete" type="checkbox" id="available" name="darkmode"  asp-for="@Model.item.IsAvailable">
+                                <div class="col-6 col-lg-3 ">
+                                    <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input can-delete" type="checkbox" id="available" name="darkmode"  asp-for="@Model.IsAvailable">
                                     <label for="name">Available</label>
-                                    
                                     </div>
                                 </div>
-                                <div class="col col-md-3">
-                                    <div class="form-check form-switch ">
-                                    <input class="form-check-input can-delete" type="checkbox" id="default" name="darkmode" asp-for="@Model.item.DefaultTax" >
+                                <div class="col-6 col-lg-3 ">
+                                    <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input can-delete" type="checkbox" id="default" name="darkmode" asp-for="@Model.DefaultTax" >
                                     <label for="name">DefaultTax</label>
 
                                     </div>
                                 </div>
-                                <div class="col col-md-3">
-                                    <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="TaxPercentage" name="TaxPercentage" placeholder="TaxPercentage" asp-for="@Model.item.TaxPercentage">
+                                <div class="col-12 col-lg-3 col-md-6">
+                                    <div class="form-floating mb-3 position-relative">
+                                    <input type="text" class="form-control" id="TaxPercentage" name="TaxPercentage" placeholder="TaxPercentage" asp-for="@Model.TaxPercentage">
                                     <label for="TaxPercentage">TaxPercentage</label>
-                                    </div>
+                                    <span class="position-absolute end-0 top-50 me-3 translate-middle-y"><i
+                                            class="fa-solid fa-percentage" ></i></span>
+                                    <span asp-validation-for="TaxPercentage" class="text-danger "></span>
                                 </div>
-                                 <div class="col col-md-3">
+                                </div>
+                                 <div class="col-12 col-lg-3 col-md-6">
                                     <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="ShortCode" name="ShortCode" placeholder="ShortCode" asp-for="@Model.item.Shortcode">
+                                    <input type="text" class="form-control" id="ShortCode" name="ShortCode" placeholder="ShortCode" asp-for="@Model.Shortcode">
                                     <label for="ShortCode">ShortCode</label>
                                     </div>
                                 </div>
@@ -194,12 +202,12 @@
                             <div class="row">
                                 <div class="form-floating mb-3">
                                 <textarea class="form-control" id="Description" name="Description" 
-                                placeholder="Description"  asp-for="@Model.item.Description"></textarea>
+                                placeholder="Description"  asp-for="@Model.Description"></textarea>
                                 <label for="Description">Description</label>
                             </div>
                             </div>
                             <div class="row">
-                                    <label for="name">Upload Image</label>
+                                <label for="name">Upload Image</label>
                                 <div style="position: relative;">
                                 <div class=" d-flex flex-col align-items-center justify-content-center  text-center border border-danger  p-3"
                                 style="width: 100%;border-radius: 5px;">
@@ -211,11 +219,11 @@
                             </div>
                             </div>
                         </div>
-                        <div class="col-2 col-md-3 col-sm-12" style="background-color:antiquewhite">
-                            <div class="row">
+                        <div class="col col-lg-3 mt-lg-0 mt-3" style="background-color:antiquewhite">
+                            <div class="row p-0">
                                  <div class="col p-2">
                                     <div class="form-floating mb-3">
-                                    <select class="form-select" id="modifierGroup" name="modifierGroup"  >
+                                    <select class="form-select" id="modifierGroup" name="modifierGroup" >
                                     <option value="">Select Modifier Group(s)</option>
                                     </select>
                                     <label for="category" class="form-label">Modifier</label>
@@ -268,7 +276,23 @@
         </div>
       </div>
       </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
 <script>
+    $(document).ready(function(){
+          
+            $.ajax({
+                url:"/Menu/GetModifierGroups",
+                type: "GET",
+                success:function(data){
+                $.each(data,function(i,item){       
+                $("#modifierGroup").append(new Option(item.modifierGroupName,item.modifierGroupId));
+            });
+                }
+            });
+        
+    });
       function fetch(pageNumber,pageSize,totalPages){
         let selectedPage=$("#pageSize").val();
         let categoryId=@(Model.items.Count>0?Model.items[0].CategoryId:0);
@@ -284,19 +308,7 @@
             });
         }
         } 
-        function fetchModifiers(selectedCategory){
-            let categoryId=selectedCategory.value;
-            $.ajax({
-                url:"/Menu/GetModifierGroups",
-                type: "GET",
-                data:{id:categoryId},
-                success:function(data){
-                $.each(data,function(i,item){       
-                $("#modifierGroup").append(new Option(item.modifierGroupName,item.modifierGroupId));
-            });
-                }
-            });
-        }
+      
         function setDelId(id)
         {
             document.getElementById("itemId").value=id;

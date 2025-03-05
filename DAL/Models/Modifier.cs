@@ -7,7 +7,7 @@ public partial class Modifier
 {
     public int ModifierId { get; set; }
 
-    public string? ModifierName { get; set; }
+    public string ModifierName { get; set; }
 
     public string? Description { get; set; }
 
@@ -17,7 +17,7 @@ public partial class Modifier
 
     public int? Quantity { get; set; }
 
-    public decimal? Unit { get; set; }
+    public string Unit { get; set; }
 
     public bool? IsActive { get; set; }
 

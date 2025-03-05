@@ -17,7 +17,9 @@
                 <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                     <div id="items"></div>
                 </div>
-                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">...</div>
+                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                    <div id="modifiers"></div>
+                </div>
             </div>
         </div>
 
@@ -31,7 +33,15 @@
                 success:function(response){
                     $("#items").html(response);
                 }
-            })
+            });
+             $.ajax({
+                url:"@Url.Action("MenuModifiers","Menu")",
+                method:"GET",
+                success:function(response){
+                    console.log(response);
+                    $("#modifiers").html(response);
+                }
+            });
         });
         </script>
     }

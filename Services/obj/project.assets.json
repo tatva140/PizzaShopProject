@@ -9063,8 +9063,8 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "c:\\Users\\pca140\\Desktop\\RMSProject\\DAL\\DAL.csproj": {
-              "projectPath": "c:\\Users\\pca140\\Desktop\\RMSProject\\DAL\\DAL.csproj"
+            "C:\\Users\\pca140\\Desktop\\RMSProject\\DAL\\DAL.csproj": {
+              "projectPath": "C:\\Users\\pca140\\Desktop\\RMSProject\\DAL\\DAL.csproj"
             }
           }
         }

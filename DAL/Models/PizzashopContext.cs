@@ -287,8 +287,11 @@ public partial class PizzashopContext : DbContext
                 .HasPrecision(5, 2)
                 .HasColumnName("tax_percentage");
             entity.Property(e => e.Unit)
-                .HasPrecision(5, 2)
+                .HasColumnType("character varying")
                 .HasColumnName("unit");
+            entity.Property(e => e.ItemType)
+                .HasColumnType("character varying")
+                .HasColumnName("itemType");
             entity.Property(e => e.UpdatedAt)
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("updated_at");
@@ -338,7 +341,6 @@ public partial class PizzashopContext : DbContext
                 .HasPrecision(5, 2)
                 .HasColumnName("rate");
             entity.Property(e => e.Unit)
-                .HasPrecision(5, 2)
                 .HasColumnName("unit");
             entity.Property(e => e.UpdatedAt)
                 .HasColumnType("timestamp without time zone")

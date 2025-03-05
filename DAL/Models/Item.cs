@@ -11,9 +11,9 @@ public partial class Item
 
     public decimal Rate { get; set; }
 
-    public int? Quantity { get; set; }
+    public int Quantity { get; set; }
 
-    public decimal? Unit { get; set; }
+    public string Unit { get; set; }
 
     public bool IsAvailable { get; set; }
 
@@ -40,7 +40,7 @@ public partial class Item
 
     public int? CreatedBy { get; set; }
 
-    public string? ItemType { get; set; }
+    public string ItemType { get; set; }
 
     public virtual Category? Category { get; set; }
 

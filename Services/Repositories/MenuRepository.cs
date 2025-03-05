@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Text.Json.Nodes;
 using DAL.Models;
 using DAL.ViewModels;
@@ -23,9 +24,20 @@ public class MenuRepository:IMenuRepository
         totalRecords=items.Count();
         return items.Skip((pageNumber-1)*pageSize).Take(pageSize).ToList();
     }
+    public List<Modifier> GetModifiers(int id,int pageNumber,int pageSize,out int totalRecords){
+        if(id==0){
+        var allmodifiers=_context.Modifiers.Where(i=> i.IsActive==true).OrderBy(i=>i.CreatedAt);
+        totalRecords=allmodifiers.Count();
+            return allmodifiers.Skip((pageNumber-1)*pageSize).Take(pageSize).ToList();
+        }
+        var modifiers=_context.Modifiers.Where(i=>i.ModifierGroupId==id && i.IsActive==true).OrderBy(i=>i.CreatedAt);
+        totalRecords=modifiers.Count();
+        return modifiers.Skip((pageNumber-1)*pageSize).Take(pageSize).ToList();
+    }
+   
 
     public bool AddCategory(Category category){
-        var isCategory=_context.Categories.FirstOrDefault(c=>c.Name==category.Name);
+        var isCategory=_context.Categories.FirstOrDefault(c=>c.Name==category.Name && c.IsActive==true);
         if(isCategory!=null)return false;
         category.IsActive=true;
         _context.Categories.Add(category);
@@ -48,7 +60,6 @@ public class MenuRepository:IMenuRepository
     }
 
     public bool DeleteCategory(int id){
-        Console.Write(id);
          var category=_context.Categories.FirstOrDefault(u=>u.CategoryId==id && u.IsActive==true);
             if(category==null)return false;
             category.IsActive=false;
@@ -88,7 +99,78 @@ public class MenuRepository:IMenuRepository
         return true;
     }
 
-    public List<ModifierGroup> GetModifierGroups(int id){
-        return _context.ModifierGroups.Where(m=>m.CategoryId==id && m.IsActive==true).ToList();
+    public List<ModifierGroup> GetModifierGroups(){
+        return _context.ModifierGroups.Where(m=>m.IsActive==true).ToList();
     }
+
+    public bool AddItem(MenuItemsViewModel menuItemsViewModel){
+        if(menuItemsViewModel.Name==null || menuItemsViewModel.CategoryId==null || menuItemsViewModel.ItemType==null || menuItemsViewModel.Rate==0 || menuItemsViewModel.Quantity==0 || menuItemsViewModel.Unit==null){
+            return false;
+        }
+        Item item= new Item{
+            Name=menuItemsViewModel.Name,
+            CategoryId=menuItemsViewModel.CategoryId,
+            ItemType=menuItemsViewModel.ItemType,
+            Rate=menuItemsViewModel.Rate,
+            Quantity=menuItemsViewModel.Quantity,
+            Unit=menuItemsViewModel.Unit,
+            Description=menuItemsViewModel.Description??null,
+            DefaultTax=menuItemsViewModel.DefaultTax,
+            IsAvailable=menuItemsViewModel.IsAvailable,
+            TaxPercentage=menuItemsViewModel.TaxPercentage??null,
+            ItemImg=menuItemsViewModel.ItemImg??null,
+        };
+        _context.Items.Add(item);
+        _context.SaveChanges();
+        return true;
+    }
+
+    public bool AddModifier(Modifier modifier){
+
+         if(modifier.ModifierName==null || modifier.ModifierGroupId==null || modifier.Unit==null || modifier.Rate==0 || modifier.Quantity==0 ){
+            return false;
+        }
+       
+        _context.Modifiers.Add(modifier);
+        _context.SaveChanges();
+        return true;
+    }
+    public bool DeleteModifier(int id){
+        Modifier modifier=_context.Modifiers.FirstOrDefault(i=>i.ModifierId==id && i.IsActive==true);
+        if(modifier==null)return false;
+        modifier.IsActive=false;
+        _context.Modifiers.Update(modifier);
+        _context.SaveChanges();
+        return true;
+    }
+      public bool DeleteModifiers(JsonArray ids){
+        if(ids.Count==0)return false;
+        foreach(int modifierId in ids){
+            Modifier modifier=_context.Modifiers.FirstOrDefault(i=>i.ModifierId==modifierId && i.IsActive==true);
+            if(modifier==null)return false;
+            modifier.IsActive=false;
+        }
+        _context.SaveChanges();
+        return true;
+    }
+      public Modifier ModifierDetails(int id){
+        return _context.Modifiers.Find(id);
+    }
+
+      public bool EditModifier(Modifier modifier){
+        if(modifier.ModifierName==null || modifier.ModifierGroupId==null || modifier.Unit==null || modifier.Rate==0 || modifier.Quantity==0 ){
+            return false;
+        }
+        Modifier modifier1=_context.Modifiers.FirstOrDefault(c=>c.ModifierId==modifier.ModifierId);
+        modifier1.IsActive=true;
+        modifier1.Description=modifier.Description?? modifier1.Description;
+        modifier1.ModifierName=modifier.ModifierName?? modifier1.ModifierName;
+        modifier1.Rate=modifier.Rate==0? modifier1.Rate:modifier.Rate;
+        modifier1.Quantity=modifier.Quantity?? modifier1.Quantity;
+        modifier1.Unit=modifier.Unit?? modifier1.Unit;
+        _context.Modifiers.Update(modifier1);
+        _context.SaveChanges();
+        return true;
+    }
+
 }

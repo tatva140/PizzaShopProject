@@ -8,11 +8,19 @@ public interface IMenuRepository
 {
     List<Category> GetCategories();
     List<Item> GetCategoryItems(int id,int pageNumber,int pageSize,out int totalRecords);
+    List<Modifier> GetModifiers(int id,int pageNumber,int pageSize,out int totalRecords);
     bool AddCategory(Category category);
+    bool AddModifier(Modifier modifier);
     bool EditCategory(Category category);
     Category CategoryDetails(int id);
     bool DeleteCategory(int id);
     bool DeleteItem(int id);
+    bool DeleteModifier(int id);
     bool DeleteItems(JsonArray ids);
-    List<ModifierGroup> GetModifierGroups(int id);
+    bool DeleteModifiers(JsonArray ids);
+    List<ModifierGroup> GetModifierGroups();
+    bool AddItem(MenuItemsViewModel menuItemsViewModel);
+    Modifier ModifierDetails(int id);
+    bool EditModifier(Modifier modifier);
+
 }
