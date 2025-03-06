@@ -1,12 +1,10 @@
 ﻿
 
 var x = window.matchMedia("(max-width: 990px)")
-    console.log(x);
     let flag=1;
     const toggleButton = document.getElementById('toggle');
     const sidebar = document.getElementById("sidebar");
     const content = document.getElementById('content');
-    console.log(content);
     const close = document.getElementById('close');
     if (x.matches) {
         sidebar.style.display = "none";
@@ -116,7 +114,7 @@ function search(){
     filter = input.value.toUpperCase();
     table = document.getElementById("myTable");
     tr = table.getElementsByTagName("tr");
-    console.log(filter)
+    console.log(input.value);
     for (i = 0; i < tr.length; i++) {
       td = tr[i].getElementsByTagName("td")[0];
       if (td) {

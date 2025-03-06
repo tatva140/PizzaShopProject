@@ -34,9 +34,9 @@
                                                 <div
                                                     class="d-flex align-items-center justify-content-end me-2 actions mt-3">
                                                     <i class="fa-solid fa-pen me-3 ms-3" style="cursor: pointer; "
-                                                        data-bs-toggle="modal" data-bs-target="#editCategory"></i>
+                                                        data-bs-toggle="modal" data-bs-target=""></i>
                                                     <i class="fa-solid fa-trash" style="cursor: pointer;"
-                                                        data-bs-toggle="modal" data-bs-target="#deleteCategory"></i>
+                                                        data-bs-toggle="modal" data-bs-target=""></i>
                                                 </div>
                                             </div>
                                         </li>
@@ -71,9 +71,9 @@
                             </div>
                             <div class="d-flex align-items-center justify-content-end me-2 actions mt-3">
                                 <i class="fa-solid fa-pen me-3 ms-3" style="cursor: pointer; " data-bs-toggle="modal"
-                                    data-bs-target="#editCategory"></i>
+                                    data-bs-target=""></i>
                                 <i class="fa-solid fa-trash" style="cursor: pointer;" data-bs-toggle="modal"
-                                    data-bs-target="#deleteCategory"></i>
+                                    data-bs-target=""></i>
                             </div>
                         </div>
                     </li>
@@ -88,7 +88,8 @@
                 <div class="d-flex align-items-center justify-content-between p-2">
                     <div style="color: rgb(30, 151, 231); font-weight: 700; font-size: 25px; ">Modifiers
                     </div>
-                    <button class="addItembtn btn btn-primary " data-bs-toggle="modal" data-bs-target="#addItem">+ New
+                    <button class="addItembtn btn btn-primary " data-bs-toggle="modal" data-bs-target="#addModifier">+
+                        New
                         Modifier</button>
                 </div>
             </div>
@@ -96,7 +97,7 @@
         <div id="rendermodifiers"></div>
     </div>
 </div>
-</div>
+
 <div class="modal" id="addModifierGroup">
     <div class="modal-dialog modal-dialog-centered ">
         <div class="modal-content">
@@ -104,29 +105,29 @@
                 <h5 class="modal-title" style="color:rgba(9, 9, 172, 0.692) ;">Add Modifier Group</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form asp-action="AddModifierGroup" asp-controller="Menu" method="POST">
                 <div class="modal-body">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="Name" name="Name" placeholder="Name"
+                        <input type="text" class="form-control" id="modifierGroupName" name="Name" placeholder="Name"
                             asp-for="@Model.modifierGroup.ModifierGroupName">
                         <label for="name">Name</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <textarea class="form-control" id="Description" name="Description" placeholder="Description"
+                        <textarea class="form-control" id="mgdescription" name="Description" placeholder="Description"
                             asp-for="@Model.modifierGroup.Description"></textarea>
                         <label for="description">Description</label>
                     </div>
-                    <a  style="text-decoration: none;" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="existingModifiers">+ Add Existing
+                    <a style="text-decoration: none; cursor:pointer; color:blue;" data-bs-dismiss="modal"
+                        onclick="openExistingModifierModel()">+ Add Existing
                         Modifiers</a>
+                    <div id="selectedModifiers"></div>
                 </div>
                 <div class="modal-footer d-flex  align-items-center justify-content-end">
                     <button type="submit" class="btn  me-2"
-                        style="background-color: rgba(9, 9, 172, 0.692);color:white">Add</button>
+                        style="background-color: rgba(9, 9, 172, 0.692);color:white" onclick="addModifierGroup()" data-bs-dismiss="modal">Add</button>
                     <button type="button" class="btn"
                         style="border-color:rgba(9, 9, 172, 0.692);  color:rgba(9, 9, 172, 0.692); background-color: white;"
                         data-bs-dismiss="modal" aria-label="Close" formnovalidate>Cancel</button>
                 </div>
-            </form>
         </div>
     </div>
 </div>
@@ -137,63 +138,57 @@
                 <h5 class="modal-title" style="color:rgba(9, 9, 172, 0.692) ;">Add Modifier Group</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form method="POST">
-                <div class="modal-body">
-                    <input type="text" class="form-control modifierGroupName" id="Name" name="Name" placeholder="Name"
-                        asp-for="@Model.modifierGroup.ModifierGroupName" hidden>
-                    <textarea class="form-control modifierGroupDescription" id="Description" name="Description"
-                        placeholder="Description" asp-for="@Model.modifierGroup.Description" hidden></textarea>
-                    <div class=" ms-2 " style="position:relative; ">
-                        <input type="text" class="form-control " placeholder="Search" name="search" id="search"
-                            style="position: relative;right: 10px;" onkeyup="search()">
-                        <span
-                            style="position: absolute; right: 20px;top:50%; transform: translateY(-60%); font: 15px;"><i
-                                class="fa-solid fa-search"></i> </span>
-                    </div>
-                    <table class="table " id="myTable">
-                        <thead>
-                            <tr>
-                                <th>
+            <div class="modal-body">
+                <div class=" ms-2 " style="position:relative; ">
+                    <input type="text" class="form-control " placeholder="Search" name="search" id="search"
+                        style="position: relative;right: 10px;" onkeyup="search()">
+                    <span style="position: absolute; right: 20px;top:50%; transform: translateY(-60%); font: 15px;"><i
+                            class="fa-solid fa-search"></i> </span>
+                </div>
+                <table class="table " id="myTable">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="form-check">
+                                    <input class="form-check-input all" type="checkbox" value="">
+                                    <label class="form-check-label " for="flexCheckDefault">
+                                        <div class="ms-2">Name</div>
+                                    </label>
+                                </div>
+                            </th>
+                            <th>Unit</th>
+                            <th>Rate</th>
+                            <th>Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var m in Model.modifier)
+                        {
+                            <tr class="check" data-id="@m.ModifierId" data-name="@m.ModifierName">
+                                <td>
                                     <div class="form-check">
-                                        <input class="form-check-input mainCheck" type="checkbox" value="">
-                                        <label class="form-check-label " for="flexCheckDefault">
-                                            <div class="ms-2">Name</div>
+                                        <input class="form-check-input individual" type="checkbox" value="">
+                                        <label class="form-check-label ms-2" for="flexCheckDefault">
+                                            <div style="word-wrap: break-word;">@m.ModifierName
+                                            </div>
                                         </label>
                                     </div>
-                                </th>
-                                <th>Unit</th>
-                                <th>Rate</th>
-                                <th>Quantity</th>
+                                </td>
+                                <td>
+                                    @m.Unit
+                                </td>
+                                <td>
+                                    @m.Rate
+                                </td>
+                                <td>
+                                    @m.Quantity
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var m in Model.modifier)
-                            {
-                                <tr class="check" data-id="@m.ModifierId">
-                                    <td>
-                                        <div class="form-check">
-                                            <input class="form-check-input individualCheck" type="checkbox" value="">
-                                            <label class="form-check-label ms-2" for="flexCheckDefault">
-                                                <div style="word-wrap: break-word;">@m.ModifierName
-                                                </div>
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        @m.Unit
-                                    </td>
-                                    <td>
-                                        @m.Rate
-                                    </td>
-                                    <td>
-                                        @m.Quantity
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                    <div>
-                        @* <div class="d-flex flex-col justify-content-end mb-2">
+                        }
+                    </tbody>
+                </table>
+                <div>
+                    @* <div class="d-flex flex-col justify-content-end mb-2">
                             <form method="get" id="pageSizeForm">
                                 <label for="pageSize">Records per page:</label>
                                 <select id="pageSize" name="pageSize"
@@ -219,16 +214,15 @@
                                 }
                             </div>
                         </div> *@
-                    </div>
                 </div>
-                <div class="modal-footer d-flex  align-items-center justify-content-end">
-                    <button type="submit" class="btn  me-2"
-                        style="background-color: rgba(9, 9, 172, 0.692);color:white">Add</button>
-                    <button type="button" class="btn"
-                        style="border-color:rgba(9, 9, 172, 0.692);  color:rgba(9, 9, 172, 0.692); background-color: white;"
-                        data-bs-dismiss="modal" aria-label="Close" formnovalidate>Cancel</button>
-                </div>
-            </form>
+            </div>
+            <div class="modal-footer d-flex  align-items-center justify-content-end">
+                <button type="submit" class="btn  me-2" style="background-color: rgba(9, 9, 172, 0.692);color:white"
+                    onclick="saveExistingModifiers()" data-bs-dismiss="modal">Add</button>
+                <button type="button" class="btn"
+                    style="border-color:rgba(9, 9, 172, 0.692);  color:rgba(9, 9, 172, 0.692); background-color: white;"
+                    data-bs-dismiss="modal" aria-label="Close" formnovalidate>Cancel</button>
+            </div>
         </div>
     </div>
 </div>
@@ -256,10 +250,9 @@
             }
         });
     }
-    @* function openExistingModifierModel() {
-        document.getElementById("addModifierGroup").style.display = "none";
-        document.getElementById("existingModifiers").style.display = "block";
-    } *@
+    function openExistingModifierModel() {
+        new bootstrap.Modal(document.getElementById("existingModifiers")).show();
+    }
     @* function allModifier(pageNumber, pageSize, totalPages) {
         let selectedPage = $("#pageSize").val();
         let modifierId =@(Model.modifier.Count > 0 ? Model.modifier[0].ModifierGroupId : 0);
@@ -275,4 +268,65 @@
             });
         }
     } *@
+
+        $(".all").change(function () {
+            if ($(".all").prop("checked")) {
+                $(".individual").prop("checked", true);
+            } else {
+                $(".individual").prop("checked", false);
+            }
+        });
+    $(".individual").change(function () {
+        if ($(".individual:checked").length === $(".individual").length) {
+            $(".all").prop("checked", true);
+        } else {
+            $(".all").prop("checked", false);
+        }
+    })
+
+    let selectedItems = [];
+    function saveExistingModifiers() {
+        selectedItems=[];
+        $("tbody tr").each(function () {
+            let row = $(this);
+            let isSelected = row.find(".individual").prop("checked");
+            if (isSelected) {
+                selectedItems.push({ id: row.data("id"), name: row.data("name") });
+            }
+        });
+        new bootstrap.Modal(document.getElementById("addModifierGroup")).show();
+        let modifierDiv = document.getElementById("selectedModifiers");
+       modifierDiv.innerHTML='';
+        selectedItems.forEach(modifier => {
+            if (document.querySelector(".chip[id='${modifier.id}']")) {
+                return;
+            }
+            let chip = document.createElement("span");
+            chip.classList.add("chip");
+            chip.setAttribute("id", modifier.id);
+            chip.innerHTML = `${modifier.name} <button class="close-btn" onclick="removeChip(this)">x</button>`;
+            modifierDiv.appendChild(chip);
+        })
+    }
+    function removeChip(ele) {
+        let chip = ele.parentElement;
+        let id = chip.getAttribute("id");
+        selectedItems = selectedItems.filter(modifier => selectedItems.id !== ele);
+        chip.remove();
+    }
+
+    function addModifierGroup(){
+        let ids=[];
+        selectedItems.forEach(m=>{
+            ids.push(m.id);
+        });
+        let mgName=document.getElementById("modifierGroupName").value;
+        let mgDescription=document.getElementById("mgdescription").value;
+         $.ajax({
+                url: "/Menu/AddModifierGroup",
+                type: "POST",
+                contentType:"application/json",
+                data: JSON.stringify({modifierGroupName:mgName,Description:mgDescription,ids:ids}) ,
+            });
+    }
 </script>

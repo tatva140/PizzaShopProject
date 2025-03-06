@@ -21,6 +21,8 @@ public interface IMenuRepository
     List<ModifierGroup> GetModifierGroups();
     bool AddItem(MenuItemsViewModel menuItemsViewModel);
     Modifier ModifierDetails(int id);
-    bool EditModifier(Modifier modifier);
+    bool EditModifier(int modifierId, string modifierGroupId,string modifierName,string unit,decimal rate,int quantity,string description);
+    bool AddModifierGroup(JsonObject obj);
+
 
 }

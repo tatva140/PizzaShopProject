@@ -67,7 +67,10 @@ public class MenuService
     public bool AddItem(MenuItemsViewModel menuItemsViewModel){
         return _menuRepository.AddItem(menuItemsViewModel);
     }
-     public bool EditModifier(Modifier modifier){
-        return _menuRepository.EditModifier(modifier);
+     public bool EditModifier(int modifierId, string modifierGroupId,string modifierName,string unit,decimal rate,int quantity,string description){
+        return _menuRepository.EditModifier(modifierId,modifierGroupId,modifierName,unit,rate,quantity,description);
+    }
+    public bool AddModifierGroup(JsonObject obj){
+        return _menuRepository.AddModifierGroup(obj);
     }
 }

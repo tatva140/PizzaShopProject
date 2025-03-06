@@ -1,7 +1,9 @@
 using System.ComponentModel;
+using System.Runtime.InteropServices.JavaScript;
 using System.Text.Json.Nodes;
 using DAL.Models;
 using DAL.ViewModels;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Services.Interfaces;
 
 namespace Services.Repositories;
@@ -129,8 +131,7 @@ public class MenuRepository:IMenuRepository
 
          if(modifier.ModifierName==null || modifier.ModifierGroupId==null || modifier.Unit==null || modifier.Rate==0 || modifier.Quantity==0 ){
             return false;
-        }
-       
+        }     
         _context.Modifiers.Add(modifier);
         _context.SaveChanges();
         return true;
@@ -157,20 +158,51 @@ public class MenuRepository:IMenuRepository
         return _context.Modifiers.Find(id);
     }
 
-      public bool EditModifier(Modifier modifier){
-        if(modifier.ModifierName==null || modifier.ModifierGroupId==null || modifier.Unit==null || modifier.Rate==0 || modifier.Quantity==0 ){
+      public bool EditModifier(int modifierId, string modifierGroupId,string modifierName,string unit,decimal rate,int quantity,string description){
+        if(modifierName==null || modifierGroupId==null || unit==null || rate==0 || quantity==0 ){
             return false;
         }
-        Modifier modifier1=_context.Modifiers.FirstOrDefault(c=>c.ModifierId==modifier.ModifierId);
+        Modifier modifier1=_context.Modifiers.FirstOrDefault(c=>c.ModifierId==modifierId);
         modifier1.IsActive=true;
-        modifier1.Description=modifier.Description?? modifier1.Description;
-        modifier1.ModifierName=modifier.ModifierName?? modifier1.ModifierName;
-        modifier1.Rate=modifier.Rate==0? modifier1.Rate:modifier.Rate;
-        modifier1.Quantity=modifier.Quantity?? modifier1.Quantity;
-        modifier1.Unit=modifier.Unit?? modifier1.Unit;
+        modifier1.Description=description?? modifier1.Description;
+        modifier1.ModifierName=modifierName?? modifier1.ModifierName;
+        modifier1.Rate=rate==0? modifier1.Rate:rate;
+        modifier1.Quantity=quantity==0? modifier1.Quantity:quantity;
+        modifier1.Unit=unit?? modifier1.Unit;
         _context.Modifiers.Update(modifier1);
         _context.SaveChanges();
         return true;
+    }
+
+    public bool AddModifierGroup(JsonObject obj){
+        string modifierGroupName=obj["modifierGroupName"].ToString();
+        ModifierGroup modifierGroup2=_context.ModifierGroups.FirstOrDefault(mg=>mg.ModifierGroupName==modifierGroupName);
+        if(obj["modifierGroupName"].ToString()==null || modifierGroup2!=null)return false;
+        string Description=obj["Description"].ToString();
+        ModifierGroup modifierGroup=new ModifierGroup{
+            ModifierGroupName=modifierGroupName,
+            Description=Description
+        };
+        _context.ModifierGroups.Add(modifierGroup);
+        _context.SaveChanges();
+
+        var modifierGroup1=_context.ModifierGroups.FirstOrDefault(mg=>mg.ModifierGroupName==modifierGroupName);
+        JsonArray jsonArray=(JsonArray)obj["ids"];
+        foreach (int i in jsonArray)
+        {
+            Modifier modifier1 = _context.Modifiers.FirstOrDefault(m => m.ModifierId == i);
+            Modifier modifier=new Modifier{
+                ModifierName=modifier1.ModifierName,
+                Description=modifier1.Description,
+                Unit=modifier1.Unit,
+                Rate=modifier1.Rate,
+                Quantity=modifier1.Quantity,
+                ModifierGroupId=modifierGroup1.ModifierGroupId
+            };
+        _context.Modifiers.Add(modifier);
+        }
+        _context.SaveChanges();
+    return true;
     }
 
 }

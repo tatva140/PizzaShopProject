@@ -192,3 +192,21 @@ visibility: visible;
     display: block;
   }
 }
+.chip{
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 5px;
+  margin: 5px;
+  background-color: grey;
+  color: white;
+  border-radius: 20px;
+  font-size: 14px;
+}
+.chip .close-btn{
+  margin-left: 5px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 18px;;
+  cursor: pointer;
+}

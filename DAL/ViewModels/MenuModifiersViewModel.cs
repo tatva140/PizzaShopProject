@@ -8,6 +8,7 @@ public class MenuModifiersViewModel
      public List<Modifier> modifier {get;set;}
     public ModifierGroup modifierGroup {get;set;}
     public List<ModifierGroup> modifierGroups {get;set;}
+    List<int> ids {get;set;}
 
     public int PageNumber {get;set;}
     public int PageSize {get;set;}

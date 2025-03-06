@@ -116,6 +116,7 @@ public class MenuController : Controller
             TempData["MessageType"] = "error";
         }
         return RedirectToAction("Index", "Menu");
+
     }
 
     [HttpPost]
@@ -236,7 +237,6 @@ public class MenuController : Controller
     [HttpPost]
     public IActionResult DeleteModifier(int modifierId)
     {
-        Console.Write("here");
         bool isDeleted = _menuService.DeleteModifier(modifierId);
         if (isDeleted)
         {
@@ -255,13 +255,12 @@ public class MenuController : Controller
     public IActionResult ModifierDetails(int id)
     {
         var modifier = _menuService.ModifierDetails(id);
-        return Json(new { name = modifier.ModifierName, description = modifier.Description,rate=modifier.Rate,quantity=modifier.Quantity,unit=modifier.Unit });
+        return Json(new { name = modifier.ModifierName, description = modifier.Description, rate = modifier.Rate, quantity = modifier.Quantity, unit = modifier.Unit });
     }
     [HttpPost]
-    public IActionResult EditModifier(int id, Modifier modifier)
+    public IActionResult EditModifier(int modifierId, string modifierGroupId, string modifierName, string unit, decimal rate, int quantity, string description)
     {
-        modifier.ModifierId = id;
-        bool isEdited = _menuService.EditModifier(modifier);
+        bool isEdited = _menuService.EditModifier(modifierId, modifierGroupId, modifierName, unit, rate, quantity, description);
         if (isEdited)
         {
             TempData["Message"] = "Modifier Edited Successfully";
@@ -270,6 +269,25 @@ public class MenuController : Controller
         else
         {
             TempData["Message"] = "Cannot Edit Modifier, it already Exists";
+            TempData["MessageType"] = "error";
+        }
+        return Ok(new { message = "Edited" });
+
+    }
+
+    [HttpPost]
+    public IActionResult AddModifierGroup([FromBody] JsonObject obj)
+    {
+        Console.WriteLine(obj["Description"]);
+        bool isAdded = _menuService.AddModifierGroup(obj);
+        if (isAdded)
+        {
+            TempData["Message"] = "Modifier Group Added Successfully";
+            TempData["MessageType"] = "success";
+        }
+        else
+        {
+            TempData["Message"] = "Modifier Group Cannot be added";
             TempData["MessageType"] = "error";
         }
         return RedirectToAction("Index", "Menu");
