@@ -27,9 +27,8 @@ public class UserController:Controller
 
 [HttpGet]
 
-      public ActionResult Index(string search,string sortOrder,int pageNumber=1,int pageSize=2)
+      public ActionResult Index(string sortOrder,int pageNumber=1,int pageSize=2)
     {
-        Console.Write(search);
         ViewBag.sort = String.IsNullOrEmpty(sortOrder) ? "desc" : "";
         var (users,totalRecords)=_userService.GetAllUser(sortOrder,pageNumber,pageSize);
         ViewBag.PageNumber=pageNumber;
@@ -93,29 +92,29 @@ public class UserController:Controller
     }
     public ActionResult GetCountries()
     {
-        var countries=_userService.GetCountries();
+        List<Country> countries=_userService.GetCountries();
         return Json(countries);
     }
     public ActionResult GetStateByCountry([FromQuery]int countryId)
     {
-        var states=_userService.GetStateByCountry(countryId);
+        List<State> states=_userService.GetStateByCountry(countryId);
         return Json(states);
     }
     public ActionResult GetCityByState(int stateId)
     {
-        var cities=_userService.GetCityByState(stateId);
+        List<City> cities=_userService.GetCityByState(stateId);
         return Json(cities);
     }
     public ActionResult GetRoles()
     {
-       var roles= _userService.GetRoles();
+       List<Role> roles= _userService.GetRoles();
        return Json(roles);
     }
 
 [HttpGet]
     public IActionResult EditUsers([FromQuery] string email,[FromQuery] int pageNumber,[FromQuery] int pageSize)
     {
-        var user = _userService.GetUserInfo(email);
+        UserProfileViewModel user = _userService.GetUserInfo(email);
         ViewBag.PageNumber=pageNumber;
         ViewBag.PageSize=pageSize;
         return View(user);   
@@ -124,8 +123,6 @@ public class UserController:Controller
   [HttpPost]
     public IActionResult EditUsers([FromQuery] int pageNumber,[FromQuery] int pageSize,UserProfileViewModel model,IFormFile profileImg)
     {
-        Console.Write(pageNumber);
-        Console.Write(pageSize);
          if (profileImg != null)
         {
             if (profileImg.Length > 0)

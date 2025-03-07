@@ -19,12 +19,12 @@ public class MenuService
 
     public (List<Item>,int totalRecords) GetCategoryItems(int id,int pageNumber,int pageSize){
         int totalRecords;
-        var items=_menuRepository.GetCategoryItems(id,pageNumber,pageSize,out totalRecords);
+        List<Item> items=_menuRepository.GetCategoryItems(id,pageNumber,pageSize,out totalRecords);
         return  (items,totalRecords);
     }
     public (List<Modifier>,int totalRecords) GetModifiers(int id,int pageNumber,int pageSize){
         int totalRecords;
-        var modifiers=_menuRepository.GetModifiers(id,pageNumber,pageSize,out totalRecords);
+        List<Modifier> modifiers=_menuRepository.GetModifiers(id,pageNumber,pageSize,out totalRecords);
         return  (modifiers,totalRecords);
     }
 

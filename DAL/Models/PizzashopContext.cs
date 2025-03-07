@@ -34,6 +34,7 @@ public partial class PizzashopContext : DbContext
     public virtual DbSet<ModifierGroup> ModifierGroups { get; set; }
 
     public virtual DbSet<ModifierItem> ModifierItems { get; set; }
+    public virtual DbSet<ModifierGroupsItem> ModifierGroupsItems { get; set; }
 
     public virtual DbSet<Order> Orders { get; set; }
 
@@ -99,6 +100,18 @@ public partial class PizzashopContext : DbContext
                 .HasConstraintName("allocated_tables_table_id_fkey");
         });
 
+        modelBuilder.Entity<ModifierGroupsItem>(entity =>
+        {
+            entity.HasKey(e => e.ModifierGroupItemId).HasName("modifier_groups_items_pkey");
+
+            entity.ToTable("modifier_groups_items");
+
+            entity.Property(e => e.ModifierGroupItemId).HasColumnName("modifier_group_item_id");
+            entity.Property(e => e.ItemId).HasColumnName("item_id");
+            entity.Property(e => e.Max).HasColumnName("max");
+            entity.Property(e => e.Min).HasColumnName("min");
+            entity.Property(e => e.ModifierGroupId).HasColumnName("modifier_group_id");
+        });
         modelBuilder.Entity<Auditlog>(entity =>
         {
             entity.HasKey(e => e.AuditId).HasName("auditlog_pkey");

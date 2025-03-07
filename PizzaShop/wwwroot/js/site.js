@@ -109,6 +109,7 @@ curp.setAttribute('type', 'password');
     
 
 function search(){
+    console.log("search");
     var input, filter, table, tr, td, i, txtValue;
     input = document.getElementById("search");
     filter = input.value.toUpperCase();

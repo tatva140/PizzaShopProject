@@ -2,6 +2,7 @@ using System.Text.Json.Nodes;
 using DAL.Models;
 using DAL.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Services.Service;
 
 namespace PizzaShop.Controllers;
@@ -22,7 +23,7 @@ public class MenuController : Controller
     [HttpGet]
     public IActionResult MenuItems()
     {
-        var category = _menuService.GetCategories();
+        List<Category> category = _menuService.GetCategories();
         MenuItemsViewModel menuItemsViewModel = new MenuItemsViewModel
         {
             categories = category,
@@ -33,9 +34,9 @@ public class MenuController : Controller
     [HttpGet]
     public IActionResult MenuModifiers(int modifierId, int pageNumber = 1, int pageSize = 2, int selectedPage = 2)
     {
-        var modifierGroup = _menuService.GetModifierGroups();
+        List<ModifierGroup> modifierGroup = _menuService.GetModifierGroups();
         var (modifiers, totalRecords) = _menuService.GetModifiers(modifierId, pageNumber, selectedPage);
-        var totalPage = (int)Math.Ceiling((double)totalRecords / selectedPage);
+        int totalPage = (int)Math.Ceiling((double)totalRecords / selectedPage);
         MenuModifiersViewModel mennuModifiersViewModel = new MenuModifiersViewModel
         {
             modifierGroups = modifierGroup,
@@ -51,9 +52,9 @@ public class MenuController : Controller
     [HttpGet]
     public IActionResult CategoryItems(int categoryId, int pageNumber = 1, int pageSize = 2, int selectedPage = 2)
     {
-        var category = _menuService.GetCategories();
+        List<Category> category = _menuService.GetCategories();
         var (items, totalRecords) = _menuService.GetCategoryItems(categoryId, pageNumber, selectedPage);
-        var totalPage = (int)Math.Ceiling((double)totalRecords / selectedPage);
+        int totalPage = (int)Math.Ceiling((double)totalRecords / selectedPage);
         MenuItemsViewModel menuItemsViewModel = new MenuItemsViewModel
         {
             categories = category,
@@ -69,9 +70,9 @@ public class MenuController : Controller
     [HttpGet]
     public IActionResult Modifiers(int modifierId, int pageNumber = 1, int pageSize = 2, int selectedPage = 2)
     {
-        var modifierGroups = _menuService.GetModifierGroups();
+        List<ModifierGroup> modifierGroups = _menuService.GetModifierGroups();
         var (modifiers, totalRecords) = _menuService.GetModifiers(modifierId, pageNumber, selectedPage);
-        var totalPage = (int)Math.Ceiling((double)totalRecords / selectedPage);
+        int totalPage = (int)Math.Ceiling((double)totalRecords / selectedPage);
         MenuModifiersViewModel mennuModifiersViewModel = new MenuModifiersViewModel
         {
             modifierGroups = modifierGroups,
@@ -81,7 +82,6 @@ public class MenuController : Controller
             TotalPages = totalPage,
             SelectedPage = selectedPage
         };
-        // ViewBag.categoryId=categoryId;
         return PartialView("_Modifiers", mennuModifiersViewModel);
     }
 
@@ -138,7 +138,7 @@ public class MenuController : Controller
     }
     public IActionResult CategoryDetails(int id)
     {
-        var category = _menuService.CategoryDetails(id);
+        Category category = _menuService.CategoryDetails(id);
         return Json(new { name = category.Name, description = category.Description });
     }
 
@@ -164,6 +164,12 @@ public class MenuController : Controller
     {
         List<ModifierGroup> modifierGroup = _menuService.GetModifierGroups();
         return Json(modifierGroup);
+    }
+    [HttpGet]
+    public IActionResult GetModifiers(int modifierId, int pageNumber = 1, int pageSize = 2, int selectedPage = 2)
+    {
+        var (modifiers, totalRecords) = _menuService.GetModifiers(modifierId, pageNumber, selectedPage);
+        return Json(modifiers);
     }
 
     [HttpPost]
@@ -217,20 +223,24 @@ public class MenuController : Controller
     }
 
     [HttpPost]
-    public IActionResult AddItem(MenuItemsViewModel menuItemsViewModel)
+    public IActionResult AddItem([FromBody] JsonObject obj)
     {
+
+        string data=obj.ToJsonString();
+        MenuItemsViewModel menuItemsViewModel=JsonConvert.DeserializeObject<MenuItemsViewModel>(data);
         bool isAdded = _menuService.AddItem(menuItemsViewModel);
         if (isAdded)
         {
-            TempData["Message"] = "Item Added Successfully";
-            TempData["MessageType"] = "success";
+            TempData["success"]="Items Added Successfully";
+         
         }
         else
         {
             TempData["Message"] = "Items cannot be added";
             TempData["MessageType"] = "error";
         }
-        return RedirectToAction("Index", "Menu");
+        return Ok(new { message="Added" });
+
     }
 
 
@@ -254,7 +264,7 @@ public class MenuController : Controller
     [HttpGet]
     public IActionResult ModifierDetails(int id)
     {
-        var modifier = _menuService.ModifierDetails(id);
+        Modifier modifier = _menuService.ModifierDetails(id);
         return Json(new { name = modifier.ModifierName, description = modifier.Description, rate = modifier.Rate, quantity = modifier.Quantity, unit = modifier.Unit });
     }
     [HttpPost]
@@ -278,7 +288,6 @@ public class MenuController : Controller
     [HttpPost]
     public IActionResult AddModifierGroup([FromBody] JsonObject obj)
     {
-        Console.WriteLine(obj["Description"]);
         bool isAdded = _menuService.AddModifierGroup(obj);
         if (isAdded)
         {

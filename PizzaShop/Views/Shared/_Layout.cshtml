@@ -73,7 +73,7 @@
          </div>
 }
 <div>
-
+    <partial name="_Notification"/>
     @RenderBody()
 
 </div>
@@ -86,25 +86,7 @@
     <script>
         
         $(document).ready(function () {
-            var message = "@TempData["Message"]";
-            var messageType = "@TempData["MessageType"]";
-
-            if (message) {
-                switch (messageType) {
-                    case "success":
-                        toastr.success(message);
-                        break;
-                    case "error":
-                        toastr.error(message);
-                        break;
-                    case "warning":
-                        toastr.warning(message);
-                        break;
-                    case "info":
-                        toastr.info(message);
-                        break;
-                }
-            }
+          
 
             $.ajax({
                 url:"@Url.Action("UserInfo","Dashboard")",

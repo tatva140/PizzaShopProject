@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "GFworv+0y+F2T1IpQcmEF9KjLiLXOKqPnPK2lrODJhgxDZEH3LHbLDBf4H7DV5QTHn2wP2qzA7Bf8bE/nLNIaQ==",
+  "dgSpecHash": "HNbEKYc0o8OgS5B03hOmAF0RrKn9Y98Ervl/8tU1mcbrS0g/MWznwdGGEoYcMdEsfGWVnnqNSadA9r5r7cIDzw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\pca140\\Desktop\\RMSProject\\PizzaShop\\PizzaShop.csproj",
+  "projectFilePath": "c:\\Users\\pca140\\Desktop\\RMSProject\\PizzaShop\\PizzaShop.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\pca140\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\pca140\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
@@ -129,7 +129,7 @@
     "C:\\Users\\pca140\\.nuget\\packages\\mimekit\\4.10.0\\mimekit.4.10.0.nupkg.sha512",
     "C:\\Users\\pca140\\.nuget\\packages\\mono.texttemplating\\2.2.1\\mono.texttemplating.2.2.1.nupkg.sha512",
     "C:\\Users\\pca140\\.nuget\\packages\\netstandard.library\\1.6.1\\netstandard.library.1.6.1.nupkg.sha512",
-    "C:\\Users\\pca140\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
+    "C:\\Users\\pca140\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
     "C:\\Users\\pca140\\.nuget\\packages\\newtonsoft.json.bson\\1.0.2\\newtonsoft.json.bson.1.0.2.nupkg.sha512",
     "C:\\Users\\pca140\\.nuget\\packages\\npgsql\\7.0.4\\npgsql.7.0.4.nupkg.sha512",
     "C:\\Users\\pca140\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql\\7.0.4\\npgsql.entityframeworkcore.postgresql.7.0.4.nupkg.sha512",

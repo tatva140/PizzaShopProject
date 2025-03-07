@@ -1,25 +1,25 @@
 @model DAL.ViewModels.MenuItemsViewModel;
 
- <div class="row p-2">
-                 <div class="d-flex align-items-center justify-content-end p-2">
-                 <div class=" ms-2 " style="position:relative; ">
-                   <input type="text" class="form-control "  placeholder="Search" name="search" id="search"
-                     style="position: relative;right: 10px;" onkeyup="search()">
-                   <span style="position: absolute; right: 20px;top:50%; transform: translateY(-60%); font: 15px;"><i
-                       class="fa-solid fa-search"></i> </span>
-                 </div>
-                 <button class=" me-2 " data-bs-toggle="modal" data-bs-target="#deleteItems" style="background-color: white; border-radius: 5px;"><i
-                    class="fa fa-trash"></i></button>
-                 <button class="addItem btn btn-primary " data-bs-toggle="modal" data-bs-target="#addItem">+ New Item</button>
-               </div>
-            </div>
-    <div class="table-responsive  mt-3">
+<div class="row p-2">
+    <div class="d-flex align-items-center justify-content-end p-2">
+        <div class=" ms-2 " style="position:relative; ">
+            <input type="text" class="form-control " placeholder="Search" name="search" id="search"
+                style="position: relative;right: 10px;" onkeyup="search()">
+            <span style="position: absolute; right: 20px;top:50%; transform: translateY(-60%); font: 15px;"><i
+                    class="fa-solid fa-search"></i> </span>
+        </div>
+        <button class=" me-2 " data-bs-toggle="modal" data-bs-target="#deleteItems"
+            style="background-color: white; border-radius: 5px;"><i class="fa fa-trash"></i></button>
+        <button class="addItem btn btn-primary " data-bs-toggle="modal" data-bs-target="#addItem">+ New Item</button>
+    </div>
+</div>
+<div class="table-responsive  mt-3">
     <table class="table " id="myTable">
         <thead>
-            <tr >
+            <tr>
                 <th>
                     <div class="form-check">
-                        <input class="form-check-input mainCheck" type="checkbox" value="" >
+                        <input class="form-check-input mainCheck" type="checkbox" value="">
                         <label class="form-check-label " for="flexCheckDefault">
                             <div class="ms-2">Name</div>
                         </label>
@@ -33,345 +33,488 @@
             </tr>
         </thead>
         <tbody>
-            @foreach(var item in Model.items){
-            <tr class="check" data-id="@item.ItemId">
-                <td>
-                    <div class="form-check">
-                        <input class="form-check-input individualCheck" type="checkbox" value="">
-                        <label class="form-check-label" for="flexCheckDefault">
-                            <div class="d-flex   align-items-center w-auto p-0 ">
-                                <img src="images/dining-menu.png" alt="Image"
-                                    class="img-fluid me-2 ms-2" style="font: 10px; height: 25px;">
-                                <div style="word-wrap: break-word;">@item.Name
+            @foreach (var item in Model.items)
+            {
+                <tr class="check" data-id="@item.ItemId">
+                    <td>
+                        <div class="form-check">
+                            <input class="form-check-input individualCheck" type="checkbox" value="">
+                            <label class="form-check-label" for="flexCheckDefault">
+                                <div class="d-flex   align-items-center w-auto p-0 ">
+                                    <img src="images/dining-menu.png" alt="Image" class="img-fluid me-2 ms-2"
+                                        style="font: 10px; height: 25px;">
+                                    <div style="word-wrap: break-word;">@item.Name
+                                    </div>
                                 </div>
-                            </div>
-                        </label>
-                    </div>
-                </td>
-                <td>
-                    <img src="images/icons/veg-icon.svg" alt="Image" class="img-fluid me-2 ms-2"
-                        style="font: 10px; height: 25px;">
-                </td>
-                <td>
-                    @item.Rate
-                </td>
-                <td>
-                    @item.Quantity
-                </td>
-                 <td>
-                <div class="form-check form-switch ">
-                  <input class="form-check-input can-add-edit" type="checkbox" id="can-add-edit" name="darkmode"   asp-for="@item.IsAvailable" disabled>
-                </div>
-              </td>
-                <td>
-                    <div class="d-flex align-items-center ">
-                        <i class="fa-solid fa-pen me-3 ms-3"></i>
-                        <i class="fa-solid fa-trash" data-bs-toggle="modal" style="cursor:pointer"
-                            data-bs-target="#deleteItem" onclick="setDelId(@item.ItemId)"></i>
-                    </div>
-                </td>
-            </tr>
-             }
+                            </label>
+                        </div>
+                    </td>
+                    <td>
+                        @if (@item.ItemType == "veg")
+                        {
+
+                            <img src="images/icons/veg-icon.svg" alt="Image" class="img-fluid me-2 ms-2"
+                                style="font: 10px; height: 25px;">
+                        }
+                        else if (@item.ItemType == "non-veg")
+                        {
+                            <img src="images/icons/non-veg-icon.svg" alt="Image" class="img-fluid me-2 ms-2"
+                                style="font: 10px; height: 25px;">
+                        }
+                        else
+                        {
+                            <img src="images/icons/vegan-icon.svg" alt="Image" class="img-fluid me-2 ms-2"
+                                style="font: 10px; height: 25px;">
+                        }
+                    </td>
+                    <td>
+                        @item.Rate
+                    </td>
+                    <td>
+                        @item.Quantity
+                    </td>
+                    <td>
+                        <div class="form-check form-switch ">
+                            <input class="form-check-input can-add-edit" type="checkbox" id="can-add-edit" name="darkmode"
+                                asp-for="@item.IsAvailable" disabled>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="d-flex align-items-center ">
+                            <i class="fa-solid fa-pen me-3 ms-3"></i>
+                            <i class="fa-solid fa-trash" data-bs-toggle="modal" style="cursor:pointer"
+                                data-bs-target="#deleteItem" onclick="setDelId(@item.ItemId)"></i>
+                        </div>
+                    </td>
+                </tr>
+            }
         </tbody>
     </table>
-     <div >
-      <div class="d-flex flex-col justify-content-end mb-2">
-      <form method="get" id="pageSizeForm" >
-    <label for="pageSize">Records per page:</label>
-    <select id="pageSize" name="pageSize" onchange="fetch(@Model.PageNumber,@Model.PageSize,@Model.TotalPages)">
-        <option value="2" >2</option>      
-        <option value="5" >5</option>      
-        <option value="10" >10</option>      
-        <option value="15" >15</option>      
-    </select>
-  </form>
-   <div class="ms-2">
-   @if(  @Model.PageNumber>1)
-   {
-    <a onclick="fetch(@Model.PageNumber-1,@Model.PageSize,@Model.TotalPages)" style="cursor:pointer;color:blue;">Previous</a>
-   }
-   Page @Model.PageNumber of @Model.TotalPages
+    <div>
+        <div class="d-flex flex-col justify-content-end mb-2">
+            <form method="get" id="pageSizeForm">
+                <label for="pageSize">Records per page:</label>
+                <select id="pageSize" name="pageSize"
+                    onchange="fetch(@Model.PageNumber,@Model.PageSize,@Model.TotalPages)">
+                    <option value="2">2</option>
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                </select>
+            </form>
+            <div class="ms-2">
+                @if (@Model.PageNumber > 1)
+                {
+                    <a onclick="fetch(@Model.PageNumber-1,@Model.PageSize,@Model.TotalPages)"
+                        style="cursor:pointer;color:blue;">Previous</a>
+                }
+                Page @Model.PageNumber of @Model.TotalPages
 
-   @if(@Model.PageNumber<@Model.TotalPages)
-   {
-    <a onclick="fetch(@Model.PageNumber+1,@Model.PageSize,@Model.TotalPages)" style="cursor:pointer;color:blue;">Next</a>
-   }
-   </div>
-  </div>
-   </div>
-</div>
- <div class="modal " id="addItem">
-        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered  modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" style="color:rgba(9, 9, 172, 0.692) ;">Add New Menu Item</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form asp-action="AddItem" asp-controller="Menu" method="POST">
-                <div class="modal-body "> 
-                    <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-12 col-lg-9">
-                            <div class="row">
-                                <div class="col-12 col-lg-6">
-                                    <div class="form-floating mb-3">
-                                    <select class="form-select" id="CategoryId" name="CategoryId"  asp-for="@Model.CategoryId" >
-                                    @foreach(var category in Model.categories){
-                                    <option value="@category.CategoryId">@category.Name</option>
-                                    }
-                                    </select>
-                                    <label for="CategoryId" class="form-label">Category</label>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-lg-6">
-                                    <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="Name" name="Name" placeholder="Name" asp-for="@Model.Name">
-                                    <label for="name">Name</label>
-                                    <span asp-validation-for="Name" class="text-danger"></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col col-lg-3">
-                                    <div class="form-floating mb-3">
-                                    <select class="form-select" id="ItemType" name="ItemType" asp-for="@Model.ItemType" >
-                                    <option value="veg">Vegetarian</option>
-                                    <option value="non-veg">Non-Vegeterian</option>
-                                    <option value="vegan">Vegan</option>
-                                    </select>
-                                    <label for="ItemType" class="form-label">Item Type</label>
-                                    </div>
-                                    <span asp-validation-for="ItemType" class="text-danger "></span>
-                                </div>
-                                <div class="col-12 col-lg-3 col-md-6">
-                                    <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="Rate" name="Rate" placeholder="Rate" asp-for="@Model.Rate">
-                                    <label for="Rate">Rate</label>
-                                    <span asp-validation-for="Rate" class="text-danger"></span>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-lg-3 col-md-6">
-                                    <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="Quantity" name="Quantity" placeholder="Quantity" asp-for="@Model.Quantity">
-                                    <label for="Quantity">Quantity</label>
-                                    <span asp-validation-for="Quantity" class="text-danger "></span>
-                                    </div>
-                                </div>
-                                 <div class="col-12 col-lg-3 col-md-6">
-                                    <div class="form-floating mb-3">
-                                    <select class="form-select" id="unit" name="unit"  asp-for="@Model.Unit">
-                                    <option value="pieces">Pieces</option>
-                                    <option value="kg">kg</option>
-                                    <option value="litre">litre</option>
-                                    </select>
-                                    <label for="unit" class="form-label">Unit</label>
-                                    <span asp-validation-for="Unit" class="text-danger "></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6 col-lg-3 ">
-                                    <div class="form-check form-switch mb-3">
-                                    <input class="form-check-input can-delete" type="checkbox" id="available" name="darkmode"  asp-for="@Model.IsAvailable">
-                                    <label for="name">Available</label>
-                                    </div>
-                                </div>
-                                <div class="col-6 col-lg-3 ">
-                                    <div class="form-check form-switch mb-3">
-                                    <input class="form-check-input can-delete" type="checkbox" id="default" name="darkmode" asp-for="@Model.DefaultTax" >
-                                    <label for="name">DefaultTax</label>
-
-                                    </div>
-                                </div>
-                                <div class="col-12 col-lg-3 col-md-6">
-                                    <div class="form-floating mb-3 position-relative">
-                                    <input type="text" class="form-control" id="TaxPercentage" name="TaxPercentage" placeholder="TaxPercentage" asp-for="@Model.TaxPercentage">
-                                    <label for="TaxPercentage">TaxPercentage</label>
-                                    <span class="position-absolute end-0 top-50 me-3 translate-middle-y"><i
-                                            class="fa-solid fa-percentage" ></i></span>
-                                    <span asp-validation-for="TaxPercentage" class="text-danger "></span>
-                                </div>
-                                </div>
-                                 <div class="col-12 col-lg-3 col-md-6">
-                                    <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="ShortCode" name="ShortCode" placeholder="ShortCode" asp-for="@Model.Shortcode">
-                                    <label for="ShortCode">ShortCode</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-floating mb-3">
-                                <textarea class="form-control" id="Description" name="Description" 
-                                placeholder="Description"  asp-for="@Model.Description"></textarea>
-                                <label for="Description">Description</label>
-                            </div>
-                            </div>
-                            <div class="row">
-                                <label for="name">Upload Image</label>
-                                <div style="position: relative;">
-                                <div class=" d-flex flex-col align-items-center justify-content-center  text-center border border-danger  p-3"
-                                style="width: 100%;border-radius: 5px;">
-                                <i class="fa-solid fa-cloud-arrow-up me-2"></i>
-                                <div class="flex " style="color: rgb(109, 21, 21);">Drag And Drop or Browse Files</div>
-                            </div>
-                            <input type="file" id="filename" class="form-control "  name="ProfileImg" 
-                                style="opacity: 0.0; position: absolute; top:0; left: 0; bottom: 0; right:0; width: 100%; height:100%;" />
-                            </div>
-                            </div>
-                        </div>
-                        <div class="col col-lg-3 mt-lg-0 mt-3" style="background-color:antiquewhite">
-                            <div class="row p-0">
-                                 <div class="col p-2">
-                                    <div class="form-floating mb-3">
-                                    <select class="form-select" id="modifierGroup" name="modifierGroup" >
-                                    <option value="">Select Modifier Group(s)</option>
-                                    </select>
-                                    <label for="category" class="form-label">Modifier</label>
-                                    </div>
-                                </div>
-                           </div>
-                        </div>
-                    </div>
-                   </div>
-                </div>
-                <div class="modal-footer d-flex  align-items-center justify-content-end">
-                <button type="submit" class="btn  me-2" style="background-color: rgba(9, 9, 172, 0.692);color:white">Add</button>
-                <button type="button" class="btn" style="border-color:rgba(9, 9, 172, 0.692);  color:rgba(9, 9, 172, 0.692); background-color: white;"data-bs-dismiss="modal" aria-label="Close"     formnovalidate>Cancel</button>
-                </div>
-                </form>
+                @if (@Model.PageNumber < @Model.TotalPages)
+                {
+                    <a onclick="fetch(@Model.PageNumber+1,@Model.PageSize,@Model.TotalPages)"
+                        style="cursor:pointer;color:blue;">Next</a>
+                }
             </div>
         </div>
     </div>
-    <div class="modal" id="deleteItem">
-        <div class="modal-dialog modal-dialog-centered ">
-          <div class="modal-content">
-            <div class="modal-body text-center">
-              <img src="images/toppng.com-warning-icon-2400x2400.png" alt="Image" class="img-fluid me-2 "
-              style="font: 30px; height: 80px;" class="">
-              <h3>Are you sure you want to delete this item?</h3>
-             
-            <div class="modal-footer d-flex  align-items-center justify-content-center">
-                <input type="text" id="itemId"  hidden>
-              <button type="button" class="btn btn-danger align-items center" data-bs-dismiss="modal" onclick="deleteItem()">Yes</button>
-              <button type="button" class="btn btn-primary align-items center" data-bs-dismiss="modal">No</button>
+</div>
+<div class="modal " id="addItem">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered  modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" style="color:rgba(9, 9, 172, 0.692) ;">Add New Menu Item</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-          
-          </div>
+            <form id="addItemForm">
+                <div class="modal-body ">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-12 col-lg-9">
+                                <div class="row">
+                                    <div class="col-12 col-lg-6">
+                                        <div class="form-floating mb-3">
+                                            <select class="form-select" id="itemCategoryId" name="CategoryId"
+                                                asp-for="@Model.CategoryId">
+                                                @foreach (var category in Model.categories)
+                                                {
+                                                    <option value="@category.CategoryId">@category.Name</option>
+                                                }
+                                            </select>
+                                            <label for="CategoryId" class="form-label">Category</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-6">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" id="itemName" name="Name"
+                                                placeholder="Name" asp-for="@Model.Name">
+                                            <label for="name">Name</label>
+                                            <span asp-validation-for="Name" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col col-lg-3">
+                                        <div class="form-floating mb-3">
+                                            <select class="form-select" id="itemType" name="ItemType"
+                                                asp-for="@Model.ItemType">
+                                                <option value="veg">Vegetarian</option>
+                                                <option value="non-veg">Non-Vegeterian</option>
+                                                <option value="vegan">Vegan</option>
+                                            </select>
+                                            <label for="ItemType" class="form-label">Item Type</label>
+                                        </div>
+                                        <span asp-validation-for="ItemType" class="text-danger "></span>
+                                    </div>
+                                    <div class="col-12 col-lg-3 col-md-6">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" id="itemRate" name="Rate"
+                                                placeholder="Rate" asp-for="@Model.Rate">
+                                            <label for="Rate">Rate</label>
+                                            <span asp-validation-for="Rate" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-3 col-md-6">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" id="itemQuantity" name="Quantity"
+                                                placeholder="Quantity" asp-for="@Model.Quantity">
+                                            <label for="Quantity">Quantity</label>
+                                            <span asp-validation-for="Quantity" class="text-danger "></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-3 col-md-6">
+                                        <div class="form-floating mb-3">
+                                            <select class="form-select" id="itemUnit" name="Unit" asp-for="@Model.Unit">
+                                                <option value="pieces">Pieces</option>
+                                                <option value="kg">kg</option>
+                                                <option value="litre">litre</option>
+                                            </select>
+                                            <label for="unit" class="form-label">Unit</label>
+                                            <span asp-validation-for="Unit" class="text-danger "></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6 col-lg-3 ">
+                                        <div class="form-check form-switch mb-3">
+                                            <input class="form-check-input can-delete" type="checkbox"
+                                                id="itemAvailable" name="IsAvailable" asp-for="@Model.IsAvailable">
+                                            <label for="name">Available</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-lg-3 ">
+                                        <div class="form-check form-switch mb-3">
+                                            <input class="form-check-input can-delete" type="checkbox" id="itemDefault"
+                                                name="DefaultTax" asp-for="@Model.DefaultTax">
+                                            <label for="name">DefaultTax</label>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-3 col-md-6">
+                                        <div class="form-floating mb-3 position-relative">
+                                            <input type="text" class="form-control" id="itemTaxPercentage"
+                                                name="TaxPercentage" placeholder="TaxPercentage"
+                                                asp-for="@Model.TaxPercentage">
+                                            <label for="TaxPercentage">TaxPercentage</label>
+                                            <span class="position-absolute end-0 top-50 me-3 translate-middle-y"><i
+                                                    class="fa-solid fa-percentage"></i></span>
+                                            <span asp-validation-for="TaxPercentage" class="text-danger "></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-3 col-md-6">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" id="itemShortCode" name="ShortCode"
+                                                placeholder="ShortCode" asp-for="@Model.Shortcode">
+                                            <label for="ShortCode">ShortCode</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-floating mb-3">
+                                        <textarea class="form-control" id="itemDescription" name="Description"
+                                            placeholder="Description" asp-for="@Model.Description"></textarea>
+                                        <label for="Description">Description</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label for="name">Upload Image</label>
+                                    <div style="position: relative;">
+                                        <div class=" d-flex flex-col align-items-center justify-content-center  text-center border border-danger  p-3"
+                                            style="width: 100%;border-radius: 5px;">
+                                            <i class="fa-solid fa-cloud-arrow-up me-2"></i>
+                                            <div class="flex " style="color: rgb(109, 21, 21);">Drag And Drop or Browse
+                                                Files</div>
+                                        </div>
+                                        <input type="file" id="itemfilename" class="form-control " name="ItemImg"
+                                            asp-for="@Model.ItemImg"
+                                            style="opacity: 0.0; position: absolute; top:0; left: 0; bottom: 0; right:0; width: 100%; height:100%;" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col col-lg-3 mt-lg-0 mt-3" style="background-color:antiquewhite">
+                                <div class="row p-0">
+                                    <div class="col p-2">
+                                        <div class="form-floating mb-3">
+                                            <select class="form-select" id="itemmodifierGroup" name="modifierGroup"
+                                                onchange="fetchModifier()">
+                                                <option value="">Select Modifier Group(s)</option>
+                                            </select>
+                                            <label for="category" class="form-label">Modifier</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="modifiersDiv"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex  align-items-center justify-content-end">
+                    <button type="button" class="btn  me-2" style="background-color: rgba(9, 9, 172, 0.692);color:white"
+                        onclick="addItem()">Add</button>
+                    <button type="button" class="btn"
+                        style="border-color:rgba(9, 9, 172, 0.692);  color:rgba(9, 9, 172, 0.692); background-color: white;"
+                        data-bs-dismiss="modal" aria-label="Close" formnovalidate>Cancel</button>
+                </div>
+            </form>
         </div>
-      </div>
-      </div>
-    <div class="modal" id="deleteItems">
-        <div class="modal-dialog modal-dialog-centered ">
-          <div class="modal-content">
+    </div>
+</div>
+<div class="modal" id="deleteItem">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content">
             <div class="modal-body text-center">
-              <img src="images/toppng.com-warning-icon-2400x2400.png" alt="Image" class="img-fluid me-2 "
-              style="font: 30px; height: 80px;" class="">
-              <h3>Are you sure you want to delete these items?</h3>
-            <div class="modal-footer d-flex  align-items-center justify-content-center">
-              <button type="button" class="btn btn-danger align-items center" data-bs-dismiss="modal"  onclick="saveItems()">Yes</button>
-              <button type="button" class="btn btn-primary align-items center" data-bs-dismiss="modal">No</button>
+                <img src="images/toppng.com-warning-icon-2400x2400.png" alt="Image" class="img-fluid me-2 "
+                    style="font: 30px; height: 80px;" class="">
+                <h3>Are you sure you want to delete this item?</h3>
+
+                <div class="modal-footer d-flex  align-items-center justify-content-center">
+                    <input type="text" id="itemId" hidden>
+                    <button type="button" class="btn btn-danger align-items center" data-bs-dismiss="modal"
+                        onclick="deleteItem()">Yes</button>
+                    <button type="button" class="btn btn-primary align-items center" data-bs-dismiss="modal">No</button>
+                </div>
+
             </div>
-           
-          </div>
         </div>
-      </div>
-      </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
-    <script
-        src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+    </div>
+</div>
+<div class="modal" id="deleteItems">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <img src="images/toppng.com-warning-icon-2400x2400.png" alt="Image" class="img-fluid me-2 "
+                    style="font: 30px; height: 80px;" class="">
+                <h3>Are you sure you want to delete these items?</h3>
+                <div class="modal-footer d-flex  align-items-center justify-content-center">
+                    <button type="button" class="btn btn-danger align-items center" data-bs-dismiss="modal"
+                        onclick="saveItems()">Yes</button>
+                    <button type="button" class="btn btn-primary align-items center" data-bs-dismiss="modal">No</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
 <script>
-    $(document).ready(function(){
-          
-            $.ajax({
-                url:"/Menu/GetModifierGroups",
-                type: "GET",
-                success:function(data){
-                $.each(data,function(i,item){       
-                $("#modifierGroup").append(new Option(item.modifierGroupName,item.modifierGroupId));
-            });
-                }
-            });
-        
+    $(document).ready(function () {
+        $.ajax({
+            url: "/Menu/GetModifierGroups",
+            type: "GET",
+            success: function (data) {
+                $.each(data, function (i, item) {
+                    $("#itemmodifierGroup").append(new Option(item.modifierGroupName, item.modifierGroupId));
+                });
+            }
+        });
     });
-      function fetch(pageNumber,pageSize,totalPages){
-        let selectedPage=$("#pageSize").val();
-        let categoryId=@(Model.items.Count>0?Model.items[0].CategoryId:0);
-        if(@Model.items.Count>0){
+    function fetch(pageNumber, pageSize, totalPages) {
+        let selectedPage = $("#pageSize").val();
+        let categoryId =@(Model.items.Count > 0 ? Model.items[0].CategoryId : 0);
+        if (@Model.items.Count> 0) {
             $.ajax({
-                url:"/Menu/CategoryItems",
+                url: "/Menu/CategoryItems",
                 type: "GET",
-                data:{categoryId:categoryId,pageNumber:pageNumber,pageSize:pageSize,selectedPage:selectedPage},
-                success:function(response){
+                data: { categoryId: categoryId, pageNumber: pageNumber, pageSize: pageSize, selectedPage: selectedPage },
+                success: function (response) {
                     $("#renderitems").html(response);
                     $("#pageSize").val(selectedPage);
                 }
             });
         }
-        } 
-      
-        function setDelId(id)
-        {
-            document.getElementById("itemId").value=id;
-        }
+    }
+    let selectedModifiers = [];
+    let min = [];
+    let max = [];
+    function fetchModifier() {
+        let id = document.getElementById("itemmodifierGroup").value;
+        let modifierName = document.getElementById("itemmodifierGroup").options[itemmodifierGroup.selectedIndex].text;
+        let modifiersDiv = document.getElementById("modifiersDiv");
+        selectedModifiers.push(id);
+        $.ajax({
+            url: '@Url.Action("GetModifiers", "Menu")',
+            type: "GET",
+            data: { modifierId: id },
+            success: function (response) {
+                let finalrow = document.createElement("row");
+                finalrow.setAttribute("id", id);
+                let row1 = document.createElement("row");
+                row1.innerHTML = `
+                 <div class="d-flex  justify-content-between align-items-center p-0">
+                        <div >${modifierName}</div>
+                        <i class="fa fa-trash" onclick="remove(this)"></i>
+                    </div>
+                `
+                finalrow.append(row1);
+                let row = document.createElement("row");
+                row.innerHTML = `
+                <div class="d-flex align=items-center justify-content-between">
+                <div >
+                <select class="form-control" data-id="min" data-index="${id}"  onchange="updateSelection('${id}','min',this.value)">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                </select>
+                </div>
+                <div > 
+                <select class="form-control" data-id="max" data-index="${id}"  onchange="updateSelection('${id}','max',this.value)">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                </select>
+                </div>
+                </div>`;
+                finalrow.append(row);
 
-        function deleteItem(){
-            let itemId=document.getElementById("itemId").value;
-            $.ajax({
-            url:'@Url.Action("DeleteItem","Menu")',
-            type:"POST",
-            data:{itemId:itemId},
-            success:function(response){
-            if(response.message)
-            {
-             fetch(@Model.PageNumber,@Model.PageSize,@Model.TotalPages);
+                $.each(response, function (i, modifier) {
+                    let row = document.createElement("row");
+                    row.innerHTML = `
+                    <ul >
+                    <li>
+                    <div class="d-flex  justify-content-between align-items-center p-0">
+                        <div >${modifier.modifierName}</div>
+                        <div >${modifier.rate}</div>
+                    </div>
+                    </li>
+                    </ul>`;
+                    finalrow.append(row);
+                })
+                modifiersDiv.append(finalrow);
             }
-            }
-        })
 
-        }
-        $(".mainCheck").change(function(){
-            if($(".mainCheck").prop("checked")){
-            $(".individualCheck").prop("checked",true);
-            }else{
-            $(".individualCheck").prop("checked",false);
-            }
         });
-        $(".individualCheck").change(function(){
-           if( $(".individualCheck:checked").length===$(".individualCheck").length){
-            $(".mainCheck").prop("checked",true);
-           }else{
-            $(".mainCheck").prop("checked",false);
-           }
+    }
+    let dropdownSelections=[];
+    function updateSelection(index,type,value){
+        console.log(index);
+        console.log(type);
+        console.log(value);
+        if(!dropdownSelections[index]){
+            dropdownSelections.push({index:null,min:null,max:null});
+        }
+        if(type==="min"){
+        dropdownSelections.push({index:index,min:value,max:null});
+        }else if(type==="max"){
+        dropdownSelections.push({index:index,min:null,max:value})
+        }
+    }
+    function remove(ele) {
+        let row = ele.parentElement.parentElement.parentElement;
+        let id = row.getAttribute("id");
+        selectedModifiers = selectedModifiers.filter(modifier => selectedModifiers.id !== ele);
+        row.remove();
+    }
+    function addItem() {
+        console.log(dropdownSelections);
+        let CategoryId = document.getElementById("itemCategoryId").value;
+        let Name = document.getElementById("itemName").value;
+        let ItemType = document.getElementById("itemType").value;
+        let Rate = document.getElementById("itemRate").value;
+        let Quantity = document.getElementById("itemQuantity").value;
+        let Unit = document.getElementById("itemUnit").value;
+        let Available = document.getElementById("itemAvailable").value;
+        let DefaultTax = document.getElementById("itemDefault").value;
+        let TaxPercentage = document.getElementById("itemTaxPercentage").value;
+        let ShortCode = document.getElementById("itemShortCode").value;
+        let Description = document.getElementById("itemDescription").value;
+        let ItemImg = document.getElementById("itemfilename").value;
+
+        let data = { CategoryId: CategoryId, Name: Name, ItemType: ItemType, Rate: Rate, Quantity: Quantity, Unit: Unit, Available: Available, DefaultTax: DefaultTax, TaxPercentage: TaxPercentage, ShortCode: ShortCode, Description: Description, ItemImg: ItemImg, selectedModifiers: selectedModifiers,dropdownSelections:Object.values(dropdownSelections) };
+        if ($("#addItemForm").valid()) {
+            $.ajax({
+                url: '@Url.Action("AddItem", "Menu")',
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(data),
+                success: function (response) {
+                    if (response.message) {
+                        new bootstrap.Modal(document.getElementById("addModifier")).hide();
+                        fetch(@Model.PageNumber,@Model.PageSize,@Model.TotalPages);
+                    }
+                }
+            });
+        }
+    }
+    function setDelId(id) {
+        document.getElementById("itemId").value = id;
+    }
+
+    function deleteItem() {
+        let itemId = document.getElementById("itemId").value;
+        $.ajax({
+            url: '@Url.Action("DeleteItem", "Menu")',
+            type: "POST",
+            data: { itemId: itemId },
+            success: function (response) {
+                if (response.message) {
+                    fetch(@Model.PageNumber,@Model.PageSize,@Model.TotalPages);
+                }
+            }
         })
 
-        function checkedItems()
-        {
-        let selectedItems=[];
-        $("tbody tr").each(function(){
-            let row=$(this);
-            let isSelected=row.find(".individualCheck").prop("checked");
-            if(isSelected){
+    }
+    $(".mainCheck").change(function () {
+        if ($(".mainCheck").prop("checked")) {
+            $(".individualCheck").prop("checked", true);
+        } else {
+            $(".individualCheck").prop("checked", false);
+        }
+    });
+    $(".individualCheck").change(function () {
+        if ($(".individualCheck:checked").length === $(".individualCheck").length) {
+            $(".mainCheck").prop("checked", true);
+        } else {
+            $(".mainCheck").prop("checked", false);
+        }
+    })
+
+    function checkedItems() {
+        let selectedItems = [];
+        $("tbody tr").each(function () {
+            let row = $(this);
+            let isSelected = row.find(".individualCheck").prop("checked");
+            if (isSelected) {
                 selectedItems.push(row.data("id"));
             }
         });
 
-      return selectedItems;
-      }
+        return selectedItems;
+    }
 
-      function saveItems()
-      {
-        let data=checkedItems();
+    function saveItems() {
+        let data = checkedItems();
         $.ajax({
-          url:'@Url.Action("DeleteItems","Menu")',
-          type:"POST",
-          contentType:"application/json ",
-          data:JSON.stringify(data),
-          success:function(response){
-            if(response.redirectUrl)
-            {
-              window.location.href=response.redirectUrl;
+            url: '@Url.Action("DeleteItems", "Menu")',
+            type: "POST",
+            contentType: "application/json ",
+            data: JSON.stringify(data),
+            success: function (response) {
+                if (response.redirectUrl) {
+                    window.location.href = response.redirectUrl;
+                }
             }
-          }
         })
-      }
+    }
 </script>

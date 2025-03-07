@@ -21,79 +21,80 @@ public class HomeController : Controller
     private readonly EmailService _emailService;
     private readonly EncryptDecrypt _encryptDecrypt;
     private readonly JwtTokenService _jwtTokenService;
-  
 
 
-    public HomeController(UserService userService,EmailSettings emailSettings,EmailService emailService,JwtTokenService jwtTokenService,EncryptDecrypt encryptDecrypt)
+
+    public HomeController(UserService userService, EmailSettings emailSettings, EmailService emailService, JwtTokenService jwtTokenService, EncryptDecrypt encryptDecrypt)
     {
         _userService = userService;
-        _emailSettings=emailSettings;
-        _emailService=emailService;
-         _jwtTokenService=jwtTokenService;
-         _encryptDecrypt=encryptDecrypt;
-        
+        _emailSettings = emailSettings;
+        _emailService = emailService;
+        _jwtTokenService = jwtTokenService;
+        _encryptDecrypt = encryptDecrypt;
+
     }
-  
+
 
     public IActionResult Index()
     {
-        if(Request.Cookies.ContainsKey("jwtToken"))
+        if (Request.Cookies.ContainsKey("jwtToken"))
         {
-             return RedirectToAction("Index","Dashboard");
+            return RedirectToAction("Index", "Dashboard");
         }
         return View();
     }
 
-[HttpPost]
-    public  IActionResult Index(LoginViewModel model)
+    [HttpPost]
+    public IActionResult Index(LoginViewModel model)
     {
-        if(ModelState.IsValid)
+        if (ModelState.IsValid)
         {
-            bool isValidUser = _userService.ValidateUser(model.Email,model.Password);
-            string roleName= _userService.GetUserRole(model.Email);
-            if(isValidUser)
+            bool isValidUser = _userService.ValidateUser(model.Email, model.Password);
+            string roleName = _userService.GetUserRole(model.Email);
+            if (isValidUser)
             {
-                string token =_jwtTokenService.GenerateToken(model.Email,roleName);
-               
-                Response.Cookies.Append("jwtToken",token, new CookieOptions
+                string token = _jwtTokenService.GenerateToken(model.Email, roleName);
+
+                Response.Cookies.Append("jwtToken", token, new CookieOptions
                 {
-                    HttpOnly=true,
-                    Secure=true,
-                    Expires=model.RememberMe? DateTime.UtcNow.AddDays(30):DateTime.UtcNow.AddHours(1)
+                    HttpOnly = true,
+                    Secure = true,
+                    Expires = model.RememberMe ? DateTime.UtcNow.AddDays(30) : DateTime.UtcNow.AddHours(1)
                 });
-               
-                Response.Cookies.Append("email",model.Email,new CookieOptions
+
+                Response.Cookies.Append("email", model.Email, new CookieOptions
                 {
-                    HttpOnly=true,
-                    Secure=true,
-                    Expires=DateTime.UtcNow.AddDays(30)
-                });       
-                return RedirectToAction("Index","Dashboard");      
+                    HttpOnly = true,
+                    Secure = true,
+                    Expires = DateTime.UtcNow.AddDays(30)
+                });
+                return RedirectToAction("Index", "Dashboard");
             }
-            ViewBag.Message="Invalid credentials";
-        return View(model);
+            ViewBag.Message = "Invalid credentials";
+            return View(model);
         }
         return RedirectToAction("Index");
     }
-        
-[HttpGet]
+
+    [HttpGet]
     public IActionResult ForgotPassword(string? email)
     {
         return View();
     }
 
     [HttpPost]
-    public async Task<IActionResult>  ForgotPassword(ForgotPasswordViewModel model)
+    public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
     {
         bool isValidUser = _userService.ValidateUserByEmail(model.Email);
-        if(!isValidUser){
-            ViewBag.Message="Email not found";
+        if (!isValidUser)
+        {
+            ViewBag.Message = "Email not found";
             return View();
         }
-        string email=_encryptDecrypt.Encrypt(model.Email);
-        string resetLink= Url.Action("ResetPassword","Home",new  {email=email}, Request.Scheme);
-        await _emailService.SendForgotPasswordEmail(model.Email,_emailSettings.host,_emailSettings.SenderEmail,_emailSettings.SenderPassword,_emailSettings.SMTPPort,resetLink);
-        ViewBag.Message="A reset password link has been sent on this email";
+        string email = _encryptDecrypt.Encrypt(model.Email);
+        string resetLink = Url.Action("ResetPassword", "Home", new { email = email }, Request.Scheme);
+        await _emailService.SendForgotPasswordEmail(model.Email, _emailSettings.host, _emailSettings.SenderEmail, _emailSettings.SenderPassword, _emailSettings.SMTPPort, resetLink);
+        ViewBag.Message = "A reset password link has been sent on this email";
         return View(model);
     }
 
@@ -101,10 +102,10 @@ public class HomeController : Controller
 
     public IActionResult ResetPassword([FromQuery] string email)
     {
-        string emailDecrypt=_encryptDecrypt.Decrypt(email);
-        var model= new ResetPasswordViewModel
+        string emailDecrypt = _encryptDecrypt.Decrypt(email);
+        var model = new ResetPasswordViewModel
         {
-            Email=emailDecrypt
+            Email = emailDecrypt
         };
 
         return View(model);
@@ -112,11 +113,11 @@ public class HomeController : Controller
 
     [HttpPost]
     // [Route("ResetPassword")]
-     public IActionResult ResetPassword(ResetPasswordViewModel model)
+    public IActionResult ResetPassword(ResetPasswordViewModel model)
     {
-        string password=BCrypt.Net.BCrypt.HashPassword(model.newPassword);
+        string password = BCrypt.Net.BCrypt.HashPassword(model.newPassword);
 
-        _userService.ResetPassword(password,model.Email);
+        _userService.ResetPassword(password, model.Email);
         return RedirectToAction("Index");
     }
 
@@ -126,7 +127,7 @@ public class HomeController : Controller
     }
 
 
-    
+
     // [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     // public IActionResult Error()
     // {

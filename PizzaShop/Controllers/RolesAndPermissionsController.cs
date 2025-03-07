@@ -20,12 +20,12 @@ public class RolesAndPermissionsController:Controller
    
     public ActionResult Index()
     {
-        var roles= _userService.GetRoles().ToList();
+        List<Role> roles= _userService.GetRoles().ToList();
         return View(roles);
     }
     public ActionResult Permissions(int id)
     {
-        var permissions= _rolesAndPermissionsServices.GetPermissions(id);
+        PermissionsViewModel permissions= _rolesAndPermissionsServices.GetPermissions(id);
 
         return View(permissions);
     }
