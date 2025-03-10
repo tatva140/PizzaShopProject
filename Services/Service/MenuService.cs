@@ -28,7 +28,7 @@ public class MenuService
         return  (modifiers,totalRecords);
     }
 
-    public bool AddCategory(Category category){
+    public int AddCategory(Category category){
         return _menuRepository.AddCategory(category);
     }
     public bool AddModifier(Modifier modifier){
@@ -70,7 +70,19 @@ public class MenuService
      public bool EditModifier(int modifierId, string modifierGroupId,string modifierName,string unit,decimal rate,int quantity,string description){
         return _menuRepository.EditModifier(modifierId,modifierGroupId,modifierName,unit,rate,quantity,description);
     }
-    public bool AddModifierGroup(JsonObject obj){
+    public int AddModifierGroup(JsonObject obj){
         return _menuRepository.AddModifierGroup(obj);
+    }
+    public int EditModifierGroup(JsonObject obj){
+        return _menuRepository.EditModifierGroup(obj);
+    }
+    public bool DeleteModifierGroup(int id){
+        return _menuRepository.DeleteModifierGroup(id);
+    }
+     public ModifierGroup GetModifierGroupDetails( int id){
+       return _menuRepository.GetModifierGroupDetails(id);
+    }
+       public List<Modifier> GetAllModifiers(int id){
+        return _menuRepository.GetAllModifiers(id);
     }
 }

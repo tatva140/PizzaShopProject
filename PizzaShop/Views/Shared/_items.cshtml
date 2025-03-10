@@ -10,7 +10,7 @@
         </div>
         <button class=" me-2 " data-bs-toggle="modal" data-bs-target="#deleteItems"
             style="background-color: white; border-radius: 5px;"><i class="fa fa-trash"></i></button>
-        <button class="addItem btn btn-primary " data-bs-toggle="modal" data-bs-target="#addItem">+ New Item</button>
+        <button class="addItem btn btn-primary " data-bs-toggle="modal" data-bs-target="#addItem" onclick="showModifierGroups()">+ New Item</button>
     </div>
 </div>
 <div class="table-responsive  mt-3">
@@ -35,6 +35,7 @@
         <tbody>
             @foreach (var item in Model.items)
             {
+                <input type="="text hidden id="categoryItemId" value="@item.CategoryId">
                 <tr class="check" data-id="@item.ItemId">
                     <td>
                         <div class="form-check">
@@ -67,6 +68,7 @@
                                 style="font: 10px; height: 25px;">
                         }
                     </td>
+                   
                     <td>
                         @item.Rate
                     </td>
@@ -90,11 +92,13 @@
             }
         </tbody>
     </table>
-    <div>
+  
+</div>
+  <div>
         <div class="d-flex flex-col justify-content-end mb-2">
             <form method="get" id="pageSizeForm">
                 <label for="pageSize">Records per page:</label>
-                <select id="pageSize" name="pageSize"
+                <select id="pageItemSize" name="pageSize"
                     onchange="fetch(@Model.PageNumber,@Model.PageSize,@Model.TotalPages)">
                     <option value="2">2</option>
                     <option value="5">5</option>
@@ -118,7 +122,6 @@
             </div>
         </div>
     </div>
-</div>
 <div class="modal " id="addItem">
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered  modal-xl">
         <div class="modal-content">
@@ -270,7 +273,7 @@
                 </div>
                 <div class="modal-footer d-flex  align-items-center justify-content-end">
                     <button type="button" class="btn  me-2" style="background-color: rgba(9, 9, 172, 0.692);color:white"
-                        onclick="addItem()">Add</button>
+                        onclick="addItem()" data-bs-dismiss="modal">Add</button>
                     <button type="button" class="btn"
                         style="border-color:rgba(9, 9, 172, 0.692);  color:rgba(9, 9, 172, 0.692); background-color: white;"
                         data-bs-dismiss="modal" aria-label="Close" formnovalidate>Cancel</button>
@@ -319,8 +322,23 @@
 <script
     src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
 <script>
-    $(document).ready(function () {
-        $.ajax({
+
+    function fetch(pageNumber, pageSize, totalPages) {
+        debugger
+        let selectedPage = $("#pageItemSize").val();
+        let cgoryId=document.getElementById("categoryItemId").value;
+            $.ajax({
+                url: "/Menu/CategoryItems",
+                type: "GET",
+                data: { categoryId: cgoryId, pageNumber: pageNumber, pageSize: pageSize, selectedPage: selectedPage },
+                success: function (response) {
+                    $("#renderitems").html(response);
+                    $("#pageItemSize").val(selectedPage);
+                }
+            });
+    }
+    function showModifierGroups(){
+         $.ajax({
             url: "/Menu/GetModifierGroups",
             type: "GET",
             success: function (data) {
@@ -329,30 +347,15 @@
                 });
             }
         });
-    });
-    function fetch(pageNumber, pageSize, totalPages) {
-        let selectedPage = $("#pageSize").val();
-        let categoryId =@(Model.items.Count > 0 ? Model.items[0].CategoryId : 0);
-        if (@Model.items.Count> 0) {
-            $.ajax({
-                url: "/Menu/CategoryItems",
-                type: "GET",
-                data: { categoryId: categoryId, pageNumber: pageNumber, pageSize: pageSize, selectedPage: selectedPage },
-                success: function (response) {
-                    $("#renderitems").html(response);
-                    $("#pageSize").val(selectedPage);
-                }
-            });
-        }
     }
-    let selectedModifiers = [];
-    let min = [];
-    let max = [];
+     selectedModifierList = [];
+     min = [];
+     max = [];
     function fetchModifier() {
         let id = document.getElementById("itemmodifierGroup").value;
         let modifierName = document.getElementById("itemmodifierGroup").options[itemmodifierGroup.selectedIndex].text;
         let modifiersDiv = document.getElementById("modifiersDiv");
-        selectedModifiers.push(id);
+        selectedModifierList.push(id);
         $.ajax({
             url: '@Url.Action("GetModifiers", "Menu")',
             type: "GET",
@@ -406,28 +409,26 @@
 
         });
     }
-    let dropdownSelections=[];
+     dropdownSelections=[];
     function updateSelection(index,type,value){
-        console.log(index);
-        console.log(type);
-        console.log(value);
-        if(!dropdownSelections[index]){
-            dropdownSelections.push({index:null,min:null,max:null});
+       let existingSelection=dropdownSelections.find(e=>e.Index==index);
+        if(!existingSelection){
+            existingSelection= {Index:index,Min:0,Max:0};
+            dropdownSelections.push(existingSelection);
         }
         if(type==="min"){
-        dropdownSelections.push({index:index,min:value,max:null});
+        existingSelection.Min=value;
         }else if(type==="max"){
-        dropdownSelections.push({index:index,min:null,max:value})
+        existingSelection.Max=value;
         }
     }
     function remove(ele) {
         let row = ele.parentElement.parentElement.parentElement;
         let id = row.getAttribute("id");
-        selectedModifiers = selectedModifiers.filter(modifier => selectedModifiers.id !== ele);
+        selectedModifierList = selectedModifierList.filter(modifier => selectedModifierList.id !== ele);
         row.remove();
     }
     function addItem() {
-        console.log(dropdownSelections);
         let CategoryId = document.getElementById("itemCategoryId").value;
         let Name = document.getElementById("itemName").value;
         let ItemType = document.getElementById("itemType").value;
@@ -441,7 +442,7 @@
         let Description = document.getElementById("itemDescription").value;
         let ItemImg = document.getElementById("itemfilename").value;
 
-        let data = { CategoryId: CategoryId, Name: Name, ItemType: ItemType, Rate: Rate, Quantity: Quantity, Unit: Unit, Available: Available, DefaultTax: DefaultTax, TaxPercentage: TaxPercentage, ShortCode: ShortCode, Description: Description, ItemImg: ItemImg, selectedModifiers: selectedModifiers,dropdownSelections:Object.values(dropdownSelections) };
+        let data = { CategoryId: CategoryId, Name: Name, ItemType: ItemType, Rate: Rate, Quantity: Quantity, Unit: Unit, Available: Available, DefaultTax: DefaultTax, TaxPercentage: TaxPercentage, ShortCode: ShortCode, Description: Description, ItemImg: ItemImg, selectedModifierList: selectedModifierList,dropdownSelections:dropdownSelections};
         if ($("#addItemForm").valid()) {
             $.ajax({
                 url: '@Url.Action("AddItem", "Menu")',
@@ -449,10 +450,7 @@
                 contentType: "application/json",
                 data: JSON.stringify(data),
                 success: function (response) {
-                    if (response.message) {
-                        new bootstrap.Modal(document.getElementById("addModifier")).hide();
-                        fetch(@Model.PageNumber,@Model.PageSize,@Model.TotalPages);
-                    }
+                        fetch(@Model.PageNumber,@Model.PageSize,@Model.TotalPages);   
                 }
             });
         }
@@ -467,10 +465,8 @@
             url: '@Url.Action("DeleteItem", "Menu")',
             type: "POST",
             data: { itemId: itemId },
-            success: function (response) {
-                if (response.message) {
+            success: function (response) { 
                     fetch(@Model.PageNumber,@Model.PageSize,@Model.TotalPages);
-                }
             }
         })
 

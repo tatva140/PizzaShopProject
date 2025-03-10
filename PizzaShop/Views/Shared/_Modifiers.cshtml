@@ -35,6 +35,7 @@
         <tbody>
             @foreach (var m in Model.modifier)
             {
+                <input type="="text hidden id="mgId" value="@m.ModifierGroupId">
                 <tr class="check" data-id="@m.ModifierId">
                     <td>
                         <div class="form-check">
@@ -222,7 +223,7 @@
                 <h5 class="modal-title" style="color:rgba(9, 9, 172, 0.692) ;">Add Modifier</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form asp-action="AddModifier" asp-controller="Menu" method="POST">
+            <form id="addModifierForm">
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-12">
@@ -288,12 +289,13 @@
                         </div>
                     </div>
                     <div class="modal-footer d-flex  align-items-center justify-content-end">
-                        <button type="submit" class="btn  me-2"
-                            style="background-color: rgba(9, 9, 172, 0.692);color:white">Save</button>
+                        <button type="button" class="btn  me-2"
+                            style="background-color: rgba(9, 9, 172, 0.692);color:white"  data-bs-dismiss="modal" onclick="addModifer()">Save</button>
                         <button type="button" class="btn"
                             style="border-color:rgba(9, 9, 172, 0.692);  color:rgba(9, 9, 172, 0.692); background-color: white;"
                             data-bs-dismiss="modal" aria-label="Close" formnovalidate>Cancel</button>
                     </div>
+                </div>
             </form>
         </div>
     </div>
@@ -307,8 +309,8 @@
 <script>
     function fetchAllModifiers(pageNumber, pageSize, totalPages) {
         let selectedPage = $("#pageSize").val();
-        let modifierId =@(Model.modifier.Count > 0 ? Model.modifier[0].ModifierGroupId : 0);
-        if (@Model.modifier.Count> 0) {
+        let modifierId=document.getElementById("mgId").value;
+    
             $.ajax({
                 url: "/Menu/Modifiers",
                 type: "GET",
@@ -318,7 +320,7 @@
                     $("#pageSize").val(selectedPage);
                 }
             });
-        }
+        
     }
     function setDel(id) {
         document.getElementById("modifierId").value = id;
@@ -357,7 +359,17 @@
                 }
             }
         })
-
+    }
+    function addModifer(){
+        let formdata=$("#addModifierForm").serialize();
+        $.ajax({
+            url: "/Menu/AddModifier",
+            type: "POST",
+            data:formdata,
+            success: function (response) {
+               fetchAllModifiers(@Model.PageNumber,@Model.PageSize,@Model.TotalPages);
+            }
+        });
     }
     function fetchModifierDetails(id) {
         $.ajax({
@@ -416,4 +428,5 @@
             }
         })
     }
+    
 </script>

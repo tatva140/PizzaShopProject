@@ -9,10 +9,10 @@ public class MenuItemsViewModel
     public List<Item> items {get;set;}
     public List<ModifierGroup> modifierGroups {get;set;}
     
-    public List<MinMaxViewModal> minMaxViewModals {get;set;}
+    public List<MinMaxViewModal> dropdownSelections {get;set;}
     public Category category {get;set;}
 
-    public List<int> selectedModifiers {get;set;}
+    public List<int> selectedModifierList {get;set;}
 
     public string CategoryName {get;set;}
     public int PageNumber {get;set;}

@@ -7,9 +7,9 @@ namespace Services.Interfaces;
 public interface IMenuRepository
 {
     List<Category> GetCategories();
-    List<Item> GetCategoryItems(int id,int pageNumber,int pageSize,out int totalRecords);
-    List<Modifier> GetModifiers(int id,int pageNumber,int pageSize,out int totalRecords);
-    bool AddCategory(Category category);
+    List<Item> GetCategoryItems(int id, int pageNumber, int pageSize, out int totalRecords);
+    List<Modifier> GetModifiers(int id, int pageNumber, int pageSize, out int totalRecords);
+    int AddCategory(Category category);
     bool AddModifier(Modifier modifier);
     bool EditCategory(Category category);
     Category CategoryDetails(int id);
@@ -21,8 +21,11 @@ public interface IMenuRepository
     List<ModifierGroup> GetModifierGroups();
     bool AddItem(MenuItemsViewModel menuItemsViewModel);
     Modifier ModifierDetails(int id);
-    bool EditModifier(int modifierId, string modifierGroupId,string modifierName,string unit,decimal rate,int quantity,string description);
-    bool AddModifierGroup(JsonObject obj);
-
+    bool EditModifier(int modifierId, string modifierGroupId, string modifierName, string unit, decimal rate, int quantity, string description);
+    int AddModifierGroup(JsonObject obj);
+    int EditModifierGroup(JsonObject obj);
+    bool DeleteModifierGroup(int id);
+     ModifierGroup GetModifierGroupDetails(int id);
+      List<Modifier> GetAllModifiers(int id);
 
 }
