@@ -10,7 +10,8 @@
         </div>
         <button class=" me-2 " data-bs-toggle="modal" data-bs-target="#deleteItems"
             style="background-color: white; border-radius: 5px;"><i class="fa fa-trash"></i></button>
-        <button class="addItem btn btn-primary " data-bs-toggle="modal" data-bs-target="#addItem" onclick="showModifierGroups()">+ New Item</button>
+        <button class="addItem btn btn-primary " data-bs-toggle="modal" data-bs-target="#addItem"
+            onclick="showModifierGroups()">+ New Item</button>
     </div>
 </div>
 <div class="table-responsive  mt-3">
@@ -35,7 +36,7 @@
         <tbody>
             @foreach (var item in Model.items)
             {
-                <input type="="text hidden id="categoryItemId" value="@item.CategoryId">
+                <input type="=" text hidden id="categoryItemId" value="@item.CategoryId">
                 <tr class="check" data-id="@item.ItemId">
                     <td>
                         <div class="form-check">
@@ -68,7 +69,7 @@
                                 style="font: 10px; height: 25px;">
                         }
                     </td>
-                   
+
                     <td>
                         @item.Rate
                     </td>
@@ -92,36 +93,36 @@
             }
         </tbody>
     </table>
-  
-</div>
-  <div>
-        <div class="d-flex flex-col justify-content-end mb-2">
-            <form method="get" id="pageSizeForm">
-                <label for="pageSize">Records per page:</label>
-                <select id="pageItemSize" name="pageSize"
-                    onchange="fetch(@Model.PageNumber,@Model.PageSize,@Model.TotalPages)">
-                    <option value="2">2</option>
-                    <option value="5">5</option>
-                    <option value="10">10</option>
-                    <option value="15">15</option>
-                </select>
-            </form>
-            <div class="ms-2">
-                @if (@Model.PageNumber > 1)
-                {
-                    <a onclick="fetch(@Model.PageNumber-1,@Model.PageSize,@Model.TotalPages)"
-                        style="cursor:pointer;color:blue;">Previous</a>
-                }
-                Page @Model.PageNumber of @Model.TotalPages
 
-                @if (@Model.PageNumber < @Model.TotalPages)
-                {
-                    <a onclick="fetch(@Model.PageNumber+1,@Model.PageSize,@Model.TotalPages)"
-                        style="cursor:pointer;color:blue;">Next</a>
-                }
-            </div>
+</div>
+<div>
+    <div class="d-flex flex-col justify-content-end mb-2">
+        <form method="get" id="pageSizeForm">
+            <label for="pageSize">Records per page:</label>
+            <select id="pageItemSize" name="pageSize"
+                onchange="fetch(@Model.PageNumber,@Model.PageSize,@Model.TotalPages)">
+                <option value="2">2</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+            </select>
+        </form>
+        <div class="ms-2">
+            @if (@Model.PageNumber > 1)
+            {
+                <a onclick="fetch(@Model.PageNumber-1,@Model.PageSize,@Model.TotalPages)"
+                    style="cursor:pointer;color:blue;">Previous</a>
+            }
+            Page @Model.PageNumber of @Model.TotalPages
+
+            @if (@Model.PageNumber < @Model.TotalPages)
+            {
+                <a onclick="fetch(@Model.PageNumber+1,@Model.PageSize,@Model.TotalPages)"
+                    style="cursor:pointer;color:blue;">Next</a>
+            }
         </div>
     </div>
+</div>
 <div class="modal " id="addItem">
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered  modal-xl">
         <div class="modal-content">
@@ -254,7 +255,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col col-lg-3 mt-lg-0 mt-3" style="background-color:antiquewhite">
+                            <div class="col col-lg-3 mt-lg-0 mt-3" style="background-color:antiquewhite;">
                                 <div class="row p-0">
                                     <div class="col p-2">
                                         <div class="form-floating mb-3">
@@ -266,14 +267,14 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div id="modifiersDiv"></div>
+                                <div id="modifiersDiv" ></div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer d-flex  align-items-center justify-content-end">
                     <button type="button" class="btn  me-2" style="background-color: rgba(9, 9, 172, 0.692);color:white"
-                        onclick="addItem()" data-bs-dismiss="modal">Add</button>
+                        onclick="addItem()">Add</button>
                     <button type="button" class="btn"
                         style="border-color:rgba(9, 9, 172, 0.692);  color:rgba(9, 9, 172, 0.692); background-color: white;"
                         data-bs-dismiss="modal" aria-label="Close" formnovalidate>Cancel</button>
@@ -318,6 +319,7 @@
         </div>
     </div>
 </div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
 <script
     src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
@@ -326,19 +328,19 @@
     function fetch(pageNumber, pageSize, totalPages) {
         debugger
         let selectedPage = $("#pageItemSize").val();
-        let cgoryId=document.getElementById("categoryItemId").value;
-            $.ajax({
-                url: "/Menu/CategoryItems",
-                type: "GET",
-                data: { categoryId: cgoryId, pageNumber: pageNumber, pageSize: pageSize, selectedPage: selectedPage },
-                success: function (response) {
-                    $("#renderitems").html(response);
-                    $("#pageItemSize").val(selectedPage);
-                }
-            });
+        let cgoryId = document.getElementById("categoryItemId").value;
+        $.ajax({
+            url: "/Menu/CategoryItems",
+            type: "GET",
+            data: { categoryId: cgoryId, pageNumber: pageNumber, pageSize: pageSize, selectedPage: selectedPage },
+            success: function (response) {
+                $("#renderitems").html(response);
+                $("#pageItemSize").val(selectedPage);
+            }
+        });
     }
-    function showModifierGroups(){
-         $.ajax({
+    function showModifierGroups() {
+        $.ajax({
             url: "/Menu/GetModifierGroups",
             type: "GET",
             success: function (data) {
@@ -348,9 +350,9 @@
             }
         });
     }
-     selectedModifierList = [];
-     min = [];
-     max = [];
+    selectedModifierList = [];
+    min = [];
+    max = [];
     function fetchModifier() {
         let id = document.getElementById("itemmodifierGroup").value;
         let modifierName = document.getElementById("itemmodifierGroup").options[itemmodifierGroup.selectedIndex].text;
@@ -361,6 +363,11 @@
             type: "GET",
             data: { modifierId: id },
             success: function (response) {
+                if(response.length>0 )
+                {
+                    if($(`#${id}`).length > 0){
+                        return;
+                    }
                 let finalrow = document.createElement("row");
                 finalrow.setAttribute("id", id);
                 let row1 = document.createElement("row");
@@ -376,6 +383,7 @@
                 <div class="d-flex align=items-center justify-content-between">
                 <div >
                 <select class="form-control" data-id="min" data-index="${id}"  onchange="updateSelection('${id}','min',this.value)">
+                <option value="">Select Option</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -383,6 +391,7 @@
                 </div>
                 <div > 
                 <select class="form-control" data-id="max" data-index="${id}"  onchange="updateSelection('${id}','max',this.value)">
+                <option value="">Select Option</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -403,23 +412,24 @@
                     </li>
                     </ul>`;
                     finalrow.append(row);
-                })
+                });
                 modifiersDiv.append(finalrow);
+                }
             }
 
         });
     }
-     dropdownSelections=[];
-    function updateSelection(index,type,value){
-       let existingSelection=dropdownSelections.find(e=>e.Index==index);
-        if(!existingSelection){
-            existingSelection= {Index:index,Min:0,Max:0};
+    dropdownSelections = [];
+    function updateSelection(index, type, value) {
+        let existingSelection = dropdownSelections.find(e => e.Index == index);
+        if (!existingSelection) {
+            existingSelection = { Index: index, Min: 0, Max: 0 };
             dropdownSelections.push(existingSelection);
         }
-        if(type==="min"){
-        existingSelection.Min=value;
-        }else if(type==="max"){
-        existingSelection.Max=value;
+        if (type === "min") {
+            existingSelection.Min = value;
+        } else if (type === "max") {
+            existingSelection.Max = value;
         }
     }
     function remove(ele) {
@@ -442,7 +452,7 @@
         let Description = document.getElementById("itemDescription").value;
         let ItemImg = document.getElementById("itemfilename").value;
 
-        let data = { CategoryId: CategoryId, Name: Name, ItemType: ItemType, Rate: Rate, Quantity: Quantity, Unit: Unit, Available: Available, DefaultTax: DefaultTax, TaxPercentage: TaxPercentage, ShortCode: ShortCode, Description: Description, ItemImg: ItemImg, selectedModifierList: selectedModifierList,dropdownSelections:dropdownSelections};
+        let data = { CategoryId: CategoryId, Name: Name, ItemType: ItemType, Rate: Rate, Quantity: Quantity, Unit: Unit, Available: Available, DefaultTax: DefaultTax, TaxPercentage: TaxPercentage, ShortCode: ShortCode, Description: Description, ItemImg: ItemImg, selectedModifierList: selectedModifierList, dropdownSelections: dropdownSelections };
         if ($("#addItemForm").valid()) {
             $.ajax({
                 url: '@Url.Action("AddItem", "Menu")',
@@ -450,7 +460,8 @@
                 contentType: "application/json",
                 data: JSON.stringify(data),
                 success: function (response) {
-                        fetch(@Model.PageNumber,@Model.PageSize,@Model.TotalPages);   
+                    $(".modal").modal("hide");
+                    fetch(@Model.PageNumber,@Model.PageSize,@Model.TotalPages);
                 }
             });
         }
@@ -465,8 +476,8 @@
             url: '@Url.Action("DeleteItem", "Menu")',
             type: "POST",
             data: { itemId: itemId },
-            success: function (response) { 
-                    fetch(@Model.PageNumber,@Model.PageSize,@Model.TotalPages);
+            success: function (response) {
+                fetch(@Model.PageNumber,@Model.PageSize,@Model.TotalPages);
             }
         })
 

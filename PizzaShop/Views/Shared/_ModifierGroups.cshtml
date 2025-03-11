@@ -107,11 +107,15 @@
                 <h5 class="modal-title" style="color:rgba(9, 9, 172, 0.692) ;">Add Modifier Group</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+                <form id="addModifierForm">
+
             <div class="modal-body">
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control" id="modifierGroupName" name="Name" placeholder="Name"
                         asp-for="@Model.modifierGroup.ModifierGroupName">
                     <label for="name">Name</label>
+                    <span asp-validation-for="ModifierGroupName" class="text-danger "></span>
+
                 </div>
                 <div class="form-floating mb-3">
                     <textarea class="form-control" id="mgdescription" name="Description" placeholder="Description"
@@ -119,17 +123,18 @@
                     <label for="description">Description</label>
                 </div>
                 <a style="text-decoration: none; cursor:pointer; color:blue;" data-bs-dismiss="modal"
-                    onclick="openExistingModifierModel()">+ Add Existing
+                    onclick="openExistingModifierModel(1)">+ Add Existing
                     Modifiers</a>
                 <div id="selectedModifiers"></div>
             </div>
             <div class="modal-footer d-flex  align-items-center justify-content-end">
-                <button type="submit" class="btn  me-2" style="background-color: rgba(9, 9, 172, 0.692);color:white"
-                    onclick="addModifierGroup()" data-bs-dismiss="modal">Add</button>
+                <button type="button" class="btn  me-2" style="background-color: rgba(9, 9, 172, 0.692);color:white"
+                    onclick="addModifierGroup()">Add</button>
                 <button type="button" class="btn"
                     style="border-color:rgba(9, 9, 172, 0.692);  color:rgba(9, 9, 172, 0.692); background-color: white;"
                     data-bs-dismiss="modal" aria-label="Close" formnovalidate>Cancel</button>
             </div>
+                </form>
         </div>
     </div>
 </div>
@@ -142,81 +147,13 @@
             </div>
             <div class="modal-body">
                 <div class=" ms-2 " style="position:relative; ">
+                    <input type="text" id="modalState" hidden>
                     <input type="text" class="form-control " placeholder="Search" name="search" id="search"
                         style="position: relative;right: 10px;" onkeyup="search()">
                     <span style="position: absolute; right: 20px;top:50%; transform: translateY(-60%); font: 15px;"><i
                             class="fa-solid fa-search"></i> </span>
                 </div>
-                <table class="table " id="myTable">
-                    <thead>
-                        <tr>
-                            <th>
-                                <div class="form-check">
-                                    <input class="form-check-input all" type="checkbox" value="">
-                                    <label class="form-check-label " for="flexCheckDefault">
-                                        <div class="ms-2">Name</div>
-                                    </label>
-                                </div>
-                            </th>
-                            <th>Unit</th>
-                            <th>Rate</th>
-                            <th>Quantity</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var m in Model.modifier)
-                        {
-                            <tr class="check" data-id="@m.ModifierId" data-name="@m.ModifierName">
-                                <td>
-                                    <div class="form-check">
-                                        <input class="form-check-input individual" type="checkbox" value="">
-                                        <label class="form-check-label ms-2" for="flexCheckDefault">
-                                            <div style="word-wrap: break-word;">@m.ModifierName
-                                            </div>
-                                        </label>
-                                    </div>
-                                </td>
-                                <td>
-                                    @m.Unit
-                                </td>
-                                <td>
-                                    @m.Rate
-                                </td>
-                                <td>
-                                    @m.Quantity
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-                <div>
-                    @* <div class="d-flex flex-col justify-content-end mb-2">
-                            <form method="get" id="pageSizeForm">
-                                <label for="pageSize">Records per page:</label>
-                                <select id="pageSize" name="pageSize"
-                                    onchange="allModifier(@Model.PageNumber,@Model.PageSize,@Model.TotalPages)">
-                                    <option value="2">2</option>
-                                    <option value="5">5</option>
-                                    <option value="10">10</option>
-                                    <option value="15">15</option>
-                                </select>
-                            </form>
-                            <div class="ms-2">
-                                @if ( @Model.PageNumber > 1)
-                                {
-                                    <a onclick="allModifier(@Model.PageNumber-1,@Model.PageSize,@Model.TotalPages)"
-                                        style="cursor:pointer;color:blue;">Previous</a>
-                                }
-                                Page @Model.PageNumber of @Model.TotalPages
-
-                                @if (@Model.PageNumber < @Model.TotalPages)
-                                {
-                                    <a onclick="allModifier(@Model.PageNumber+1,@Model.PageSize,@Model.TotalPages)"
-                                        style="cursor:pointer;color:blue;">Next</a>
-                                }
-                            </div>
-                        </div> *@
-                </div>
+                <div id="renderModifierTable"></div>
             </div>
             <div class="modal-footer d-flex  align-items-center justify-content-end">
                 <button type="submit" class="btn  me-2" style="background-color: rgba(9, 9, 172, 0.692);color:white"
@@ -235,6 +172,7 @@
                 <h5 class="modal-title" style="color:rgba(9, 9, 172, 0.692) ;">Edit Modifier Group</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+                <form id="editModifierForm">
             <div class="modal-body">
                 <input type="text" class="form-control" id="modifierGId" name="ModifierGroupId"
                     placeholder="ModifierGroupId" asp-for="@Model.modifierGroup.ModifierGroupId" hidden>
@@ -242,6 +180,8 @@
                     <input type="text" class="form-control" id="modifierGName" name="Name" placeholder="Name"
                         asp-for="@Model.modifierGroup.ModifierGroupName">
                     <label for="name">Name</label>
+                    <span asp-validation-for="ModifierGroupName" class="text-danger "></span>
+
                 </div>
                 <div class="form-floating mb-3">
                     <textarea class="form-control" id="modifierGDescription" name="Description"
@@ -249,17 +189,18 @@
                     <label for="description">Description</label>
                 </div>
                 <a style="text-decoration: none; cursor:pointer; color:blue;" data-bs-dismiss="modal"
-                    onclick="openExistingModifierModel()">+ Add Existing
+                    onclick="openExistingModifierModel(0)">+ Add Existing
                     Modifiers</a>
                 <div id="editselectedModifiers"></div>
             </div>
             <div class="modal-footer d-flex  align-items-center justify-content-end">
-                <button type="submit" class="btn  me-2" style="background-color: rgba(9, 9, 172, 0.692);color:white"
-                    onclick="editModifierGroup()" data-bs-dismiss="modal">Edit</button>
+                <button type="button" class="btn  me-2" style="background-color: rgba(9, 9, 172, 0.692);color:white"
+                    onclick="editModifierGroup()" >Edit</button>
                 <button type="button" class="btn"
                     style="border-color:rgba(9, 9, 172, 0.692);  color:rgba(9, 9, 172, 0.692); background-color: white;"
-                    data-bs-dismiss="modal" aria-label="Close" formnovalidate >Cancel</button>
+                    data-bs-dismiss="modal" aria-label="Close" formnovalidate>Cancel</button>
             </div>
+            </form>
         </div>
     </div>
 </div>
@@ -284,18 +225,13 @@
     </div>
 </div>
 <script>
+    modifierId=0;
     $(document).ready(function () {
-        let modifierCount =@Model.modifierGroups.Count;
-        let modifierId =@(Model.modifierGroups.Count > 0 ? Model.modifierGroups[0].ModifierGroupId : 0);
-
-        $.ajax({
-            url: "/Menu/Modifiers",
-            type: "GET",
-            data: { modifierId: modifierId },
-            success: function (response) {
-                $("#rendermodifiers").html(response);
-            }
-        });
+        modifierId=@(Model.ShowList!=null?Model.ShowList:0);
+        if(modifierId==0){
+         modifierId =@(Model.modifierGroups.Count > 0 ? Model.modifierGroups[0].ModifierGroupId : 0);
+        }
+        fetchModifiers(modifierId);
     });
     function fetchModifiers(id) {
         $.ajax({
@@ -307,60 +243,67 @@
             }
         });
     }
-    function openExistingModifierModel() {
-        $("#existingModifiers").modal("show");
-    }
-    @* function allModifier(pageNumber, pageSize, totalPages) {
-        let selectedPage = $("#pageSize").val();
-        let modifierId =@(Model.modifier.Count > 0 ? Model.modifier[0].ModifierGroupId : 0);
-        if (@Model.modifier.Count> 0) {
-            $.ajax({
-                url: "/Menu/Modifiers",
-                type: "GET",
-                data: { modifierId: modifierId, pageNumber: pageNumber, pageSize: pageSize, selectedPage: selectedPage },
-                success: function (response) {
-                    $("#rendermodifiers").html(response);
-                    $("#pageSize").val(selectedPage);
-                }
-            });
+    function openExistingModifierModel(flag) {
+        //0-edit,1-add
+        if(flag==1){
+            document.getElementById("modalState").value=1;
+        }else{
+            document.getElementById("modalState").value=2;
         }
-    } *@
-
-        $(".all").change(function () {
-            if ($(".all").prop("checked")) {
-                $(".individual").prop("checked", true);
-            } else {
-                $(".individual").prop("checked", false);
+        $("#existingModifiers").modal("show");
+        $.ajax({
+            url: "/Menu/ModifierTable",
+            type: "GET",
+            success: function (response) {
+                $("#renderModifierTable").html(response);
             }
         });
-    $(".individual").change(function () {
-        if ($(".individual:checked").length === $(".individual").length) {
-            $(".all").prop("checked", true);
-        } else {
-            $(".all").prop("checked", false);
-        }
-    })
+       $("tbody tr").each(function () {
+            let row = $(this);
+            let existingSelection = selectedItems.includes(row.data("id"));
+            let isSelected = row.find(".individual");
+                if (existingSelection) {
+                    isSelected.prop("checked", true);
+                }else{
+                    isSelected.prop("checked", false);
+                }
+            
+        });
+    }
 
     selectedItems = [];
-    function saveExistingModifiers() {
-        selectedItems = [];
+    function saveExistingModifiers(flag) {
+        //0-edit,1-add
+        let modalState=document.getElementById("modalState").value;
         $("tbody tr").each(function () {
             let row = $(this);
             let isSelected = row.find(".individual").prop("checked");
+            let existingSelection = selectedItems.includes(row.data("id"));
             if (isSelected) {
-                selectedItems.push({ id: row.data("id"), name: row.data("name") });
+                if (!existingSelection) {
+                    selectedItems.push({ id: row.data("id"), name: row.data("name") });
+                }
             }
         });
+        modifierDiv="";
+        if(modalState==1){
         new bootstrap.Modal(document.getElementById("addModifierGroup")).show();
-        let modifierDiv = document.getElementById("selectedModifiers");
-        modifierDiv.innerHTML = '';
+        new bootstrap.Modal(document.getElementById("editModifierGroup")).hide();
+         modifierDiv = document.getElementById("selectedModifiers");
+        }else{
+        new bootstrap.Modal(document.getElementById("editModifierGroup")).show();
+        new bootstrap.Modal(document.getElementById("addModifierGroup")).hide();
+         modifierDiv = document.getElementById("editselectedModifiers");
+        }
         selectedItems.forEach(modifier => {
-            if (document.querySelector(".chip[id='${modifier.id}']")) {
+            if ($(`#${modifier.id}`).length > 0) {
+                console.log("hi");
                 return;
             }
             let chip = document.createElement("span");
             chip.classList.add("chip");
             chip.setAttribute("id", modifier.id);
+            chip.setAttribute("class", "chip");
             chip.innerHTML = `${modifier.name} <button class="close-btn" onclick="removeChip(this)">x</button>`;
             modifierDiv.appendChild(chip);
         })
@@ -368,7 +311,7 @@
     function removeChip(ele) {
         let chip = ele.parentElement;
         let id = chip.getAttribute("id");
-        selectedItems = selectedItems.filter(modifier => selectedItems.id !== ele);
+        selectedItems = selectedItems.filter(item=>item.id != id);
         chip.remove();
     }
 
@@ -379,21 +322,24 @@
         });
         let mgName = document.getElementById("modifierGroupName").value;
         let mgDescription = document.getElementById("mgdescription").value;
+        if($("#addModifierForm").valid()){
+            console.log("here");
         $.ajax({
             url: "/Menu/AddModifierGroup",
             type: "POST",
             contentType: "application/json",
             data: JSON.stringify({ modifierGroupName: mgName, Description: mgDescription, ids: ids }),
             success: function (response) {
-                fetchModifiers(response.id);
+                $(".modal").modal("hide");
+                $("#modifiers").html(response);
             }
         });
+        }
     }
     function delId(id) {
         document.getElementById("delmodifierGroupId").value = id;
     }
     function setEditId(id) {
-        debugger
         $.ajax({
             url: "/Menu/GetModifierGroupDetails",
             type: "GET",
@@ -407,12 +353,12 @@
             url: "/Menu/FetchModifier",
             type: "GET",
             data: { id: id },
-            success: function (response) {
-                selectedItems=[];
+            success: function (response) { 
+                selectedItems=[]; 
                 let modifierDiv = document.getElementById("editselectedModifiers");
                 modifierDiv.innerHTML = '';
-                response.modifier.forEach(modifier=>{
-                   selectedItems.push({ id: modifier.modifierId, name: modifier.modifierName});
+                response.modifier.forEach(modifier => {
+                    selectedItems.push({ id: modifier.modifierId, name: modifier.modifierName });
                 })
                 selectedItems.forEach(modifier => {
                     let chip = document.createElement("span");
@@ -438,22 +384,28 @@
         });
     }
     function editModifierGroup() {
-        let id=document.getElementById("modifierGId");
-        let Name= document.getElementById("modifierGName").value;
-        let Description= document.getElementById("modifierGDescription").value;
-         let ids = [];
+        let id = document.getElementById("modifierGId");
+        let Name = document.getElementById("modifierGName").value;
+        let Description = document.getElementById("modifierGDescription").value;
+        let modifierGroup={
+            ModifierGroupId:id.value,ModifierGroupName:Name,Description:Description
+        }
+        let ids = [];
         selectedItems.forEach(m => {
             ids.push(m.id);
         });
-        console.log(ids);
-         $.ajax({
+        if($("#editModifierForm").valid()){
+        $.ajax({
             url: "/Menu/EditModifierGroup",
             type: "POST",
             contentType: "application/json",
-            data: JSON.stringify({ modifierId:id,modifierGroupName: Name, Description: Description, ids: ids }),
+            data: JSON.stringify({modifierGroup:modifierGroup, ids: ids }),
             success: function (response) {
                 fetchModifiers(response.id);
+                $(".modal").modal("hide");
+
             }
         });
+        }
     }
 </script>

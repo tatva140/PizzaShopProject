@@ -106,30 +106,30 @@
                 <h5 class="modal-title" style="color:rgba(9, 9, 172, 0.692) ;">Add Category</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            
-                <div class="modal-body">
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="categoryName" name="Name" placeholder="Name"
-                            asp-for="@Model.category.Name">
-                        <label for="name">Name</label>
-                        <span asp-validation-for="Name" class="text-danger "></span>
 
-                    </div>
-                    <div class="form-floating mb-3">
-                        <textarea class="form-control" id="categoryDescription" name="Description" placeholder="Description"
-                            asp-for="@Model.category.Description"></textarea>
-                        <label for="description">Description</label>
+            <div class="modal-body">
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="categoryName" name="Name" placeholder="Name"
+                        asp-for="@Model.category.Name">
+                    <label for="name">Name</label>
+                    <span asp-validation-for="Name" class="text-danger "></span>
 
-                    </div>
                 </div>
-                <div class="modal-footer d-flex  align-items-center justify-content-end">
-                    <button type="submit" class="btn  me-2"
-                        style="background-color: rgba(9, 9, 172, 0.692);color:white" onclick="addCategory()" data-bs-dismiss="modal">Add</button>
-                    <button type="button" class="btn"
-                        style="border-color:rgba(9, 9, 172, 0.692);  color:rgba(9, 9, 172, 0.692); background-color: white;"
-                        data-bs-dismiss="modal" aria-label="Close" formnovalidate>Cancel</button>
+                <div class="form-floating mb-3">
+                    <textarea class="form-control" id="categoryDescription" name="Description" placeholder="Description"
+                        asp-for="@Model.category.Description"></textarea>
+                    <label for="description">Description</label>
+
                 </div>
-            
+            </div>
+            <div class="modal-footer d-flex  align-items-center justify-content-end">
+                <button type="submit" class="btn  me-2" style="background-color: rgba(9, 9, 172, 0.692);color:white"
+                    onclick="addCategory()" data-bs-dismiss="modal">Add</button>
+                <button type="button" class="btn"
+                    style="border-color:rgba(9, 9, 172, 0.692);  color:rgba(9, 9, 172, 0.692); background-color: white;"
+                    data-bs-dismiss="modal" aria-label="Close" formnovalidate>Cancel</button>
+            </div>
+
         </div>
     </div>
 </div>
@@ -141,29 +141,29 @@
                 <h5 class="modal-title">Edit Category</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-         
-                <div class="modal-body">
-                     <input type="text" class="form-control" id="categoryEditId" name="CategoryId" placeholder="CategoryId"
-                            asp-for="@Model.category.CategoryId" hidden>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="categoryEditName" name="Name" placeholder="Name"
-                            asp-for="@Model.category.Name">
-                        <label for="name">Name</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <textarea class="form-control" id="categoryEditDes" name="Description" placeholder="Description"
-                            asp-for="@Model.category.Description"></textarea>
-                        <label for="description">Description</label>
-                    </div>
+
+            <div class="modal-body">
+                <input type="text" class="form-control" id="categoryEditId" name="CategoryId" placeholder="CategoryId"
+                    asp-for="@Model.category.CategoryId" hidden>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="categoryEditName" name="Name" placeholder="Name"
+                        asp-for="@Model.category.Name">
+                    <label for="name">Name</label>
                 </div>
-                <div class="modal-footer d-flex  align-items-center justify-content-end">
-                    <button type="submit" class="btn  me-2"
-                        style="background-color: rgba(9, 9, 172, 0.692);color:white" onclick="editCategory()" data-bs-dismiss="modal">Edit</button>
-                    <button type="button" class="btn"
-                        style="border-color:rgba(9, 9, 172, 0.692);  color:rgba(9, 9, 172, 0.692); background-color: white;"
-                        data-bs-dismiss="modal" aria-label="Close" formnovalidate>Cancel</button>
+                <div class="form-floating mb-3">
+                    <textarea class="form-control" id="categoryEditDes" name="Description" placeholder="Description"
+                        asp-for="@Model.category.Description"></textarea>
+                    <label for="description">Description</label>
                 </div>
-            
+            </div>
+            <div class="modal-footer d-flex  align-items-center justify-content-end">
+                <button type="submit" class="btn  me-2" style="background-color: rgba(9, 9, 172, 0.692);color:white"
+                    onclick="editCategory()" data-bs-dismiss="modal">Edit</button>
+                <button type="button" class="btn"
+                    style="border-color:rgba(9, 9, 172, 0.692);  color:rgba(9, 9, 172, 0.692); background-color: white;"
+                    data-bs-dismiss="modal" aria-label="Close" formnovalidate>Cancel</button>
+            </div>
+
         </div>
     </div>
 </div>
@@ -175,14 +175,13 @@
                 <img src="images/toppng.com-warning-icon-2400x2400.png" alt="Image" class="img-fluid me-2 "
                     style="font: 30px; height: 80px;" class="">
                 <h3>Are you sure you want to delete this category?</h3>
-                <input type="text" id="deleteCategoryId" hidden >
-                    <div class="modal-footer d-flex  align-items-center justify-content-center">
-                        <button type="submit" class="btn btn-danger align-items center"
-                            data-bs-dismiss="modal" onclick="deleteCategory()">Yes</button>
-                        <button type="button" class="btn btn-primary align-items center"
-                            data-bs-dismiss="modal">No</button>
-                    </div>
-                
+                <input type="text" id="deleteCategoryId" hidden>
+                <div class="modal-footer d-flex  align-items-center justify-content-center">
+                    <button type="submit" class="btn btn-danger align-items center" data-bs-dismiss="modal"
+                        onclick="deleteCategory()">Yes</button>
+                    <button type="button" class="btn btn-primary align-items center" data-bs-dismiss="modal">No</button>
+                </div>
+
             </div>
         </div>
     </div>
@@ -191,18 +190,13 @@
 <script
     src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
 <script>
+    categoryId = 0;
     $(document).ready(function () {
-        let categoryCount =@Model.categories.Count;
-        let categoryId =@(Model.categories.Count > 0 ? Model.categories[0].CategoryId : 0);
-
-        $.ajax({
-            url: "/Menu/CategoryItems",
-            type: "GET",
-            data: { categoryId: categoryId },
-            success: function (response) {
-                $("#renderitems").html(response);
-            }
-        });
+        categoryId =@(Model.ShowList != null ? Model.ShowList : 0);
+        if (categoryId == 0) {
+            categoryId =@(Model.categories.Count > 0 ? Model.categories[0].CategoryId : 0);
+        }
+        fetchItems(categoryId);
     });
     function fetchItems(id) {
         $.ajax({
@@ -224,49 +218,50 @@
                 $('#categoryEditDes').val(response.description);
             }
         });
-        document.getElementById("categoryEditId").value =id;
+        document.getElementById("categoryEditId").value = id;
     }
 
     function setDeleteId(id) {
         document.getElementById("deleteCategoryId").value = id;
     }
-    function deleteCategory(){
-         let categoryId=document.getElementById("deleteCategoryId").value ;
+    function deleteCategory() {
+        let categoryId = document.getElementById("deleteCategoryId").value;
         $.ajax({
-                url: "/Menu/DeleteCategory",
-                type: "POST",
-                contentType:"application/json",
-                data:categoryId,
-                success: function (response) {
+            url: "/Menu/DeleteCategory",
+            type: "POST",
+            contentType: "application/json",
+            data: categoryId,
+            success: function (response) {
                 $("#items").html(response);
             }
-            });
+        });
     }
-    function addCategory(){
-         let Name=document.getElementById("categoryName").value;
-        let Description=document.getElementById("categoryDescription").value;
-         $.ajax({
-                url: "/Menu/AddCategory",
-                type: "POST",
-                contentType:"application/json",
-                data:JSON.stringify({Name:Name,Description:Description}) ,
-                success: function (response) {
-                    fetchItems(response.categoryId);
-            }
-            });
-    }
-    function editCategory(){
-          let Name=document.getElementById("categoryEditName").value;
-        let Description=document.getElementById("categoryEditDes").value;
-        let categoryId=document.getElementById("categoryEditId").value;
+    function addCategory() {
+        let Name = document.getElementById("categoryName").value;
+        let Description = document.getElementById("categoryDescription").value;
         $.ajax({
-                url: "/Menu/EditCategory",
-                type: "POST",
-                contentType:"application/json",
-                data:JSON.stringify({Name:Name,Description:Description,CategoryId:categoryId}) ,
-                success: function (response) {
-                    fetchItems(categoryId);
+            url: "/Menu/AddCategory",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({ Name: Name, Description: Description }),
+            success: function (response) {
+                $("#items").html(response);
             }
-            });
+        });
+    }
+    function editCategory() {
+        let Name = document.getElementById("categoryEditName").value;
+        let Description = document.getElementById("categoryEditDes").value;
+        let categoryId = document.getElementById("categoryEditId").value;
+        $.ajax({
+            url: "/Menu/EditCategory",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({ Name: Name, Description: Description, CategoryId: categoryId }),
+            success: function (response) {
+                $("#items").html(response);
+                fetchItems(categoryId);
+            }
+        });
     }
 </script>

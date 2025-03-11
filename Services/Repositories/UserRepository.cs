@@ -97,7 +97,7 @@ public class UserRepository : IUserRepository
         User user = _context.Users.FirstOrDefault(u => u.UserId == id && u.IsActive == true);
         if (user == null) return false;
         user.IsActive = false;
-        _context.Users.Update(user);
+        // _context.Users.Update(user);
         _context.SaveChanges();
         return true;
     }
@@ -152,7 +152,7 @@ public class UserRepository : IUserRepository
         user.UpdatedAt = DateTime.Now;
 
 
-        _context.Users.Update(user);
+        // _context.Users.Update(user);
         _context.SaveChanges();
         return true;
     }

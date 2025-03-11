@@ -10,7 +10,7 @@ public interface IMenuRepository
     List<Item> GetCategoryItems(int id, int pageNumber, int pageSize, out int totalRecords);
     List<Modifier> GetModifiers(int id, int pageNumber, int pageSize, out int totalRecords);
     int AddCategory(Category category);
-    bool AddModifier(Modifier modifier);
+    int AddModifier(Modifier modifier);
     bool EditCategory(Category category);
     Category CategoryDetails(int id);
     bool DeleteCategory(int id);
@@ -19,11 +19,11 @@ public interface IMenuRepository
     bool DeleteItems(JsonArray ids);
     bool DeleteModifiers(JsonArray ids);
     List<ModifierGroup> GetModifierGroups();
-    bool AddItem(MenuItemsViewModel menuItemsViewModel);
+    int AddItem(MenuItemsViewModel menuItemsViewModel);
     Modifier ModifierDetails(int id);
-    bool EditModifier(int modifierId, string modifierGroupId, string modifierName, string unit, decimal rate, int quantity, string description);
+    int EditModifier(Modifier modifier);
     int AddModifierGroup(JsonObject obj);
-    int EditModifierGroup(JsonObject obj);
+    int EditModifierGroup(MenuModifiersViewModel menuModifiersViewModel);
     bool DeleteModifierGroup(int id);
      ModifierGroup GetModifierGroupDetails(int id);
       List<Modifier> GetAllModifiers(int id);

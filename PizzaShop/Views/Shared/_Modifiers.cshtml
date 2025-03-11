@@ -15,7 +15,7 @@
     </div>
 </div>
 <div class="table-responsive  mt-3">
-    <table class="table " id="myTable">
+    <table class="table " id="modifierTable">
         <thead>
             <tr>
                 <th>
@@ -35,7 +35,7 @@
         <tbody>
             @foreach (var m in Model.modifier)
             {
-                <input type="="text hidden id="mgId" value="@m.ModifierGroupId">
+                <input type="=" text hidden id="mgId" value="@m.ModifierGroupId">
                 <tr class="check" data-id="@m.ModifierId">
                     <td>
                         <div class="form-check">
@@ -104,12 +104,13 @@
                 <h5 class="modal-title" style="color:rgba(9, 9, 172, 0.692) ;">Edit Modifier</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-                <div class="modal-body">
+            <div class="modal-body">
+                <form id="editModifierForm">
                     <div class="row">
                         <div class="col-12">
                             <div class="row">
-                                  <input type="text" class="form-control" id="modifierId" name="ModifierId"
-                                            placeholder="Name" asp-for="@Model.ModifierId" hidden>
+                                <input type="text" class="form-control" id="modifierId" name="ModifierId"
+                                    placeholder="Name" asp-for="@Model.ModifierId" hidden>
                                 <div class="col-12 col-lg-6">
                                     <div class="form-floating mb-3">
                                         <select class="form-select" id="modifierGroupId" name="ModifierGroupId"
@@ -170,14 +171,17 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="modal-footer d-flex  align-items-center justify-content-end">
-                        <button type="submit" class="btn  me-2"
-                            style="background-color: rgba(9, 9, 172, 0.692);color:white" onclick="editModifier()" data-bs-dismiss="modal">Save</button>
+                        <button type="button" class="btn  me-2"
+                            style="background-color: rgba(9, 9, 172, 0.692);color:white" onclick="editModifier()"
+                           >Save</button>
                         <button type="button" class="btn"
                             style="border-color:rgba(9, 9, 172, 0.692);  color:rgba(9, 9, 172, 0.692); background-color: white;"
                             data-bs-dismiss="modal" aria-label="Close" formnovalidate>Cancel</button>
                     </div>
-                </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
@@ -206,7 +210,7 @@
                 <h3>Are you sure you want to delete this modifier?</h3>
 
                 <div class="modal-footer d-flex  align-items-center justify-content-center">
-                    <input type="text" id="modifierId" hidden>
+                    <input type="text" id="mgroupId" hidden>
                     <button type="button" class="btn btn-danger align-items center" data-bs-dismiss="modal"
                         onclick="deleteModifier()">Yes</button>
                     <button type="button" class="btn btn-primary align-items center" data-bs-dismiss="modal">No</button>
@@ -290,7 +294,8 @@
                     </div>
                     <div class="modal-footer d-flex  align-items-center justify-content-end">
                         <button type="button" class="btn  me-2"
-                            style="background-color: rgba(9, 9, 172, 0.692);color:white"  data-bs-dismiss="modal" onclick="addModifer()">Save</button>
+                            style="background-color: rgba(9, 9, 172, 0.692);color:white" 
+                            onclick="addModifer()">Save</button>
                         <button type="button" class="btn"
                             style="border-color:rgba(9, 9, 172, 0.692);  color:rgba(9, 9, 172, 0.692); background-color: white;"
                             data-bs-dismiss="modal" aria-label="Close" formnovalidate>Cancel</button>
@@ -307,71 +312,77 @@
 <script
     src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
 <script>
+
+
     function fetchAllModifiers(pageNumber, pageSize, totalPages) {
+                let mgID = document.getElementById("modifierId").value;
+
         let selectedPage = $("#pageSize").val();
-        let modifierId=document.getElementById("mgId").value;
-    
-            $.ajax({
-                url: "/Menu/Modifiers",
-                type: "GET",
-                data: { modifierId: modifierId, pageNumber: pageNumber, pageSize: pageSize, selectedPage: selectedPage },
-                success: function (response) {
-                    $("#rendermodifiers").html(response);
-                    $("#pageSize").val(selectedPage);
-                }
-            });
-        
+        $.ajax({
+            url: "/Menu/Modifiers",
+            type: "GET",
+            data: { modifierId: mgID, pageNumber: pageNumber, pageSize: pageSize, selectedPage: selectedPage },
+            success: function (response) {
+                $("#rendermodifiers").html(response);
+                $("#pageSize").val(selectedPage);
+            }
+        });
+
     }
     function setDel(id) {
-        document.getElementById("modifierId").value = id;
+        document.getElementById("mgroupId").value = id;
     }
- 
+
 
     function deleteModifier() {
-        let modifierId = document.getElementById("modifierId").value;
+        let id = document.getElementById("mgroupId").value;
         $.ajax({
             url: '@Url.Action("DeleteModifier", "Menu")',
             type: "POST",
-            data: { modifierId: modifierId },
+            data: { id: id },
             success: function (response) {
-                if (response.message) {
-                    fetchAllModifiers(@Model.PageNumber,@Model.PageSize,@Model.TotalPages);
-                }
+                fetchAllModifiers(@Model.PageNumber,@Model.PageSize,@Model.TotalPages);
             }
         })
 
     }
-     function editModifier() {
-        let modifierId = document.getElementById("modifierId").value;
-        let modifierGroupId = document.getElementById("modifierGroupId").value;
-        let modifierName = document.getElementById("modifierName").value;
-        let Unit = document.getElementById("units").value;
-        let Rate = document.getElementById("rate").value;
-        let Quantity = document.getElementById("quantity").value;
-        let Description = document.getElementById("description").value;
+    function editModifier() {
+        @* let formdata = $("#editModifierForm").serialize(); *@
+        var formdata=new FormData($("#editModifierForm")[0]);
+          if($("#editModifierForm").valid()){
         $.ajax({
-            url: '@Url.Action("EditModifier", "Menu")',
+            url: "/Menu/EditModifier",
             type: "POST",
-            data: { modifierId: modifierId,modifierGroupId:modifierGroupId,modifierName:modifierName,unit:Unit,rate:Rate,quantity:Quantity,description:Description},
+            contentType:false,
+            processData:false,
+            data: formdata,
             success: function (response) {
-                if (response.message) {
-                    fetchAllModifiers(@Model.PageNumber,@Model.PageSize,@Model.TotalPages);
-                }
+                $(".modal").modal("hide");
+                $("#rendermodifiers").html(response);
+
             }
-        })
+        });
+        }
     }
-    function addModifer(){
-        let formdata=$("#addModifierForm").serialize();
+    function addModifer() {
+        var formdata=new FormData($("#addModifierForm")[0]);
+
+        if($("#addModifierForm").valid()){
         $.ajax({
             url: "/Menu/AddModifier",
             type: "POST",
-            data:formdata,
+             contentType:false,
+            processData:false,
+            data: formdata,
             success: function (response) {
-               fetchAllModifiers(@Model.PageNumber,@Model.PageSize,@Model.TotalPages);
+                $(".modal").modal("hide");
+                $("#rendermodifiers").html(response);
             }
         });
+        }
     }
     function fetchModifierDetails(id) {
+        document.getElementById("modifierId").value = id;
         $.ajax({
             url: "/Menu/ModifierDetails",
             type: "GET",
@@ -384,7 +395,6 @@
                 $('#description').val(response.description);
             }
         });
-        document.getElementById("modifierId").value = id;
     }
     $(".main").change(function () {
         if ($(".main").prop("checked")) {
@@ -428,5 +438,5 @@
             }
         })
     }
-    
+
 </script>

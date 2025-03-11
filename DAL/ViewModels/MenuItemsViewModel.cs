@@ -53,6 +53,7 @@ public class MenuItemsViewModel
 
     public string ItemType { get; set; }
 
+    public int ShowList {get; set; }
 
     
 }

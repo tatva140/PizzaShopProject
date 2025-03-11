@@ -1,0 +1,102 @@
+@model DAL.ViewModels.MenuModifiersViewModel;
+<table class="table " id="myTable">
+    <thead>
+        <tr>
+            <th>
+                <div class="form-check">
+                    <input class="form-check-input all" type="checkbox" value="">
+                    <label class="form-check-label " for="flexCheckDefault">
+                        <div class="ms-2">Name</div>
+                    </label>
+                </div>
+            </th>
+            <th>Unit</th>
+            <th>Rate</th>
+            <th>Quantity</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var m in Model.modifier)
+        {
+            <tr class="check" data-id="@m.ModifierId" data-name="@m.ModifierName">
+                <td>
+                    <div class="form-check">
+                        <input class="form-check-input individual" type="checkbox" data-id="@m.ModifierId">
+                        <label class="form-check-label ms-2" for="flexCheckDefault">
+                            <div style="word-wrap: break-word;">@m.ModifierName
+                            </div>
+                        </label>
+                    </div>
+                </td>
+                <td>
+                    @m.Unit
+                </td>
+                <td>
+                    @m.Rate
+                </td>
+                <td>
+                    @m.Quantity
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div>
+    <div class="d-flex flex-col justify-content-end mb-2">
+        <form method="get" id="pageSizeForm">
+            <label for="pageSize">Records per page:</label>
+            <select id="pageSizeTable" name="pageSize"
+                onchange="allModifier(@Model.PageNumber,@Model.PageSize,@Model.TotalPages)">
+                <option value="2">2</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+            </select>
+        </form>
+        <div class="ms-2">
+            @if (@Model.PageNumber > 1)
+            {
+                <a onclick="allModifier(@Model.PageNumber-1,@Model.PageSize,@Model.TotalPages)"
+                    style="cursor:pointer;color:blue;">Previous</a>
+            }
+            Page @Model.PageNumber of @Model.TotalPages
+
+            @if (@Model.PageNumber < @Model.TotalPages)
+            {
+                <a onclick="allModifier(@Model.PageNumber+1,@Model.PageSize,@Model.TotalPages)"
+                    style="cursor:pointer;color:blue;">Next</a>
+            }
+        </div>
+    </div>
+</div>
+<script>
+          $(".all").change(function () {
+            if ($(".all").prop("checked")) {
+                $(".individual").prop("checked", true);
+            } else {
+                $(".individual").prop("checked", false);
+            }
+        });
+    $(".individual").change(function () {
+        if ($(".individual:checked").length === $(".individual").length) {
+            $(".all").prop("checked", true);
+        } else {
+            $(".all").prop("checked", false);
+        }
+    })
+    function allModifier(pageNumber, pageSize, totalPages) {
+        let selectedPage = $("#pageSizeTable").val();
+        if (@Model.modifier.Count> 0) {
+            $.ajax({
+                url: "/Menu/ModifierTable",
+                type: "GET",
+                data: {  pageNumber: pageNumber, pageSize: pageSize, selectedPage: selectedPage },
+                success: function (response) {
+                    $("#renderModifierTable").html(response);
+                    $("#pageSizeTable").val(selectedPage);
+                }
+            });
+        }
+    }
+    
+</script>

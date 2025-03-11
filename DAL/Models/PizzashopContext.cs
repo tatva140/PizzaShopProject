@@ -61,6 +61,7 @@ public partial class PizzashopContext : DbContext
     public virtual DbSet<Tax> Taxes { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
+    public virtual DbSet<ModifierModifierGroup> ModifierModifierGroups { get; set; }
 
     public virtual DbSet<WaitingToken> WaitingTokens { get; set; }
 
@@ -111,6 +112,16 @@ public partial class PizzashopContext : DbContext
             entity.Property(e => e.Max).HasColumnName("max");
             entity.Property(e => e.Min).HasColumnName("min");
             entity.Property(e => e.ModifierGroupId).HasColumnName("modifier_group_id");
+        });
+         modelBuilder.Entity<ModifierModifierGroup>(entity =>
+        {
+            entity.HasKey(e => e.ModifierModifierGroupsId).HasName("modifier_modifier_groups_pkey");
+
+            entity.ToTable("modifier_modifier_groups");
+
+            entity.Property(e => e.ModifierModifierGroupsId).HasColumnName("modifier_modifier_groups_id");
+            entity.Property(e => e.ModifierGroupId).HasColumnName("modifier_group_id");
+            entity.Property(e => e.ModifierId).HasColumnName("modifier_id");
         });
         modelBuilder.Entity<Auditlog>(entity =>
         {

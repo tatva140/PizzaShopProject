@@ -38,11 +38,17 @@ public class MenuRepository : IMenuRepository
     {
         if (id == 0)
         {
-            IQueryable<Modifier> allmodifiers = _context.Modifiers.Where(i => i.IsActive == true).OrderBy(i => i.CreatedAt);
-            totalRecords = allmodifiers.Count();
-            return allmodifiers.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+            IQueryable<Modifier> allModifiers=_context.Modifiers.Where(m=>m.IsActive==true);
+            totalRecords = allModifiers.Count();
+            return allModifiers.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
         }
-        IQueryable<Modifier> modifiers = _context.Modifiers.Where(i => i.ModifierGroupId == id && i.IsActive == true).OrderBy(i => i.CreatedAt);
+        List<ModifierModifierGroup> modifierModifierGroups = _context.ModifierModifierGroups.Where(i => i.ModifierGroupId == id).ToList();
+        IQueryable<Modifier> modifiers = (from mmg in _context.ModifierModifierGroups
+                                          join m in _context.Modifiers
+                                          on mmg.ModifierId equals m.ModifierId
+                                          where mmg.ModifierGroupId == id
+                                          select m);
+
         totalRecords = modifiers.Count();
         return modifiers.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
     }
@@ -63,7 +69,6 @@ public class MenuRepository : IMenuRepository
         category1.IsActive = true;
         category1.Description = category.Description ?? category1.Description;
         category1.Name = category.Name ?? category1.Name;
-        _context.Categories.Update(category1);
         _context.SaveChanges();
         return true;
     }
@@ -85,7 +90,6 @@ public class MenuRepository : IMenuRepository
             item.IsActive = false;
         }
 
-        _context.Categories.Update(category);
         _context.SaveChanges();
         return true;
     }
@@ -95,7 +99,7 @@ public class MenuRepository : IMenuRepository
         Item item = _context.Items.FirstOrDefault(i => i.ItemId == id && i.IsActive == true);
         if (item == null) return false;
         item.IsActive = false;
-        _context.Items.Update(item);
+        // _context.Items.Update(item);
         _context.SaveChanges();
         return true;
     }
@@ -117,12 +121,12 @@ public class MenuRepository : IMenuRepository
         return _context.ModifierGroups.Where(m => m.IsActive == true).ToList();
     }
 
-    public bool AddItem(MenuItemsViewModel menuItemsViewModel)
+    public int AddItem(MenuItemsViewModel menuItemsViewModel)
     {
-        
+
         if (menuItemsViewModel.Name == null || menuItemsViewModel.CategoryId == null || menuItemsViewModel.ItemType == null || menuItemsViewModel.Rate == 0 || menuItemsViewModel.Quantity == 0 || menuItemsViewModel.Unit == null)
         {
-            return false;
+            return 0;
         }
         Item item = new Item
         {
@@ -136,53 +140,72 @@ public class MenuRepository : IMenuRepository
             DefaultTax = menuItemsViewModel.DefaultTax,
             IsAvailable = menuItemsViewModel.IsAvailable,
             TaxPercentage = menuItemsViewModel.TaxPercentage,
-            ItemImg = menuItemsViewModel.ItemImg?? null ,
+            ItemImg = menuItemsViewModel.ItemImg ?? null,
         };
         _context.Items.Add(item);
         _context.SaveChanges();
-    
-        
+
+    if(menuItemsViewModel.selectedModifierList!=null){
         foreach (int modifier in menuItemsViewModel.selectedModifierList)
         {
-            int min=0;
-            int max=0;
+            int min = 0;
+            int max = 0;
             foreach (var key in menuItemsViewModel.dropdownSelections)
             {
-                if(key.Index==modifier){
-                    min=key.Min;
-                    max=key.Max;
+                if (key.Index == modifier)
+                {
+                    min = key.Min;
+                    max = key.Max;
                     break;
                 }
             }
-            ModifierGroupsItem modifierGroupsItem=new ModifierGroupsItem{
-                ModifierGroupId=modifier,
-                ItemId=item.ItemId,
-                Min=min,
-                Max=max
+            ModifierGroupsItem modifierGroupsItem = new ModifierGroupsItem
+            {
+                ModifierGroupId = modifier,
+                ItemId = item.ItemId,
+                Min = min,
+                Max = max
             };
             _context.ModifierGroupsItems.Add(modifierGroupsItem);
         }
+        }
         _context.SaveChanges();
-        return true;
+        return item.CategoryId??0;
     }
 
-    public bool AddModifier(Modifier modifier)
+    public int AddModifier(Modifier modifier)
     {
 
         if (modifier.ModifierName == null || modifier.ModifierGroupId == null || modifier.Unit == null || modifier.Rate == 0 || modifier.Quantity == 0)
         {
-            return false;
+            return 0;
         }
+
         _context.Modifiers.Add(modifier);
         _context.SaveChanges();
-        return true;
+
+        ModifierModifierGroup modifierModifierGroup = new ModifierModifierGroup
+        {
+            ModifierGroupId = modifier.ModifierGroupId ?? 0,
+            ModifierId = modifier.ModifierId
+
+        };
+        _context.ModifierModifierGroups.Add(modifierModifierGroup);
+        _context.SaveChanges();
+        return modifier.ModifierGroupId??0;
     }
     public bool DeleteModifier(int id)
     {
         Modifier modifier = _context.Modifiers.FirstOrDefault(i => i.ModifierId == id && i.IsActive == true);
         if (modifier == null) return false;
         modifier.IsActive = false;
-        _context.Modifiers.Update(modifier);
+
+        List<ModifierModifierGroup> modifierModifierGroup = _context.ModifierModifierGroups.Where(m => m.ModifierId == id).ToList();
+        foreach (var modifiers in modifierModifierGroup)
+        {
+            _context.ModifierModifierGroups.Remove(modifiers);
+        }
+        // _context.Modifiers.Update(modifier);
         _context.SaveChanges();
         return true;
     }
@@ -194,6 +217,12 @@ public class MenuRepository : IMenuRepository
             Modifier modifier = _context.Modifiers.FirstOrDefault(i => i.ModifierId == modifierId && i.IsActive == true);
             if (modifier == null) return false;
             modifier.IsActive = false;
+
+            List<ModifierModifierGroup> modifierModifierGroup = _context.ModifierModifierGroups.Where(m => m.ModifierId == modifierId).ToList();
+            foreach (var modifiers in modifierModifierGroup)
+            {
+                _context.ModifierModifierGroups.Remove(modifiers);
+            }
         }
         _context.SaveChanges();
         return true;
@@ -203,28 +232,33 @@ public class MenuRepository : IMenuRepository
         return _context.Modifiers.Find(id);
     }
 
-    public bool EditModifier(int modifierId, string modifierGroupId, string modifierName, string unit, decimal rate, int quantity, string description)
+    public int EditModifier(Modifier modifier)
     {
-        if (modifierName == null || modifierGroupId == null || unit == null || rate == 0 || quantity == 0)
+       
+        if (modifier.ModifierName == null || modifier.ModifierGroupId == null || modifier.Unit == null || modifier.Rate == 0 || modifier.Quantity == 0)
         {
-            return false;
+            return 0;
         }
-        Modifier modifier1 = _context.Modifiers.FirstOrDefault(c => c.ModifierId == modifierId);
-        modifier1.IsActive = true;
-        modifier1.Description = description ?? modifier1.Description;
-        modifier1.ModifierName = modifierName ?? modifier1.ModifierName;
-        modifier1.Rate = rate == 0 ? modifier1.Rate : rate;
-        modifier1.Quantity = quantity == 0 ? modifier1.Quantity : quantity;
-        modifier1.Unit = unit ?? modifier1.Unit;
-        _context.Modifiers.Update(modifier1);
+        Modifier modifier1 = _context.Modifiers.FirstOrDefault(c => c.ModifierId == modifier.ModifierId && c.IsActive == true);
+        if (modifier1 == null) return 0;
+        modifier1.Description = modifier.Description ?? modifier1.Description;
+        modifier1.ModifierName = modifier.ModifierName ?? modifier1.ModifierName;
+        modifier1.Rate = modifier.Rate == 0 ? modifier1.Rate : modifier.Rate;
+        modifier1.Quantity = modifier.Quantity == 0 ? modifier1.Quantity : modifier.Quantity;
+        modifier1.Unit = modifier.Unit ?? modifier1.Unit;
+
+        ModifierModifierGroup modifierModifierGroup = _context.ModifierModifierGroups.FirstOrDefault(mg => mg.ModifierGroupId == modifier1.ModifierGroupId && mg.ModifierId == modifier.ModifierId);
+        modifierModifierGroup.ModifierGroupId=modifier.ModifierGroupId??0;
+
+
         _context.SaveChanges();
-        return true;
+        return modifier.ModifierGroupId??0;
     }
 
     public int AddModifierGroup(JsonObject obj)
     {
         string modifierGroupName = obj["modifierGroupName"].ToString();
-        if (obj["modifierGroupName"].ToString() == null ) return 0;
+        if (obj["modifierGroupName"].ToString() == null) return 0;
         string Description = obj["Description"].ToString();
         ModifierGroup modifierGroup = new ModifierGroup
         {
@@ -234,79 +268,87 @@ public class MenuRepository : IMenuRepository
         _context.ModifierGroups.Add(modifierGroup);
         _context.SaveChanges();
 
-       
+
         JsonArray jsonArray = (JsonArray)obj["ids"];
         foreach (int i in jsonArray)
         {
-            Modifier modifier1 = _context.Modifiers.FirstOrDefault(m => m.ModifierId == i);
-            Modifier modifier = new Modifier
+            ModifierModifierGroup modifierModifierGroup = new ModifierModifierGroup
             {
-                ModifierName = modifier1.ModifierName,
-                Description = modifier1.Description,
-                Unit = modifier1.Unit,
-                Rate = modifier1.Rate,
-                Quantity = modifier1.Quantity,
-                ModifierGroupId = modifierGroup.ModifierGroupId
+                ModifierGroupId = modifierGroup.ModifierGroupId,
+                ModifierId = i
             };
-            _context.Modifiers.Add(modifier);
+
+            _context.ModifierModifierGroups.Add(modifierModifierGroup);
         }
         _context.SaveChanges();
         return modifierGroup.ModifierGroupId;
     }
-    public int EditModifierGroup(JsonObject obj)
+    public int EditModifierGroup(MenuModifiersViewModel menuModifiersViewModel)
     {
-        string modifierGroupName = obj["modifierGroupName"].ToString();
-        if (obj["modifierGroupName"].ToString() == null ) return 0;
-        string Description = obj["Description"].ToString();
-        ModifierGroup modifierGroup = new ModifierGroup
-        {
-            ModifierGroupName = modifierGroupName,
-            Description = Description??""
-        };
-        _context.ModifierGroups.Update(modifierGroup);
-        _context.SaveChanges();
+        ModifierGroup modifierGroup = _context.ModifierGroups.FirstOrDefault(mg => mg.ModifierGroupId == menuModifiersViewModel.modifierGroup.ModifierGroupId);
+        if (modifierGroup == null) return 0;
+        modifierGroup.ModifierGroupName = menuModifiersViewModel.modifierGroup.ModifierGroupName;
+        modifierGroup.Description = menuModifiersViewModel.modifierGroup.Description ?? "";
 
-       
-        JsonArray jsonArray = (JsonArray)obj["ids"];
-        foreach (int i in jsonArray)
+
+
+        List<ModifierModifierGroup> modifierModifierGroup = _context.ModifierModifierGroups.Where(mg => mg.ModifierGroupId == menuModifiersViewModel.modifierGroup.ModifierGroupId).ToList();
+
+        foreach (var modifiersGroup in modifierModifierGroup)
         {
-            Modifier modifier1 = _context.Modifiers.FirstOrDefault(m => m.ModifierId == i && m.ModifierGroupId!=modifierGroup.ModifierGroupId);
-            if(modifier1==null)break;
-            Modifier modifier = new Modifier
+            if (!menuModifiersViewModel.ids.Contains(modifiersGroup.ModifierId))
             {
-                ModifierName = modifier1.ModifierName,
-                Description = modifier1.Description,
-                Unit = modifier1.Unit,
-                Rate = modifier1.Rate,
-                Quantity = modifier1.Quantity,
-                ModifierGroupId = modifierGroup.ModifierGroupId
-            };
-            _context.Modifiers.Add(modifier);
+                _context.ModifierModifierGroups.Remove(modifiersGroup);
+            }
+            
         }
+        foreach (int i in menuModifiersViewModel.ids)
+        {
+            ModifierModifierGroup modifierModifierGroup2 = _context.ModifierModifierGroups.FirstOrDefault(mg => mg.ModifierGroupId == menuModifiersViewModel.modifierGroup.ModifierGroupId);
+            if (modifierModifierGroup2 == null)
+            {
+                ModifierModifierGroup modifierModifierGroup1 = new ModifierModifierGroup
+                {
+                    ModifierGroupId = menuModifiersViewModel.modifierGroup.ModifierGroupId,
+                    ModifierId = i
+                };
+                _context.ModifierModifierGroups.Add(modifierModifierGroup1);
+            }
+            
+        }
+
         _context.SaveChanges();
         return modifierGroup.ModifierGroupId;
     }
 
-    public bool DeleteModifierGroup(int id){
+    public bool DeleteModifierGroup(int id)
+    {
         ModifierGroup modifierGroup = _context.ModifierGroups.FirstOrDefault(u => u.ModifierGroupId == id && u.IsActive == true);
         if (modifierGroup == null) return false;
         modifierGroup.IsActive = false;
 
-        List<Modifier> modifiers = _context.Modifiers.Where(c => c.ModifierGroupId == id).ToList();
-        foreach (var modifier in modifiers)
+        List<ModifierModifierGroup> modifierModifierGroups = _context.ModifierModifierGroups.Where(c => c.ModifierGroupId == id).ToList();
+        foreach (var modifier in modifierModifierGroups)
         {
-            modifier.IsActive = false;
+            _context.ModifierModifierGroups.Remove(modifier);
         }
 
-        _context.ModifierGroups.Update(modifierGroup);
         _context.SaveChanges();
         return true;
     }
 
-    public ModifierGroup GetModifierGroupDetails(int id){
-         return _context.ModifierGroups.Find(id);
+    public ModifierGroup GetModifierGroupDetails(int id)
+    {
+        return _context.ModifierGroups.Find(id);
     }
-    public List<Modifier> GetAllModifiers(int id){
-        return _context.Modifiers.Where(m=>m.ModifierGroupId==id && m.IsActive==true).ToList();
+    public List<Modifier> GetAllModifiers(int id)
+    {
+         List<ModifierModifierGroup> modifierModifierGroups = _context.ModifierModifierGroups.Where(i => i.ModifierGroupId == id).ToList();
+        List<Modifier> modifiers = (from mmg in _context.ModifierModifierGroups
+                                          join m in _context.Modifiers
+                                          on mmg.ModifierId equals m.ModifierId
+                                          where mmg.ModifierGroupId == id
+                                          select m).ToList();
+                                          return modifiers;
     }
 }

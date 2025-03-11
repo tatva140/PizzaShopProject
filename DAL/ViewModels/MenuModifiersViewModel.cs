@@ -5,19 +5,23 @@ namespace DAL.ViewModels;
 
 public class MenuModifiersViewModel
 {
-     public List<Modifier> modifier {get;set;}
-    public ModifierGroup modifierGroup {get;set;}
-    public List<ModifierGroup> modifierGroups {get;set;}
-    List<int> ids {get;set;}
+    public List<Modifier> modifier { get; set; }
+    public ModifierGroup modifierGroup { get; set; }
+    public List<ModifierGroup> modifierGroups { get; set; }
+    public List<int> ids { get; set; }
 
-    public int PageNumber {get;set;}
-    public int PageSize {get;set;}
-    public int TotalPages {get;set;}
-    public int SelectedPage {get;set;}
+    [Required(ErrorMessage = "Name is Required")]
+    public string ModifierGroupName { get; set; }
+
+
+    public int PageNumber { get; set; }
+    public int PageSize { get; set; }
+    public int TotalPages { get; set; }
+    public int SelectedPage { get; set; }
 
     public int ModifierId { get; set; }
 
-    [Required(ErrorMessage="Name is Required")]
+    [Required(ErrorMessage = "Name is Required")]
     public string ModifierName { get; set; }
 
     public string? Description { get; set; }
@@ -30,9 +34,10 @@ public class MenuModifiersViewModel
     [RegularExpression(@"^[1-9]\d*$", ErrorMessage = "Invalid Quantity.")]
     public int Quantity { get; set; }
 
-    [Required(ErrorMessage="Unit is Required")]
+    [Required(ErrorMessage = "Unit is Required")]
     public string Unit { get; set; }
 
     public bool? IsActive { get; set; }
+    public int ShowList { get; set; }
 
 }

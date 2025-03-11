@@ -12924,11 +12924,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\Users\\pca140\\Desktop\\RMSProject\\PizzaShop\\PizzaShop.csproj",
+      "projectUniqueName": "C:\\Users\\pca140\\Desktop\\RMSProject\\PizzaShop\\PizzaShop.csproj",
       "projectName": "PizzaShop",
-      "projectPath": "c:\\Users\\pca140\\Desktop\\RMSProject\\PizzaShop\\PizzaShop.csproj",
+      "projectPath": "C:\\Users\\pca140\\Desktop\\RMSProject\\PizzaShop\\PizzaShop.csproj",
       "packagesPath": "C:\\Users\\pca140\\.nuget\\packages\\",
-      "outputPath": "c:\\Users\\pca140\\Desktop\\RMSProject\\PizzaShop\\obj\\",
+      "outputPath": "C:\\Users\\pca140\\Desktop\\RMSProject\\PizzaShop\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\pca140\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -12943,8 +12943,8 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "c:\\Users\\pca140\\Desktop\\RMSProject\\DAL\\DAL.csproj": {
-              "projectPath": "c:\\Users\\pca140\\Desktop\\RMSProject\\DAL\\DAL.csproj"
+            "C:\\Users\\pca140\\Desktop\\RMSProject\\DAL\\DAL.csproj": {
+              "projectPath": "C:\\Users\\pca140\\Desktop\\RMSProject\\DAL\\DAL.csproj"
             },
             "C:\\Users\\pca140\\Desktop\\RMSProject\\Services\\Services.csproj": {
               "projectPath": "C:\\Users\\pca140\\Desktop\\RMSProject\\Services\\Services.csproj"

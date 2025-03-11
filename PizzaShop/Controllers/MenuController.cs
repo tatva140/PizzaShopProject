@@ -21,12 +21,13 @@ public class MenuController : Controller
     }
 
     [HttpGet]
-    public IActionResult MenuItems()
+    public IActionResult MenuItems(int categoryId)
     {
         List<Category> category = _menuService.GetCategories();
         MenuItemsViewModel menuItemsViewModel = new MenuItemsViewModel
         {
             categories = category,
+            ShowList = categoryId
         };
         return PartialView("_MenuItems", menuItemsViewModel);
     }
@@ -44,7 +45,8 @@ public class MenuController : Controller
             PageNumber = pageNumber,
             PageSize = pageSize,
             TotalPages = totalPage,
-            SelectedPage = selectedPage
+            SelectedPage = selectedPage,
+            ShowList = modifierId
         };
         return PartialView("_ModifierGroups", mennuModifiersViewModel);
     }
@@ -84,14 +86,31 @@ public class MenuController : Controller
         };
         return PartialView("_Modifiers", mennuModifiersViewModel);
     }
+    [HttpGet]
+    public IActionResult ModifierTable(int modifierId, int pageNumber = 1, int pageSize = 2, int selectedPage = 2)
+    {
+        List<ModifierGroup> modifierGroups = _menuService.GetModifierGroups();
+        var (modifiers, totalRecords) = _menuService.GetModifiers(modifierId, pageNumber, selectedPage);
+        int totalPage = (int)Math.Ceiling((double)totalRecords / selectedPage);
+        MenuModifiersViewModel mennuModifiersViewModel = new MenuModifiersViewModel
+        {
+            modifierGroups = modifierGroups,
+            modifier = modifiers,
+            PageNumber = pageNumber,
+            PageSize = pageSize,
+            TotalPages = totalPage,
+            SelectedPage = selectedPage
+        };
+        return PartialView("_modifierTable", mennuModifiersViewModel);
+    }
 
     [HttpPost]
     public IActionResult AddCategory([FromBody] JsonObject obj)
     {
-         string data=obj.ToJsonString();
-        Category category=JsonConvert.DeserializeObject<Category>(data);
+        string data = obj.ToJsonString();
+        Category category = JsonConvert.DeserializeObject<Category>(data);
         int isAdded = _menuService.AddCategory(category);
-        if (isAdded!=0)
+        if (isAdded != 0)
         {
             TempData["Message"] = "Category Added Successfully";
             TempData["MessageType"] = "success";
@@ -101,13 +120,14 @@ public class MenuController : Controller
             TempData["Message"] = "Category Already Exists";
             TempData["MessageType"] = "error";
         }
-        return Ok(new {categoryId=isAdded});
+        return RedirectToAction("MenuItems", new { categoryId = isAdded });
+
     }
     [HttpPost]
     public IActionResult AddModifier(Modifier modifier)
     {
-        bool isAdded = _menuService.AddModifier(modifier);
-        if (isAdded)
+        int isAdded = _menuService.AddModifier(modifier);
+        if (isAdded != 0)
         {
             TempData["Message"] = "Modifier Added Successfully";
             TempData["MessageType"] = "success";
@@ -117,15 +137,15 @@ public class MenuController : Controller
             TempData["Message"] = "Modifier Cannot be added";
             TempData["MessageType"] = "error";
         }
-        return RedirectToAction("Index", "Menu");
+        return RedirectToAction("Modifiers", new { modifierId = isAdded });
 
     }
 
     [HttpPost]
-    public IActionResult EditCategory([FromBody]JsonObject obj)
+    public IActionResult EditCategory([FromBody] JsonObject obj)
     {
-        string data=obj.ToJsonString();
-        Category category=JsonConvert.DeserializeObject<Category>(data);
+        string data = obj.ToJsonString();
+        Category category = JsonConvert.DeserializeObject<Category>(data);
         bool isEdited = _menuService.EditCategory(category);
         if (isEdited)
         {
@@ -137,7 +157,8 @@ public class MenuController : Controller
             TempData["Message"] = "Cannot Edit Category, it already Exists";
             TempData["MessageType"] = "error";
         }
-        return RedirectToAction("Index", "Menu");
+        return RedirectToAction("MenuItems");
+
     }
     public IActionResult CategoryDetails(int id)
     {
@@ -229,28 +250,29 @@ public class MenuController : Controller
     public IActionResult AddItem([FromBody] JsonObject obj)
     {
 
-        string data=obj.ToJsonString();
-        MenuItemsViewModel menuItemsViewModel=JsonConvert.DeserializeObject<MenuItemsViewModel>(data);
-        bool isAdded = _menuService.AddItem(menuItemsViewModel);
-        if (isAdded)
+        string data = obj.ToJsonString();
+        MenuItemsViewModel menuItemsViewModel = JsonConvert.DeserializeObject<MenuItemsViewModel>(data);
+        int isAdded = _menuService.AddItem(menuItemsViewModel);
+        if (isAdded!=0)
         {
-            TempData["success"]="Items Added Successfully";
-         
+            TempData["success"] = "Items Added Successfully";
+
         }
         else
         {
             TempData["Message"] = "Items cannot be added";
             TempData["MessageType"] = "error";
         }
-        return Ok(new { message="Added" });
+        return RedirectToAction("CategoryItems", new { categoryId = isAdded });
+
 
     }
 
 
     [HttpPost]
-    public IActionResult DeleteModifier(int modifierId)
+    public IActionResult DeleteModifier(int id)
     {
-        bool isDeleted = _menuService.DeleteModifier(modifierId);
+        bool isDeleted = _menuService.DeleteModifier(id);
         if (isDeleted)
         {
             TempData["Message"] = "Modifier Deleted Successfully";
@@ -271,10 +293,11 @@ public class MenuController : Controller
         return Json(new { name = modifier.ModifierName, description = modifier.Description, rate = modifier.Rate, quantity = modifier.Quantity, unit = modifier.Unit });
     }
     [HttpPost]
-    public IActionResult EditModifier(int modifierId, string modifierGroupId, string modifierName, string unit, decimal rate, int quantity, string description)
+    public IActionResult EditModifier(Modifier modifier)
     {
-        bool isEdited = _menuService.EditModifier(modifierId, modifierGroupId, modifierName, unit, rate, quantity, description);
-        if (isEdited)
+
+        int isEdited = _menuService.EditModifier(modifier);
+        if (isEdited != 0)
         {
             TempData["Message"] = "Modifier Edited Successfully";
             TempData["MessageType"] = "success";
@@ -284,7 +307,8 @@ public class MenuController : Controller
             TempData["Message"] = "Cannot Edit Modifier, it already Exists";
             TempData["MessageType"] = "error";
         }
-        return Ok(new { message = "Edited" });
+        return RedirectToAction("Modifiers", new { modifierId = isEdited });
+
 
     }
 
@@ -292,7 +316,7 @@ public class MenuController : Controller
     public IActionResult AddModifierGroup([FromBody] JsonObject obj)
     {
         int isAdded = _menuService.AddModifierGroup(obj);
-        if (isAdded!=0)
+        if (isAdded != 0)
         {
             TempData["Message"] = "Modifier Group Added Successfully";
             TempData["MessageType"] = "success";
@@ -302,14 +326,16 @@ public class MenuController : Controller
             TempData["Message"] = "Modifier Group Cannot be added";
             TempData["MessageType"] = "error";
         }
-        return Ok(new { id = isAdded });
+        return RedirectToAction("MenuModifiers", new { modifierId = isAdded });
 
     }
     [HttpPost]
     public IActionResult EditModifierGroup([FromBody] JsonObject obj)
     {
-        int isEdited = _menuService.EditModifierGroup(obj);
-        if (isEdited!=0)
+        string data = obj.ToJsonString();
+        MenuModifiersViewModel menuModifiersViewModel = JsonConvert.DeserializeObject<MenuModifiersViewModel>(data);
+        int isEdited = _menuService.EditModifierGroup(menuModifiersViewModel);
+        if (isEdited != 0)
         {
             TempData["Message"] = "Modifier Group Added Successfully";
             TempData["MessageType"] = "success";
@@ -324,9 +350,10 @@ public class MenuController : Controller
     }
 
     [HttpPost]
-    public IActionResult DeleteModifierGroup([FromBody] int id){
-        bool isDeleted=_menuService.DeleteModifierGroup(id);
-         if (isDeleted)
+    public IActionResult DeleteModifierGroup([FromBody] int id)
+    {
+        bool isDeleted = _menuService.DeleteModifierGroup(id);
+        if (isDeleted)
         {
             TempData["Message"] = "Modifier Group Added Successfully";
             TempData["MessageType"] = "success";
@@ -336,19 +363,21 @@ public class MenuController : Controller
             TempData["Message"] = "Modifier Group Cannot be added";
             TempData["MessageType"] = "error";
         }
-        return RedirectToAction("MenuModifiers","Menu");
+        return RedirectToAction("MenuModifiers", "Menu");
     }
 
 
-[HttpGet]
-    public IActionResult GetModifierGroupDetails(int id){
-        ModifierGroup modifierGroup=_menuService.GetModifierGroupDetails(id);
-        return Ok(new{modifierGroup=modifierGroup});
+    [HttpGet]
+    public IActionResult GetModifierGroupDetails(int id)
+    {
+        ModifierGroup modifierGroup = _menuService.GetModifierGroupDetails(id);
+        return Ok(new { modifierGroup = modifierGroup });
     }
 
     [HttpGet]
-    public IActionResult FetchModifier(int id){
-        List<Modifier> modifiers=_menuService.GetAllModifiers(id);
-        return Json(new{modifier=modifiers});
+    public IActionResult FetchModifier(int id)
+    {
+        List<Modifier> modifiers = _menuService.GetAllModifiers(id);
+        return Json(new { modifier = modifiers });
     }
 }

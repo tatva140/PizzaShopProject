@@ -31,7 +31,7 @@ public class MenuService
     public int AddCategory(Category category){
         return _menuRepository.AddCategory(category);
     }
-    public bool AddModifier(Modifier modifier){
+    public int AddModifier(Modifier modifier){
         return _menuRepository.AddModifier(modifier);
     }
     public bool EditCategory(Category category){
@@ -64,17 +64,17 @@ public class MenuService
         return _menuRepository.DeleteModifier(id);
     }
 
-    public bool AddItem(MenuItemsViewModel menuItemsViewModel){
+    public int AddItem(MenuItemsViewModel menuItemsViewModel){
         return _menuRepository.AddItem(menuItemsViewModel);
     }
-     public bool EditModifier(int modifierId, string modifierGroupId,string modifierName,string unit,decimal rate,int quantity,string description){
-        return _menuRepository.EditModifier(modifierId,modifierGroupId,modifierName,unit,rate,quantity,description);
+     public int EditModifier(Modifier modifier){
+        return _menuRepository.EditModifier(modifier);
     }
     public int AddModifierGroup(JsonObject obj){
         return _menuRepository.AddModifierGroup(obj);
     }
-    public int EditModifierGroup(JsonObject obj){
-        return _menuRepository.EditModifierGroup(obj);
+    public int EditModifierGroup(MenuModifiersViewModel menuModifiersViewModel){
+        return _menuRepository.EditModifierGroup(menuModifiersViewModel);
     }
     public bool DeleteModifierGroup(int id){
         return _menuRepository.DeleteModifierGroup(id);
