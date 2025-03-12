@@ -125,7 +125,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="col col-lg-3 mt-lg-0 mt-3 overflow-auto" style="background-color:antiquewhite;max-height: 378px;">
+                <div class="col col-lg-3 mt-lg-0 mt-3 overflow-auto"
+                    style="background-color:antiquewhite;max-height: 378px;">
                     <div class="row p-0">
                         <div class="col p-2">
                             <div class="form-floating mb-3">
@@ -157,18 +158,18 @@
     dropdownSelect = [];
     itemId =@Model.ItemId;
     $(document).ready(function () {
-          let modifierappendDiv = document.getElementById("modifierappend");
+        let modifierappendDiv = document.getElementById("modifierappend");
         @* modifierappendDiv.innerHTML=""; *@
-      
-        $.ajax({
-            url: "/Menu/GetModifierGroups",
-            type: "GET",
-            success: function (data) {
-                $.each(data, function (i, item) {
-                    $("#edititemmodifierGroup").append(new Option(item.modifierGroupName, item.modifierGroupId));
-                });
-            }
-        });
+
+            $.ajax({
+                url: "/Menu/GetModifierGroups",
+                type: "GET",
+                success: function (data) {
+                    $.each(data, function (i, item) {
+                        $("#edititemmodifierGroup").append(new Option(item.modifierGroupName, item.modifierGroupId));
+                    });
+                }
+            });
 
         $.ajax({
             url: "/Menu/GetMGDetails",
@@ -183,7 +184,7 @@
                     row1.innerHTML = `
                  <div class="d-flex  justify-content-between align-items-center p-0">
                         <div >${mg.modifierGroupName}</div>
-                        <i class="fa fa-trash" onclick="remove(this)"></i>
+                        <i class="fa fa-trash" onclick="removeEdit(this)"></i>
                     </div>
                 `
                     finalrow.append(row1);
@@ -202,7 +203,7 @@
             type: "GET",
             data: { id: mgid, itemId: itemId },
             success: function (response) {
-                dropdownSelect.push({Index:mgid,Min:response.minMaxValues[0],Max:response.minMaxValues[1]});
+                dropdownSelect.push({ Index: mgid, Min: response.minMaxValues[0], Max: response.minMaxValues[1] });
                 let row = document.createElement("row");
                 row.innerHTML = `
                 <div class="d-flex align=items-center justify-content-between">
@@ -263,7 +264,7 @@
             data: { modifierId: id },
             success: function (response) {
                 if (response.length > 0) {
-                ModifierList.push(id);
+                    ModifierList.push(id);
                     if ($(`#${id}`).length > 0) {
                         return;
                     }
@@ -349,8 +350,8 @@
     function editItem() {
         console.log(ModifierList);
         console.log(dropdownSelect);
-         let ItemId = document.getElementById("edititemId").value;
-         let CategoryId = document.getElementById("edititemCategoryId").value;
+        let ItemId = document.getElementById("edititemId").value;
+        let CategoryId = document.getElementById("edititemCategoryId").value;
         let Name = document.getElementById("edititemName").value;
         let ItemType = document.getElementById("edititemType").value;
         let Rate = document.getElementById("edititemRate").value;
@@ -363,7 +364,7 @@
         let Description = document.getElementById("edititemDescription").value;
         let ItemImg = document.getElementById("edititemfilename").value;
 
-        let data = { ItemId:ItemId,CategoryId: CategoryId, Name: Name, ItemType: ItemType, Rate: Rate, Quantity: Quantity, Unit: Unit, Available: Available, DefaultTax: DefaultTax, TaxPercentage: TaxPercentage, ShortCode: ShortCode, Description: Description, ItemImg: ItemImg, selectedModifierList: ModifierList, dropdownSelections: dropdownSelect };
+        let data = { ItemId: ItemId, CategoryId: CategoryId, Name: Name, ItemType: ItemType, Rate: Rate, Quantity: Quantity, Unit: Unit, Available: Available, DefaultTax: DefaultTax, TaxPercentage: TaxPercentage, ShortCode: ShortCode, Description: Description, ItemImg: ItemImg, selectedModifierList: ModifierList, dropdownSelections: dropdownSelect };
         if ($("#editItemForm").valid()) {
             $.ajax({
                 url: '@Url.Action("EditItem", "Menu")',
@@ -372,9 +373,7 @@
                 data: JSON.stringify(data),
                 success: function (response) {
                     $(".modal").modal("hide");
-                $("#renderitems").html(response);
-
-                    @* fetch(@Model.PageNumber,@Model.PageSize,@Model.TotalPages); *@
+                    $("#renderitems").html(response);
                 }
             });
         }

@@ -124,16 +124,6 @@
     {
       document.getElementById("deleteForm").action='@Url.Action("DeleteUser","User")' + '?id=' + id +'&pageNumber=' + @ViewBag.PageNumber + '&pageSize=' + @ViewBag.PageSize;
     }
-@* 
-    function search(){
-      let srchvalue=document.getElementById("search").value;
-      console.log(srchvalue);
-      $.ajax({
-        url:"@Url.Action("Index","Users")",
-        method:"get",
-        data:{search:srchvalue,sortOrder:"@ViewBag.sort",pageNumber:@ViewBag.pageNumber,pageSize:@ViewBag.pageSize},
-        
-      })
-    } *@
+
   </script>
 }

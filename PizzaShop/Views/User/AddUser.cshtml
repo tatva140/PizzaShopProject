@@ -1,29 +1,31 @@
 @model DAL.ViewModels.AddUserViewModel;
 @{
-     ViewData["HideLayout"]="false";
+    ViewData["HideLayout"] = "false";
 }
- <div class="content p-3" id="content">
-            <div class="row ">
-                <div class="col-md-6 p-0 col-8 ">
-                     <h1  style="color: rgb(30, 151, 231);font-weight: 600;">Add New
-                        Users</h1>
-                </div>
-                
-                <div class="col-md-6 d-flex align-items-center justify-content-end p-0 col-4">
-                    <a class="btn btn-primary d-sm-block d-none" asp-action="Index" asp-controller="User" style="background-color: rgba(9, 9, 172, 0.692);color:white">
-                        < Back</a>
-                    <a class="btn btn-primary d-sm-none d-block" asp-action="Index" asp-controller="User" style="background-color: rgba(9, 9, 172, 0.692);color:white">
+<div class="content p-3" id="content">
+    <div class="row ">
+        <div class="col-md-6 p-0 col-8 ">
+            <h1 style="color: rgb(30, 151, 231);font-weight: 600;">Add New
+                Users</h1>
+        </div>
+
+        <div class="col-md-6 d-flex align-items-center justify-content-end p-0 col-4">
+            <a class="btn btn-primary d-sm-block d-none" asp-action="Index" asp-controller="User"
+                style="background-color: rgba(9, 9, 172, 0.692);color:white">
+                < Back</a>
+                    <a class="btn btn-primary d-sm-none d-block" asp-action="Index" asp-controller="User"
+                        style="background-color: rgba(9, 9, 172, 0.692);color:white">
                         < </a>
-                </div>
-              </div>
- 
-        <div class="row  mt-3 shadow-lg rounded" style="background-color: white; border-radius: 8px;">
-            <form asp-action="AddUser" asp-controller="User" method="post"  enctype="multipart/form-data">
+        </div>
+    </div>
+
+    <div class="row  mt-3 shadow-lg rounded" style="background-color: white; border-radius: 8px;">
+        <form asp-action="AddUser" asp-controller="User" method="post" enctype="multipart/form-data">
             <div class="row mt-3">
                 <div class="col-md-6">
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="firstname" name="FirstName" asp-for="FirstName"
-                            placeholder="First Name" >
+                            placeholder="First Name">
                         <label for="firstname">First Name</label>
                         <span asp-validation-for="FirstName" class="text-danger"></span>
                     </div>
@@ -31,7 +33,8 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="LastName" placeholder="Last Name" asp-for="LastName">
+                        <input type="text" class="form-control" id="LastName" placeholder="Last Name"
+                            asp-for="LastName">
                         <label for="lastname">Last Name</label>
                         <span asp-validation-for="LastName" class="text-danger"></span>
                     </div>
@@ -41,38 +44,39 @@
             <div class="row mt-2 ">
                 <div class="col-md-6">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="username" name="UserName" placeholder="User Name" asp-for="UserName">
+                        <input type="text" class="form-control" id="username" name="UserName" placeholder="User Name"
+                            asp-for="UserName">
                         <label for="username">Username</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating mb-3">
-                   <select class="form-select" id="role" name="RoleId" asp-for="RoleId">
+                        <select class="form-select" id="role" name="RoleId" asp-for="RoleId">
                             <option value="">Select Role</option>
-                    </select>
-                    <label for="role" class="form-label">Role</label>
+                        </select>
+                        <label for="role" class="form-label">Role</label>
                         <span asp-validation-for="RoleId" class="text-danger"></span>
                     </div>
                 </div>
-            </div> 
+            </div>
             <div class="row mt-2 ">
                 <div class="col-md-6">
-                     <div class="form-floating mb-3">
-                            <input id="Email" asp-for="Email" class="form-control " type="email" name="Email"
-                                placeholder="Email" aria-label="Email">
-                            <label for="email" class="form-label">Email</label>
+                    <div class="form-floating mb-3">
+                        <input id="Email" asp-for="Email" class="form-control " type="email" name="Email"
+                            placeholder="Email" aria-label="Email">
+                        <label for="email" class="form-label">Email</label>
                         <span asp-validation-for="Email" class="text-danger"></span>
-                        </div>
+                    </div>
                 </div>
-               <div class="col-md-6">
-                     <div class="form-floating mb-3 position-relative">
-                            <input  asp-for="Password" class="form-control " type="password" name="Password"
-                                placeholder="Password" aria-label="Password" id="pwd">
-                            <label for="password" class="form-label">Password</label>
-                            <span class="position-absolute end-0 top-50 me-3 translate-middle-y"><i
-                                            class="fa-solid fa-eye" id="eye"></i></span>
+                <div class="col-md-6">
+                    <div class="form-floating mb-3 position-relative">
+                        <input asp-for="Password" class="form-control " type="password" name="Password"
+                            placeholder="Password" aria-label="Password" id="pwd">
+                        <label for="password" class="form-label">Password</label>
+                        <span class="position-absolute end-0 top-50 me-3 translate-middle-y"><i class="fa-solid fa-eye"
+                                id="eye"></i></span>
                         <span asp-validation-for="Password" class="text-danger position-absolute"></span>
-                        </div>
+                    </div>
                 </div>
             </div>
             <div class="row mt-2 ">
@@ -82,34 +86,31 @@
                         <i class="fa-solid fa-cloud-arrow-up"></i>
                         <div class="flex" style="color: rgb(109, 21, 21);">Upload</div>
                     </div>
-                    <input type="file" id="filename" class="form-control "  name="ProfileImg" asp-for="ProfileImg"
+                    <input type="file" id="filename" class="form-control " name="ProfileImg" asp-for="ProfileImg"
                         style="opacity: 0.0; position: absolute; top:0; left: 0; bottom: 0; right:0; width: 100%; height:100%;" />
                 </div>
             </div>
             <div class="row mt-4 ">
                 <div class="col-md-4">
-
                     <div class="form-floating mb-3">
-                        <select class="form-select" id="country" name="Country" asp-for="Country" >
+                        <select class="form-select" id="country" name="Country" asp-for="Country">
                             <option value="">Select Country</option>
                         </select>
                         <label for="country" class="form-label">Country</label>
                     </div>
                 </div>
                 <div class="col-md-4">
-
                     <div class="form-floating mb-3">
-                          <select class="form-select" id="state" name="State" asp-for="State"  >
-                             <option value="">Select State</option>
+                        <select class="form-select" id="state" name="State" asp-for="State">
+                            <option value="">Select State</option>
                         </select>
                         <label for="state" class="form-label">State</label>
                     </div>
                 </div>
                 <div class="col-md-4">
-
                     <div class="form-floating mb-3">
-                         <select class="form-select" id="city" name="City" asp-for="City" >
-                              <option value="">Select City</option>
+                        <select class="form-select" id="city" name="City" asp-for="City">
+                            <option value="">Select City</option>
                         </select>
                         <label for="city" class="form-label">City</label>
                     </div>
@@ -117,97 +118,115 @@
             </div>
             <div class="row mt-2 ">
                 <div class="col-md-4">
-                     <div class="form-floating mb-3">
-                            <input id="ZipCode" asp-for="ZipCode" class="form-control " type="number" name="ZipCode"
-                                placeholder="ZipCode" aria-label="ZipCode" >
-                            <label for="ZipCode" class="form-label">ZipCode</label>
+                    <div class="form-floating mb-3">
+                        <input id="ZipCode" asp-for="ZipCode" class="form-control " type="number" name="ZipCode"
+                            placeholder="ZipCode" aria-label="ZipCode">
+                        <label for="ZipCode" class="form-label">ZipCode</label>
                         <span asp-validation-for="ZipCode" class="text-danger"></span>
-                        </div>
+                    </div>
                 </div>
-                
                 <div class="col-md-4">
                     <div class="form-floating mb-3">
-                            <input id="Address" asp-for="Address" class="form-control " type="text" name="Address"
-                                placeholder="Address" aria-label="Address" >
-                            <label for="Address" class="form-label">Address</label>
-                        </div>
+                        <input id="Address" asp-for="Address" class="form-control " type="text" name="Address"
+                            placeholder="Address" aria-label="Address">
+                        <label for="Address" class="form-label">Address</label>
+                    </div>
                 </div>
                 <div class="col-md-4">
-                   <div class="form-floating mb-3">
-                            <input id="Phone" asp-for="Phone" class="form-control " type="number" name="Phone"
-                                placeholder="Phone" aria-label="Phone" >
-                            <label for="Phone" class="form-label">Phone</label>
+                    <div class="form-floating mb-3">
+                        <input id="Phone" asp-for="Phone" class="form-control " type="number" name="Phone"
+                            placeholder="Phone" aria-label="Phone">
+                        <label for="Phone" class="form-label">Phone</label>
                         <span asp-validation-for="Phone" class="text-danger"></span>
-                        </div>
-
+                    </div>
                 </div>
             </div>
             <div class="d-flex  mt-3 mb-3 ">
-                <button type="submit" class="btn  me-2" style="background-color: rgba(9, 9, 172, 0.692);color:white">Create User</button>
-                <a type="submit" class="btn" style="border-color:rgba(9, 9, 172, 0.692);  color:rgba(9, 9, 172, 0.692); background-color: white;"  asp-action="Index" asp-controller="User" formnovalidate>Cancel</a>
+                <button type="submit" class="btn  me-2"
+                    style="background-color: rgba(9, 9, 172, 0.692);color:white">Create User</button>
+                <a type="submit" class="btn"
+                    style="border-color:rgba(9, 9, 172, 0.692);  color:rgba(9, 9, 172, 0.692); background-color: white;"
+                    asp-action="Index" asp-controller="User" formnovalidate>Cancel</a>
             </div>
         </form>
-        </div>
+    </div>
 
-@section Scripts{
-      @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script>
-    $(document).ready(function(){
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
-    $.ajax({
-        url:"@Url.Action("GetRoles","User")",
-        type:"GET",
-        accepts:"application/json",
-        contentType:"application/json",
-        success:function(data){
-            $.each(data,function(i,item){  
-                $("#role").append('<option value="'+item.roleId+'">'+item.roleName+'</option>');
-            })
-        }
-    })
-    $.ajax({
-        url:"@Url.Action("GetCountries","User")",
-        type:"GET",
-        accepts:"application/json",
-        contentType:"application/json",
-        success:function(data){
-            $.each(data,function(i,item){         
-                $("#country").append('<option value="'+item.countryId+'">'+item.countryName+'</option>');
-            })
-        }
-    })
-         $('#country').change(function()
-            {
-                let countryId=$(this).val();
-                if(countryId){
-                   $.ajax({
-                    url:"@Url.Action("GetStateByCountry","User")",
-                    data:{countryId:countryId},
-                    success:function(data){
-                        $.each(data,function(index,state){
-                            $("#state").append('<option value="'+state.stateId+'">'+state.stateName+'</option>');
+        <script>
+            $(document).ready(function () {
+
+                $.ajax({
+                    url: "@Url.Action("GetRoles", "User")",
+                    type: "GET",
+                    accepts: "application/json",
+                    contentType: "application/json",
+                    success: function (data) {
+                        $.each(data, function (i, item) {
+                            $("#role").append('<option value="' + item.roleId + '">' + item.roleName + '</option>');
                         })
                     }
-                   })
-                }
-            })
-   
-    $('#state').change(function()
-            {
-                let stateId=$(this).val();
-                if(stateId){
-                   $.ajax({
-                    url:"@Url.Action("GetCityByState","User")",
-                    data:{stateId:stateId},
-                    success:function(data){
-                        $.each(data,function(index,city){
-                            $("#city").append('<option value="'+city.cityId+'">'+city.cityName+'</option>');
+                })
+                $.ajax({
+                    url: "@Url.Action("GetCountries", "User")",
+                    type: "GET",
+                    accepts: "application/json",
+                    contentType: "application/json",
+                    success: function (data) {
+                        $.each(data, function (i, item) {
+                            $("#country").append('<option value="' + item.countryId + '">' + item.countryName + '</option>');
                         })
                     }
-                   })
-                }
-            })
-   });
+                })
+                $('#country').change(function () {
+                    let countryId = $(this).val();
+                    if (countryId) {
+                        $.ajax({
+                            url: "@Url.Action("GetStateByCountry", "User")",
+                            data: { countryId: countryId },
+                            success: function (data) {
+                                $.each(data, function (index, state) {
+                                    $("#state").append('<option value="' + state.stateId + '">' + state.stateName + '</option>');
+                                })
+                            }
+                        })
+                    }
+                })
+                $('#state').click(function(){
+                    console.log("here");
+                    let countryId = $("#country").val();
+                    if(!countryId){
+                        toastr.error("Please select Country first."); 
+                    }
 
-    </script>
+                });
+                $('#city').click(function(){
+                    console.log("here");
+                    let stateId = $("#state").val();
+                    if(!stateId){
+                        toastr.error("Please select State first."); 
+                    }
+
+                });
+                $('#state').change(function () {
+                    let stateId = $(this).val();
+                    if (stateId) {
+                        $.ajax({
+                            url: "@Url.Action("GetCityByState", "User")",
+                            data: { stateId: stateId },
+                            success: function (data) {
+                                $.each(data, function (index, city) {
+                                    $("#city").append('<option value="' + city.cityId + '">' + city.cityName + '</option>');
+                                })
+                            }
+                        })
+                    }
+                })
+            });
+
+        </script>
 }
