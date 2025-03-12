@@ -1,6 +1,6 @@
 namespace DAL.ViewModels;
 
-public class MinMaxViewModal
+public class MinMaxViewModel
 {
     public int Index {get;set;}
     public int Min{get;set;}

@@ -112,13 +112,11 @@ public class MenuController : Controller
         int isAdded = _menuService.AddCategory(category);
         if (isAdded != 0)
         {
-            TempData["Message"] = "Category Added Successfully";
-            TempData["MessageType"] = "success";
+            TempData["success"] = "Category Added Successfully";
         }
         else
         {
-            TempData["Message"] = "Category Already Exists";
-            TempData["MessageType"] = "error";
+            TempData["error"] = "Category Already Exists";
         }
         return RedirectToAction("MenuItems", new { categoryId = isAdded });
 
@@ -129,13 +127,11 @@ public class MenuController : Controller
         int isAdded = _menuService.AddModifier(modifier);
         if (isAdded != 0)
         {
-            TempData["Message"] = "Modifier Added Successfully";
-            TempData["MessageType"] = "success";
+            TempData["success"] = "Modifier Added Successfully";
         }
         else
         {
-            TempData["Message"] = "Modifier Cannot be added";
-            TempData["MessageType"] = "error";
+            TempData["error"] = "Modifier Cannot be added";
         }
         return RedirectToAction("Modifiers", new { modifierId = isAdded });
 
@@ -149,13 +145,11 @@ public class MenuController : Controller
         bool isEdited = _menuService.EditCategory(category);
         if (isEdited)
         {
-            TempData["Message"] = "Category Edited Successfully";
-            TempData["MessageType"] = "success";
+            TempData["success"] = "Category Edited Successfully";
         }
         else
         {
-            TempData["Message"] = "Cannot Edit Category, it already Exists";
-            TempData["MessageType"] = "error";
+            TempData["error"] = "Cannot Edit Category, it already Exists";
         }
         return RedirectToAction("MenuItems");
 
@@ -172,13 +166,11 @@ public class MenuController : Controller
         bool deleted = _menuService.DeleteCategory(id);
         if (deleted)
         {
-            TempData["Message"] = "Category Deleted Successfully";
-            TempData["MessageType"] = "success";
+            TempData["success"] = "Category Deleted Successfully";
         }
         else
         {
-            TempData["Message"] = "Category does not exist";
-            TempData["MessageType"] = "error";
+            TempData["error"] = "Category does not exist";
         }
         return RedirectToAction("MenuItems", "Menu");
     }
@@ -202,13 +194,11 @@ public class MenuController : Controller
         bool isDeleted = _menuService.DeleteItem(itemId);
         if (isDeleted)
         {
-            TempData["Message"] = "Item Deleted Successfully";
-            TempData["MessageType"] = "success";
+            TempData["success"] = "Item Deleted Successfully";
         }
         else
         {
-            TempData["Message"] = "Item cannot be deleted";
-            TempData["MessageType"] = "error";
+            TempData["error"] = "Item cannot be deleted";
         }
         return Ok(new { message = "Deleted" });
     }
@@ -219,13 +209,11 @@ public class MenuController : Controller
         bool isDeleted = _menuService.DeleteItems(ids);
         if (isDeleted)
         {
-            TempData["Message"] = "All Items Deleted Successfully";
-            TempData["MessageType"] = "success";
+            TempData["success"] = "All Items Deleted Successfully";
         }
         else
         {
-            TempData["Message"] = "Items cannot be deleted";
-            TempData["MessageType"] = "error";
+            TempData["error"] = "Items cannot be deleted";
         }
         return Ok(new { redirectUrl = @Url.Action("Index", "Menu") });
     }
@@ -235,13 +223,11 @@ public class MenuController : Controller
         bool isDeleted = _menuService.DeleteModifiers(ids);
         if (isDeleted)
         {
-            TempData["Message"] = "Selected Modifiers Deleted Successfully";
-            TempData["MessageType"] = "success";
+            TempData["success"] = "Selected Modifiers Deleted Successfully";
         }
         else
         {
-            TempData["Message"] = "Modifiers cannot be deleted";
-            TempData["MessageType"] = "error";
+            TempData["error"] = "Modifiers cannot be deleted";
         }
         return Ok(new { redirectUrl = @Url.Action("Index", "Menu") });
     }
@@ -255,15 +241,34 @@ public class MenuController : Controller
         int isAdded = _menuService.AddItem(menuItemsViewModel);
         if (isAdded!=0)
         {
-            TempData["success"] = "Items Added Successfully";
+            TempData["success"] = "Item Added Successfully";
 
         }
         else
         {
-            TempData["Message"] = "Items cannot be added";
-            TempData["MessageType"] = "error";
+            TempData["error"] = "Item cannot be added";
         }
         return RedirectToAction("CategoryItems", new { categoryId = isAdded });
+
+
+    }
+    [HttpPost]
+    public IActionResult EditItem([FromBody] JsonObject obj)
+    {
+
+        string data = obj.ToJsonString();
+        MenuItemsViewModel menuItemsViewModel = JsonConvert.DeserializeObject<MenuItemsViewModel>(data);
+        int isEdited = _menuService.EditItem(menuItemsViewModel);
+        if (isEdited!=0)
+        {
+            TempData["success"] = "Item Edited Successfully";
+
+        }
+        else
+        {
+            TempData["error"] = "Item cannot be added";
+        }
+        return RedirectToAction("CategoryItems", new { categoryId = isEdited });
 
 
     }
@@ -275,13 +280,11 @@ public class MenuController : Controller
         bool isDeleted = _menuService.DeleteModifier(id);
         if (isDeleted)
         {
-            TempData["Message"] = "Modifier Deleted Successfully";
-            TempData["MessageType"] = "success";
+            TempData["success"] = "Modifier Deleted Successfully";
         }
         else
         {
-            TempData["Message"] = "Modifier cannot be deleted";
-            TempData["MessageType"] = "error";
+            TempData["error"] = "Modifier cannot be deleted";
         }
         return Ok(new { message = "Deleted" });
     }
@@ -299,13 +302,11 @@ public class MenuController : Controller
         int isEdited = _menuService.EditModifier(modifier);
         if (isEdited != 0)
         {
-            TempData["Message"] = "Modifier Edited Successfully";
-            TempData["MessageType"] = "success";
+            TempData["success"] = "Modifier Edited Successfully";
         }
         else
         {
-            TempData["Message"] = "Cannot Edit Modifier, it already Exists";
-            TempData["MessageType"] = "error";
+            TempData["error"] = "Cannot Edit Modifier, it already Exists";
         }
         return RedirectToAction("Modifiers", new { modifierId = isEdited });
 
@@ -318,13 +319,11 @@ public class MenuController : Controller
         int isAdded = _menuService.AddModifierGroup(obj);
         if (isAdded != 0)
         {
-            TempData["Message"] = "Modifier Group Added Successfully";
-            TempData["MessageType"] = "success";
+            TempData["success"] = "Modifier Group Added Successfully";
         }
         else
         {
-            TempData["Message"] = "Modifier Group Cannot be added";
-            TempData["MessageType"] = "error";
+            TempData["error"] = "Modifier Group Cannot be added";
         }
         return RedirectToAction("MenuModifiers", new { modifierId = isAdded });
 
@@ -337,13 +336,11 @@ public class MenuController : Controller
         int isEdited = _menuService.EditModifierGroup(menuModifiersViewModel);
         if (isEdited != 0)
         {
-            TempData["Message"] = "Modifier Group Added Successfully";
-            TempData["MessageType"] = "success";
+            TempData["success"] = "Modifier Group Edited Successfully";
         }
         else
         {
-            TempData["Message"] = "Modifier Group Cannot be added";
-            TempData["MessageType"] = "error";
+            TempData["error"] = "Modifier Group Cannot be edited";
         }
         return Ok(new { id = isEdited });
 
@@ -355,13 +352,11 @@ public class MenuController : Controller
         bool isDeleted = _menuService.DeleteModifierGroup(id);
         if (isDeleted)
         {
-            TempData["Message"] = "Modifier Group Added Successfully";
-            TempData["MessageType"] = "success";
+            TempData["success"] = "Modifier Group Added Successfully";
         }
         else
         {
-            TempData["Message"] = "Modifier Group Cannot be added";
-            TempData["MessageType"] = "error";
+            TempData["error"] = "Modifier Group Cannot be added";
         }
         return RedirectToAction("MenuModifiers", "Menu");
     }
@@ -379,5 +374,24 @@ public class MenuController : Controller
     {
         List<Modifier> modifiers = _menuService.GetAllModifiers(id);
         return Json(new { modifier = modifiers });
+    }
+    [HttpGet]
+    public IActionResult FetchItemDetails(int id){
+        EditItemViewModel  editItemViewModel=_menuService.FetchItemDetails(id);
+        return PartialView("_EditItemModal",editItemViewModel);
+    }
+    public IActionResult GetMGDetails(int id){
+        List<ModifierGroup> modifierGroups=_menuService.GetMGDetails(id);
+         return Json(new { modifierGroups = modifierGroups });
+    }
+    public IActionResult GetMinMax(int id,int itemId){
+        List<int> minMaxValues=_menuService.GetMinMax(id,itemId);
+         return Json(new { minMaxValues = minMaxValues });
+
+    }
+    public IActionResult GetModifiersForItemEdit(int modifierId){
+        List<Modifier> modifiers=_menuService.GetModifiersForItemEdit(modifierId);
+                return Json(modifiers);
+
     }
 }

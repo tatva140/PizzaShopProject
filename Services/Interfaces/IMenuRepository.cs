@@ -25,7 +25,11 @@ public interface IMenuRepository
     int AddModifierGroup(JsonObject obj);
     int EditModifierGroup(MenuModifiersViewModel menuModifiersViewModel);
     bool DeleteModifierGroup(int id);
-     ModifierGroup GetModifierGroupDetails(int id);
-      List<Modifier> GetAllModifiers(int id);
-
+    ModifierGroup GetModifierGroupDetails(int id);
+    List<Modifier> GetAllModifiers(int id);
+    EditItemViewModel FetchItemDetails(int id);
+    List<ModifierGroup> GetMGDetails(int id);
+    List<int> GetMinMax(int id,int itemId);
+    List<Modifier> GetModifiersForItemEdit(int modifierId);
+    int EditItem(MenuItemsViewModel menuItemsViewModel);
 }

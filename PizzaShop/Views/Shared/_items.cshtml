@@ -84,7 +84,8 @@
                     </td>
                     <td>
                         <div class="d-flex align-items-center ">
-                            <i class="fa-solid fa-pen me-3 ms-3"></i>
+                            <i class="fa-solid fa-pen me-3 ms-3" data-bs-toggle="modal" style="cursor:pointer"
+                                data-bs-target="#editItem" onclick="openEditModal(@item.ItemId)"></i>
                             <i class="fa-solid fa-trash" data-bs-toggle="modal" style="cursor:pointer"
                                 data-bs-target="#deleteItem" onclick="setDelId(@item.ItemId)"></i>
                         </div>
@@ -124,14 +125,14 @@
     </div>
 </div>
 <div class="modal " id="addItem">
-    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered  modal-xl">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered  modal-xl ">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" style="color:rgba(9, 9, 172, 0.692) ;">Add New Menu Item</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form id="addItemForm">
-                <div class="modal-body ">
+                <div class="modal-body overflow-auto" style="max-height: 800px;">
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-12 col-lg-9">
@@ -255,7 +256,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col col-lg-3 mt-lg-0 mt-3" style="background-color:antiquewhite;">
+                            <div class="col col-lg-3 mt-lg-0 mt-3 overflow-auto"
+                                style="background-color:antiquewhite;max-height: 378px;">
                                 <div class="row p-0">
                                     <div class="col p-2">
                                         <div class="form-floating mb-3">
@@ -267,7 +269,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div id="modifiersDiv" ></div>
+                                <div id="modifiersDiv"></div>
                             </div>
                         </div>
                     </div>
@@ -319,14 +321,24 @@
         </div>
     </div>
 </div>
-
+<div class="modal " id="editItem">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered  modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" style="color:rgba(9, 9, 172, 0.692) ;">Add New Menu Item</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div id="itemDetails"></div>
+        </div>
+    </div>
+</div>
+<partial name="_Notification" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
 <script
     src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
 <script>
 
     function fetch(pageNumber, pageSize, totalPages) {
-        debugger
         let selectedPage = $("#pageItemSize").val();
         let cgoryId = document.getElementById("categoryItemId").value;
         $.ajax({
@@ -357,52 +369,49 @@
         let id = document.getElementById("itemmodifierGroup").value;
         let modifierName = document.getElementById("itemmodifierGroup").options[itemmodifierGroup.selectedIndex].text;
         let modifiersDiv = document.getElementById("modifiersDiv");
-        selectedModifierList.push(id);
         $.ajax({
-            url: '@Url.Action("GetModifiers", "Menu")',
+            url: '@Url.Action("GetModifiersForItemEdit", "Menu")',
             type: "GET",
             data: { modifierId: id },
             success: function (response) {
-                if(response.length>0 )
-                {
-                    if($(`#${id}`).length > 0){
+                if (response.length > 0) {
+                    selectedModifierList.push(id);
+                    if ($(`#${id}`).length > 0) {
                         return;
                     }
-                let finalrow = document.createElement("row");
-                finalrow.setAttribute("id", id);
-                let row1 = document.createElement("row");
-                row1.innerHTML = `
+                    let finalrow = document.createElement("row");
+                    finalrow.setAttribute("id", id);
+                    let row1 = document.createElement("row");
+                    row1.innerHTML = `
                  <div class="d-flex  justify-content-between align-items-center p-0">
                         <div >${modifierName}</div>
                         <i class="fa fa-trash" onclick="remove(this)"></i>
                     </div>
                 `
-                finalrow.append(row1);
-                let row = document.createElement("row");
-                row.innerHTML = `
+                    finalrow.append(row1);
+                    let row = document.createElement("row");
+                    row.innerHTML = `
                 <div class="d-flex align=items-center justify-content-between">
                 <div >
-                <select class="form-control" data-id="min" data-index="${id}"  onchange="updateSelection('${id}','min',this.value)">
+                <select class="form-control" id="min-${id}" data-id="min" data-index="${id}"  onchange="updateSelection('${id}','min',this.value)">
                 <option value="">Select Option</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
                 </select>
                 </div>
                 <div > 
-                <select class="form-control" data-id="max" data-index="${id}"  onchange="updateSelection('${id}','max',this.value)">
+                <select class="form-control" id="max-${id}" data-id="max" data-index="${id}"  onchange="updateSelection('${id}','max',this.value)">
                 <option value="">Select Option</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
                 </select>
                 </div>
                 </div>`;
-                finalrow.append(row);
+                    finalrow.append(row);
+                    minDiv = row.querySelector(`#min-${id}`);
+                    maxDiv = row.querySelector(`#max-${id}`);
+                    generateOptions(minDiv, response.length);
+                    generateOptions(maxDiv, response.length);
 
-                $.each(response, function (i, modifier) {
-                    let row = document.createElement("row");
-                    row.innerHTML = `
+                    $.each(response, function (i, modifier) {
+                        let row = document.createElement("row");
+                        row.innerHTML = `
                     <ul >
                     <li>
                     <div class="d-flex  justify-content-between align-items-center p-0">
@@ -411,13 +420,22 @@
                     </div>
                     </li>
                     </ul>`;
-                    finalrow.append(row);
-                });
-                modifiersDiv.append(finalrow);
+                        finalrow.append(row);
+                    });
+                    modifiersDiv.append(finalrow);
+
                 }
             }
-
         });
+    }
+    function generateOptions(id, modifiersCount) {
+
+        for (let i = 0; i <= modifiersCount; i++) {
+            let opt = document.createElement("option");
+            opt.value = i;
+            opt.textContent = i;
+            id.appendChild(opt);
+        }
     }
     dropdownSelections = [];
     function updateSelection(index, type, value) {
@@ -461,7 +479,8 @@
                 data: JSON.stringify(data),
                 success: function (response) {
                     $(".modal").modal("hide");
-                    fetch(@Model.PageNumber,@Model.PageSize,@Model.TotalPages);
+                    $("#renderitems").html(response);
+
                 }
             });
         }
@@ -480,7 +499,16 @@
                 fetch(@Model.PageNumber,@Model.PageSize,@Model.TotalPages);
             }
         })
-
+    }
+    function openEditModal(id) {
+        $.ajax({
+            url: '@Url.Action("FetchItemDetails", "Menu")',
+            type: "GET",
+            data: { id: id },
+            success: function (response) {
+                $("#itemDetails").html(response);
+            }
+        });
     }
     $(".mainCheck").change(function () {
         if ($(".mainCheck").prop("checked")) {
@@ -524,4 +552,5 @@
             }
         })
     }
+
 </script>

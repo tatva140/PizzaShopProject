@@ -85,4 +85,21 @@ public class MenuService
        public List<Modifier> GetAllModifiers(int id){
         return _menuRepository.GetAllModifiers(id);
     }
+
+    public EditItemViewModel FetchItemDetails(int id){
+        return _menuRepository.FetchItemDetails(id);
+    }
+    public List<ModifierGroup> GetMGDetails(int id){
+        return _menuRepository.GetMGDetails(id);
+    }
+    
+    public List<int> GetMinMax(int id,int itemId){
+        return _menuRepository.GetMinMax(id,itemId);
+    }
+    public List<Modifier> GetModifiersForItemEdit(int modifierId){
+        return _menuRepository.GetModifiersForItemEdit(modifierId);
+    }
+    public int EditItem(MenuItemsViewModel menuItemsViewModel){
+        return _menuRepository.EditItem(menuItemsViewModel);
+    }
 }

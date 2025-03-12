@@ -1,0 +1,383 @@
+@model DAL.ViewModels.EditItemViewModel;
+
+<form id="editItemForm">
+    <div class="modal-body overflow-auto" style="max-height: 800px;">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12 col-lg-9">
+                    <div class="row">
+                        <div class="col-12 col-lg-6">
+                            <div class="form-floating mb-3">
+                                <select class="form-select" id="edititemCategoryId" name="CategoryId"
+                                    asp-for="@Model.CategoryId">
+                                    @foreach (var category in Model.categories)
+                                    {
+                                        <option value="@category.CategoryId">@category.Name</option>
+                                    }
+                                </select>
+                                <label for="CategoryId" class="form-label">Category</label>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="edititemId" name="ItemId" placeholder="Name"
+                                    asp-for="@Model.ItemId" hidden>
+                                <input type="text" class="form-control" id="edititemName" name="Name" placeholder="Name"
+                                    asp-for="@Model.Name">
+                                <label for="name">Name</label>
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col col-lg-3">
+                            <div class="form-floating mb-3">
+                                <select class="form-select" id="edititemType" name="ItemType" asp-for="@Model.ItemType">
+                                    <option value="veg">Vegetarian</option>
+                                    <option value="non-veg">Non-Vegeterian</option>
+                                    <option value="vegan">Vegan</option>
+                                </select>
+                                <label for="ItemType" class="form-label">Item Type</label>
+                            </div>
+                            <span asp-validation-for="ItemType" class="text-danger "></span>
+                        </div>
+                        <div class="col-12 col-lg-3 col-md-6">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="edititemRate" name="Rate" placeholder="Rate"
+                                    asp-for="@Model.Rate">
+                                <label for="Rate">Rate</label>
+                                <span asp-validation-for="Rate" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-3 col-md-6">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="edititemQuantity" name="Quantity"
+                                    placeholder="Quantity" asp-for="@Model.Quantity">
+                                <label for="Quantity">Quantity</label>
+                                <span asp-validation-for="Quantity" class="text-danger "></span>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-3 col-md-6">
+                            <div class="form-floating mb-3">
+                                <select class="form-select" id="edititemUnit" name="Unit" asp-for="@Model.Unit">
+                                    <option value="pieces">Pieces</option>
+                                    <option value="kg">kg</option>
+                                    <option value="litre">litre</option>
+                                </select>
+                                <label for="unit" class="form-label">Unit</label>
+                                <span asp-validation-for="Unit" class="text-danger "></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 col-lg-3 ">
+                            <div class="form-check form-switch mb-3">
+                                <input class="form-check-input can-delete" type="checkbox" id="edititemAvailable"
+                                    name="IsAvailable" asp-for="@Model.IsAvailable">
+                                <label for="name">Available</label>
+                            </div>
+                        </div>
+                        <div class="col-6 col-lg-3 ">
+                            <div class="form-check form-switch mb-3">
+                                <input class="form-check-input can-delete" type="checkbox" id="edititemDefault"
+                                    name="DefaultTax" asp-for="@Model.DefaultTax">
+                                <label for="name">DefaultTax</label>
+
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-3 col-md-6">
+                            <div class="form-floating mb-3 position-relative">
+                                <input type="text" class="form-control" id="edititemTaxPercentage" name="TaxPercentage"
+                                    placeholder="TaxPercentage" asp-for="@Model.TaxPercentage">
+                                <label for="TaxPercentage">TaxPercentage</label>
+                                <span class="position-absolute end-0 top-50 me-3 translate-middle-y"><i
+                                        class="fa-solid fa-percentage"></i></span>
+                                <span asp-validation-for="TaxPercentage" class="text-danger "></span>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-3 col-md-6">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="edititemShortCode" name="ShortCode"
+                                    placeholder="ShortCode" asp-for="@Model.Shortcode">
+                                <label for="ShortCode">ShortCode</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-floating mb-3">
+                            <textarea class="form-control" id="edititemDescription" name="Description"
+                                placeholder="Description" asp-for="@Model.Description"></textarea>
+                            <label for="Description">Description</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="name">Upload Image</label>
+                        <div style="position: relative;">
+                            <div class=" d-flex flex-col align-items-center justify-content-center  text-center border border-danger  p-3"
+                                style="width: 100%;border-radius: 5px;">
+                                <i class="fa-solid fa-cloud-arrow-up me-2"></i>
+                                <div class="flex " style="color: rgb(109, 21, 21);">Drag And Drop or Browse
+                                    Files</div>
+                            </div>
+                            <input type="file" id="edititemfilename" class="form-control " name="ItemImg"
+                                asp-for="@Model.ItemImg"
+                                style="opacity: 0.0; position: absolute; top:0; left: 0; bottom: 0; right:0; width: 100%; height:100%;" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col col-lg-3 mt-lg-0 mt-3 overflow-auto" style="background-color:antiquewhite;max-height: 378px;">
+                    <div class="row p-0">
+                        <div class="col p-2">
+                            <div class="form-floating mb-3">
+                                <select class="form-select " id="edititemmodifierGroup" name="modifierGroup"
+                                    onchange="fetchModifierEdit()">
+                                    <option value="">Select Modifier Group(s)</option>
+                                </select>
+                                <label for="category" class="form-label">Modifier</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="modifierappend"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer d-flex  align-items-center justify-content-end">
+        <button type="button" class="btn  me-2" style="background-color: rgba(9, 9, 172, 0.692);color:white"
+            onclick="editItem()">Edit</button>
+        <button type="button" class="btn"
+            style="border-color:rgba(9, 9, 172, 0.692);  color:rgba(9, 9, 172, 0.692); background-color: white;"
+            data-bs-dismiss="modal" aria-label="Close" formnovalidate>Cancel</button>
+    </div>
+</form>
+<script>
+    ModifierList = [];
+    mins = [];
+    maxs = [];
+    dropdownSelect = [];
+    itemId =@Model.ItemId;
+    $(document).ready(function () {
+          let modifierappendDiv = document.getElementById("modifierappend");
+        @* modifierappendDiv.innerHTML=""; *@
+      
+        $.ajax({
+            url: "/Menu/GetModifierGroups",
+            type: "GET",
+            success: function (data) {
+                $.each(data, function (i, item) {
+                    $("#edititemmodifierGroup").append(new Option(item.modifierGroupName, item.modifierGroupId));
+                });
+            }
+        });
+
+        $.ajax({
+            url: "/Menu/GetMGDetails",
+            type: "GET",
+            data: { id: itemId },
+            success: function (response) {
+                $.each(response.modifierGroups, function (i, mg) {
+                    ModifierList.push(mg.modifierGroupId);
+                    let finalrow = document.createElement("row");
+                    finalrow.setAttribute("id", mg.modifierGroupId);
+                    let row1 = document.createElement("row");
+                    row1.innerHTML = `
+                 <div class="d-flex  justify-content-between align-items-center p-0">
+                        <div >${mg.modifierGroupName}</div>
+                        <i class="fa fa-trash" onclick="remove(this)"></i>
+                    </div>
+                `
+                    finalrow.append(row1);
+                    modifierappendDiv.append(finalrow);
+                    fetchMinMaxValues(finalrow, mg.modifierGroupId);
+                    setTimeout(() => {
+                        fetchModifiersOfModifierGroups(finalrow, mg.modifierGroupId);
+                    }, 100);
+                });
+            }
+        });
+    });
+    function fetchMinMaxValues(mgdiv, mgid) {
+        $.ajax({
+            url: "/Menu/GetMinMax",
+            type: "GET",
+            data: { id: mgid, itemId: itemId },
+            success: function (response) {
+                dropdownSelect.push({Index:mgid,Min:response.minMaxValues[0],Max:response.minMaxValues[1]});
+                let row = document.createElement("row");
+                row.innerHTML = `
+                <div class="d-flex align=items-center justify-content-between">
+                <div >
+                <select class="form-control  rounded-pill " style="width:100px;" id="min${mgid}" data-id="min" data-index="${mgid}"  onchange="updateSelectionEdit('${mgid}','min',this.value)">
+                </select>
+                </div>
+                <div > 
+                <select class="form-control rounded-pill " style="width:100px;" id="max${mgid}" data-id="max" data-index="${mgid}"  onchange="updateSelectionEdit('${mgid}','max',this.value)">
+                </select>
+                </div>
+                </div>`;
+                minDiv = row.querySelector(`#min${mgid}`);
+                maxDiv = row.querySelector(`#max${mgid}`);
+                $(minDiv).append(new Option(response.minMaxValues[0], response.minMaxValues[0]));
+                $(maxDiv).append(new Option(response.minMaxValues[1], response.minMaxValues[1]));
+                for (let i = 0; i <= response.minMaxValues[2]; i++) {
+                    $(minDiv).append(new Option(i, i));
+                    $(maxDiv).append(new Option(i, i));
+                }
+                mgdiv.append(row);
+            }
+        });
+        return true;
+    }
+    function fetchModifiersOfModifierGroups(mgdiv, mgid) {
+
+        $.ajax({
+            url: "/Menu/GetModifiersForItemEdit",
+            type: "GET",
+            data: { modifierId: mgid },
+            success: function (response) {
+                console.log(response);
+                $.each(response, function (i, modifier) {
+                    let row = document.createElement("row");
+                    row.innerHTML = `
+                    <ul >
+                    <li>
+                    <div class="d-flex  justify-content-between align-items-center p-0">
+                        <div >${modifier.modifierName}</div>
+                        <div >${modifier.rate}</div>
+                    </div>
+                    </li>
+                    </ul>`;
+                    mgdiv.append(row);
+                });
+            }
+        });
+    }
+
+    function fetchModifierEdit() {
+        let id = document.getElementById("edititemmodifierGroup").value;
+        let modifierName = document.getElementById("edititemmodifierGroup").options[edititemmodifierGroup.selectedIndex].text;
+        let modifiersDiv = document.getElementById("modifierappend");
+        $.ajax({
+            url: '@Url.Action("GetModifiers", "Menu")',
+            type: "GET",
+            data: { modifierId: id },
+            success: function (response) {
+                if (response.length > 0) {
+                ModifierList.push(id);
+                    if ($(`#${id}`).length > 0) {
+                        return;
+                    }
+                    let finalrow = document.createElement("row");
+                    finalrow.setAttribute("id", id);
+                    let row1 = document.createElement("row");
+                    row1.innerHTML = `
+                 <div class="d-flex  justify-content-between align-items-center p-0">
+                        <div >${modifierName}</div>
+                        <i class="fa fa-trash" onclick="removeEdit(this)"></i>
+                    </div>
+                `
+                    finalrow.append(row1);
+                    let row = document.createElement("row");
+                    row.innerHTML = `
+                <div class="d-flex align=items-center justify-content-between">
+                <div >
+                <select class="form-control" id="min-${id}" data-id="min" data-index="${id}"  onchange="updateSelectionEdit('${id}','min',this.value)">
+                <option value="">Select Option</option>
+                </select>
+                </div>
+                <div > 
+                <select class="form-control" id="max-${id}" data-id="max" data-index="${id}"  onchange="updateSelectionEdit('${id}','max',this.value)">
+                <option value="">Select Option</option>
+                </select>
+                </div>
+                </div>`;
+                    finalrow.append(row);
+                    minDiv = row.querySelector(`#min-${id}`);
+                    maxDiv = row.querySelector(`#max-${id}`);
+                    generateOptions(minDiv, response.length);
+                    generateOptions(maxDiv, response.length);
+
+                    $.each(response, function (i, modifier) {
+                        let row = document.createElement("row");
+                        row.innerHTML = `
+                    <ul >
+                    <li>
+                    <div class="d-flex  justify-content-between align-items-center p-0">
+                        <div >${modifier.modifierName}</div>
+                        <div >${modifier.rate}</div>
+                    </div>
+                    </li>
+                    </ul>`;
+                        finalrow.append(row);
+                    });
+                    modifiersDiv.append(finalrow);
+
+                }
+            }
+        });
+    }
+    function generateOptions(id, modifiersCount) {
+
+        for (let i = 0; i <= modifiersCount; i++) {
+            let opt = document.createElement("option");
+            opt.value = i;
+            opt.textContent = i;
+            id.appendChild(opt);
+        }
+    }
+    function updateSelectionEdit(index, type, value) {
+        console.log(index);
+        console.log(type);
+        console.log(value);
+        let existingSelect = dropdownSelect.find(e => e.Index == index);
+        if (!existingSelect) {
+            existingSelect = { Index: index, Min: 0, Max: 0 };
+            dropdownSelect.push(existingSelect);
+        }
+        if (type === "min") {
+            existingSelect.Min = value;
+        } else if (type === "max") {
+            existingSelect.Max = value;
+        }
+    }
+    function removeEdit(ele) {
+        let row = ele.parentElement.parentElement.parentElement;
+        let id = row.getAttribute("id");
+        ModifierList = ModifierList.filter(modifier => ModifierList.id !== ele);
+        row.remove();
+    }
+    function editItem() {
+        console.log(ModifierList);
+        console.log(dropdownSelect);
+         let ItemId = document.getElementById("edititemId").value;
+         let CategoryId = document.getElementById("edititemCategoryId").value;
+        let Name = document.getElementById("edititemName").value;
+        let ItemType = document.getElementById("edititemType").value;
+        let Rate = document.getElementById("edititemRate").value;
+        let Quantity = document.getElementById("edititemQuantity").value;
+        let Unit = document.getElementById("edititemUnit").value;
+        let Available = document.getElementById("edititemAvailable").value;
+        let DefaultTax = document.getElementById("edititemDefault").value;
+        let TaxPercentage = document.getElementById("edititemTaxPercentage").value;
+        let ShortCode = document.getElementById("edititemShortCode").value;
+        let Description = document.getElementById("edititemDescription").value;
+        let ItemImg = document.getElementById("edititemfilename").value;
+
+        let data = { ItemId:ItemId,CategoryId: CategoryId, Name: Name, ItemType: ItemType, Rate: Rate, Quantity: Quantity, Unit: Unit, Available: Available, DefaultTax: DefaultTax, TaxPercentage: TaxPercentage, ShortCode: ShortCode, Description: Description, ItemImg: ItemImg, selectedModifierList: ModifierList, dropdownSelections: dropdownSelect };
+        if ($("#editItemForm").valid()) {
+            $.ajax({
+                url: '@Url.Action("EditItem", "Menu")',
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(data),
+                success: function (response) {
+                    $(".modal").modal("hide");
+                $("#renderitems").html(response);
+
+                    @* fetch(@Model.PageNumber,@Model.PageSize,@Model.TotalPages); *@
+                }
+            });
+        }
+    }
+
+</script>

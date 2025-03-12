@@ -3,22 +3,12 @@ using DAL.Models;
 
 namespace DAL.ViewModels;
 
-public class MenuItemsViewModel
+public class EditItemViewModel
 {
     public List<Category> categories {get;set;}
-    public List<Item> items {get;set;}
     public List<ModifierGroup> modifierGroups {get;set;}
-    
-    public List<MinMaxViewModel> dropdownSelections {get;set;}
-    public Category category {get;set;}
-
-    public List<int> selectedModifierList {get;set;}
 
     public string CategoryName {get;set;}
-    public int PageNumber {get;set;}
-    public int PageSize {get;set;}
-    public int TotalPages {get;set;}
-    public int SelectedPage {get;set;}
     public int ItemId { get; set; }
 
     [Required(ErrorMessage="Name is Required")]
@@ -53,7 +43,8 @@ public class MenuItemsViewModel
 
     public string ItemType { get; set; }
 
-    public int ShowList {get; set; }
+    public List<ModifierGroup> moidfierGroups {get;set;}
 
     
+
 }
