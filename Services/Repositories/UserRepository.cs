@@ -13,7 +13,15 @@ public class UserRepository : IUserRepository
     {
         _context = context;
     }
-
+    public void SetRememberMe(string email, bool RememberMe)
+    {
+        User user = _context.Users.FirstOrDefault(u => u.Email == email && u.IsActive == true);
+        user.RememberMe = RememberMe;
+    }
+    public List<string> GetAllEmail()
+    {
+        return _context.Users.Where(u => u.IsActive == true).Select(i => i.Email).ToList();
+    }
     public UserProfileViewModel GetByEmail(string email)
     {
         var user = (from u in _context.Users
@@ -38,9 +46,9 @@ public class UserRepository : IUserRepository
                         Country = u.Country ?? 0,
                         CountryName = cg != null ? cg.CountryName : null,
                         State = u.State ?? 0,
-                        StateName = sg != null ? sg.StateName : null, 
+                        StateName = sg != null ? sg.StateName : null,
                         City = u.City ?? 0,
-                        CityName = cityg != null ? cityg.CityName : null, 
+                        CityName = cityg != null ? cityg.CityName : null,
                         ZipCode = u.ZipCode,
                         isActive = u.IsActive,
                         ProfileImg = u.ProfileImg,
@@ -86,9 +94,9 @@ public class UserRepository : IUserRepository
     public string GetUserRole(string email)
     {
         string role = (from u in _context.Users
-                    join r in _context.Roles on u.RoleId equals r.RoleId
-                    where u.Email == email
-                    select r.RoleName)
+                       join r in _context.Roles on u.RoleId equals r.RoleId
+                       where u.Email == email
+                       select r.RoleName)
                     .FirstOrDefault();
         return role;
     }

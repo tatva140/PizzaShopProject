@@ -38,20 +38,24 @@ public class UserController:Controller
        
         return View(users);
     }
+[HttpGet]
 
+public JsonResult CheckUserExists(string email){
+    List<string> existingEmail=_userService.GetAllEmail();
+    bool IsAvailable=!existingEmail.Contains(email.ToLower());
+    return Json(IsAvailable);
+}
 [HttpPost]
       public IActionResult DeleteUser([FromQuery] int id,[FromQuery] int pageNumber,[FromQuery] int pageSize)
     {
         bool deleted=_userService.DeleteUser(id);
         if(deleted)
         {
-            TempData["Message"]="User Deleted Successfully";
-            TempData["MessageType"]="success";
+            TempData["success"]="User Deleted Successfully";
         }
         else
         {
-            TempData["Message"]="User does not exist";
-            TempData["MessageType"]="error";
+            TempData["error"]="User does not exist";
         }
         return RedirectToAction("Index","User",new{pageNumber=pageNumber, pageSize=pageSize});
     }
@@ -77,13 +81,11 @@ public class UserController:Controller
         bool userValid=_userService.AddUser(addUserViewModel);
         if(userValid)
         {
-            TempData["Message"]="User Added Successfully";
-            TempData["MessageType"]="success";
+            TempData["success"]="User Added Successfully";
         }
         else
         {
-            TempData["Message"]="User Already Exists";
-            TempData["MessageType"]="error";
+            TempData["error"]="User Already Exists";
         }
         string email=_encryptDecrypt.Encrypt(addUserViewModel.Email);
         string resetLink= Url.Action("ResetPassword","Home",new  {email=email}, Request.Scheme);
@@ -134,12 +136,10 @@ public class UserController:Controller
         bool isUpdated=_userService.UpdateProfile(model);
         if(isUpdated)
         {
-            TempData["Message"]="User edited Successfully";
-            TempData["MessageType"]="success";
+            TempData["success"]="User edited Successfully";
         }else
         {
-            TempData["Message"]="Could not edit user";
-            TempData["MessageType"]="error";
+            TempData["error"]="Could not edit user";
         }
         return RedirectToAction("Index","User",new{pageNumber=pageNumber, pageSize=pageSize});
     }  

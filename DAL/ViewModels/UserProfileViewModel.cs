@@ -7,13 +7,15 @@ public class UserProfileViewModel
 {
     public int UserId { get; set; }
 
-    [Required(ErrorMessage="FirstName is Required")]
+[Required]
+    [RegularExpression(@"^[A-Za-z]+$", ErrorMessage = "Enter Valid First Name.")]
     public string FirstName { get; set; }
-    
-    [Required(ErrorMessage="LastName is Required")]
+
+   [Required]
+    [RegularExpression(@"^[A-Za-z]+$", ErrorMessage = "Enter Valid Last Name.")]
     public string LastName { get; set; }
 
-    [Required(ErrorMessage="Email is Required")]
+    [Required(ErrorMessage = "Email is Required")]
     public string? Email { get; set; }
 
     [RegularExpression(@"^\d{10}$", ErrorMessage = "Invalid Mobile Number.")]
@@ -22,16 +24,18 @@ public class UserProfileViewModel
     public int? City { get; set; }
     public int? State { get; set; }
     public int? Country { get; set; }
-    public string? CountryName { get; set; } 
-    public string? StateName { get; set; } 
-    public string? CityName { get; set; } 
+    public string? CountryName { get; set; }
+    public string? StateName { get; set; }
+    public string? CityName { get; set; }
     public string? Address { get; set; }
 
     [RegularExpression(@"^[0-9]{6}$", ErrorMessage = "Invalid ZipCode")]
     public string? ZipCode { get; set; }
     public string? ProfileImg { get; set; }
+
+  
     public string? UserName { get; set; }
-    public string? RoleName { get; set; } 
+    public string? RoleName { get; set; }
     public int RoleId { get; set; }
     public bool isActive { get; set; }
 }

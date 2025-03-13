@@ -43,16 +43,16 @@
                         <input type="text" class="form-control" id="firstname" name="FirstName" asp-for="FirstName"
                             placeholder="First Name" >
                         <label for="firstname">First Name</label>
-                    </div>
                         <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
 
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="LastName" placeholder="Last Name" asp-for="LastName">
                         <label for="lastname">Last Name</label>
-                    </div>
                         <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
                 </div>
             </div>
             <div class="row mt-2 ">
@@ -67,8 +67,8 @@
                         <input type="number" class="form-control" id="phone" name="Phone" placeholder="Phone" 
                              asp-for="Phone">
                         <label for="phone">Phone</label>
-                    </div>
                         <span asp-validation-for="Phone" class="text-danger"></span>
+                    </div>
                 </div>
             </div>
             <div class="row mt-2 ">
@@ -108,8 +108,8 @@
                     <div class="form-floating mb-3 mb-md-0">
                         <input type="text" class="form-control" id="zipcode" name="ZipCode" placeholder="Zipcode" asp-for="ZipCode">
                         <label for="zipcode">Zipcode</label>
-                    </div>
                         <span asp-validation-for="ZipCode" class="text-danger"></span>
+                    </div>
 
                 </div>
                
@@ -121,13 +121,20 @@
             </form>
             </div>
 </div>
+    <partial name="_Notification"/>
+
 @section Scripts{
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
    <script>
    
     $(document).ready(function(){
-
+              
+                $("#country").change(function(){
+                    $("#state").empty();
+                $("#city").empty();
+                })
+              
     $.ajax({
         url:"@Url.Action("GetRoles","User")",
         type:"GET",
@@ -150,10 +157,10 @@
             })
         }
     })
-         $('#country').change(function()
+
+         $('#state').focus(function()
             {
-                let countryId=$(this).val();
-                $("#state").empty();
+                let countryId=$("#country").val();
                 $("#city").empty();
 
                 if(countryId){
@@ -169,10 +176,9 @@
                 }
             })
    
-    $('#state').change(function()
+    $('#city').focus(function()
             {
-                let stateId=$(this).val();
-                $("#city").empty();
+                let stateId=$("#state").val();
 
                 if(stateId){
                    $.ajax({
@@ -187,7 +193,6 @@
                 }
             })
    });
-
     </script>
     <script>
         document.getElementById("filename").addEventListener('change',function(e)

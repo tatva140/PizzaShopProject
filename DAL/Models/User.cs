@@ -22,8 +22,10 @@ public partial class User
     public DateTime? CreatedAt { get; set; }
 
     public DateTime? UpdatedAt { get; set; }
+    public DateTime? ExpiryTime { get; set; }
 
     public bool IsActive { get; set; }
+    public bool? RememberMe { get; set; }
 
     public int? CreatedBy { get; set; }
 
@@ -40,6 +42,7 @@ public partial class User
     public int RoleId { get; set; }
 
     public string? ZipCode { get; set; }
+    public string? RefreshToken { get; set; }
 
     public int? Country { get; set; }
 

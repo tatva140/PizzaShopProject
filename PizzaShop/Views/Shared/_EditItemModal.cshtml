@@ -72,16 +72,16 @@
                     <div class="row">
                         <div class="col-6 col-lg-3 ">
                             <div class="form-check form-switch mb-3">
-                                <input class="form-check-input can-delete" type="checkbox" id="edititemAvailable"
-                                    name="IsAvailable" asp-for="@Model.IsAvailable">
-                                <label for="name">Available</label>
+                                <input class="form-check-input " type="checkbox" id="edititemAvailable" name="IsAvailable"
+                                     asp-for="@Model.IsAvailable">
+                                <label for="IsAvailable">Available</label>
                             </div>
                         </div>
                         <div class="col-6 col-lg-3 ">
                             <div class="form-check form-switch mb-3">
-                                <input class="form-check-input can-delete" type="checkbox" id="edititemDefault"
-                                    name="DefaultTax" asp-for="@Model.DefaultTax">
-                                <label for="name">DefaultTax</label>
+                                <input class="form-check-input " type="checkbox" id="edititemDefault" name="DefaultTax"
+                                     asp-for="@Model.DefaultTax">
+                                <label for="DefaultTax">DefaultTax</label>
 
                             </div>
                         </div>
@@ -236,7 +236,6 @@
             type: "GET",
             data: { modifierId: mgid },
             success: function (response) {
-                console.log(response);
                 $.each(response, function (i, modifier) {
                     let row = document.createElement("row");
                     row.innerHTML = `
@@ -327,9 +326,6 @@
         }
     }
     function updateSelectionEdit(index, type, value) {
-        console.log(index);
-        console.log(type);
-        console.log(value);
         let existingSelect = dropdownSelect.find(e => e.Index == index);
         if (!existingSelect) {
             existingSelect = { Index: index, Min: 0, Max: 0 };
@@ -348,8 +344,6 @@
         row.remove();
     }
     function editItem() {
-        console.log(ModifierList);
-        console.log(dropdownSelect);
         let ItemId = document.getElementById("edititemId").value;
         let CategoryId = document.getElementById("edititemCategoryId").value;
         let Name = document.getElementById("edititemName").value;
@@ -357,14 +351,13 @@
         let Rate = document.getElementById("edititemRate").value;
         let Quantity = document.getElementById("edititemQuantity").value;
         let Unit = document.getElementById("edititemUnit").value;
-        let Available = document.getElementById("edititemAvailable").value;
-        let DefaultTax = document.getElementById("edititemDefault").value;
+        let IsAvailable = document.getElementById("edititemAvailable").checked;
+        let DefaultTax = document.getElementById("edititemDefault").checked;
         let TaxPercentage = document.getElementById("edititemTaxPercentage").value;
         let ShortCode = document.getElementById("edititemShortCode").value;
         let Description = document.getElementById("edititemDescription").value;
         let ItemImg = document.getElementById("edititemfilename").value;
-
-        let data = { ItemId: ItemId, CategoryId: CategoryId, Name: Name, ItemType: ItemType, Rate: Rate, Quantity: Quantity, Unit: Unit, Available: Available, DefaultTax: DefaultTax, TaxPercentage: TaxPercentage, ShortCode: ShortCode, Description: Description, ItemImg: ItemImg, selectedModifierList: ModifierList, dropdownSelections: dropdownSelect };
+        let data = { ItemId: ItemId, CategoryId: CategoryId, Name: Name, ItemType: ItemType, Rate: Rate, Quantity: Quantity, Unit: Unit, IsAvailable: IsAvailable, DefaultTax: DefaultTax, TaxPercentage: TaxPercentage, ShortCode: ShortCode, Description: Description, ItemImg: ItemImg, selectedModifierList: ModifierList, dropdownSelections: dropdownSelect };
         if ($("#editItemForm").valid()) {
             $.ajax({
                 url: '@Url.Action("EditItem", "Menu")',

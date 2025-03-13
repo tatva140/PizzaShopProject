@@ -16,6 +16,9 @@ public class UserService
         _userRepository = userRepository;
         _encryptDecrypt = encryptDecrypt;
     }
+    public void SetRememberMe(string email,bool RememberMe){
+        _userRepository.SetRememberMe(email,RememberMe);
+    }
     public bool ValidateUser(string email, string password)
     {
         UserProfileViewModel user = _userRepository.GetByEmail(email);
@@ -25,6 +28,9 @@ public class UserService
         }
         bool userPassword = BCrypt.Net.BCrypt.Verify(password, user.Password);
         return userPassword;
+    }
+    public List<string> GetAllEmail(){
+        return _userRepository.GetAllEmail();
     }
     public bool ValidateUserByEmail(string email)
     {

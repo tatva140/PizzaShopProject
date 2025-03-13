@@ -62,13 +62,11 @@ public class DashboardController : Controller
         bool isUpdated = _userService.UpdateProfile(model);
         if (isUpdated)
         {
-            TempData["Message"] = "Profile Updated Successfully";
-            TempData["MessageType"] = "success";
+            TempData["success"] = "Profile Updated Successfully";
         }
         else
         {
-            TempData["Message"] = "Could not update profile";
-            TempData["MessageType"] = "error";
+            TempData["error"] = "Could not update profile";
         }
         return RedirectToAction("Index", "Dashboard");
 
@@ -101,12 +99,10 @@ public class DashboardController : Controller
         if (!isValid)
         {
             ViewBag.Message = "Current Password does not match";
-            TempData["Message"] = "Could not change password";
-            TempData["MessageType"] = "error";
+            TempData["error"] = "Could not change password";
             return View();
         }
-        TempData["Message"] = "Changed Password Successfully";
-        TempData["MessageType"] = "success";
+        TempData["success"] = "Changed Password Successfully";
         return View();
     }
 }

@@ -21,7 +21,7 @@ public class MenuRepository : IMenuRepository
     {
         return _context.Categories.Where(c => c.IsActive == true).ToList();
     }
-
+    
     public List<Item> GetCategoryItems(int id, int pageNumber, int pageSize, out int totalRecords)
     {
         //   if (id == 0)

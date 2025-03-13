@@ -4,6 +4,7 @@ using DAL.ViewModels;
 
 public interface IUserRepository
 {
+    void SetRememberMe(string email,bool RememberMe);
     UserProfileViewModel GetByEmail(string email);
     void ResetPassword(string newPassword, string email);
     string GetUserRole( string email);
@@ -18,6 +19,6 @@ public interface IUserRepository
     List<City> GetCityByState(int stateId);
 
     bool AddUser(AddUserViewModel addUserViewModel);
-
+List<string> GetAllEmail();
 }
 

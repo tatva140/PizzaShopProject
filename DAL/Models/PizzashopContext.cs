@@ -891,10 +891,15 @@ public partial class PizzashopContext : DbContext
                 .HasDefaultValueSql("now()")
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("created_at");
+            entity.Property(e => e.ExpiryTime)
+                .HasColumnType("timestamp with time zone")
+                .HasColumnName("expiry_time");
             entity.Property(e => e.CreatedBy).HasColumnName("created_by");
             entity.Property(e => e.Email)
                 .HasMaxLength(100)
                 .HasColumnName("email");
+            entity.Property(e => e.RefreshToken)
+                .HasColumnName("refresh_token");
             entity.Property(e => e.FirstName)
                 .HasMaxLength(100)
                 .HasColumnName("first_name");
@@ -902,6 +907,9 @@ public partial class PizzashopContext : DbContext
                 .IsRequired()
                 .HasDefaultValueSql("true")
                 .HasColumnName("is_active");
+            entity.Property(e => e.RememberMe)
+                .HasDefaultValueSql("false")
+                .HasColumnName("remember_me");
             entity.Property(e => e.LastName)
                 .HasMaxLength(100)
                 .HasColumnName("last_name");

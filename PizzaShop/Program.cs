@@ -12,23 +12,26 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.IdentityModel.Tokens.Jwt;
- // Ensure this using directive is present
+using Microsoft.AspNetCore.Authentication.OAuth;
+using System.Text.Json;
+using Azure;
+// Ensure this using directive is present
 
 var builder = WebApplication.CreateBuilder(args);
 
-var emailSettings= builder.Configuration.GetSection("EmailSettings").Get<EmailSettings>();
+var emailSettings = builder.Configuration.GetSection("EmailSettings").Get<EmailSettings>();
 builder.Services.AddSingleton(emailSettings);
 // Add services to the container.
-var conn=builder.Configuration.GetConnectionString("PizzaShopDbConnection");
+var conn = builder.Configuration.GetConnectionString("PizzaShopDbConnection");
 builder.Services.AddDbContext<PizzashopContext>(q => q.UseNpgsql(conn));
-var jwtSettings=builder.Configuration.GetSection("Jwt");
-var key=Encoding.UTF8.GetBytes(jwtSettings["Key"]);
+var jwtSettings = builder.Configuration.GetSection("Jwt");
+var key = Encoding.UTF8.GetBytes(jwtSettings["Key"]);
 
-builder.Services.AddSingleton<JwtTokenService>();
+builder.Services.AddScoped<JwtTokenService>();
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddScoped<IUserRepository,UserRepository>();
-builder.Services.AddScoped<IRolesAndPermissions,RolesAndPermissions>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IRolesAndPermissions, RolesAndPermissions>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<MenuService>();
@@ -41,14 +44,47 @@ builder.Services.AddScoped<EncryptDecrypt>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        options.Events=new JwtBearerEvents
+        options.Events = new JwtBearerEvents
         {
-            OnMessageReceived=context =>
+            OnMessageReceived = context =>
             {
-                 context.Token=context.Request.Cookies["jwtToken"];
-                    return Task.CompletedTask;
+                context.Token = context.Request.Cookies["jwtToken"];
+                return Task.CompletedTask;
             },
-            
+            OnAuthenticationFailed = async context =>
+            {
+                if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                {
+                    var httpContext = context.HttpContext;
+                    var refreshToken = httpContext.Request.Cookies["refreshToken"];
+                    if (!string.IsNullOrEmpty(refreshToken))
+                    {
+                        var newTokenResponse = await RefreshAccessToken(refreshToken);
+                        Console.Write(newTokenResponse.jwtToken);
+                        Console.Write(newTokenResponse.refreshToken);
+                        Console.Write(newTokenResponse.expiryTime);
+                        if (newTokenResponse != null)
+                        {
+                            httpContext.Response.Cookies.Delete("jwtToken");
+                            httpContext.Response.Cookies.Append("jwtToken", newTokenResponse.jwtToken, new CookieOptions
+                            {
+                                HttpOnly = true,
+                                Secure = true,
+                                Expires =DateTime.UtcNow.AddHours(1)
+                            });
+                            httpContext.Response.Cookies.Delete("refreshToken");
+
+                            httpContext.Response.Cookies.Append("refreshToken", newTokenResponse.refreshToken, new CookieOptions
+                            {
+                                HttpOnly = true,
+                                Secure = true,
+                                Expires =newTokenResponse.expiryTime
+                            });
+                           
+                        }
+                    }
+                }
+            }
         };
         options.TokenValidationParameters = new TokenValidationParameters
         {
@@ -59,7 +95,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidIssuer = builder.Configuration["Jwt:Issuer"],
             ValidAudience = builder.Configuration["Jwt:Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
-            ClockSkew=TimeSpan.Zero
+            ClockSkew = TimeSpan.Zero
         };
     });
 builder.Services.AddAuthorization();
@@ -86,3 +122,11 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+async Task<TokenResponse?> RefreshAccessToken(string refresh_token){
+    using var client=new HttpClient();
+    var requestContent=new StringContent($"\"{refresh_token}\"",Encoding.UTF8,"application/json");
+    var response=await client.PostAsync("http://localhost:5196/Home/RefreshToken/refresh_token",requestContent);
+    if(!response.IsSuccessStatusCode)return null;
+    var jsonResponse=await response.Content.ReadAsStringAsync();
+    return JsonSerializer.Deserialize<TokenResponse>(jsonResponse);
+}

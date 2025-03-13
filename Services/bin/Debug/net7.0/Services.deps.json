@@ -1942,6 +1942,7 @@
       },
       "DAL/1.0.0": {
         "dependencies": {
+          "Microsoft.AspNetCore.Mvc": "2.3.0",
           "Npgsql.EntityFrameworkCore.PostgreSQL": "7.0.4",
           "Npgsql.EntityFrameworkCore.PostgreSQL.Design": "1.1.0",
           "System.IdentityModel.Tokens.Jwt": "7.0.3"

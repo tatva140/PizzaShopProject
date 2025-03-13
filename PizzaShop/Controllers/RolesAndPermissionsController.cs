@@ -37,13 +37,11 @@ public class RolesAndPermissionsController:Controller
 
         if(isUpdated)
         {
-            TempData["Message"]="Permissions edited Successfully";
-            TempData["MessageType"]="success";
+            TempData["success"]="Permissions edited Successfully";
         }
         else
         {
-            TempData["Message"]="Could not edit the permissions";
-            TempData["MessageType"]="error";
+            TempData["error"]="Could not edit the permissions";
         }
         return Ok(new {redirectUrl=@Url.Action("Permissions","RolesAndPermissions",new{id=roleId})});
     }
