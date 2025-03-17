@@ -39,6 +39,9 @@ builder.Services.AddScoped<RolesAndPermissionsServices>();
 builder.Services.AddScoped<FileUploads>();
 builder.Services.AddScoped<IJwtService, JwtTokenService>();
 builder.Services.AddScoped<IMenuRepository, MenuRepository>();
+builder.Services.AddScoped<ITableAndSectionRepository, TableAndSectionRepository>();
+builder.Services.AddScoped<TableAndSectionService>();
+
 builder.Services.AddScoped<EncryptDecrypt>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -60,9 +63,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     if (!string.IsNullOrEmpty(refreshToken))
                     {
                         var newTokenResponse = await RefreshAccessToken(refreshToken);
-                        Console.Write(newTokenResponse.jwtToken);
-                        Console.Write(newTokenResponse.refreshToken);
-                        Console.Write(newTokenResponse.expiryTime);
                         if (newTokenResponse != null)
                         {
                             httpContext.Response.Cookies.Delete("jwtToken");
@@ -80,6 +80,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                                 Secure = true,
                                 Expires =newTokenResponse.expiryTime
                             });
+                            httpContext.Response.Redirect(httpContext.Request.Path);
                            
                         }
                     }

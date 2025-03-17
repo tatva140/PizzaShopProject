@@ -1,0 +1,409 @@
+@model DAL.ViewModels.TablesAndSectionViewModel;
+
+<div class="row p-2">
+    <div class="d-flex align-items-center justify-content-end p-2">
+        <div class=" ms-2 " style="position:relative; ">
+            <form id="tablessearchForm" class="d-flex position-relative me-2">
+                <input class="form-control fs-6 form-control-lg " type="text" aria-label="Search" placeholder="Search"
+                    id="tablessearch" name="search" value="@ViewBag.TableSearch">
+                <button type="button" class="position-absolute  btn btn-link"
+                    style="margin:auto;top:3px;transition:transformY(140%);right:10px;" onclick="fetchAllTables(@Model.PageNumber,@Model.PageSize,@Model.TotalPages)"><i
+                        class="fa-solid fa-search"></i></button>
+            </form>
+        </div>
+        <button class=" me-2 " data-bs-toggle="modal" data-bs-target="#removeTables"
+            style="background-color: white; border-radius: 5px;"><i class="fa fa-trash"></i></button>
+        <button class="addItem btn btn-primary " data-bs-toggle="modal" data-bs-target="#addTable">+ New
+            Table</button>
+    </div>
+</div>
+<div class="table-responsive  mt-3">
+    <table class="table " id="tablesTable">
+        <thead>
+            <tr>
+                <th>
+                    <div class="form-check">
+                        <input class="form-check-input mainTable" type="checkbox" value="">
+                        <label class="form-check-label " for="flexCheckDefault">
+                            <div class="ms-2">Name</div>
+                        </label>
+                    </div>
+                </th>
+                <th>Capacity</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var t in Model.tables)
+            {
+                <input type="=" text hidden id="sectionId" value="@t.SectionId">
+                <tr class="check" data-id="@t.TableId">
+                    <td>
+                        <div class="form-check">
+                            <input class="form-check-input individualTable" type="checkbox" value="">
+                            <label class="form-check-label ms-2" for="flexCheckDefault">
+                                <div style="word-wrap: break-word;">@t.TableName
+                                </div>
+                            </label>
+                        </div>
+                    </td>
+                    <td>
+                        @t.Capacity
+                    </td>
+                    <td><span class="badge rounded-pill " style="background-color: grey; color:white;">@t.TableStatus</span>
+                    </td>
+                    <td>
+                        <div class="d-flex align-items-center ">
+                            <i class="fa-solid fa-pen me-3 ms-3" data-bs-toggle="modal" style="cursor:pointer"
+                                data-bs-target="#editTable" onclick="fetchTableDetails(@t.TableId)"></i>
+                            <i class="fa-solid fa-trash" data-bs-toggle="modal" style="cursor:pointer"
+                                data-bs-target="#tableDelete" onclick="setTableDel(@t.TableId)"></i>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div>
+        <div class="d-flex flex-col justify-content-end mb-2">
+            <form method="get" id="pageSizeForm">
+                <label for="pageSize">Records per page:</label>
+                <select id="pageSize" name="pageSize"
+                    onchange="fetchAllTables(@Model.PageNumber,@Model.PageSize,@Model.TotalPages)">
+                    <option value="2">2</option>
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                </select>
+            </form>
+            <div class="ms-2">
+                @if (@Model.PageNumber > 1)
+                {
+                    <a onclick="fetchAllTables(@Model.PageNumber-1,@Model.PageSize,@Model.TotalPages)"
+                        style="cursor:pointer;color:blue;">Previous</a>
+                }
+                Page @Model.PageNumber of @Model.TotalPages
+
+                @if (@Model.PageNumber < @Model.TotalPages)
+                {
+                    <a onclick="fetchAllTables(@Model.PageNumber+1,@Model.PageSize,@Model.TotalPages)"
+                        style="cursor:pointer;color:blue;">Next</a>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="removeTables">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <img src="images/toppng.com-warning-icon-2400x2400.png" alt="Image" class="img-fluid me-2 "
+                    style="font: 30px; height: 80px;">
+                <h3>Are you sure you want to delete these tables?</h3>
+                <div class="modal-footer d-flex  align-items-center justify-content-center">
+                    <button type="button" class="btn btn-danger align-items center" data-bs-dismiss="modal"
+                        onclick="saveTables()">Yes</button>
+                    <button type="button" class="btn btn-primary align-items center" data-bs-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="tableDelete">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <img src="images/toppng.com-warning-icon-2400x2400.png" alt="Image" class="img-fluid me-2 "
+                    style="font: 30px; height: 80px;">
+                <h3>Are you sure you want to delete this table?</h3>
+
+                <div class="modal-footer d-flex  align-items-center justify-content-center">
+                    <input type="text" id="delTableId" hidden>
+                    <button type="button" class="btn btn-danger align-items center" data-bs-dismiss="modal"
+                        onclick="deleteTable()">Yes</button>
+                    <button type="button" class="btn btn-primary align-items center" data-bs-dismiss="modal">No</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="addTable">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" style="color:rgba(9, 9, 172, 0.692) ;">Add Table</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="addTableForm">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-12 col-lg-6">
+                                    <div class="form-floating mb-3">
+                                        <select class="form-select" id="SectionId" name="SectionId"
+                                            asp-for="@Model.SectionId">
+                                            @foreach (var modifier in Model.sections)
+                                            {
+                                                <option value="@modifier.SectionId">@modifier.SectionName
+                                                </option>
+                                            }
+                                        </select>
+                                        <label for="SectionId" class="form-label">Sections</label>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="TableName" name="TableName"
+                                            placeholder="Name" asp-for="@Model.TableName">
+                                        <label for="name">Name</label>
+                                        <span asp-validation-for="TableName" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-lg-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="Capacity" name="Capacity"
+                                            placeholder="Capacity" asp-for="@Model.Capacity">
+                                        <label for="name">Capacity</label>
+                                        <span asp-validation-for="Capacity" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6">
+                                    <div class="form-floating mb-3">
+                                        <select class="form-select" id="TableStatus" name="TableStatus"
+                                            asp-for="@Model.TableStatus">
+                                            <option value="Available">Available</option>
+                                            <option value="Occupied">Occupied</option>
+
+                                        </select>
+                                        <label for="TableStatus" class="form-label">Table Status</label>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer d-flex  align-items-center justify-content-end">
+                        <button type="button" class="btn  me-2"
+                            style="background-color: rgba(9, 9, 172, 0.692);color:white"
+                            onclick="addTable()">Save</button>
+                        <button type="button" class="btn"
+                            style="border-color:rgba(9, 9, 172, 0.692);  color:rgba(9, 9, 172, 0.692); background-color: white;"
+                            data-bs-dismiss="modal" aria-label="Close" formnovalidate>Cancel</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal" id="editTable">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" style="color:rgba(9, 9, 172, 0.692) ;">Edit Table</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="editTableForm">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-12 col-lg-6">
+                                    <div class="form-floating mb-3">
+                                        <select class="form-select" id="EditSectionId" name="SectionId"
+                                            asp-for="@Model.SectionId">
+                                            @foreach (var modifier in Model.sections)
+                                            {
+                                                <option value="@modifier.SectionId">@modifier.SectionName
+                                                </option>
+                                            }
+                                        </select>
+                                        <label for="SectionId" class="form-label">Sections</label>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6">
+                                    <input type="text" class="form-control" id="TableId" name="TableId"
+                                        placeholder="Name" asp-for="@Model.TableId" hidden>
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="EditTableName" name="TableName"
+                                            placeholder="Name" asp-for="@Model.TableName">
+                                        <label for="name">Name</label>
+                                        <span asp-validation-for="TableName" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-lg-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="EditCapacity" name="Capacity"
+                                            placeholder="Capacity" asp-for="@Model.Capacity">
+                                        <label for="name">Capacity</label>
+                                        <span asp-validation-for="Capacity" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6">
+                                    <div class="form-floating mb-3">
+                                        <select class="form-select" id="EditTableStatus" name="TableStatus"
+                                            asp-for="@Model.TableStatus">
+                                            <option value="Available">Available</option>
+                                            <option value="Occupied">Occupied</option>
+                                        </select>
+                                        <label for="TableStatus" class="form-label">Table Status</label>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer d-flex  align-items-center justify-content-end">
+                        <button type="button" class="btn  me-2"
+                            style="background-color: rgba(9, 9, 172, 0.692);color:white"
+                            onclick="editTable()">Save</button>
+                        <button type="button" class="btn"
+                            style="border-color:rgba(9, 9, 172, 0.692);  color:rgba(9, 9, 172, 0.692); background-color: white;"
+                            data-bs-dismiss="modal" aria-label="Close" formnovalidate>Cancel</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+
+<partial name="_Notification" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+<script>
+
+
+    function fetchAllTables(pageNumber, pageSize, totalPages) {
+        let sectionId = document.getElementById("sectionId").value;
+    let tablesearch=document.getElementById("tablessearch").value;
+        let selectedPage = $("#pageSize").val();
+        $.ajax({
+            url: "/TablesAndSections/Tables",
+            type: "GET",
+            data: { sectionId: sectionId,search:tablesearch, pageNumber: pageNumber, pageSize: pageSize, selectedPage: selectedPage },
+            success: function (response) {
+                $("#rendertables").html(response);
+                $("#pageSize").val(selectedPage);
+            }
+        });
+
+    }
+    function addTable() {
+        var formdata = new FormData($("#addTableForm")[0]);
+        if ($("#addTableForm").valid()) {
+            $.ajax({
+                url: "/TablesAndSections/AddTable",
+                type: "POST",
+                contentType: false,
+                processData: false,
+                data: formdata,
+                success: function (response) {
+                    $(".modal").modal("hide");
+                    $("#rendertables").html(response);
+                }
+            });
+        }
+    }
+    function fetchTableDetails(id) {
+        $.ajax({
+            url: "/TablesAndSections/GetTableDetails",
+            type: "GET",
+            data: { id: id },
+            success: function (response) {
+                document.getElementById("EditTableName").value = response.table.tableName;
+                document.getElementById("EditSectionId").value = response.table.sectionId;
+                document.getElementById("EditCapacity").value = response.table.capacity;
+                document.getElementById("EditTableStatus").value = response.table.tableStatus;
+            }
+        });
+
+        document.getElementById("TableId").value = id;
+    }
+    function editTable() {
+        var formdata = new FormData($("#editTableForm")[0]);
+
+        if ($("#editSectionForm").valid()) {
+            $.ajax({
+                url: "/TablesAndSections/EditTable",
+                type: "POST",
+                contentType: false,
+                processData: false,
+                data: formdata,
+                success: function (response) {
+                    $(".modal").modal("hide");
+                    $("#rendertables").html(response);
+
+                }
+            });
+        }
+    }
+    function setTableDel(id) {
+        document.getElementById("delTableId").value = id;
+    }
+    function deleteTable() {
+        let sectionId = document.getElementById("delTableId").value;
+        $.ajax({
+            url: "/TablesAndSections/DeleteTable",
+            type: "POST",
+            contentType: "application/json",
+            data: sectionId,
+            success: function (response) {
+                $("#rendertables").html(response);
+            }
+        });
+    }
+    $(".mainTable").change(function () {
+        if ($(".mainTable").prop("checked")) {
+            $(".individualTable").prop("checked", true);
+        } else {
+            $(".individualTable").prop("checked", false);
+        }
+    });
+    $(".individualTable").change(function () {
+        if ($(".individualTable:checked").length === $(".individualTable").length) {
+            $(".mainTable").prop("checked", true);
+        } else {
+            $(".mainTable").prop("checked", false);
+        }
+    })
+
+    function checkedTables() {
+        let selectedTables = [];
+        $("tbody tr").each(function () {
+            let row = $(this);
+            let isSelected = row.find(".individualTable").prop("checked");
+            if (isSelected) {
+                selectedTables.push(row.data("id"));
+            }
+        });
+
+        return selectedTables;
+    }
+
+    function saveTables() {
+        let data = checkedTables();
+        $.ajax({
+            url: '@Url.Action("DeleteTables", "TablesAndSections")',
+            type: "POST",
+            contentType: "application/json ",
+            data: JSON.stringify(data),
+            success: function (response) {
+                if (response.redirectUrl) {
+                    window.location.href = response.redirectUrl;
+                }
+            }
+        })
+    }
+
+</script>

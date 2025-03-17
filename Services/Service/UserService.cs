@@ -46,10 +46,10 @@ public class UserService
         UserProfileViewModel user = _userRepository.GetByEmail(email);
         return user;
     }
-    public (List<UserProfileViewModel>, int totalRecords) GetAllUser(string sortOrder, int pageNumber, int pageSize)
+    public (List<UserProfileViewModel>, int totalRecords) GetAllUser(string search,string sortOrder, int pageNumber, int pageSize)
     {
         int totalRecords;
-        List<UserProfileViewModel> users = _userRepository.GetAllUser(sortOrder, pageNumber, pageSize, out totalRecords);
+        List<UserProfileViewModel> users = _userRepository.GetAllUser(search,sortOrder, pageNumber, pageSize, out totalRecords);
         return (users, totalRecords);
     }
     public string GetUserRole(string email)

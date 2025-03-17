@@ -3,10 +3,14 @@
 <div class="row p-2">
     <div class="d-flex align-items-center justify-content-end p-2">
         <div class=" ms-2 " style="position:relative; ">
-            <input type="text" class="form-control " placeholder="Search" name="search" id="search"
-                style="position: relative;right: 10px;" onkeyup="search()">
-            <span style="position: absolute; right: 20px;top:50%; transform: translateY(-60%); font: 15px;"><i
-                    class="fa-solid fa-search"></i> </span>
+            <form id="modifiersearchForm" class="d-flex position-relative me-2">
+                <input class="form-control fs-6 form-control-lg " type="text" aria-label="Search" placeholder="Search"
+                    id="modifiersearch" name="search" value="@ViewBag.ModifierSearch">
+                <button type="button" class="position-absolute  btn btn-link"
+                    style="margin:auto;top:3px;transition:transformY(140%);right:10px;"
+                    onclick="fetchAllModifiers(@Model.PageNumber,@Model.PageSize,@Model.TotalPages)"><i
+                        class="fa-solid fa-search"></i></button>
+            </form> 
         </div>
         <button class=" me-2 " data-bs-toggle="modal" data-bs-target="#removeModifiers"
             style="background-color: white; border-radius: 5px;"><i class="fa fa-trash"></i></button>
@@ -317,12 +321,14 @@
 
     function fetchAllModifiers(pageNumber, pageSize, totalPages) {
                 let mgID = document.getElementById("modifierId").value;
+        let modifiersearch = document.getElementById("modifiersearch").value;
+
 
         let selectedPage = $("#pageSize").val();
         $.ajax({
             url: "/Menu/Modifiers",
             type: "GET",
-            data: { modifierId: mgID, pageNumber: pageNumber, pageSize: pageSize, selectedPage: selectedPage },
+            data: { modifierId: mgID,search:modifiersearch, pageNumber: pageNumber, pageSize: pageSize, selectedPage: selectedPage },
             success: function (response) {
                 $("#rendermodifiers").html(response);
                 $("#pageSize").val(selectedPage);

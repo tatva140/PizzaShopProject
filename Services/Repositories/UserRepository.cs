@@ -57,7 +57,7 @@ public class UserRepository : IUserRepository
 
         return user;
     }
-    public List<UserProfileViewModel> GetAllUser(string sortOrder, int pageNumber, int pageSize, out int totalRecords)
+    public List<UserProfileViewModel> GetAllUser(string search,string sortOrder, int pageNumber, int pageSize, out int totalRecords)
     {
         var query = _context.Users;
         totalRecords = query.Count();
@@ -89,8 +89,15 @@ public class UserRepository : IUserRepository
                 users = users.OrderBy(u => u.FirstName);
                 break;
         }
+        if(search!=null){
+            List<UserProfileViewModel> searchedUsers=users.Where(u=>u.FirstName.ToLower().Contains(search.ToLower())).ToList();
+        totalRecords=searchedUsers.Count();
+        return searchedUsers.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+
+        }
         return users.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
     }
+   
     public string GetUserRole(string email)
     {
         string role = (from u in _context.Users

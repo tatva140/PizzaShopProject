@@ -344,26 +344,18 @@
         row.remove();
     }
     function editItem() {
-        let ItemId = document.getElementById("edititemId").value;
-        let CategoryId = document.getElementById("edititemCategoryId").value;
-        let Name = document.getElementById("edititemName").value;
-        let ItemType = document.getElementById("edititemType").value;
-        let Rate = document.getElementById("edititemRate").value;
-        let Quantity = document.getElementById("edititemQuantity").value;
-        let Unit = document.getElementById("edititemUnit").value;
-        let IsAvailable = document.getElementById("edititemAvailable").checked;
-        let DefaultTax = document.getElementById("edititemDefault").checked;
-        let TaxPercentage = document.getElementById("edititemTaxPercentage").value;
-        let ShortCode = document.getElementById("edititemShortCode").value;
-        let Description = document.getElementById("edititemDescription").value;
-        let ItemImg = document.getElementById("edititemfilename").value;
-        let data = { ItemId: ItemId, CategoryId: CategoryId, Name: Name, ItemType: ItemType, Rate: Rate, Quantity: Quantity, Unit: Unit, IsAvailable: IsAvailable, DefaultTax: DefaultTax, TaxPercentage: TaxPercentage, ShortCode: ShortCode, Description: Description, ItemImg: ItemImg, selectedModifierList: ModifierList, dropdownSelections: dropdownSelect };
+           var formdata = new FormData($("#editItemForm")[0]);
+        let profileImg=$("#edititemfilename")[0].files[0];
+        if(profileImg){
+            formdata.append("ItemImg",profileImg);
+        }
         if ($("#editItemForm").valid()) {
             $.ajax({
                 url: '@Url.Action("EditItem", "Menu")',
                 type: "POST",
-                contentType: "application/json",
-                data: JSON.stringify(data),
+                contentType: false,
+                processData: false,
+                data: formdata,
                 success: function (response) {
                     $(".modal").modal("hide");
                     $("#renderitems").html(response);

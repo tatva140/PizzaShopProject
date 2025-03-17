@@ -17,14 +17,14 @@ public class MenuService
        return _menuRepository.GetCategories();
     }
 
-    public (List<Item>,int totalRecords) GetCategoryItems(int id,int pageNumber,int pageSize){
+    public (List<Item>,int totalRecords) GetCategoryItems(int id,string search,int pageNumber,int pageSize){
         int totalRecords;
-        List<Item> items=_menuRepository.GetCategoryItems(id,pageNumber,pageSize,out totalRecords);
+        List<Item> items=_menuRepository.GetCategoryItems(id,search,pageNumber,pageSize,out totalRecords);
         return  (items,totalRecords);
     }
-    public (List<Modifier>,int totalRecords) GetModifiers(int id,int pageNumber,int pageSize){
+    public (List<Modifier>,int totalRecords) GetModifiers(int id,string search,int pageNumber,int pageSize){
         int totalRecords;
-        List<Modifier> modifiers=_menuRepository.GetModifiers(id,pageNumber,pageSize,out totalRecords);
+        List<Modifier> modifiers=_menuRepository.GetModifiers(id,search,pageNumber,pageSize,out totalRecords);
         return  (modifiers,totalRecords);
     }
 

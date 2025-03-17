@@ -1,0 +1,277 @@
+@model DAL.ViewModels.TablesAndSectionViewModel;
+
+<div class="row mt-3 ms-1 ">
+    <div class="row mt-3 mb-3" id="categoryaccordian">
+        <div class=" col p-0">
+            <div class="accordion accordion-flush mt-md-2 mt-0 shadow rounded-lg " id="accordionFlushExample">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="flush-headingOne">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne"
+                            style="color:rgb(30, 151, 231);font-weight: 700; font-size: 25px;">
+                            Sections
+                        </button>
+                    </h2>
+                    <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
+                        data-bs-parent="#accordionFlushExample">
+                        <div class="accordion-body ">
+                            <div class="text-end">
+                                <button class="me-3" id="add" data-bs-toggle="modal" data-bs-target="#addSection"
+                                    style=" color: rgb(30, 151, 231); border: 2px solid rgb(30, 151, 231);background-color: rgb(250, 250, 250); "><i
+                                        class="fa-regular fa-plus me-2"></i>Add Sections</button>
+                            </div>
+                            <ul class=" overflow-auto mt-2 p-0" style="max-height: 500px;">
+                                @foreach (var s in Model.sections)
+                                {
+                                    <a style="text-decoration: none; color: black;cursor: pointer;"
+                                        onclick="fetchSections(@s.SectionId)">
+                                        <li style="list-style: none;">
+                                            <div class="d-flex align-items-center justify-content-between actionshover">
+                                                <div class="d-flex align-items-center justify-content-center mt-3">
+                                                    <i class="fa-solid fa-table me-2"></i>
+                                                    <div>@s.SectionName</div>
+                                                </div>
+                                                <div
+                                                    class="d-flex align-items-center justify-content-end me-2 actions mt-3">
+                                                    <i class="fa-solid fa-pen me-3 ms-3" style="cursor: pointer; "
+                                                        data-bs-toggle="modal" data-bs-target="#editSection"
+                                                        onclick="setSectionEditId(@s.SectionId)"></i>
+                                                    <i class="fa-solid fa-trash" style="cursor: pointer;"
+                                                        data-bs-toggle="modal" data-bs-target="#deleteSection"
+                                                        onclick="delSectionId(@s.SectionId)"></i>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </a>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2 border  p-2 shadow rounded-lg" style="background-color: rgb(250, 250, 250);" id="category">
+
+        <div class="d-flex overflow-hidden  align-items-center justify-content-between w-auto p-2 ">
+            <div style="color: rgb(30, 151, 231); font-weight: 700; font-size: 25px; ">Sections
+            </div>
+            <button class="text-end ms-3 " id="add" data-bs-toggle="modal" data-bs-target="#addSection"
+                style=" color: rgb(30, 151, 231); border: 2px solid rgb(30, 151, 231);background-color: rgb(250, 250, 250); "><i
+                    class="fa-regular fa-plus"></i></button>
+        </div>
+        <ul class="p-2 overflow-auto mt-2" style="max-height: 400px;">
+            @foreach (var s in Model.sections)
+            {
+                <a style="text-decoration: none; color: black;cursor: pointer;" onclick="fetchSections(@s.SectionId)">
+                    <li style="list-style: none;">
+                        <div class="d-flex align-items-center justify-content-between actionshover">
+                            <div class="d-flex align-items-center justify-content-center mt-3">
+                                <i class="fa-solid fa-table me-2"></i>
+                                <div>@s.SectionName</div>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-end me-2 actions mt-3">
+                                <i class="fa-solid fa-pen me-3 ms-3" style="cursor: pointer; " data-bs-toggle="modal"
+                                    data-bs-target="#editSection" onclick="setSectionEditId(@s.SectionId)"></i>
+                                <i class="fa-solid fa-trash" style="cursor: pointer;" data-bs-toggle="modal"
+                                    data-bs-target="#deleteSection" onclick="delSectionId(@s.SectionId)"></i>
+                            </div>
+                        </div>
+                    </li>
+                </a>
+            }
+
+        </ul>
+    </div>
+    <div class="col border bg-white shadow rounded-lg">
+        <div class="row">
+            <div class="col  p-2  ">
+                <div class="d-flex align-items-center justify-content-between p-2">
+                    <div style="color: rgb(30, 151, 231); font-weight: 700; font-size: 25px; ">Tables
+                    </div>
+                    <button class="addItembtn btn btn-primary " data-bs-toggle="modal" data-bs-target="#addModifier">+
+                        New
+                        Table</button>
+                </div>
+            </div>
+        </div>
+        <div id="rendertables"></div>
+    </div>
+</div>
+
+<div class="modal" id="addSection">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" style="color:rgba(9, 9, 172, 0.692) ;">Add Section</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="addSectionForm">
+
+                <div class="modal-body">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="SectionName" placeholder="Name" name="SectionName"
+                            asp-for="@Model.SectionName">
+                        <label for="name">Name</label>
+                        <span asp-validation-for="SectionName" class="text-danger "></span>
+
+                    </div>
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control" id="Description" placeholder="Description" name="Description"
+                            asp-for="@Model.Description"></textarea>
+                        <label for="description">Description</label>
+                    </div>
+
+                </div>
+                <div class="modal-footer d-flex  align-items-center justify-content-end">
+                    <button type="button" class="btn  me-2" style="background-color: rgba(9, 9, 172, 0.692);color:white"
+                        onclick="addSection()">Add</button>
+                    <button type="button" class="btn"
+                        style="border-color:rgba(9, 9, 172, 0.692);  color:rgba(9, 9, 172, 0.692); background-color: white;"
+                        data-bs-dismiss="modal" aria-label="Close" formnovalidate>Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal" id="editSection">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" style="color:rgba(9, 9, 172, 0.692) ;">Edit Section</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="editSectionForm">
+                <div class="modal-body">
+                    <input type="text" class="form-control" id="SectionId" name="SectionId"
+                        placeholder="ModifierGroupId" asp-for="@Model.SectionId" hidden>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="EditSectionName" name="SectionName" placeholder="Name"
+                            asp-for="@Model.SectionName">
+                        <label for="name">Name</label>
+                        <span asp-validation-for="SectionName" class="text-danger "></span>
+
+                    </div>
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control" id="EditSectionDescription" name="Description" placeholder="Description"
+                            asp-for="@Model.Description"></textarea>
+                        <label for="description">Description</label>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex  align-items-center justify-content-end">
+                    <button type="button" class="btn  me-2" style="background-color: rgba(9, 9, 172, 0.692);color:white"
+                        onclick="editSection()">Edit</button>
+                    <button type="button" class="btn"
+                        style="border-color:rgba(9, 9, 172, 0.692);  color:rgba(9, 9, 172, 0.692); background-color: white;"
+                        data-bs-dismiss="modal" aria-label="Close" formnovalidate>Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal" id="deleteSection">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content">
+
+            <div class="modal-body text-center">
+                <img src="images/toppng.com-warning-icon-2400x2400.png" alt="Image" class="img-fluid me-2 "
+                    style="font: 30px; height: 80px;" class="">
+                <h3>Are you sure you want to delete this section?</h3>
+
+                <input type="text" id="delSectionId" hidden>
+                <div class="modal-footer d-flex  align-items-center justify-content-center">
+                    <button type="submit" class="btn btn-danger align-items center" data-bs-dismiss="modal"
+                        onclick="deleteSection()">Yes</button>
+                    <button type="button" class="btn btn-primary align-items center" data-bs-dismiss="modal">No</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<partial name="_Notification" />
+
+<script>
+    sectionId = 0;
+    $(document).ready(function () {
+        sectionId =@(Model.ShowList != null ? Model.ShowList : 0);
+        if (sectionId == 0) {
+            sectionId =@(Model.sections.Count > 0 ? Model.sections[0].SectionId : 0);
+        }
+        fetchSections(sectionId);
+    });
+    function fetchSections(id) {
+        $.ajax({
+            url: "/TablesAndSections/Tables",
+            type: "GET",
+            data: { sectionId: id },
+            success: function (response) {
+                $("#rendertables").html(response);
+            }
+        });
+    }
+    function addSection() {
+        var formdata = new FormData($("#addSectionForm")[0]);
+        if ($("#addSectionForm").valid()) {
+            $.ajax({
+                url: "/TablesAndSections/AddSection",
+                type: "POST",
+                contentType: false,
+                processData: false,
+                data: formdata,
+                success: function (response) {
+                    $(".modal").modal("hide");
+                    $("#sections").html(response);
+                }
+            });
+        }
+    }
+    function delSectionId(id) {
+        document.getElementById("delSectionId").value = id;
+    }
+    function deleteSection() {
+        let sectionId = document.getElementById("delSectionId").value;
+        $.ajax({
+            url: "/TablesAndSections/DeleteSection",
+            type: "POST",
+            contentType: "application/json",
+            data: sectionId,
+            success: function (response) {
+                $("#sections").html(response);
+            }
+        });
+    }
+    function setSectionEditId(id) {
+        $.ajax({
+            url: "/TablesAndSections/GetSectionDetails",
+            type: "GET",
+            data: { id: id },
+            success: function (response) {
+                console.log(response.section.sectionName);
+                document.getElementById("EditSectionName").value = response.section.sectionName;
+                document.getElementById("EditSectionDescription").value = response.section.description;
+            }
+        });
+
+        document.getElementById("SectionId").value = id;
+    }
+
+    function editSection() {
+        var formdata = new FormData($("#editSectionForm")[0]);
+
+        if ($("#editSectionForm").valid()) {
+            $.ajax({
+                url: "/TablesAndSections/EditSection",
+                type: "POST",
+                contentType: false,
+                processData: false,
+                data: formdata,
+                success: function (response) {
+                    $(".modal").modal("hide");
+                    $("#sections").html(response);
+
+                }
+            });
+        }
+    }
+</script>

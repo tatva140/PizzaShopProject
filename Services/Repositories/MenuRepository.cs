@@ -21,8 +21,8 @@ public class MenuRepository : IMenuRepository
     {
         return _context.Categories.Where(c => c.IsActive == true).ToList();
     }
-    
-    public List<Item> GetCategoryItems(int id, int pageNumber, int pageSize, out int totalRecords)
+
+    public List<Item> GetCategoryItems(int id, string search, int pageNumber, int pageSize, out int totalRecords)
     {
         //   if (id == 0)
         // {
@@ -30,17 +30,43 @@ public class MenuRepository : IMenuRepository
         //     totalRecords = items1.Count();
         //     return items1.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
         // }
+        if (search != null)
+        {
+            Console.Write(search);
+            IQueryable<Item> items1 = _context.Items.Where(i => i.CategoryId == id && i.IsActive == true && i.Name.ToLower().Contains(search.ToLower())).AsQueryable();
+            totalRecords = items1.Count();
+            return items1.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+        }
         IQueryable<Item> items = _context.Items.Where(i => i.CategoryId == id && i.IsActive == true).OrderBy(i => i.CreatedAt);
         totalRecords = items.Count();
         return items.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
     }
-    public List<Modifier> GetModifiers(int id, int pageNumber, int pageSize, out int totalRecords)
+    public List<Modifier> GetModifiers(int id, string search, int pageNumber, int pageSize, out int totalRecords)
     {
         if (id == 0)
         {
+            if (search != null)
+            {
+                IQueryable<Modifier> allModifiers1 = _context.Modifiers.Where(m => m.IsActive == true && m.ModifierName.ToLower().Contains(search.ToLower()));
+                totalRecords = allModifiers1.Count();
+                return allModifiers1.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+            }
             IQueryable<Modifier> allModifiers = _context.Modifiers.Where(m => m.IsActive == true);
             totalRecords = allModifiers.Count();
             return allModifiers.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+        }
+        if (search != null)
+        {
+           List<ModifierModifierGroup> modifierModifierGroups1 = _context.ModifierModifierGroups.Where(i => i.ModifierGroupId == id).ToList();
+        IQueryable<Modifier> modifiers1 = (from mmg in _context.ModifierModifierGroups
+                                          join m in _context.Modifiers
+                                          on mmg.ModifierId equals m.ModifierId
+                                          where mmg.ModifierGroupId == id
+                                          select m);
+            IQueryable<Modifier> allModifiers1 = modifiers1.Where(m => m.IsActive == true && m.ModifierName.ToLower().Contains(search.ToLower()));
+
+            totalRecords = allModifiers1.Count();
+            return allModifiers1.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
         }
         List<ModifierModifierGroup> modifierModifierGroups = _context.ModifierModifierGroups.Where(i => i.ModifierGroupId == id).ToList();
         IQueryable<Modifier> modifiers = (from mmg in _context.ModifierModifierGroups
@@ -48,6 +74,7 @@ public class MenuRepository : IMenuRepository
                                           on mmg.ModifierId equals m.ModifierId
                                           where mmg.ModifierGroupId == id
                                           select m);
+        
 
         totalRecords = modifiers.Count();
         return modifiers.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
@@ -406,14 +433,15 @@ public class MenuRepository : IMenuRepository
         };
         return minmax;
     }
-    public List<Modifier> GetModifiersForItemEdit(int modifierId){
-         List<ModifierModifierGroup> modifierModifierGroups = _context.ModifierModifierGroups.Where(i => i.ModifierGroupId == modifierId).ToList();
+    public List<Modifier> GetModifiersForItemEdit(int modifierId)
+    {
+        List<ModifierModifierGroup> modifierModifierGroups = _context.ModifierModifierGroups.Where(i => i.ModifierGroupId == modifierId).ToList();
         List<Modifier> modifiers = (from mmg in _context.ModifierModifierGroups
                                     join m in _context.Modifiers
                                     on mmg.ModifierId equals m.ModifierId
                                     where mmg.ModifierGroupId == modifierId
                                     select m).ToList();
-                                    return modifiers;
+        return modifiers;
     }
 
     public int EditItem(MenuItemsViewModel menuItemsViewModel)
@@ -423,29 +451,29 @@ public class MenuRepository : IMenuRepository
         {
             return 0;
         }
-        Item item=_context.Items.FirstOrDefault(i=>i.ItemId==menuItemsViewModel.ItemId);
-        if(item==null)return 0;
+        Item item = _context.Items.FirstOrDefault(i => i.ItemId == menuItemsViewModel.ItemId);
+        if (item == null) return 0;
 
-         item.Name = menuItemsViewModel.Name;
-            item.CategoryId = menuItemsViewModel.CategoryId;
-            item.ItemType = menuItemsViewModel.ItemType;
-            item.Rate = menuItemsViewModel.Rate;
-            item.Quantity = menuItemsViewModel.Quantity;
-            item.Unit = menuItemsViewModel.Unit;
-            item.Description = menuItemsViewModel.Description ?? item.Description;
-            item.DefaultTax = menuItemsViewModel.DefaultTax;
-            item.IsAvailable = menuItemsViewModel.IsAvailable;
-            item.TaxPercentage = menuItemsViewModel.TaxPercentage;
-            item.ItemImg = menuItemsViewModel.ItemImg ?? item.ItemImg;
-       
+        item.Name = menuItemsViewModel.Name;
+        item.CategoryId = menuItemsViewModel.CategoryId;
+        item.ItemType = menuItemsViewModel.ItemType;
+        item.Rate = menuItemsViewModel.Rate;
+        item.Quantity = menuItemsViewModel.Quantity;
+        item.Unit = menuItemsViewModel.Unit;
+        item.Description = menuItemsViewModel.Description ?? item.Description;
+        item.DefaultTax = menuItemsViewModel.DefaultTax;
+        item.IsAvailable = menuItemsViewModel.IsAvailable;
+        item.TaxPercentage = menuItemsViewModel.TaxPercentage;
+        item.ItemImg = menuItemsViewModel.ItemImg ?? item.ItemImg;
+
 
         if (menuItemsViewModel.selectedModifierList != null)
         {
             foreach (int modifier in menuItemsViewModel.selectedModifierList)
             {
-                ModifierGroupsItem modifierGroupsItem1=_context.ModifierGroupsItems.FirstOrDefault(mmg=>mmg.ModifierGroupId==modifier && mmg.ItemId==item.ItemId);
-               
-                    
+                ModifierGroupsItem modifierGroupsItem1 = _context.ModifierGroupsItems.FirstOrDefault(mmg => mmg.ModifierGroupId == modifier && mmg.ItemId == item.ItemId);
+
+
                 int min = 0;
                 int max = 0;
                 foreach (var key in menuItemsViewModel.dropdownSelections)
@@ -457,18 +485,21 @@ public class MenuRepository : IMenuRepository
                         break;
                     }
                 }
-                 if(modifierGroupsItem1==null){
-                ModifierGroupsItem modifierGroupsItem = new ModifierGroupsItem
+                if (modifierGroupsItem1 == null)
                 {
-                    ModifierGroupId = modifier,
-                    ItemId = item.ItemId,
-                    Min = min,
-                    Max = max
-                };
-                _context.ModifierGroupsItems.Add(modifierGroupsItem);
-                }else{
-                    modifierGroupsItem1.Min=min;
-                    modifierGroupsItem1.Max=max;
+                    ModifierGroupsItem modifierGroupsItem = new ModifierGroupsItem
+                    {
+                        ModifierGroupId = modifier,
+                        ItemId = item.ItemId,
+                        Min = min,
+                        Max = max
+                    };
+                    _context.ModifierGroupsItems.Add(modifierGroupsItem);
+                }
+                else
+                {
+                    modifierGroupsItem1.Min = min;
+                    modifierGroupsItem1.Max = max;
                 }
             }
         }

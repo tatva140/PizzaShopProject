@@ -3,10 +3,14 @@
 <div class="row p-2">
     <div class="d-flex align-items-center justify-content-end p-2">
         <div class=" ms-2 " style="position:relative; ">
-            <input type="text" class="form-control " placeholder="Search" name="search" id="search"
-                style="position: relative;right: 10px;" onkeyup="search()">
-            <span style="position: absolute; right: 20px;top:50%; transform: translateY(-60%); font: 15px;"><i
-                    class="fa-solid fa-search"></i> </span>
+            <form id="itemsearchForm" class="d-flex position-relative me-2">
+                <input class="form-control fs-6 form-control-lg " type="text" aria-label="Search" placeholder="Search"
+                    id="itemsearch" name="search" value="@ViewBag.ItemSearch">
+                <button type="button" class="position-absolute  btn btn-link"
+                    style="margin:auto;top:3px;transition:transformY(140%);right:10px;"
+                    onclick="fetch(@Model.PageNumber,@Model.PageSize,@Model.TotalPages)"><i
+                        class="fa-solid fa-search"></i></button>
+            </form> 
         </div>
         <button class=" me-2 " data-bs-toggle="modal" data-bs-target="#deleteItems"
             style="background-color: white; border-radius: 5px;"><i class="fa fa-trash"></i></button>
@@ -43,12 +47,19 @@
                             <input class="form-check-input individualCheck" type="checkbox" value="">
                             <label class="form-check-label" for="flexCheckDefault">
                                 <div class="d-flex   align-items-center w-auto p-0 ">
-                                    <img src="images/dining-menu.png" alt="Image" class="img-fluid me-2 ms-2"
-                                        style="font: 10px; height: 25px;">
-                                    <div style="word-wrap: break-word;">@item.Name
-                                    </div>
+                                    @if (item.ItemImg == null || item.ItemImg.Length == 0)
+                                    {
+                                        <img src="~/images/Default_pfp.svg.png" class="rounded-pill img-fluid me-2"
+                                            style="width: 30px; height: 30px">
+                                    }
+                                    else
+                                    {
+                                        <img src="@(Url.Content(item.ItemImg))" class="rounded-pill img-fluid me-2"
+                                            style="width: 30px; height: 30px">
+                                    }
+
+                                    <div style="word-wrap: break-word;">@item.Name</div>
                                 </div>
-                            </label>
                         </div>
                     </td>
                     <td>
@@ -341,16 +352,19 @@
     function fetch(pageNumber, pageSize, totalPages) {
         let selectedPage = $("#pageItemSize").val();
         let cgoryId = document.getElementById("categoryItemId").value;
+        let itemsearch = document.getElementById("itemsearch").value;
+
         $.ajax({
             url: "/Menu/CategoryItems",
             type: "GET",
-            data: { categoryId: cgoryId, pageNumber: pageNumber, pageSize: pageSize, selectedPage: selectedPage },
+            data: { categoryId: cgoryId,search:itemsearch, pageNumber: pageNumber, pageSize: pageSize, selectedPage: selectedPage },
             success: function (response) {
                 $("#renderitems").html(response);
                 $("#pageItemSize").val(selectedPage);
             }
         });
     }
+    
     function showModifierGroups() {
         $.ajax({
             url: "/Menu/GetModifierGroups",
@@ -457,26 +471,20 @@
         row.remove();
     }
     function addItem() {
-        let CategoryId = document.getElementById("itemCategoryId").value;
-        let Name = document.getElementById("itemName").value;
-        let ItemType = document.getElementById("itemType").value;
-        let Rate = document.getElementById("itemRate").value;
-        let Quantity = document.getElementById("itemQuantity").value;
-        let Unit = document.getElementById("itemUnit").value;
-        let Available = document.getElementById("itemAvailable").value;
-        let DefaultTax = document.getElementById("itemDefault").value;
-        let TaxPercentage = document.getElementById("itemTaxPercentage").value;
-        let ShortCode = document.getElementById("itemShortCode").value;
-        let Description = document.getElementById("itemDescription").value;
-        let ItemImg = document.getElementById("itemfilename").value;
+        var formdata = new FormData($("#addItemForm")[0]);
+        let profileImg = $("#itemfilename")[0].files[0];
+        if (profileImg) {
+            formdata.append("ItemImg", profileImg);
+        }
 
-        let data = { CategoryId: CategoryId, Name: Name, ItemType: ItemType, Rate: Rate, Quantity: Quantity, Unit: Unit, Available: Available, DefaultTax: DefaultTax, TaxPercentage: TaxPercentage, ShortCode: ShortCode, Description: Description, ItemImg: ItemImg, selectedModifierList: selectedModifierList, dropdownSelections: dropdownSelections };
+
         if ($("#addItemForm").valid()) {
             $.ajax({
                 url: '@Url.Action("AddItem", "Menu")',
                 type: "POST",
-                contentType: "application/json",
-                data: JSON.stringify(data),
+                contentType: false,
+                processData: false,
+                data: formdata,
                 success: function (response) {
                     $(".modal").modal("hide");
                     $("#renderitems").html(response);

@@ -1,0 +1,22 @@
+  @{
+     ViewData["HideLayout"]="false";
+}
+<div class="content p-3" id="content">
+       <h1  style="color: rgb(30, 151, 231);font-weight: 600;">Sections/Tables</h1>
+
+ <div id="sections"></div>
+</div>
+  @section Scripts{
+        <script>
+             $(document).ready(function () {
+             $.ajax({
+                url:"@Url.Action("TablesAndSections","TablesAndSections")",
+                method:"GET",
+                success:function(response){
+                    $("#sections").html(response);
+                }
+            });
+            
+        });
+        </script>
+    }

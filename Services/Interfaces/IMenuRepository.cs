@@ -7,8 +7,8 @@ namespace Services.Interfaces;
 public interface IMenuRepository
 {
     List<Category> GetCategories();
-    List<Item> GetCategoryItems(int id, int pageNumber, int pageSize, out int totalRecords);
-    List<Modifier> GetModifiers(int id, int pageNumber, int pageSize, out int totalRecords);
+    List<Item> GetCategoryItems(int id,string search, int pageNumber, int pageSize, out int totalRecords);
+    List<Modifier> GetModifiers(int id,string search, int pageNumber, int pageSize, out int totalRecords);
     int AddCategory(Category category);
     int AddModifier(Modifier modifier);
     bool EditCategory(Category category);

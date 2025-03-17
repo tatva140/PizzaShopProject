@@ -10,7 +10,7 @@ public interface IUserRepository
     string GetUserRole( string email);
     List<Role> GetRoles( );
     
-    List<UserProfileViewModel> GetAllUser(string sortOrder,int pageNumber,int pageSize,out int totalRecords);
+    List<UserProfileViewModel> GetAllUser(string search,string sortOrder,int pageNumber,int pageSize,out int totalRecords);
     bool DeleteUser(int id);
     bool UpdateProfile(UserProfileViewModel userProfileViewModel);
 
