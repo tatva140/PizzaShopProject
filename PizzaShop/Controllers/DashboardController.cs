@@ -42,6 +42,7 @@ public class DashboardController : Controller
     {
         Response.Cookies.Delete("jwtToken");
         Response.Cookies.Delete("email");
+        Response.Cookies.Delete("refreshToken");
         return RedirectToAction("Index", "Home");
     }
 

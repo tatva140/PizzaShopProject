@@ -8,13 +8,12 @@ public class PermissionService
 {
     private readonly PizzashopContext _context;
 
-    // private readonly PermissionRepository _permissionRepository;
     public PermissionService( PizzashopContext context){
         _context=context;
     }
 
     public bool HasPermission(string role,string entity, string action){
-       if (role == null || role == "" || entity == null || entity == "" || action == null || action == "")
+        if (role == null || role == "" || entity == null || entity == "" || action == null || action == "")
         {
             return false;
         }

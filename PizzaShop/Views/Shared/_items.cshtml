@@ -471,13 +471,15 @@
         row.remove();
     }
     function addItem() {
+       
         var formdata = new FormData($("#addItemForm")[0]);
         let profileImg = $("#itemfilename")[0].files[0];
         if (profileImg) {
             formdata.append("ItemImg", profileImg);
         }
-
-
+        formdata.append("selectedModifierList",selectedModifierList);
+        formdata.append("dropdownSelections",dropdownSelections);
+        console.log(dropdownSelections);
         if ($("#addItemForm").valid()) {
             $.ajax({
                 url: '@Url.Action("AddItem", "Menu")',
@@ -509,10 +511,13 @@
         })
     }
     function openEditModal(id) {
+         let pageNumber=@Model.PageNumber;
+        let pageSize=@Model.PageSize;
+        let selectedPage=@Model.SelectedPage;
         $.ajax({
             url: '@Url.Action("FetchItemDetails", "Menu")',
             type: "GET",
-            data: { id: id },
+            data: { id: id,pageNumber:pageNumber,pageSize:pageSize,selectedPage:selectedPage },
             success: function (response) {
                 $("#itemDetails").html(response);
             }

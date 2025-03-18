@@ -836,7 +836,7 @@ public partial class PizzashopContext : DbContext
             entity.HasIndex(e => e.UpdatedBy, "IX_taxes_updated_by");
 
             entity.Property(e => e.TaxId).HasColumnName("tax_id");
-            entity.Property(e => e.Amount).HasColumnName("amount");
+            entity.Property(e => e.Amount).HasColumnType("character varying").HasColumnName("amount");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("now()")
                 .HasColumnType("timestamp without time zone")

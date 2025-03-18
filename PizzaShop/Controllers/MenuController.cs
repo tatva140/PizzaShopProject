@@ -145,7 +145,7 @@ public class MenuController : Controller
         {
             TempData["error"] = "Modifier Cannot be added";
         }
-        return RedirectToAction("Modifiers", new { modifierId = isAdded });
+        return RedirectToAction("Modifiers", new { modifierId = isAdded, });
 
     }
 
@@ -294,7 +294,8 @@ public class MenuController : Controller
         {
             TempData["error"] = "Item cannot be added";
         }
-        return RedirectToAction("CategoryItems", new { categoryId = isEdited });
+        return RedirectToAction("CategoryItems",  new { categoryId = isEdited ,pageNumber=menuItemsViewModel.PageNumber,
+        pageSize=menuItemsViewModel.PageSize,selectedPage=menuItemsViewModel.SelectedPage});
 
 
     }
@@ -322,10 +323,10 @@ public class MenuController : Controller
         return Json(new { name = modifier.ModifierName, description = modifier.Description, rate = modifier.Rate, quantity = modifier.Quantity, unit = modifier.Unit });
     }
     [HttpPost]
-    public IActionResult EditModifier(Modifier modifier)
+    public IActionResult EditModifier(MenuModifiersViewModel menuModifiersViewModel)
     {
 
-        int isEdited = _menuService.EditModifier(modifier);
+        int isEdited = _menuService.EditModifier(menuModifiersViewModel);
         if (isEdited != 0)
         {
             TempData["success"] = "Modifier Edited Successfully";
@@ -334,7 +335,8 @@ public class MenuController : Controller
         {
             TempData["error"] = "Cannot Edit Modifier, it already Exists";
         }
-        return RedirectToAction("Modifiers", new { modifierId = isEdited });
+        return RedirectToAction("Modifiers", new { modifierId = isEdited,pageNumber=menuModifiersViewModel.PageNumber,
+        pageSize=menuModifiersViewModel.PageSize,selectedPage=menuModifiersViewModel.SelectedPage });
 
 
     }
@@ -402,9 +404,12 @@ public class MenuController : Controller
         return Json(new { modifier = modifiers });
     }
     [HttpGet]
-    public IActionResult FetchItemDetails(int id)
+    public IActionResult FetchItemDetails(int id,int pageNumber,int pageSize,int selectedPage)
     {
         EditItemViewModel editItemViewModel = _menuService.FetchItemDetails(id);
+       editItemViewModel.PageNumber=pageNumber;
+       editItemViewModel.PageSize=pageSize;
+       editItemViewModel.SelectedPage=selectedPage;
         return PartialView("_EditItemModal", editItemViewModel);
     }
     public IActionResult GetMGDetails(int id)

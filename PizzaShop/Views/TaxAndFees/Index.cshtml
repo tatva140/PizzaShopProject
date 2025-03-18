@@ -1,0 +1,125 @@
+@model DAL.ViewModels.TaxAndFeesViewModel;
+
+@{
+    ViewData["Title"] = "ViewUser";
+    ViewData["HideLayout"] = "false";
+}
+
+<div class="content p-3" id="content">
+    <div class="row ">
+        <div class="col-md-6 p-0  ">
+            <h1 style="color: rgb(30, 151, 231);font-weight: 600;">Taxes/Fees</h1>
+        </div>
+
+        <div class="col-md-6 text-end p-0 ">
+            <div class="d-flex align-items-center justify-content-md-end justify-content-start">
+                <div class=" ms-2 " style="position:relative; ">
+                    <form id="taxsearchForm" class="d-flex position-relative me-2">
+                        <input class="form-control fs-6 form-control-lg " type="text" aria-label="Search"
+                            placeholder="Search" id="taxsearch" name="search" value="@ViewBag.taxSearch">
+                        <button type="button" class="position-absolute  btn btn-link"
+                            style="margin:auto;top:3px;transition:transformY(140%);right:10px;"
+                            onclick="fetchTaxes()"><i class="fa-solid fa-search"></i></button>
+                    </form>
+                </div>
+
+                <button class="btn btn-primary " style="background-color: rgba(9, 9, 172, 0.692);color:white"
+                    data-bs-toggle="modal" data-bs-target="#addTax">+ New Tax</button>
+
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2" style="background-color: white; border-radius: 8px;">
+        <div id="rendertaxandfees"></div>
+    </div>
+
+</div>
+<div class="modal" id="addTax">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" style="color:rgba(9, 9, 172, 0.692) ;">Add New Tax</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="addTaxForm">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="TaxName" name="TaxName"
+                                            placeholder="Name" asp-for="@Model.TaxName">
+                                        <label for="name">Name</label>
+                                        <span asp-validation-for="TaxName" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-lg-6">
+                                    <div class="form-floating mb-3">
+                                        <select class="form-select" id="Type" name="Type" asp-for="@Model.Type">
+                                            <option value="Percentage">Percentage</option>
+                                            <option value="Flat Amount">Flat Amount</option>
+                                        </select>
+                                        <label for="Type" class="form-label">Type</label>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="Amount" name="Amount"
+                                            placeholder="Name" asp-for="@Model.Amount">
+                                        <label for="Amount">Amount</label>
+                                        <span asp-validation-for="Amount" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 ">
+                                    <div class="form-check form-switch mb-3">
+                                        <input class="form-check-input can-delete" type="checkbox" id="IsEnabled"
+                                            name="IsEnabled" asp-for="@Model.IsEnabled">
+                                        <label for="IsEnabled">IsEnabled</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer d-flex  align-items-center justify-content-end">
+                        <button type="button" class="btn  me-2"
+                            style="background-color: rgba(9, 9, 172, 0.692);color:white"
+                            onclick="addTax()">Save</button>
+                        <button type="button" class="btn"
+                            style="border-color:rgba(9, 9, 172, 0.692);  color:rgba(9, 9, 172, 0.692); background-color: white;"
+                            data-bs-dismiss="modal" aria-label="Close" formnovalidate>Cancel</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                url: "@Url.Action("TaxAndFees", "TaxAndFees")",
+                method: "GET",
+                success: function (response) {
+                    $("#rendertaxandfees").html(response);
+                }
+            });
+        });
+        function fetchTaxes() {
+            let taxsearch = document.getElementById("taxsearch").value;
+            $.ajax({
+                url: "/TaxAndFees/TaxAndFees",
+                type: "GET",
+                data: { search: taxsearch },
+                success: function (response) {
+                    $("#rendertaxandfees").html(response);
+                }
+            });
+        }
+    </script>
+}

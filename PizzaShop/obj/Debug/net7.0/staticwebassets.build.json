@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "dHQkIfAX+wTmKMfwv9Y9SXk+x1Gy/h+HKJADUlu8MRM=",
+  "Hash": "h9aic5x6Gki2jDh1813uPA4cfZIvxI6AGRywHiZCeCQ=",
   "Source": "PizzaShop",
   "BasePath": "_content/PizzaShop",
   "Mode": "Default",
@@ -168,6 +168,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\5a4fbd37-496f-4617-a8d4-32c56f65b8c9_Screenshot 2025-02-25 150043.png"
+    },
+    {
+      "Identity": "C:\\Users\\pca140\\Desktop\\RMSProject\\PizzaShop\\wwwroot\\images\\931d28b1-5d37-4031-b653-afe91da0aff3_download.jfif",
+      "SourceId": "PizzaShop",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\pca140\\Desktop\\RMSProject\\PizzaShop\\wwwroot\\",
+      "BasePath": "_content/PizzaShop",
+      "RelativePath": "images/931d28b1-5d37-4031-b653-afe91da0aff3_download.jfif",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\931d28b1-5d37-4031-b653-afe91da0aff3_download.jfif"
     },
     {
       "Identity": "C:\\Users\\pca140\\Desktop\\RMSProject\\PizzaShop\\wwwroot\\images\\a8f53c6c-37e7-4b17-8c10-f9b886dd1296_download.jfif",

@@ -24,12 +24,6 @@ public class MenuRepository : IMenuRepository
 
     public List<Item> GetCategoryItems(int id, string search, int pageNumber, int pageSize, out int totalRecords)
     {
-        //   if (id == 0)
-        // {
-        //     IQueryable<Item> items1 = _context.Items.Where(i =>  i.IsActive == true).OrderBy(i => i.CreatedAt);
-        //     totalRecords = items1.Count();
-        //     return items1.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
-        // }
         if (search != null)
         {
             Console.Write(search);
@@ -57,12 +51,12 @@ public class MenuRepository : IMenuRepository
         }
         if (search != null)
         {
-           List<ModifierModifierGroup> modifierModifierGroups1 = _context.ModifierModifierGroups.Where(i => i.ModifierGroupId == id).ToList();
-        IQueryable<Modifier> modifiers1 = (from mmg in _context.ModifierModifierGroups
-                                          join m in _context.Modifiers
-                                          on mmg.ModifierId equals m.ModifierId
-                                          where mmg.ModifierGroupId == id
-                                          select m);
+            List<ModifierModifierGroup> modifierModifierGroups1 = _context.ModifierModifierGroups.Where(i => i.ModifierGroupId == id).ToList();
+            IQueryable<Modifier> modifiers1 = (from mmg in _context.ModifierModifierGroups
+                                               join m in _context.Modifiers
+                                               on mmg.ModifierId equals m.ModifierId
+                                               where mmg.ModifierGroupId == id
+                                               select m);
             IQueryable<Modifier> allModifiers1 = modifiers1.Where(m => m.IsActive == true && m.ModifierName.ToLower().Contains(search.ToLower()));
 
             totalRecords = allModifiers1.Count();
@@ -74,7 +68,7 @@ public class MenuRepository : IMenuRepository
                                           on mmg.ModifierId equals m.ModifierId
                                           where mmg.ModifierGroupId == id
                                           select m);
-        
+
 
         totalRecords = modifiers.Count();
         return modifiers.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
@@ -260,27 +254,27 @@ public class MenuRepository : IMenuRepository
         return _context.Modifiers.Find(id);
     }
 
-    public int EditModifier(Modifier modifier)
+    public int EditModifier(MenuModifiersViewModel menuModifiersViewModel)
     {
 
-        if (modifier.ModifierName == null || modifier.ModifierGroupId == null || modifier.Unit == null || modifier.Rate == 0 || modifier.Quantity == 0)
+        if (menuModifiersViewModel.ModifierName == null || menuModifiersViewModel.ModifierGroupId == null || menuModifiersViewModel.Unit == null || menuModifiersViewModel.Rate == 0 || menuModifiersViewModel.Quantity == 0)
         {
             return 0;
         }
-        Modifier modifier1 = _context.Modifiers.FirstOrDefault(c => c.ModifierId == modifier.ModifierId && c.IsActive == true);
+        Modifier modifier1 = _context.Modifiers.FirstOrDefault(c => c.ModifierId == menuModifiersViewModel.ModifierId && c.IsActive == true);
         if (modifier1 == null) return 0;
-        modifier1.Description = modifier.Description ?? modifier1.Description;
-        modifier1.ModifierName = modifier.ModifierName ?? modifier1.ModifierName;
-        modifier1.Rate = modifier.Rate == 0 ? modifier1.Rate : modifier.Rate;
-        modifier1.Quantity = modifier.Quantity == 0 ? modifier1.Quantity : modifier.Quantity;
-        modifier1.Unit = modifier.Unit ?? modifier1.Unit;
+        modifier1.Description = menuModifiersViewModel.Description ?? modifier1.Description;
+        modifier1.ModifierName = menuModifiersViewModel.ModifierName ?? modifier1.ModifierName;
+        modifier1.Rate = menuModifiersViewModel.Rate == 0 ? modifier1.Rate : menuModifiersViewModel.Rate;
+        modifier1.Quantity = menuModifiersViewModel.Quantity == 0 ? modifier1.Quantity : menuModifiersViewModel.Quantity;
+        modifier1.Unit = menuModifiersViewModel.Unit ?? modifier1.Unit;
 
-        ModifierModifierGroup modifierModifierGroup = _context.ModifierModifierGroups.FirstOrDefault(mg => mg.ModifierGroupId == modifier1.ModifierGroupId && mg.ModifierId == modifier.ModifierId);
-        modifierModifierGroup.ModifierGroupId = modifier.ModifierGroupId ?? 0;
+        ModifierModifierGroup modifierModifierGroup = _context.ModifierModifierGroups.FirstOrDefault(mg => mg.ModifierGroupId == modifier1.ModifierGroupId && mg.ModifierId == menuModifiersViewModel.ModifierId);
+        modifierModifierGroup.ModifierGroupId = menuModifiersViewModel.ModifierGroupId ?? 0;
 
 
         _context.SaveChanges();
-        return modifier.ModifierGroupId ?? 0;
+        return menuModifiersViewModel.ModifierGroupId ?? 0;
     }
 
     public int AddModifierGroup(JsonObject obj)

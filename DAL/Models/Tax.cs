@@ -9,13 +9,13 @@ public partial class Tax
 
     public string? TaxName { get; set; }
 
-    public int? Amount { get; set; }
+    public string Amount { get; set; }
 
     public string? Type { get; set; }
 
     public bool? IsActive { get; set; }
 
-    public bool? IsEnabled { get; set; }
+    public bool IsEnabled { get; set; }
 
     public bool? IsDefault { get; set; }
 

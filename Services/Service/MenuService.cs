@@ -67,8 +67,8 @@ public class MenuService
     public int AddItem(MenuItemsViewModel menuItemsViewModel){
         return _menuRepository.AddItem(menuItemsViewModel);
     }
-     public int EditModifier(Modifier modifier){
-        return _menuRepository.EditModifier(modifier);
+     public int EditModifier(MenuModifiersViewModel menuModifiersViewModel){
+        return _menuRepository.EditModifier(menuModifiersViewModel);
     }
     public int AddModifierGroup(JsonObject obj){
         return _menuRepository.AddModifierGroup(obj);

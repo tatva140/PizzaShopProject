@@ -355,7 +355,13 @@
     }
     function editModifier() {
         @* let formdata = $("#editModifierForm").serialize(); *@
+          let pageNumber=@Model.PageNumber;
+        let pageSize=@Model.PageSize;
+        let selectedPage=@Model.SelectedPage;
         var formdata=new FormData($("#editModifierForm")[0]);
+        formdata.append("PageNumber",pageNumber);
+        formdata.append("PageSize",pageSize);
+        formdata.append("SelectedPage",selectedPage);
           if($("#editModifierForm").valid()){
         $.ajax({
             url: "/Menu/EditModifier",
@@ -372,6 +378,7 @@
         }
     }
     function addModifer() {
+   
         var formdata=new FormData($("#addModifierForm")[0]);
 
         if($("#addModifierForm").valid()){

@@ -21,7 +21,7 @@ public interface IMenuRepository
     List<ModifierGroup> GetModifierGroups();
     int AddItem(MenuItemsViewModel menuItemsViewModel);
     Modifier ModifierDetails(int id);
-    int EditModifier(Modifier modifier);
+    int EditModifier(MenuModifiersViewModel menuModifiersViewModel);
     int AddModifierGroup(JsonObject obj);
     int EditModifierGroup(MenuModifiersViewModel menuModifiersViewModel);
     bool DeleteModifierGroup(int id);

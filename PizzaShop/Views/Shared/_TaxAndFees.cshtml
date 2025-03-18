@@ -1,0 +1,101 @@
+@model DAL.ViewModels.TaxAndFeesViewModel;
+<div class="table-responsive mt-4 ">
+  <table class="table" id="myTable">
+    <thead>
+      <tr>
+        <th>Name <a asp-route-sortOrder="@ViewBag.sort" asp-action="Index"><i class="fa-solid fa-sort ms-1"></i></a>
+        </th>
+        <th>Type</th>
+        <th>IsEnabled</th>
+        <th>Tax Value</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      @foreach (var tax in Model.taxes)
+      {
+        <tr>
+          <td>
+            @tax.TaxName
+          </td>
+          <td>@tax.Type</td>
+          <td>
+            <div class="form-check form-switch ">
+              <input class="form-check-input can-add-edit" type="checkbox" id="can-add-edit" name="darkmode"
+                asp-for="@tax.IsEnabled">
+            </div>
+          </td>
+          <td>@tax.Amount</td>
+          <td>
+            <div class="d-flex align-items-center ">
+              <a><i class="fa-solid fa-pen me-3 ms-3" style="cursor: pointer;"></i></a>
+              <i class="fa-solid fa-trash" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#deleteModal"
+                onclick="setDeleteId(@tax.TaxId)"></i>
+            </div>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
+<div>
+  <div class="d-flex flex-col justify-content-end mb-2">
+    <form method="get" id="pageSizeForm">
+      <label for="pageSize">Records per page:</label>
+      <select id="taxpageSize" name="pageSize"
+        onchange="fetchAllTaxes(@Model.PageNumber,@Model.PageSize,@Model.TotalPages)">
+        <option value="2">2</option>
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="15">15</option>
+      </select>
+    </form>
+    <div class="ms-2">
+      @if (@Model.PageNumber > 1)
+      {
+        <a onclick="fetchAllTaxes(@Model.PageNumber-1,@Model.PageSize,@Model.TotalPages)"
+          style="cursor:pointer;color:blue;">Previous</a>
+      }
+      Page @Model.PageNumber of @Model.TotalPages
+
+      @if (@Model.PageNumber < @Model.TotalPages)
+      {
+        <a onclick="fetchAllTaxes(@Model.PageNumber+1,@Model.PageSize,@Model.TotalPages)"
+          style="cursor:pointer;color:blue;">Next</a>
+      }
+    </div>
+  </div>
+</div>
+<div class="modal" id="deleteModal">
+  <div class="modal-dialog modal-dialog-centered ">
+    <div class="modal-content">
+
+      <div class="modal-body text-center">
+        <img src="images/toppng.com-warning-icon-2400x2400.png" alt="Image" class="img-fluid me-2 "
+          style="font: 30px; height: 80px;" class="">
+        <h3>Are you sure you want to delete this user?</h3>
+        <form id="deleteForm" method="post">
+          <div class="modal-footer d-flex  align-items-center justify-content-center">
+            <button type="submit" class="btn btn-danger align-items center" data-bs-dismiss="modal">Yes</button>
+            <button type="button" class="btn btn-primary align-items center" data-bs-dismiss="modal">No</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  function fetchAllTaxes(pageNumber, pageSize, totalPages) {
+    let selectedPage = $("#taxpageSize").val();
+    $.ajax({
+      url: "/TaxAndFees/TaxAndFees",
+      type: "GET",
+      data: { pageNumber: pageNumber, pageSize: pageSize, selectedPage: selectedPage },
+      success: function (response) {
+        $("#rendertaxandfees").html(response);
+        $("#taxpageSize").val(selectedPage);
+      }
+    });
+
+  }
+</script>

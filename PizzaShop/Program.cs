@@ -41,9 +41,10 @@ builder.Services.AddScoped<IJwtService, JwtTokenService>();
 builder.Services.AddScoped<IMenuRepository, MenuRepository>();
 builder.Services.AddScoped<ITableAndSectionRepository, TableAndSectionRepository>();
 builder.Services.AddScoped<TableAndSectionService>();
+builder.Services.AddScoped<ITaxAndFeesRepository, TaxAndFeesRepository>();
+builder.Services.AddScoped<TaxAndFeesService>();
 
 builder.Services.AddScoped<PermissionService>();
-
 
 builder.Services.AddScoped<EncryptDecrypt>();
 

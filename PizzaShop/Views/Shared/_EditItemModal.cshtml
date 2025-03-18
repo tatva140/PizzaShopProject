@@ -344,11 +344,20 @@
         row.remove();
     }
     function editItem() {
+         let pageNumber=@Model.PageNumber;
+        let pageSize=@Model.PageSize;
+        let selectedPage=@Model.SelectedPage;
            var formdata = new FormData($("#editItemForm")[0]);
         let profileImg=$("#edititemfilename")[0].files[0];
         if(profileImg){
             formdata.append("ItemImg",profileImg);
         }
+         formdata.append("selectedModifierList", ModifierList);
+        formdata.append("dropdownSelections",dropdownSelect);
+
+        formdata.append("PageNumber",pageNumber);
+        formdata.append("PageSize",pageSize);
+        formdata.append("SelectedPage",selectedPage);
         if ($("#editItemForm").valid()) {
             $.ajax({
                 url: '@Url.Action("EditItem", "Menu")',
