@@ -177,7 +177,7 @@ public class UserRepository : IUserRepository
     }
     public bool AddUser(AddUserViewModel addUserViewModel)
     {
-        bool userExists = _context.Users.Any(u => u.Email == addUserViewModel.Email);
+        bool userExists = _context.Users.Any(u => u.Email == addUserViewModel.Email && u.IsActive==true);
         if (userExists) return false;
         User user = new User
         {

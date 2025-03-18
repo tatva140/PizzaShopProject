@@ -78,6 +78,7 @@ public JsonResult CheckUserExists(string email){
 
             }
         }
+        string password=addUserViewModel.Password;
         bool userValid=_userService.AddUser(addUserViewModel);
         if(userValid)
         {
@@ -87,9 +88,7 @@ public JsonResult CheckUserExists(string email){
         {
             TempData["error"]="User Already Exists";
         }
-        string email=_encryptDecrypt.Encrypt(addUserViewModel.Email);
-        string resetLink= Url.Action("ResetPassword","Home",new  {email=email}, Request.Scheme);
-        await _emailService.SendForgotPasswordEmail(addUserViewModel.Email,_emailSettings.host,_emailSettings.SenderEmail,_emailSettings.SenderPassword,_emailSettings.SMTPPort,resetLink,addUserViewModel.Email,addUserViewModel.Password);
+        await _emailService.SendForgotPasswordEmail(addUserViewModel.Email,_emailSettings.host,_emailSettings.SenderEmail,_emailSettings.SenderPassword,_emailSettings.SMTPPort,null,addUserViewModel.Email,password);
         return RedirectToAction("Index","User");
     }
     public ActionResult GetCountries()

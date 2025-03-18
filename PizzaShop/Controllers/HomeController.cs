@@ -139,7 +139,10 @@ public class HomeController : Controller
     {
         return View();
     }
-
+public IActionResult PageNotFound()
+    {
+        return PartialView("_PageNotFound");
+    }
 
 
     // [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

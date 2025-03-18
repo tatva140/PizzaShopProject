@@ -7,7 +7,8 @@
                 <input class="form-control fs-6 form-control-lg " type="text" aria-label="Search" placeholder="Search"
                     id="tablessearch" name="search" value="@ViewBag.TableSearch">
                 <button type="button" class="position-absolute  btn btn-link"
-                    style="margin:auto;top:3px;transition:transformY(140%);right:10px;" onclick="fetchAllTables(@Model.PageNumber,@Model.PageSize,@Model.TotalPages)"><i
+                    style="margin:auto;top:3px;transition:transformY(140%);right:10px;"
+                    onclick="fetchAllTables(@Model.PageNumber,@Model.PageSize,@Model.TotalPages)"><i
                         class="fa-solid fa-search"></i></button>
             </form>
         </div>
@@ -285,13 +286,13 @@
 
 
     function fetchAllTables(pageNumber, pageSize, totalPages) {
-        let sectionId = document.getElementById("sectionId").value;
-    let tablesearch=document.getElementById("tablessearch").value;
+        let sectionId = @Model.SectionId;
+        let tablesearch = document.getElementById("tablessearch").value;
         let selectedPage = $("#pageSize").val();
         $.ajax({
             url: "/TablesAndSections/Tables",
             type: "GET",
-            data: { sectionId: sectionId,search:tablesearch, pageNumber: pageNumber, pageSize: pageSize, selectedPage: selectedPage },
+            data: { sectionId: sectionId, search: tablesearch, pageNumber: pageNumber, pageSize: pageSize, selectedPage: selectedPage },
             success: function (response) {
                 $("#rendertables").html(response);
                 $("#pageSize").val(selectedPage);

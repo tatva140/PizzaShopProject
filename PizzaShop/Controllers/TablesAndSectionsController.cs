@@ -50,11 +50,14 @@ public class TablesAndSectionsController : Controller
             PageSize = pageSize,
             TotalPages = totalPage,
             SelectedPage = selectedPage,
-            ShowList = sectionId
+            ShowList = sectionId,
+            SectionId=sectionId
         };
         ViewBag.TableSearch=search;
         return PartialView("_Tables", tablesAndSectionViewModel);
     }
+
+    [PermissionsAtrribute("TablesAndSections","CanAddEdit")]
     [HttpPost]
     public IActionResult AddSection(Section section)
     {

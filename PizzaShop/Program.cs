@@ -42,6 +42,9 @@ builder.Services.AddScoped<IMenuRepository, MenuRepository>();
 builder.Services.AddScoped<ITableAndSectionRepository, TableAndSectionRepository>();
 builder.Services.AddScoped<TableAndSectionService>();
 
+builder.Services.AddScoped<PermissionService>();
+
+
 builder.Services.AddScoped<EncryptDecrypt>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

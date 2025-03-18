@@ -14,10 +14,10 @@ public class MenuController : Controller
     private readonly FileUploads _fileUploads;
 
 
-    public MenuController(MenuService menuService,FileUploads fileUploads)
+    public MenuController(MenuService menuService, FileUploads fileUploads)
     {
         _menuService = menuService;
-        _fileUploads=fileUploads;
+        _fileUploads = fileUploads;
     }
     public ActionResult Index()
     {
@@ -37,10 +37,10 @@ public class MenuController : Controller
     }
 
     [HttpGet]
-    public IActionResult MenuModifiers(int modifierId,string search, int pageNumber = 1, int pageSize = 2, int selectedPage = 2)
+    public IActionResult MenuModifiers(int modifierId, string search, int pageNumber = 1, int pageSize = 2, int selectedPage = 2)
     {
         List<ModifierGroup> modifierGroup = _menuService.GetModifierGroups();
-        var (modifiers, totalRecords) = _menuService.GetModifiers(modifierId,search, pageNumber, selectedPage);
+        var (modifiers, totalRecords) = _menuService.GetModifiers(modifierId, search, pageNumber, selectedPage);
         int totalPage = (int)Math.Ceiling((double)totalRecords / selectedPage);
         MenuModifiersViewModel mennuModifiersViewModel = new MenuModifiersViewModel
         {
@@ -52,15 +52,15 @@ public class MenuController : Controller
             SelectedPage = selectedPage,
             ShowList = modifierId
         };
-        ViewBag.ModifierSearch=search;
+        ViewBag.ModifierSearch = search;
         return PartialView("_ModifierGroups", mennuModifiersViewModel);
     }
 
     [HttpGet]
-    public IActionResult CategoryItems(int categoryId,string search, int pageNumber = 1, int pageSize = 2, int selectedPage = 2)
+    public IActionResult CategoryItems(int categoryId, string search, int pageNumber = 1, int pageSize = 2, int selectedPage = 2)
     {
         List<Category> category = _menuService.GetCategories();
-        var (items, totalRecords) = _menuService.GetCategoryItems(categoryId,search, pageNumber, selectedPage);
+        var (items, totalRecords) = _menuService.GetCategoryItems(categoryId, search, pageNumber, selectedPage);
         int totalPage = (int)Math.Ceiling((double)totalRecords / selectedPage);
         MenuItemsViewModel menuItemsViewModel = new MenuItemsViewModel
         {
@@ -69,17 +69,18 @@ public class MenuController : Controller
             PageNumber = pageNumber,
             PageSize = pageSize,
             TotalPages = totalPage,
-            SelectedPage = selectedPage
+            SelectedPage = selectedPage,
+            CategoryId=categoryId
         };
         ViewBag.categoryId = categoryId;
         ViewBag.ItemSearch = search;
         return PartialView("_Items", menuItemsViewModel);
     }
     [HttpGet]
-    public IActionResult Modifiers(int modifierId,string search, int pageNumber = 1, int pageSize = 2, int selectedPage = 2)
+    public IActionResult Modifiers(int modifierId, string search, int pageNumber = 1, int pageSize = 2, int selectedPage = 2)
     {
         List<ModifierGroup> modifierGroups = _menuService.GetModifierGroups();
-        var (modifiers, totalRecords) = _menuService.GetModifiers(modifierId,search, pageNumber, selectedPage);
+        var (modifiers, totalRecords) = _menuService.GetModifiers(modifierId, search, pageNumber, selectedPage);
         int totalPage = (int)Math.Ceiling((double)totalRecords / selectedPage);
         MenuModifiersViewModel mennuModifiersViewModel = new MenuModifiersViewModel
         {
@@ -88,17 +89,18 @@ public class MenuController : Controller
             PageNumber = pageNumber,
             PageSize = pageSize,
             TotalPages = totalPage,
-            SelectedPage = selectedPage
+            SelectedPage = selectedPage,
+            ModifierGroupId=modifierId
         };
-        ViewBag.ModifierSearch=search;
+        ViewBag.ModifierSearch = search;
 
         return PartialView("_Modifiers", mennuModifiersViewModel);
     }
     [HttpGet]
-    public IActionResult ModifierTable(int modifierId,string search, int pageNumber = 1, int pageSize = 2, int selectedPage = 2)
+    public IActionResult ModifierTable(int modifierId, string search, int pageNumber = 1, int pageSize = 2, int selectedPage = 2)
     {
         List<ModifierGroup> modifierGroups = _menuService.GetModifierGroups();
-        var (modifiers, totalRecords) = _menuService.GetModifiers(modifierId,search, pageNumber, selectedPage);
+        var (modifiers, totalRecords) = _menuService.GetModifiers(modifierId, search, pageNumber, selectedPage);
         int totalPage = (int)Math.Ceiling((double)totalRecords / selectedPage);
         MenuModifiersViewModel mennuModifiersViewModel = new MenuModifiersViewModel
         {
@@ -109,7 +111,7 @@ public class MenuController : Controller
             TotalPages = totalPage,
             SelectedPage = selectedPage
         };
-        ViewBag.ModifierSearch=search;
+        ViewBag.ModifierSearch = search;
 
         return PartialView("_modifierTable", mennuModifiersViewModel);
     }
@@ -192,10 +194,10 @@ public class MenuController : Controller
         return Json(modifierGroup);
     }
     [HttpGet]
-    public IActionResult GetModifiers(int modifierId,string search, int pageNumber = 1, int pageSize = 2, int selectedPage = 2)
+    public IActionResult GetModifiers(int modifierId, string search, int pageNumber = 1, int pageSize = 2, int selectedPage = 2)
     {
-        var (modifiers, totalRecords) = _menuService.GetModifiers(modifierId,search, pageNumber, selectedPage);
-        ViewBag.ModifierSearch=search;
+        var (modifiers, totalRecords) = _menuService.GetModifiers(modifierId, search, pageNumber, selectedPage);
+        ViewBag.ModifierSearch = search;
 
         return Json(modifiers);
     }
@@ -245,19 +247,19 @@ public class MenuController : Controller
     }
 
     [HttpPost]
-    public IActionResult AddItem(MenuItemsViewModel menuItemsViewModel,IFormFile ItemImg)
+    public IActionResult AddItem(MenuItemsViewModel menuItemsViewModel, IFormFile ItemImg)
     {
         if (ItemImg != null)
         {
             if (ItemImg.Length > 0)
             {
-                string fileName=_fileUploads.UploadProfileImage(ItemImg);
-                menuItemsViewModel.ItemImg="/images/"+fileName;
+                string fileName = _fileUploads.UploadProfileImage(ItemImg);
+                menuItemsViewModel.ItemImg = "/images/" + fileName;
 
             }
         }
         int isAdded = _menuService.AddItem(menuItemsViewModel);
-        if (isAdded!=0)
+        if (isAdded != 0)
         {
             TempData["success"] = "Item Added Successfully";
 
@@ -271,19 +273,19 @@ public class MenuController : Controller
 
     }
     [HttpPost]
-    public IActionResult EditItem(MenuItemsViewModel menuItemsViewModel,IFormFile ItemImg)
+    public IActionResult EditItem(MenuItemsViewModel menuItemsViewModel, IFormFile ItemImg)
     {
 
-       if (ItemImg != null)
+        if (ItemImg != null)
         {
             if (ItemImg.Length > 0)
             {
-                string fileName=_fileUploads.UploadProfileImage(ItemImg);
-                menuItemsViewModel.ItemImg="/images/"+fileName;
+                string fileName = _fileUploads.UploadProfileImage(ItemImg);
+                menuItemsViewModel.ItemImg = "/images/" + fileName;
             }
         }
         int isEdited = _menuService.EditItem(menuItemsViewModel);
-        if (isEdited!=0)
+        if (isEdited != 0)
         {
             TempData["success"] = "Item Edited Successfully";
 
@@ -400,23 +402,25 @@ public class MenuController : Controller
         return Json(new { modifier = modifiers });
     }
     [HttpGet]
-    public IActionResult FetchItemDetails(int id){
-        EditItemViewModel  editItemViewModel=_menuService.FetchItemDetails(id);
-        return PartialView("_EditItemModal",editItemViewModel);
+    public IActionResult FetchItemDetails(int id)
+    {
+        EditItemViewModel editItemViewModel = _menuService.FetchItemDetails(id);
+        return PartialView("_EditItemModal", editItemViewModel);
     }
-    public IActionResult GetMGDetails(int id){
-        List<ModifierGroup> modifierGroups=_menuService.GetMGDetails(id);
-         return Json(new { modifierGroups = modifierGroups });
+    public IActionResult GetMGDetails(int id)
+    {
+        List<ModifierGroup> modifierGroups = _menuService.GetMGDetails(id);
+        return Json(new { modifierGroups = modifierGroups });
     }
-    public IActionResult GetMinMax(int id,int itemId){
-        List<int> minMaxValues=_menuService.GetMinMax(id,itemId);
-         return Json(new { minMaxValues = minMaxValues });
+    public IActionResult GetMinMax(int id, int itemId)
+    {
+        List<int> minMaxValues = _menuService.GetMinMax(id, itemId);
+        return Json(new { minMaxValues = minMaxValues });
 
     }
-    public IActionResult GetModifiersForItemEdit(int modifierId){
-        List<Modifier> modifiers=_menuService.GetModifiersForItemEdit(modifierId);
-        
-                return Json(modifiers);
-
+    public IActionResult GetModifiersForItemEdit(int modifierId)
+    {
+        List<Modifier> modifiers = _menuService.GetModifiersForItemEdit(modifierId);
+        return Json(modifiers);
     }
 }
