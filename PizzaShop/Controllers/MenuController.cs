@@ -1,6 +1,7 @@
 using System.Text.Json.Nodes;
 using DAL.Models;
 using DAL.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Services.Service;
@@ -8,6 +9,7 @@ using Services.Utilities;
 
 namespace PizzaShop.Controllers;
 
+[Authorize]
 public class MenuController : Controller
 {
     private readonly MenuService _menuService;
@@ -70,7 +72,7 @@ public class MenuController : Controller
             PageSize = pageSize,
             TotalPages = totalPage,
             SelectedPage = selectedPage,
-            CategoryId=categoryId
+            CategoryId = categoryId
         };
         ViewBag.categoryId = categoryId;
         ViewBag.ItemSearch = search;
@@ -90,7 +92,7 @@ public class MenuController : Controller
             PageSize = pageSize,
             TotalPages = totalPage,
             SelectedPage = selectedPage,
-            ModifierGroupId=modifierId
+            ModifierGroupId = modifierId
         };
         ViewBag.ModifierSearch = search;
 
@@ -247,14 +249,18 @@ public class MenuController : Controller
     }
 
     [HttpPost]
-    public IActionResult AddItem(MenuItemsViewModel menuItemsViewModel, IFormFile ItemImg)
+    public IActionResult AddItem(MenuItemsViewModel menuItemsViewModel, string selectedModifierList, string dropdownSelections, IFormFile ItemImg)
     {
+        List<int> selectedModifiers = JsonConvert.DeserializeObject<List<int>>(selectedModifierList);
+        List<MinMaxViewModel> minmax = JsonConvert.DeserializeObject<List<MinMaxViewModel>>(dropdownSelections);
+        menuItemsViewModel.selectedModifierList = selectedModifiers;
+        menuItemsViewModel.dropdownSelections = minmax;
         if (ItemImg != null)
         {
             if (ItemImg.Length > 0)
             {
                 string fileName = _fileUploads.UploadProfileImage(ItemImg);
-                menuItemsViewModel.ItemImg = "/images/" + fileName;
+                menuItemsViewModel.ItemImg = "~/images/" + fileName;
 
             }
         }
@@ -273,29 +279,37 @@ public class MenuController : Controller
 
     }
     [HttpPost]
-    public IActionResult EditItem(MenuItemsViewModel menuItemsViewModel, IFormFile ItemImg)
+    public IActionResult EditItem(MenuItemsViewModel menuItemsViewModel, string selectedModifierList, string dropdownSelections, IFormFile ItemImg)
     {
-
+        List<int> selectedModifiers = JsonConvert.DeserializeObject<List<int>>(selectedModifierList);
+        List<MinMaxViewModel> minmax = JsonConvert.DeserializeObject<List<MinMaxViewModel>>(dropdownSelections);
+        menuItemsViewModel.selectedModifierList = selectedModifiers;
+        menuItemsViewModel.dropdownSelections = minmax;
         if (ItemImg != null)
         {
             if (ItemImg.Length > 0)
             {
                 string fileName = _fileUploads.UploadProfileImage(ItemImg);
-                menuItemsViewModel.ItemImg = "/images/" + fileName;
+                menuItemsViewModel.ItemImg = "~/images/" + fileName;
             }
         }
         int isEdited = _menuService.EditItem(menuItemsViewModel);
         if (isEdited != 0)
         {
             TempData["success"] = "Item Edited Successfully";
-
         }
         else
         {
             TempData["error"] = "Item cannot be added";
         }
-        return RedirectToAction("CategoryItems",  new { categoryId = isEdited ,pageNumber=menuItemsViewModel.PageNumber,
-        pageSize=menuItemsViewModel.PageSize,selectedPage=menuItemsViewModel.SelectedPage});
+
+        return RedirectToAction("CategoryItems", new
+        {
+            categoryId = isEdited,
+            pageNumber = menuItemsViewModel.PageNumber,
+            pageSize = menuItemsViewModel.PageSize,
+            selectedPage = menuItemsViewModel.SelectedPage
+        });
 
 
     }
@@ -325,7 +339,6 @@ public class MenuController : Controller
     [HttpPost]
     public IActionResult EditModifier(MenuModifiersViewModel menuModifiersViewModel)
     {
-
         int isEdited = _menuService.EditModifier(menuModifiersViewModel);
         if (isEdited != 0)
         {
@@ -335,9 +348,14 @@ public class MenuController : Controller
         {
             TempData["error"] = "Cannot Edit Modifier, it already Exists";
         }
-        return RedirectToAction("Modifiers", new { modifierId = isEdited,pageNumber=menuModifiersViewModel.PageNumber,
-        pageSize=menuModifiersViewModel.PageSize,selectedPage=menuModifiersViewModel.SelectedPage });
 
+        return RedirectToAction("Modifiers", new
+        {
+            modifierId = isEdited,
+            pageNumber = menuModifiersViewModel.PageNumber,
+            pageSize = menuModifiersViewModel.PageSize,
+            selectedPage = menuModifiersViewModel.SelectedPage
+        });
 
     }
 
@@ -404,12 +422,12 @@ public class MenuController : Controller
         return Json(new { modifier = modifiers });
     }
     [HttpGet]
-    public IActionResult FetchItemDetails(int id,int pageNumber,int pageSize,int selectedPage)
+    public IActionResult FetchItemDetails(int id, int pageNumber, int pageSize, int selectedPage)
     {
         EditItemViewModel editItemViewModel = _menuService.FetchItemDetails(id);
-       editItemViewModel.PageNumber=pageNumber;
-       editItemViewModel.PageSize=pageSize;
-       editItemViewModel.SelectedPage=selectedPage;
+        editItemViewModel.PageNumber = pageNumber;
+        editItemViewModel.PageSize = pageSize;
+        editItemViewModel.SelectedPage = selectedPage;
         return PartialView("_EditItemModal", editItemViewModel);
     }
     public IActionResult GetMGDetails(int id)

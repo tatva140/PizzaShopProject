@@ -79,14 +79,23 @@
             </div>
             </div>
              <div class="row mt-2 ">
-                <div style="position: relative; margin-left: 12px;">
-                    <div class="d-flex row align-items-center justify-content-center  text-center border border-danger  p-2"
-                        style="width: 100%;border-radius: 5px;">
+                <div style="position: relative; ">
+                    <div class="d-flex  align-items-center justify-content-center border border-danger " style="width:100%;border-radius: 5px;">
+                          @if (Model.ProfileImg == null ||Model.ProfileImg.Length == 0)
+                            {
+                                <img src="" class="rounded-pill img-fluid m-1" id="img" style="width: 100px; height: 100px;display:none">
+                            }
+                            else
+                            {
+                                <img src="@(Url.Content(Model.ProfileImg))" class="rounded-pill img-fluid m-1" id="img" style="width: 100px; height: 100px;">
+                            }
+                    <div class="d-flex row align-items-center justify-content-center  text-center   p-2">
                         <i class="fa-solid fa-cloud-arrow-up"></i>
                         <div class="flex" style="color: rgb(109, 21, 21);">Upload</div>
                     </div>
                     <input type="file" id="filename" class="form-control "  name="ProfileImg" asp-for="ProfileImg"
-                        style="opacity: 0.0; position: absolute; top:0; left: 0; bottom: 0; right:0; width: 100%; height:100%;" readonly="@(Model.isActive? false:true)"/>
+                        style="opacity: 0.0; position: absolute; top:0; left: 0; bottom: 0; right:0; width: 100%; height:100%;" onchange="previewImage(this)" readonly="@(Model.isActive? false:true) "/>
+                    </div>
                 </div>
             </div>
             <div class="row mt-4 ">

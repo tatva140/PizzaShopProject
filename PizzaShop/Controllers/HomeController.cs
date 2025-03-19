@@ -64,7 +64,7 @@ public class HomeController : Controller
                 {
                     HttpOnly = true,
                     Secure = true,
-                    Expires =  DateTime.UtcNow.AddHours(1)
+                    Expires =  DateTime.UtcNow.AddDays(30)
                 });
 
                 Response.Cookies.Append("email", model.Email, new CookieOptions

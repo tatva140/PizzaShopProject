@@ -53,6 +53,13 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     {
         options.Events = new JwtBearerEvents
         {
+           OnChallenge = context => {
+                if(!context.Handled){
+                    context.HandleResponse();
+                    context.Response.Redirect("/Home/Index");
+                }
+                return Task.CompletedTask;
+            },
             OnMessageReceived = context =>
             {
                 context.Token = context.Request.Cookies["jwtToken"];

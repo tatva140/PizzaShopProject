@@ -13,7 +13,7 @@ public class TaxAndFeesViewModel
     public string? TaxName { get; set; }
 
 [Required]
-    [RegularExpression(@"^(?!\s*$).+", ErrorMessage = "Enter Valid  Amount.")]
+    [RegularExpression(@"^(?=.*[\d])[0-9\W]+$", ErrorMessage = "Enter Valid  Amount.")]
     public string Amount { get; set; }
 
     public string? Type { get; set; }

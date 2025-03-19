@@ -10,7 +10,7 @@
                     style="margin:auto;top:3px;transition:transformY(140%);right:10px;"
                     onclick="fetch(@Model.PageNumber,@Model.PageSize,@Model.TotalPages)"><i
                         class="fa-solid fa-search"></i></button>
-            </form> 
+            </form>
         </div>
         <button class=" me-2 " data-bs-toggle="modal" data-bs-target="#deleteItems"
             style="background-color: white; border-radius: 5px;"><i class="fa fa-trash"></i></button>
@@ -213,14 +213,14 @@
                                 <div class="row">
                                     <div class="col-6 col-lg-3 ">
                                         <div class="form-check form-switch mb-3">
-                                            <input class="form-check-input can-delete" type="checkbox"
-                                                id="itemAvailable" name="IsAvailable" asp-for="@Model.IsAvailable">
+                                            <input class="form-check-input " type="checkbox" id="itemAvailable"
+                                                name="IsAvailable" asp-for="@Model.IsAvailable">
                                             <label for="name">Available</label>
                                         </div>
                                     </div>
                                     <div class="col-6 col-lg-3 ">
                                         <div class="form-check form-switch mb-3">
-                                            <input class="form-check-input can-delete" type="checkbox" id="itemDefault"
+                                            <input class="form-check-input " type="checkbox" id="itemDefault"
                                                 name="DefaultTax" asp-for="@Model.DefaultTax">
                                             <label for="name">DefaultTax</label>
 
@@ -255,15 +255,20 @@
                                 <div class="row">
                                     <label for="name">Upload Image</label>
                                     <div style="position: relative;">
-                                        <div class=" d-flex flex-col align-items-center justify-content-center  text-center border border-danger  p-3"
-                                            style="width: 100%;border-radius: 5px;">
+                                        <div class="d-flex  align-items-center justify-content-center border border-danger "
+                                            style="width:100%;border-radius: 5px;">
+                                        <img src="" class="rounded-pill img-fluid m-1" id="img"
+                                            style="width: 100px; height: 100px;display:none">
+                                        <div class=" d-flex flex-col align-items-center justify-content-center    p-3">
                                             <i class="fa-solid fa-cloud-arrow-up me-2"></i>
                                             <div class="flex " style="color: rgb(109, 21, 21);">Drag And Drop or Browse
                                                 Files</div>
                                         </div>
-                                        <input type="file" id="itemfilename" class="form-control " name="ItemImg"
+                                        <input type="file" id="filename" class="form-control itemfilename" name="ItemImg"
                                             asp-for="@Model.ItemImg"
-                                            style="opacity: 0.0; position: absolute; top:0; left: 0; bottom: 0; right:0; width: 100%; height:100%;" />
+                                            style="opacity: 0.0; position: absolute; top:0; left: 0; bottom: 0; right:0; width: 100%; height:100%;"
+                                            onchange="previewImage(this)" />
+                                    </div>
                                     </div>
                                 </div>
                             </div>
@@ -336,7 +341,7 @@
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered  modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" style="color:rgba(9, 9, 172, 0.692) ;">Add New Menu Item</h5>
+                <h5 class="modal-title" style="color:rgba(9, 9, 172, 0.692) ;">Edit Menu Item</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div id="itemDetails"></div>
@@ -349,22 +354,22 @@
     src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
 <script>
 
-    function fetch(pageNumber, pageSize, totalPages) {
+    function fetch(pageNumber, pageSize, totalPages, category) {
         let selectedPage = $("#pageItemSize").val();
-        let cgoryId = @Model.CategoryId;
+        let cgoryId = category ? category : @Model.CategoryId;
         let itemsearch = document.getElementById("itemsearch").value;
 
         $.ajax({
             url: "/Menu/CategoryItems",
             type: "GET",
-            data: { categoryId: cgoryId,search:itemsearch, pageNumber: pageNumber, pageSize: pageSize, selectedPage: selectedPage },
+            data: { categoryId: cgoryId, search: itemsearch, pageNumber: pageNumber, pageSize: pageSize, selectedPage: selectedPage },
             success: function (response) {
                 $("#renderitems").html(response);
                 $("#pageItemSize").val(selectedPage);
             }
         });
     }
-    
+
     function showModifierGroups() {
         $.ajax({
             url: "/Menu/GetModifierGroups",
@@ -407,12 +412,12 @@
                     row.innerHTML = `
                 <div class="d-flex align=items-center justify-content-between">
                 <div >
-                <select class="form-control" id="min-${id}" data-id="min" data-index="${id}"  onchange="updateSelection('${id}','min',this.value)">
+                <select class="form-control rounded-pill " style="width:100px;" id="min-${id}" data-id="min" data-index="${id}"  onchange="updateSelection('${id}','min',this.value)">
                 <option value="">Select Option</option>
                 </select>
                 </div>
                 <div > 
-                <select class="form-control" id="max-${id}" data-id="max" data-index="${id}"  onchange="updateSelection('${id}','max',this.value)">
+                <select class="form-control rounded-pill " style="width:100px;" id="max-${id}" data-id="max" data-index="${id}"  onchange="updateSelection('${id}','max',this.value)">
                 <option value="">Select Option</option>
                 </select>
                 </div>
@@ -471,15 +476,14 @@
         row.remove();
     }
     function addItem() {
-       
+
         var formdata = new FormData($("#addItemForm")[0]);
-        let profileImg = $("#itemfilename")[0].files[0];
+        let profileImg = $(".itemfilename")[0].files[0];
+        formdata.append("selectedModifierList", JSON.stringify(selectedModifierList));
+        formdata.append("dropdownSelections", JSON.stringify(dropdownSelections));
         if (profileImg) {
             formdata.append("ItemImg", profileImg);
         }
-        formdata.append("selectedModifierList",selectedModifierList);
-        formdata.append("dropdownSelections",dropdownSelections);
-        console.log(dropdownSelections);
         if ($("#addItemForm").valid()) {
             $.ajax({
                 url: '@Url.Action("AddItem", "Menu")',
@@ -511,13 +515,13 @@
         })
     }
     function openEditModal(id) {
-         let pageNumber=@Model.PageNumber;
-        let pageSize=@Model.PageSize;
-        let selectedPage=@Model.SelectedPage;
+        let pageNumber =@Model.PageNumber;
+        let pageSize =@Model.PageSize;
+        let selectedPage =@Model.SelectedPage;
         $.ajax({
             url: '@Url.Action("FetchItemDetails", "Menu")',
             type: "GET",
-            data: { id: id,pageNumber:pageNumber,pageSize:pageSize,selectedPage:selectedPage },
+            data: { id: id, pageNumber: pageNumber, pageSize: pageSize, selectedPage: selectedPage },
             success: function (response) {
                 $("#itemDetails").html(response);
             }

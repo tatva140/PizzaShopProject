@@ -7,6 +7,7 @@
                 <div class="col-12 col-lg-9">
                     <div class="row">
                         <div class="col-12 col-lg-6">
+                            <input type="text" class="form-control" id="editprevCategoryId" placeholder="Name" hidden>
                             <div class="form-floating mb-3">
                                 <select class="form-select" id="edititemCategoryId" name="CategoryId"
                                     asp-for="@Model.CategoryId">
@@ -72,15 +73,15 @@
                     <div class="row">
                         <div class="col-6 col-lg-3 ">
                             <div class="form-check form-switch mb-3">
-                                <input class="form-check-input " type="checkbox" id="edititemAvailable" name="IsAvailable"
-                                     asp-for="@Model.IsAvailable">
+                                <input class="form-check-input " type="checkbox" id="edititemAvailable"
+                                    name="IsAvailable" asp-for="@Model.IsAvailable">
                                 <label for="IsAvailable">Available</label>
                             </div>
                         </div>
                         <div class="col-6 col-lg-3 ">
                             <div class="form-check form-switch mb-3">
                                 <input class="form-check-input " type="checkbox" id="edititemDefault" name="DefaultTax"
-                                     asp-for="@Model.DefaultTax">
+                                    asp-for="@Model.DefaultTax">
                                 <label for="DefaultTax">DefaultTax</label>
 
                             </div>
@@ -113,15 +114,20 @@
                     <div class="row">
                         <label for="name">Upload Image</label>
                         <div style="position: relative;">
-                            <div class=" d-flex flex-col align-items-center justify-content-center  text-center border border-danger  p-3"
-                                style="width: 100%;border-radius: 5px;">
-                                <i class="fa-solid fa-cloud-arrow-up me-2"></i>
-                                <div class="flex " style="color: rgb(109, 21, 21);">Drag And Drop or Browse
-                                    Files</div>
+                            <div class="d-flex  align-items-center justify-content-center border border-danger "
+                                style="width:100%;border-radius: 5px;">
+                                <img src="" class="rounded-pill img-fluid m-1" id="editimg"
+                                    style="width: 100px; height: 100px;display:none">
+                                <div class=" d-flex flex-col align-items-center justify-content-center  text-center  p-3">
+                                    <i class="fa-solid fa-cloud-arrow-up me-2"></i>
+                                    <div class="flex " style="color: rgb(109, 21, 21);">Drag And Drop or Browse
+                                        Files</div>
+                                </div>
+                                <input type="file" id="edititemfilename" class="form-control edititemfilename"
+                                    name="ItemImg" asp-for="@Model.ItemImg"
+                                    style="opacity: 0.0; position: absolute; top:0; left: 0; bottom: 0; right:0; width: 100%; height:100%;"
+                                    onchange="prevImage(this)" />
                             </div>
-                            <input type="file" id="edititemfilename" class="form-control " name="ItemImg"
-                                asp-for="@Model.ItemImg"
-                                style="opacity: 0.0; position: absolute; top:0; left: 0; bottom: 0; right:0; width: 100%; height:100%;" />
                         </div>
                     </div>
                 </div>
@@ -157,6 +163,7 @@
     maxs = [];
     dropdownSelect = [];
     itemId =@Model.ItemId;
+    prevCategoryId = document.getElementById("editprevCategoryId").value =@Model.CategoryId;
     $(document).ready(function () {
         let modifierappendDiv = document.getElementById("modifierappend");
         @* modifierappendDiv.innerHTML=""; *@
@@ -281,12 +288,12 @@
                     row.innerHTML = `
                 <div class="d-flex align=items-center justify-content-between">
                 <div >
-                <select class="form-control" id="min-${id}" data-id="min" data-index="${id}"  onchange="updateSelectionEdit('${id}','min',this.value)">
+                <select class="form-control rounded-pill " style="width:100px;" id="min-${id}" data-id="min" data-index="${id}"  onchange="updateSelectionEdit('${id}','min',this.value)">
                 <option value="">Select Option</option>
                 </select>
                 </div>
                 <div > 
-                <select class="form-control" id="max-${id}" data-id="max" data-index="${id}"  onchange="updateSelectionEdit('${id}','max',this.value)">
+                <select class="form-control rounded-pill " style="width:100px;" id="max-${id}" data-id="max" data-index="${id}"  onchange="updateSelectionEdit('${id}','max',this.value)">
                 <option value="">Select Option</option>
                 </select>
                 </div>
@@ -344,20 +351,21 @@
         row.remove();
     }
     function editItem() {
-         let pageNumber=@Model.PageNumber;
-        let pageSize=@Model.PageSize;
-        let selectedPage=@Model.SelectedPage;
-           var formdata = new FormData($("#editItemForm")[0]);
-        let profileImg=$("#edititemfilename")[0].files[0];
-        if(profileImg){
-            formdata.append("ItemImg",profileImg);
+        let pageNumber =@Model.PageNumber;
+        let pageSize =@Model.PageSize;
+        let selectedPage =@Model.SelectedPage;
+        let newCategoryId = document.getElementById("edititemCategoryId").value;
+        var formdata = new FormData($("#editItemForm")[0]);
+        formdata.append("PageNumber", pageNumber);
+        formdata.append("PageSize", pageSize);
+        formdata.append("SelectedPage", selectedPage);
+        let profileImg = $(".edititemfilename")[0].files[0];
+        formdata.append("selectedModifierList", JSON.stringify(ModifierList));
+        formdata.append("dropdownSelections", JSON.stringify(dropdownSelect));
+        if (profileImg) {
+            formdata.append("ItemImg", profileImg);
         }
-         formdata.append("selectedModifierList", ModifierList);
-        formdata.append("dropdownSelections",dropdownSelect);
 
-        formdata.append("PageNumber",pageNumber);
-        formdata.append("PageSize",pageSize);
-        formdata.append("SelectedPage",selectedPage);
         if ($("#editItemForm").valid()) {
             $.ajax({
                 url: '@Url.Action("EditItem", "Menu")',
@@ -367,10 +375,29 @@
                 data: formdata,
                 success: function (response) {
                     $(".modal").modal("hide");
-                    $("#renderitems").html(response);
+                    if (prevCategoryId != newCategoryId) {
+                        fetch(1, 2, 1, newCategoryId);
+                    }
+                    else {
+                        $("#renderitems").html(response);
+
+                    }
                 }
             });
         }
     }
-
+    function prevImage(e){
+    const file = e.files[0];
+    if (file) {
+        const validImageTypes = ["image/jpeg", "image/png", "image/gif", "image/webp", "images/jfif"];
+        if (!validImageTypes.includes(file.type)) {
+            document.getElementById("editimg").style.display="none";
+            toastr.error("Invalid File Type! Please upload image.");
+            e.value = "";
+        } else {
+            document.getElementById("editimg").style.display="block";
+            document.getElementById("editimg").src=URL.createObjectURL(file);
+        }
+    }
+}
 </script>

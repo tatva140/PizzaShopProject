@@ -216,6 +216,8 @@
                             <div class="row">
                                 <div class="col-12 col-lg-6">
                                     <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="prevSectionId" 
+                                        placeholder="Name"  hidden>
                                         <select class="form-select" id="EditSectionId" name="SectionId"
                                             asp-for="@Model.SectionId">
                                             @foreach (var modifier in Model.sections)
@@ -285,8 +287,8 @@
 <script>
 
 
-    function fetchAllTables(pageNumber, pageSize, totalPages) {
-        let sectionId = @Model.SectionId;
+    function fetchAllTables(pageNumber, pageSize, totalPages,section) {
+        let sectionId =section? section: @Model.SectionId;
         let tablesearch = document.getElementById("tablessearch").value;
         let selectedPage = $("#pageSize").val();
         $.ajax({
@@ -326,15 +328,23 @@
                 document.getElementById("EditSectionId").value = response.table.sectionId;
                 document.getElementById("EditCapacity").value = response.table.capacity;
                 document.getElementById("EditTableStatus").value = response.table.tableStatus;
+                document.getElementById("prevSectionId").value=response.table.sectionId;
             }
         });
 
         document.getElementById("TableId").value = id;
     }
     function editTable() {
+        let newsectionId=document.getElementById("EditSectionId").value;
+        let prevsectionId=document.getElementById("prevSectionId").value;
         var formdata = new FormData($("#editTableForm")[0]);
-
-        if ($("#editSectionForm").valid()) {
+        let pageNumber =@Model.PageNumber;
+        let pageSize =@Model.PageSize;
+        let selectedPage =@Model.SelectedPage;
+        formdata.append("PageNumber", pageNumber);
+        formdata.append("PageSize", pageSize);
+        formdata.append("SelectedPage", selectedPage);
+        if ($("#editTableForm").valid()) {
             $.ajax({
                 url: "/TablesAndSections/EditTable",
                 type: "POST",
@@ -343,8 +353,11 @@
                 data: formdata,
                 success: function (response) {
                     $(".modal").modal("hide");
+                    if (newsectionId != prevsectionId) {
+                        fetchAllTables(1, 2, 1, newsectionId);
+                    }else{
                     $("#rendertables").html(response);
-
+                    }
                 }
             });
         }
@@ -360,7 +373,7 @@
             contentType: "application/json",
             data: sectionId,
             success: function (response) {
-                $("#rendertables").html(response);
+                fetchAllTables(@Model.PageNumber,@Model.PageSize,@Model.TotalPages);
             }
         });
     }

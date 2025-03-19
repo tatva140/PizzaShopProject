@@ -10,7 +10,7 @@
                     style="margin:auto;top:3px;transition:transformY(140%);right:10px;"
                     onclick="fetchAllModifiers(@Model.PageNumber,@Model.PageSize,@Model.TotalPages)"><i
                         class="fa-solid fa-search"></i></button>
-            </form> 
+            </form>
         </div>
         <button class=" me-2 " data-bs-toggle="modal" data-bs-target="#removeModifiers"
             style="background-color: white; border-radius: 5px;"><i class="fa fa-trash"></i></button>
@@ -112,6 +112,7 @@
                 <form id="editModifierForm">
                     <div class="row">
                         <div class="col-12">
+                                <input type="text" class="form-control" id="prevMGId" placeholder="Name" hidden>
                             <div class="row">
                                 <input type="text" class="form-control" id="modifierId" name="ModifierId"
                                     placeholder="Name" asp-for="@Model.ModifierId" hidden>
@@ -178,8 +179,8 @@
 
                     <div class="modal-footer d-flex  align-items-center justify-content-end">
                         <button type="button" class="btn  me-2"
-                            style="background-color: rgba(9, 9, 172, 0.692);color:white" onclick="editModifier()"
-                           >Save</button>
+                            style="background-color: rgba(9, 9, 172, 0.692);color:white"
+                            onclick="editModifier()">Save</button>
                         <button type="button" class="btn"
                             style="border-color:rgba(9, 9, 172, 0.692);  color:rgba(9, 9, 172, 0.692); background-color: white;"
                             data-bs-dismiss="modal" aria-label="Close" formnovalidate>Cancel</button>
@@ -298,7 +299,7 @@
                     </div>
                     <div class="modal-footer d-flex  align-items-center justify-content-end">
                         <button type="button" class="btn  me-2"
-                            style="background-color: rgba(9, 9, 172, 0.692);color:white" 
+                            style="background-color: rgba(9, 9, 172, 0.692);color:white"
                             onclick="addModifer()">Save</button>
                         <button type="button" class="btn"
                             style="border-color:rgba(9, 9, 172, 0.692);  color:rgba(9, 9, 172, 0.692); background-color: white;"
@@ -311,7 +312,7 @@
 </div>
 
 
-<partial name="_Notification"/>
+<partial name="_Notification" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
 <script
@@ -319,8 +320,8 @@
 <script>
 
 
-    function fetchAllModifiers(pageNumber, pageSize, totalPages) {
-                let mgID = @Model.ModifierGroupId;
+    function fetchAllModifiers(pageNumber, pageSize, totalPages,modifierId) {
+        let mgID =modifierId ? modifierId: @Model.ModifierGroupId;
         let modifiersearch = document.getElementById("modifiersearch").value;
 
 
@@ -328,7 +329,7 @@
         $.ajax({
             url: "/Menu/Modifiers",
             type: "GET",
-            data: { modifierId: mgID,search:modifiersearch, pageNumber: pageNumber, pageSize: pageSize, selectedPage: selectedPage },
+            data: { modifierId: mgID, search: modifiersearch, pageNumber: pageNumber, pageSize: pageSize, selectedPage: selectedPage },
             success: function (response) {
                 $("#rendermodifiers").html(response);
                 $("#pageSize").val(selectedPage);
@@ -354,59 +355,71 @@
 
     }
     function editModifier() {
-        @* let formdata = $("#editModifierForm").serialize(); *@
-          let pageNumber=@Model.PageNumber;
-        let pageSize=@Model.PageSize;
-        let selectedPage=@Model.SelectedPage;
-        var formdata=new FormData($("#editModifierForm")[0]);
-        formdata.append("PageNumber",pageNumber);
-        formdata.append("PageSize",pageSize);
-        formdata.append("SelectedPage",selectedPage);
-          if($("#editModifierForm").valid()){
-        $.ajax({
-            url: "/Menu/EditModifier",
-            type: "POST",
-            contentType:false,
-            processData:false,
-            data: formdata,
-            success: function (response) {
-                $(".modal").modal("hide");
-                $("#rendermodifiers").html(response);
+        let editprevModifierId = document.getElementById("prevMGId").value;
+        let newModifierId=document.getElementById("modifierGroupId").value;
+        let pageNumber =@Model.PageNumber;
+        let pageSize =@Model.PageSize;
+        let selectedPage =@Model.SelectedPage;
+        var formdata = new FormData($("#editModifierForm")[0]);
+        formdata.append("PageNumber", pageNumber);
+        formdata.append("PageSize", pageSize);
+        formdata.append("SelectedPage", selectedPage);
+        if ($("#editModifierForm").valid()) {
+            $.ajax({
+                url: "/Menu/EditModifier",
+                type: "POST",
+                contentType: false,
+                processData: false,
+                data: formdata,
+                success: function (response) {
+                    if (editprevModifierId != newModifierId) {
+                        fetchAllModifiers(1, 2, 1, newModifierId);
+                    } else {
+                        $("#rendermodifiers").html(response);
 
-            }
-        });
+                    }
+                    $(".modal").modal("hide");
+
+                }
+            });
         }
     }
     function addModifer() {
-   
-        var formdata=new FormData($("#addModifierForm")[0]);
 
-        if($("#addModifierForm").valid()){
-        $.ajax({
-            url: "/Menu/AddModifier",
-            type: "POST",
-             contentType:false,
-            processData:false,
-            data: formdata,
-            success: function (response) {
-                $(".modal").modal("hide");
-                $("#rendermodifiers").html(response);
-            }
-        });
+        var formdata = new FormData($("#addModifierForm")[0]);
+
+        if ($("#addModifierForm").valid()) {
+            $.ajax({
+                url: "/Menu/AddModifier",
+                type: "POST",
+                contentType: false,
+                processData: false,
+                data: formdata,
+                success: function (response) {
+                    $(".modal").modal("hide");
+                    $("#rendermodifiers").html(response);
+                }
+            });
         }
     }
     function fetchModifierDetails(id) {
         document.getElementById("modifierId").value = id;
+        let modifierName = document.getElementById("modifierGroupId");
+      
         $.ajax({
             url: "/Menu/ModifierDetails",
             type: "GET",
             data: { id: id },
             success: function (response) {
+                console.log(response);
                 $('#rate').val(response.rate);
                 $('#modifierName').val(response.name);
                 $('#unit').val(response.unit);
                 $('#quantity').val(response.quantity);
                 $('#description').val(response.description);
+                @* $("#modifierGroupId").val(response.modifierGroupId).change(); *@
+                $("#prevMGId").val(response.modifierGroupId);
+                @* $("#modifierGroupId").find("option:selected").text(response.modifierGroupName); *@
             }
         });
     }

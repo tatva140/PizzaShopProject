@@ -33,7 +33,7 @@ public class TableAndSectionRepository : ITableAndSectionRepository
         }
         if (search != null)
         {
-            IQueryable<Table> tables1 = _context.Tables.Where(m => m.IsActive == true &&  m.SectionId == id && m.TableName.ToLower().Contains(search.ToLower()));
+            IQueryable<Table> tables1 = _context.Tables.Where(m => m.IsActive == true && m.SectionId == id && m.TableName.ToLower().Contains(search.ToLower()));
             totalRecords = tables1.Count();
             return tables1.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
         }
@@ -91,15 +91,12 @@ public class TableAndSectionRepository : ITableAndSectionRepository
     }
     public int AddTable(Table table)
     {
-
         if (table.TableName == null || table.SectionId == null || table.Capacity == null || table.TableStatus == null)
         {
             return 0;
         }
-
         _context.Tables.Add(table);
         _context.SaveChanges();
-
 
         return table.SectionId ?? 0;
     }
@@ -107,14 +104,14 @@ public class TableAndSectionRepository : ITableAndSectionRepository
     {
         return _context.Tables.Find(id);
     }
-    public int EditTable(Table table)
+    public int EditTable(TablesAndSectionViewModel tablesAndSectionViewModel)
     {
-        Table table1 = _context.Tables.FirstOrDefault(mg => mg.TableId == table.TableId);
+        Table table1 = _context.Tables.FirstOrDefault(mg => mg.TableId == tablesAndSectionViewModel.TableId);
         if (table1 == null) return 0;
-        table1.TableName = table.TableName;
-        table1.Capacity = table.Capacity;
-        table1.TableStatus = table.TableStatus;
-        table1.SectionId = table.SectionId;
+        table1.TableName = tablesAndSectionViewModel.TableName??table1.TableName;
+        table1.Capacity = tablesAndSectionViewModel.Capacity??table1.Capacity;
+        table1.TableStatus = tablesAndSectionViewModel.TableStatus??table1.TableStatus;
+        table1.SectionId = tablesAndSectionViewModel.SectionId;
 
 
         _context.SaveChanges();

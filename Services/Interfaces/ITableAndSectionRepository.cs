@@ -15,8 +15,8 @@ public interface ITableAndSectionRepository
     int EditSection(Section section);
     int AddTable(Table table);
     Table GetTableDetails( int id);
-     int EditTable(Table table);
-     bool DeleteTables(JsonArray ids);
-     int DeleteTable(int id);
+    int EditTable(TablesAndSectionViewModel tablesAndSectionViewModel);
+    bool DeleteTables(JsonArray ids);
+    int DeleteTable(int id);
 
 }

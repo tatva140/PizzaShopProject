@@ -19,10 +19,10 @@ public class TablesAndSectionsController : Controller
         return View();
     }
     [HttpGet]
-    public IActionResult TablesAndSections(int sectionId,string search, int pageNumber = 1, int pageSize = 2, int selectedPage = 2)
+    public IActionResult TablesAndSections(int sectionId, string search, int pageNumber = 1, int pageSize = 2, int selectedPage = 2)
     {
         List<Section> sections = _tableAndSectionService.GetSections();
-        var (tables, totalRecords) = _tableAndSectionService.GetTables(sectionId,search, pageNumber, selectedPage);
+        var (tables, totalRecords) = _tableAndSectionService.GetTables(sectionId, search, pageNumber, selectedPage);
         int totalPage = (int)Math.Ceiling((double)totalRecords / selectedPage);
         TablesAndSectionViewModel tablesAndSectionViewModel = new TablesAndSectionViewModel
         {
@@ -37,10 +37,10 @@ public class TablesAndSectionsController : Controller
         return PartialView("_Sections", tablesAndSectionViewModel);
     }
     [HttpGet]
-    public IActionResult Tables(int sectionId,string search, int pageNumber = 1, int pageSize = 2, int selectedPage = 2)
+    public IActionResult Tables(int sectionId, string search, int pageNumber = 1, int pageSize = 2, int selectedPage = 2)
     {
         List<Section> sections = _tableAndSectionService.GetSections();
-        var (tables, totalRecords) = _tableAndSectionService.GetTables(sectionId,search, pageNumber, selectedPage);
+        var (tables, totalRecords) = _tableAndSectionService.GetTables(sectionId, search, pageNumber, selectedPage);
         int totalPage = (int)Math.Ceiling((double)totalRecords / selectedPage);
         TablesAndSectionViewModel tablesAndSectionViewModel = new TablesAndSectionViewModel
         {
@@ -51,13 +51,13 @@ public class TablesAndSectionsController : Controller
             TotalPages = totalPage,
             SelectedPage = selectedPage,
             ShowList = sectionId,
-            SectionId=sectionId
+            SectionId = sectionId
         };
-        ViewBag.TableSearch=search;
+        ViewBag.TableSearch = search;
         return PartialView("_Tables", tablesAndSectionViewModel);
     }
 
-    [PermissionsAtrribute("TablesAndSections","CanAddEdit")]
+    [PermissionsAtrribute("TablesAndSections", "CanAddEdit")]
     [HttpPost]
     public IActionResult AddSection(Section section)
     {
@@ -130,9 +130,9 @@ public class TablesAndSectionsController : Controller
         return Ok(new { table = table });
     }
     [HttpPost]
-    public IActionResult EditTable(Table table)
+    public IActionResult EditTable(TablesAndSectionViewModel tablesAndSectionViewModel)
     {
-        int isEdited = _tableAndSectionService.EditTable(table);
+        int isEdited = _tableAndSectionService.EditTable(tablesAndSectionViewModel);
         if (isEdited != 0)
         {
             TempData["success"] = "Table Edited Successfully";
@@ -141,7 +141,13 @@ public class TablesAndSectionsController : Controller
         {
             TempData["error"] = "Table Cannot be edited";
         }
-        return RedirectToAction("Tables", new { sectionId = isEdited });
+         return RedirectToAction("Tables", new
+        {
+            sectionId = isEdited,
+            pageNumber = tablesAndSectionViewModel.PageNumber,
+            pageSize = tablesAndSectionViewModel.PageSize,
+            selectedPage = tablesAndSectionViewModel.SelectedPage
+        });
     }
     [HttpPost]
     public IActionResult DeleteTables([FromBody] JsonArray ids)
@@ -161,7 +167,7 @@ public class TablesAndSectionsController : Controller
     public IActionResult DeleteTable([FromBody] int id)
     {
         int isDeleted = _tableAndSectionService.DeleteTable(id);
-        if (isDeleted!=0)
+        if (isDeleted != 0)
         {
             TempData["success"] = "Table Deleted Successfully";
         }
@@ -169,7 +175,6 @@ public class TablesAndSectionsController : Controller
         {
             TempData["error"] = "Table Cannot be deleted";
         }
-        return RedirectToAction("Tables", new { sectionId = isDeleted });
-
+        return Ok(new { message = "Deleted" });
     }
 }

@@ -14,12 +14,12 @@
       <div class="col-md-6 text-end p-0 ">
         <div class="d-flex align-items-center justify-content-md-end justify-content-start">
          <div class=" ms-2 " style="position:relative; ">
-<form id="searchForm" class="d-flex position-relative me-2">
-                        <input class="form-control fs-6 form-control-lg " type="text" aria-label="Search"
-                            placeholder="Search" id="search" name="search" value="@ViewBag.Search">
-                        <button type="submit" class="position-absolute  btn btn-link" style="margin:auto;top:3px;transition:transformY(140%);right:10px;" onclick="fetchSearchedUser()"><i
-                                class="fa-solid fa-search"></i></button>
-</form>
+            <form id="searchForm" class="d-flex position-relative me-2">
+              <input class="form-control fs-6 form-control-lg " type="text" aria-label="Search"
+                  placeholder="Search" id="search" name="search" value="@ViewBag.Search">
+              <button type="submit" class="position-absolute  btn btn-link" style="margin:auto;top:3px;transition:transformY(140%);right:10px;" onclick="fetchSearchedUser()"><i
+                  class="fa-solid fa-search"></i></button>
+            </form>
         </div>
      
         <a class="btn btn-primary " asp-action="AddUser" asp-controller="User" style="background-color: rgba(9, 9, 172, 0.692);color:white">+ Add User</a>
@@ -47,15 +47,14 @@
             <tr>
             <td>
               <div class="d-flex   align-items-center w-auto p-0 ">
-                @if(user.ProfileImg==null || user.ProfileImg.Length==0)
-                {
-                  <img src="~/images/Default_pfp.svg.png" class="rounded-pill img-fluid me-2"
-                  style="width: 30px; height: 30px" > 
-                }
-                else{
-                <img src="@(Url.Content(user.ProfileImg ))" class="rounded-pill img-fluid me-2"
-                  style="width: 30px; height: 30px" > 
-                }
+               @if (user.ProfileImg == null || user.ProfileImg.Length == 0)
+        {
+            <img src="/images/Default_pfp.svg.png" class="profile rounded-pill me-2"  style="width: 40px; height: 40px; ">
+        }
+        else
+        {
+            <img src="@(Url.Content(user.ProfileImg))" class="profile rounded-pill me-2"  style="width: 40px; height: 40px; ">
+        }
                 
                 <div style="word-wrap: break-word;">@user.FirstName @user.LastName</div>
               </div>

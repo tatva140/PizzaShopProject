@@ -1,7 +1,7 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\pca140\\Desktop\\RMSProject\\Services\\Services.csproj": {}
+    "C:\\Users\\pca140\\Desktop\\RMSProject\\Services\\Services.csproj": {}
   },
   "projects": {
     "C:\\Users\\pca140\\Desktop\\RMSProject\\DAL\\DAL.csproj": {
@@ -87,14 +87,14 @@
         }
       }
     },
-    "c:\\Users\\pca140\\Desktop\\RMSProject\\Services\\Services.csproj": {
+    "C:\\Users\\pca140\\Desktop\\RMSProject\\Services\\Services.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\pca140\\Desktop\\RMSProject\\Services\\Services.csproj",
+        "projectUniqueName": "C:\\Users\\pca140\\Desktop\\RMSProject\\Services\\Services.csproj",
         "projectName": "Services",
-        "projectPath": "c:\\Users\\pca140\\Desktop\\RMSProject\\Services\\Services.csproj",
+        "projectPath": "C:\\Users\\pca140\\Desktop\\RMSProject\\Services\\Services.csproj",
         "packagesPath": "C:\\Users\\pca140\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\pca140\\Desktop\\RMSProject\\Services\\obj\\",
+        "outputPath": "C:\\Users\\pca140\\Desktop\\RMSProject\\Services\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\pca140\\AppData\\Roaming\\NuGet\\NuGet.Config"

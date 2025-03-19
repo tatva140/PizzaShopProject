@@ -26,7 +26,6 @@ public class MenuRepository : IMenuRepository
     {
         if (search != null)
         {
-            Console.Write(search);
             IQueryable<Item> items1 = _context.Items.Where(i => i.CategoryId == id && i.IsActive == true && i.Name.ToLower().Contains(search.ToLower())).AsQueryable();
             totalRecords = items1.Count();
             return items1.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
@@ -269,7 +268,9 @@ public class MenuRepository : IMenuRepository
         modifier1.Quantity = menuModifiersViewModel.Quantity == 0 ? modifier1.Quantity : menuModifiersViewModel.Quantity;
         modifier1.Unit = menuModifiersViewModel.Unit ?? modifier1.Unit;
 
+    
         ModifierModifierGroup modifierModifierGroup = _context.ModifierModifierGroups.FirstOrDefault(mg => mg.ModifierGroupId == modifier1.ModifierGroupId && mg.ModifierId == menuModifiersViewModel.ModifierId);
+       
         modifierModifierGroup.ModifierGroupId = menuModifiersViewModel.ModifierGroupId ?? 0;
 
 

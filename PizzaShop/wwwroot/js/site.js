@@ -128,4 +128,18 @@ function search(){
       }       
     }
 }
+function previewImage(e){
+    const file = e.files[0];
+    if (file) {
+        const validImageTypes = ["image/jpeg", "image/png", "image/gif", "image/webp", "images/jfif"];
+        if (!validImageTypes.includes(file.type)) {
+            document.getElementById("img").style.display="none";
+            toastr.error("Invalid File Type! Please upload image.");
+            e.value = "";
+        } else {
+            document.getElementById("img").style.display="block";
+            document.getElementById("img").src=URL.createObjectURL(file);
+        }
+    }
+}
 

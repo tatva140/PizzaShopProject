@@ -74,7 +74,7 @@ public JsonResult CheckUserExists(string email){
             if (profileImg.Length > 0)
             {
                 string fileName=_fileUploads.UploadProfileImage(profileImg);
-                addUserViewModel.ProfileImg="/images/"+fileName;
+                addUserViewModel.ProfileImg="~/images/"+fileName;
 
             }
         }
@@ -129,7 +129,7 @@ public JsonResult CheckUserExists(string email){
             if (profileImg.Length > 0)
             {
                 string fileName=_fileUploads.UploadProfileImage(profileImg);
-                model.ProfileImg="/images/"+fileName;
+                model.ProfileImg="~/images/"+fileName;
             }
         }
         bool isUpdated=_userService.UpdateProfile(model);

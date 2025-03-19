@@ -1,20 +1,32 @@
-@model  DAL.ViewModels.LayoutViewModel;
+@model DAL.ViewModels.LayoutViewModel;
 
 
 <div class="btn-group profile">
-                    <button type="button" class="btn  " data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="@Model.ProfileImg" class="profile rounded-pill" alt="Profile Picture"
-                        style="width: 40px; height: 40px; margin-right: 10px;" id="profileImg">
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <div class="d-flex align-items-center">
-        <img src="@Model.ProfileImg" class="profile rounded-pill ms-2" alt="Profile Picture"
-            style="width: 40px; height: 40px; ">
-        <h6 class="ms-2 me-2">@Model.Email</h6>
+    <button type="button" class="btn  " data-bs-toggle="dropdown" aria-expanded="false">
+        @if (Model.ProfileImg == null || Model.ProfileImg.Length == 0)
+        {
+            <img src="/images/Default_pfp.svg.png" class="profile rounded-pill ms-2"  style="width: 40px; height: 40px; ">
+        }
+        else
+        {
+            <img src="@(Url.Content(Model.ProfileImg))" class="profile rounded-pill ms-2"  style="width: 40px; height: 40px; ">
+        }
+    </button>
+    <ul class="dropdown-menu dropdown-menu-end">
+        <div class="d-flex align-items-center">
+        @if (Model.ProfileImg == null || Model.ProfileImg.Length == 0)
+        {
+            <img src="/images/Default_pfp.svg.png" class="profile rounded-pill ms-2"  style="width: 40px; height: 40px; ">
+        }
+        else
+        {
+            <img src="@(Url.Content(Model.ProfileImg))" class="profile rounded-pill ms-2"  style="width: 40px; height: 40px; ">
+        }
+            <h6 class="ms-2 me-2">@Model.Email</h6>
+        </div>
+        <div class="dropdown-divider"></div>
+        <li><a class="dropdown-item" asp-action="UserProfile" asp-controller="Dashboard">My Profile</a></li>
+        <li><a class="dropdown-item" asp-action="ChangePassword" asp-controller="Dashboard">Change Password</a></li>
+        <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#myModal">Logout</a></li>
+    </ul>
 </div>
-                    <div class="dropdown-divider"></div>
-                    <li><a class="dropdown-item"  asp-action="UserProfile" asp-controller="Dashboard">My Profile</a></li>
-                    <li><a class="dropdown-item" asp-action="ChangePassword" asp-controller="Dashboard">Change Password</a></li>
-                    <li><a class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#myModal">Logout</a></li>                    
-                    </ul>
-                  </div>

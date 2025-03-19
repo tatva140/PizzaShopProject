@@ -31,15 +31,3 @@ public class FileUploads
         
 }
 
-internal class PhysicalFileProvider
-{
-    private string v;
-
-    public PhysicalFileProvider(string v)
-    {
-        this.v = v;
-    }
-
-    public string Root { get; internal set; }
-
-}

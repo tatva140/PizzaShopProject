@@ -849,7 +849,6 @@ public partial class PizzashopContext : DbContext
                 .HasDefaultValueSql("true")
                 .HasColumnName("is_default");
             entity.Property(e => e.IsEnabled)
-                .HasDefaultValueSql("true")
                 .HasColumnName("is_enabled");
             entity.Property(e => e.TaxName)
                 .HasMaxLength(100)

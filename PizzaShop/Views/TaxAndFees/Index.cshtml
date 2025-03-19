@@ -77,10 +77,11 @@
                             <div class="row">
                                 <div class="col-12 ">
                                     <div class="form-check form-switch mb-3">
-                                        <input class="form-check-input can-delete" type="checkbox" id="IsEnabled"
+                                        <input class="form-check-input " type="checkbox" id="IsEnabled"
                                             name="IsEnabled" asp-for="@Model.IsEnabled">
                                         <label for="IsEnabled">IsEnabled</label>
                                     </div>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -100,6 +101,9 @@
 </div>
 
 @section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
     <script>
         $(document).ready(function () {
             $.ajax({
@@ -121,5 +125,21 @@
                 }
             });
         }
+        function addTax() {
+        var formdata = new FormData($("#addTaxForm")[0]); 
+         if ($("#addTaxForm").valid()) {
+            $.ajax({
+                url: "/TaxAndFees/AddTax",
+                type: "POST",
+                contentType: false,
+                processData: false,
+                data: formdata,
+                success: function (response) {
+                    $(".modal").modal("hide");
+                    $("#rendertaxandfees").html(response);
+                }
+            });
+        }
+    }
     </script>
 }
