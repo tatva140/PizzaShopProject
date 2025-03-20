@@ -4,13 +4,13 @@ using DAL.ViewModels;
 
 public interface IUserRepository
 {
-    void SetRememberMe(string email,bool RememberMe);
+    void SetRememberMe(string email, bool RememberMe);
     UserProfileViewModel GetByEmail(string email);
     void ResetPassword(string newPassword, string email);
-    string GetUserRole( string email);
-    List<Role> GetRoles( );
-    
-    List<UserProfileViewModel> GetAllUser(string search,string sortOrder,int pageNumber,int pageSize,out int totalRecords);
+    string GetUserRole(string email);
+    List<Role> GetRoles();
+
+    List<UserProfileViewModel> GetAllUser(string search, string sortOrder, int pageNumber, int pageSize, out int totalRecords);
     bool DeleteUser(int id);
     bool UpdateProfile(UserProfileViewModel userProfileViewModel);
 
@@ -19,6 +19,6 @@ public interface IUserRepository
     List<City> GetCityByState(int stateId);
 
     bool AddUser(AddUserViewModel addUserViewModel);
-List<string> GetAllEmail();
+    List<string> GetAllEmail();
 }
 

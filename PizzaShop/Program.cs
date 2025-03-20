@@ -28,7 +28,9 @@ var jwtSettings = builder.Configuration.GetSection("Jwt");
 var key = Encoding.UTF8.GetBytes(jwtSettings["Key"]);
 
 builder.Services.AddScoped<JwtTokenService>();
-builder.Services.AddControllersWithViews();
+
+
+
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRolesAndPermissions, RolesAndPermissions>();
@@ -47,6 +49,8 @@ builder.Services.AddScoped<TaxAndFeesService>();
 builder.Services.AddScoped<PermissionService>();
 
 builder.Services.AddScoped<EncryptDecrypt>();
+
+builder.Services.AddControllersWithViews().AddSessionStateTempDataProvider();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -120,9 +124,9 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
 
 app.UseRouting();
 

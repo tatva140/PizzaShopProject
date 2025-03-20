@@ -26,7 +26,7 @@ public class UserController:Controller
     }
 
 [HttpGet]
-
+[PermissionsAtrribute("Users","CanView")]
       public ActionResult Index(string search,string sortOrder,int pageNumber=1,int pageSize=2)
     {
         ViewBag.sort = String.IsNullOrEmpty(sortOrder) ? "desc" : "";

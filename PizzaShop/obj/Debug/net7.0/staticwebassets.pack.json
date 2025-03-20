@@ -385,22 +385,6 @@
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.map"
     },
     {
-      "Id": "C:\\Users\\pca140\\Desktop\\RMSProject\\PizzaShop\\wwwroot\\~images\\1ea1a559-bc39-46b9-a250-0f34021fe036_download.jfif",
-      "PackagePath": "staticwebassets\\~images\\1ea1a559-bc39-46b9-a250-0f34021fe036_download.jfif"
-    },
-    {
-      "Id": "C:\\Users\\pca140\\Desktop\\RMSProject\\PizzaShop\\wwwroot\\~images\\7883477d-aee8-4a40-8c37-95c117a4438d_download.jfif",
-      "PackagePath": "staticwebassets\\~images\\7883477d-aee8-4a40-8c37-95c117a4438d_download.jfif"
-    },
-    {
-      "Id": "C:\\Users\\pca140\\Desktop\\RMSProject\\PizzaShop\\wwwroot\\~images\\a434eee6-3686-4999-b4d3-c8c4685d2c00_download.jfif",
-      "PackagePath": "staticwebassets\\~images\\a434eee6-3686-4999-b4d3-c8c4685d2c00_download.jfif"
-    },
-    {
-      "Id": "C:\\Users\\pca140\\Desktop\\RMSProject\\PizzaShop\\wwwroot\\~images\\b964473d-da78-46ba-bbfd-27cc30a3123d_download.jfif",
-      "PackagePath": "staticwebassets\\~images\\b964473d-da78-46ba-bbfd-27cc30a3123d_download.jfif"
-    },
-    {
       "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.PizzaShop.Microsoft.AspNetCore.StaticWebAssets.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
     },

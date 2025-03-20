@@ -376,11 +376,10 @@
                 success: function (response) {
                     $(".modal").modal("hide");
                     if (prevCategoryId != newCategoryId) {
-                        fetch(1, 2, 1, newCategoryId);
+                        fetchItems(newCategoryId);
                     }
                     else {
                         $("#renderitems").html(response);
-
                     }
                 }
             });

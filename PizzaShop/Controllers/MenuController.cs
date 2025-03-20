@@ -136,9 +136,10 @@ public class MenuController : Controller
 
     }
     [HttpPost]
-    public IActionResult AddModifier(Modifier modifier)
+    public IActionResult AddModifier(Modifier modifier, string ids)
     {
-        int isAdded = _menuService.AddModifier(modifier);
+        List<int> selectedModifierGroups = JsonConvert.DeserializeObject<List<int>>(ids);
+        int isAdded = _menuService.AddModifier(modifier, selectedModifierGroups);
         if (isAdded != 0)
         {
             TempData["success"] = "Modifier Added Successfully";
@@ -333,12 +334,14 @@ public class MenuController : Controller
     [HttpGet]
     public IActionResult ModifierDetails(int id)
     {
-        Modifier modifier = _menuService.ModifierDetails(id);
-        return Json(new { name = modifier.ModifierName, description = modifier.Description, rate = modifier.Rate, quantity = modifier.Quantity, unit = modifier.Unit });
+        MenuModifiersViewModel modifier = _menuService.ModifierDetails(id);
+        return Json(new { name = modifier.ModifierName, description = modifier.Description, rate = modifier.Rate, quantity = modifier.Quantity, unit = modifier.Unit, ids = modifier.ids });
     }
     [HttpPost]
-    public IActionResult EditModifier(MenuModifiersViewModel menuModifiersViewModel)
+    public IActionResult EditModifier(MenuModifiersViewModel menuModifiersViewModel, string ids)
     {
+        List<int> selectedModifiers = JsonConvert.DeserializeObject<List<int>>(ids);
+        menuModifiersViewModel.ids = selectedModifiers;
         int isEdited = _menuService.EditModifier(menuModifiersViewModel);
         if (isEdited != 0)
         {
@@ -349,13 +352,7 @@ public class MenuController : Controller
             TempData["error"] = "Cannot Edit Modifier, it already Exists";
         }
 
-        return RedirectToAction("Modifiers", new
-        {
-            modifierId = isEdited,
-            pageNumber = menuModifiersViewModel.PageNumber,
-            pageSize = menuModifiersViewModel.PageSize,
-            selectedPage = menuModifiersViewModel.SelectedPage
-        });
+        return Ok(new { message = "Edited" });
 
     }
 

@@ -20,11 +20,10 @@
                                     style=" color: rgb(30, 151, 231); border: 2px solid rgb(30, 151, 231);background-color: rgb(250, 250, 250); "><i
                                         class="fa-regular fa-plus me-2"></i>Add Sections</button>
                             </div>
-                            <ul class=" overflow-auto mt-2 p-0" style="max-height: 500px;">
+                            <ul class="categoryLinks overflow-auto mt-2 p-0" style="max-height: 500px;">
                                 @foreach (var s in Model.sections)
                                 {
-                                    <a style="text-decoration: none; color: black;cursor: pointer;"
-                                        onclick="fetchSections(@s.SectionId)">
+                                    <a onclick="fetchSections(@s.SectionId)" class="@($"tlist{@s.SectionId}")">
                                         <li style="list-style: none;">
                                             <div class="d-flex align-items-center justify-content-between actionshover">
                                                 <div class="d-flex align-items-center justify-content-center mt-3">
@@ -60,10 +59,10 @@
                 style=" color: rgb(30, 151, 231); border: 2px solid rgb(30, 151, 231);background-color: rgb(250, 250, 250); "><i
                     class="fa-regular fa-plus"></i></button>
         </div>
-        <ul class="p-2 overflow-auto mt-2" style="max-height: 400px;">
+        <ul class="categoryLinks p-2 overflow-auto mt-2" style="max-height: 400px;">
             @foreach (var s in Model.sections)
             {
-                <a style="text-decoration: none; color: black;cursor: pointer;" onclick="fetchSections(@s.SectionId)">
+                <a  onclick="fetchSections(@s.SectionId)" class="@($"tlist{@s.SectionId}")">
                     <li style="list-style: none;">
                         <div class="d-flex align-items-center justify-content-between actionshover">
                             <div class="d-flex align-items-center justify-content-center mt-3">
@@ -198,9 +197,15 @@
         if (sectionId == 0) {
             sectionId =@(Model.sections.Count > 0 ? Model.sections[0].SectionId : 0);
         }
+        $(`.tlist${sectionId}`).addClass("active");
         fetchSections(sectionId);
     });
     function fetchSections(id) {
+        let links = document.querySelectorAll(".categoryLinks a");
+        links.forEach(link => {
+            link.classList.remove("active");
+        });
+        $(`.tlist${id}`).addClass("active");
         $.ajax({
             url: "/TablesAndSections/Tables",
             type: "GET",
@@ -220,6 +225,12 @@
                 processData: false,
                 data: formdata,
                 success: function (response) {
+                    if(response.redirectUrl){
+                        toastr.error("Unauthorized Access");
+                        setTimeout(function(){
+                            window.location.href=response.redirectUrl;
+                        },500);
+                    }
                     $(".modal").modal("hide");
                     $("#sections").html(response);
                 }

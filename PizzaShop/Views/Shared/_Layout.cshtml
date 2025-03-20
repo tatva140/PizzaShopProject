@@ -46,7 +46,7 @@
             </div>
         </nav>
         <div class="sidebar " id="sidebar">
-            <ul>
+            <ul >
                 <li>
                     <div class="d-flex overflow-hidden  align-items-center justify-content-center w-auto p-0 ">
                         <img src="~/images/logos/pizzashop_logo.png" alt="Image" class="img-fluid me-2 "
@@ -56,28 +56,28 @@
                                 class="fa-regular fa-circle-xmark"></i></a>
                     </div>
                 </li>
-                <a asp-action="Index" asp-controller="Dashboard" style="text-decoration: none; color: black;">
-                    <li><i class="fa-solid fa-table me-2"></i>Dashboard</li>
+                <a asp-action="Index" asp-controller="Dashboard" data-path="/Dashboard">
+                    <li><i class="fa-solid fa-table me-2" class="active"></i>Dashboard</li>
                 </a>
-                <a asp-action="Index" asp-controller="User" style="text-decoration: none; color: black;">
+                <a asp-action="Index" asp-controller="User" data-path="/User">
                     <li><i class="fa-solid fa-users me-2"></i>Users</li>
                 </a>
-                <a asp-action="Index" asp-controller="RolesAndPermissions" style="text-decoration: none; color: black;">
+                <a asp-action="Index" asp-controller="RolesAndPermissions" data-path="/RolesAndPermissions">
                     <li><i class="fa-solid fa-user-plus me-2"></i>Role and Permission</li>
                 </a>
-                <a asp-action="Index" asp-controller="Menu" style="text-decoration: none; color: black;">
+                <a asp-action="Index" asp-controller="Menu" data-path="/Menu">
                     <li><i class="fa-regular fa-rectangle-list me-2"></i>Menu</li>
                 </a>
-                <a asp-action="Index" asp-controller="TablesAndSections" style="text-decoration: none; color: black;">
+                <a asp-action="Index" asp-controller="TablesAndSections"data-path="/TablesAndSections" >
                     <li><i class="fa-solid fa-table me-2"></i>Tables and Sections</li>
                 </a>
-                <a asp-action="Index" asp-controller="TaxAndFees" style="text-decoration: none; color: black;">
+                <a asp-action="Index" asp-controller="TaxAndFees" data-path="/TaxAndFees">
                     <li><i class="fa-solid fa-file-invoice me-2"></i>Taxes and Fees</li>
                 </a>
-                <a href="#" style="text-decoration: none; color: black;">
+                <a href="#" data-path="/#">
                     <li><i class="fa-solid fa-bag-shopping me-2"></i>Orders</li>
                 </a>
-                <a href="#" style="text-decoration: none; color: black;">
+                <a href="#" data-path="/#">
                     <li><i class="fa-solid fa-users-rectangle me-2"></i>Customers</li>
                 </a>
             </ul>
@@ -113,10 +113,7 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     <script>
-
         $(document).ready(function () {
-
-
             $.ajax({
                 url: "@Url.Action("UserInfo", "Dashboard")",
                 method: "GET",
@@ -125,6 +122,16 @@
                 }
             })
         });
+        let links=document.querySelectorAll(".sidebar a");
+        let currentUrl=window.location.pathname;
+        links.forEach(link=>{
+            let linkPath=link.dataset.path;
+            if(currentUrl.startsWith(linkPath)){
+                link.classList.add("active");
+            }else{
+                link.classList.remove("active");
+            }
+        })
     </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

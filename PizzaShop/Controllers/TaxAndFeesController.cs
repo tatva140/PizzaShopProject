@@ -53,14 +53,14 @@ public class TaxAndFeesController : Controller
     [HttpPost]
     public IActionResult DeleteTax([FromBody] int id)
     {
-        int isDeleted = _taxAndFeesService.DeleteTax(id);
-        if (isDeleted != 0)
+        CustomErrorViewModel isDeleted = _taxAndFeesService.DeleteTax(id);
+        if (isDeleted.Status)
         {
-            TempData["success"] = "Tax Deleted Successfully";
+            TempData["success"] = isDeleted.Message;
         }
         else
         {
-            TempData["error"] = "Tax Cannot be deleted";
+            TempData["error"] = isDeleted.Message;
         }
         return Ok(new { message = "Deleted" });
     }
@@ -73,14 +73,14 @@ public class TaxAndFeesController : Controller
     [HttpPost]
     public IActionResult EditTax(TaxAndFeesViewModel taxAndFeesViewModel)
     {
-        int isEdited = _taxAndFeesService.EditTax(taxAndFeesViewModel);
-        if (isEdited != 0)
+        CustomErrorViewModel customErrorViewModel = _taxAndFeesService.EditTax(taxAndFeesViewModel);
+        if (customErrorViewModel.Status)
         {
-            TempData["success"] = "Tax Edited Successfully";
+            TempData["success"] = customErrorViewModel.Message;
         }
         else
         {
-            TempData["error"] = "Tax Cannot be edited";
+            TempData["error"] = customErrorViewModel.Message;
         }
         return Ok(new { message = "Edited" });
 

@@ -1,7 +1,9 @@
 using System.Security.Claims;
 using DAL.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Services.Utilities;
 
 namespace PizzaShop;
@@ -22,18 +24,15 @@ public class PermissionsAtrribute : Attribute, IAuthorizationFilter
         var permissionService = context.HttpContext.RequestServices.GetService<PermissionService>();
         if (permissionService == null)
         {
-
             RedirectToNotFound(context);
-            return;
+            return ;  
         }
-
 
         var user = context.HttpContext.User;
         var role = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
         if (string.IsNullOrEmpty(role) || !permissionService.HasPermission(role, _entity, _action))
         {
             RedirectToNotFound(context);
-
             return;
 
         }
@@ -41,11 +40,16 @@ public class PermissionsAtrribute : Attribute, IAuthorizationFilter
 
     public void RedirectToNotFound(AuthorizationFilterContext context)
     {
-        var result = new ViewResult
-        {
-            ViewName = "~/Views/Shared/_PageNotFound.cshtml"
-        };
-        context.Result = result;
+        if(context.HttpContext.Request.Headers["X-Requested-With"]=="XMLHttpRequest"){
+            context.Result=new JsonResult(new{
+                redirectUrl="/Dashboard/Index",
+                error="Unauthorized"
+            });
+        }else{
+            context.Result=new RedirectToActionResult("Index","Dashboard",new{message="Error"});
+
+        }
+        
 
     }
 

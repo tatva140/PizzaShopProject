@@ -62,11 +62,8 @@ public class JwtTokenService : IJwtService
     public TokenResponse RefreshToken(string refreshToken)
     {
         User user = _context.Users.FirstOrDefault(u => u.RefreshToken == refreshToken && u.IsActive == true);
-        string newRefreshToken=user.RefreshToken;
-        if (user == null || user.ExpiryTime > DateTime.UtcNow) {
-            newRefreshToken = GenerateRefreshToken();
+        string newRefreshToken = GenerateRefreshToken();
         user.RefreshToken = newRefreshToken;
-        }
         DateTime refreshTokenExpiryTime = user.RememberMe ?? false ? DateTime.UtcNow.AddDays(30) : DateTime.UtcNow.AddDays(7);
         var newjwtToken = GenerateToken(user.Email);
         

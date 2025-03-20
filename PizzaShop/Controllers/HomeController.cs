@@ -50,28 +50,28 @@ public class HomeController : Controller
         if (ModelState.IsValid)
         {
             bool isValidUser = _userService.ValidateUser(model.Email, model.Password);
-            _userService.SetRememberMe(model.Email,model.RememberMe);
+            _userService.SetRememberMe(model.Email, model.RememberMe);
             if (isValidUser)
             {
 
                 DateTime refreshTokenExpiryTime = model.RememberMe ? DateTime.UtcNow.AddDays(30) : DateTime.UtcNow.AddDays(7);
-                
+
                 string token = _jwtTokenService.GenerateToken(model.Email);
                 string refresh_token = _jwtTokenService.GenerateRefreshToken();
-                 _jwtTokenService.SaveRefreshToken(refresh_token,model.Email,refreshTokenExpiryTime);
+                _jwtTokenService.SaveRefreshToken(refresh_token, model.Email, refreshTokenExpiryTime);
 
                 Response.Cookies.Append("jwtToken", token, new CookieOptions
                 {
                     HttpOnly = true,
                     Secure = true,
-                    Expires =  DateTime.UtcNow.AddDays(30)
+                    Expires = refreshTokenExpiryTime
                 });
 
                 Response.Cookies.Append("email", model.Email, new CookieOptions
                 {
                     HttpOnly = true,
                     Secure = true,
-                    Expires = model.RememberMe ? DateTime.UtcNow.AddDays(30) : DateTime.UtcNow.AddDays(7)
+                    Expires = refreshTokenExpiryTime
                 });
                 Response.Cookies.Append("refreshToken", refresh_token, new CookieOptions
                 {
@@ -86,9 +86,10 @@ public class HomeController : Controller
         }
         return RedirectToAction("Index");
     }
-    public IActionResult RefreshToken([FromBody] string refresh_token){
-        var content=_jwtTokenService.RefreshToken(refresh_token);
-        return Ok(new{ jwtToken=content.jwtToken,refreshToken=content.refreshToken,expiryTime=content.expiryTime});
+    public IActionResult RefreshToken([FromBody] string refresh_token)
+    {
+        var content = _jwtTokenService.RefreshToken(refresh_token);
+        return Ok(new { jwtToken = content.jwtToken, refreshToken = content.refreshToken, expiryTime = content.expiryTime });
     }
     [HttpGet]
     public IActionResult ForgotPassword(string? email)
@@ -139,7 +140,7 @@ public class HomeController : Controller
     {
         return View();
     }
-public IActionResult PageNotFound()
+    public IActionResult PageNotFound()
     {
         return PartialView("_PageNotFound");
     }

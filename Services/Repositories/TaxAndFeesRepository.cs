@@ -32,26 +32,27 @@ public class TaxAndFeesRepository : ITaxAndFeesRepository
 
         return 1;
     }
-    public int DeleteTax(int id)
+    public CustomErrorViewModel DeleteTax(int id)
     {
         Tax tax = _context.Taxes.FirstOrDefault(u => u.TaxId == id && u.IsActive == true);
-        if (tax == null) return 0;
+        if (tax == null) return new CustomErrorViewModel { Status = false, Message = "Tax not found!" };
         tax.IsActive = false;
 
         _context.SaveChanges();
-        return 1;
+        return new CustomErrorViewModel { Status = true, Message = "Tax Deleted Successfully!" };
+
     }
-    public int EditTax(TaxAndFeesViewModel taxAndFeesViewModel)
+    public CustomErrorViewModel EditTax(TaxAndFeesViewModel taxAndFeesViewModel)
     {
         Tax tax = _context.Taxes.FirstOrDefault(mg => mg.TaxId == taxAndFeesViewModel.TaxId);
-        if (tax == null) return 0;
-        tax.TaxName = taxAndFeesViewModel.TaxName ;
-        tax.Amount = taxAndFeesViewModel.Amount ;
+        if (tax == null) return new CustomErrorViewModel { Status = false, Message = "Tax not found!" };
+        tax.TaxName = taxAndFeesViewModel.TaxName;
+        tax.Amount = taxAndFeesViewModel.Amount;
         tax.IsEnabled = taxAndFeesViewModel.IsEnabled;
         tax.Type = taxAndFeesViewModel.Type;
 
         _context.SaveChanges();
-        return 1;
+        return new CustomErrorViewModel { Status = true, Message = "Tax Edited Successfully!" };
     }
     public Tax GetTaxDetails(int id)
     {

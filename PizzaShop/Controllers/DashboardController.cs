@@ -24,8 +24,11 @@ public class DashboardController : Controller
         _fileUploads = fileUploads;
     }
 
-    public IActionResult Index()
+    public IActionResult Index(string message)
     {
+        if(message!=""){
+        ViewBag.error=message;
+        }
         return View();
 
     }

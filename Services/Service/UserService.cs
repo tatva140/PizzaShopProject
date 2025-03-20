@@ -35,7 +35,7 @@ public class UserService
     public bool ValidateUserByEmail(string email)
     {
         UserProfileViewModel user = _userRepository.GetByEmail(email);
-        if (user == null || user.isActive == false)
+        if (user == null || user.isActive == false || user.Status=="InActive")
         {
             return false;
         }

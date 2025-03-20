@@ -22,11 +22,11 @@ public class TaxAndFeesService
   {
     return _taxAndFeesRepository.AddTax(tax);
   }
-  public int DeleteTax(int id)
+  public CustomErrorViewModel DeleteTax(int id)
   {
     return _taxAndFeesRepository.DeleteTax(id);
   }
-  public int EditTax(TaxAndFeesViewModel taxAndFeesViewModel)
+  public CustomErrorViewModel EditTax(TaxAndFeesViewModel taxAndFeesViewModel)
   {
     return _taxAndFeesRepository.EditTax(taxAndFeesViewModel);
   }

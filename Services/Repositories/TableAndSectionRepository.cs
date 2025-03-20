@@ -62,14 +62,15 @@ public class TableAndSectionRepository : ITableAndSectionRepository
     {
         Section section = _context.Sections.FirstOrDefault(u => u.SectionId == id && u.IsActive == true);
         if (section == null) return false;
-        section.IsActive = false;
 
         List<Table> tables = _context.Tables.Where(c => c.SectionId == id).ToList();
         foreach (var table in tables)
         {
+            if(table.TableStatus=="Occupied")return false;
             table.IsActive = false;
         }
 
+        section.IsActive = false;
         _context.SaveChanges();
         return true;
     }
@@ -123,7 +124,7 @@ public class TableAndSectionRepository : ITableAndSectionRepository
         foreach (int tableId in ids)
         {
             Table table = _context.Tables.FirstOrDefault(i => i.TableId == tableId && i.IsActive == true);
-            if (table == null) return false;
+            if (table == null || table.TableStatus=="Occupied") return false;
             table.IsActive = false;
         }
         _context.SaveChanges();
@@ -132,7 +133,7 @@ public class TableAndSectionRepository : ITableAndSectionRepository
     public int DeleteTable(int id)
     {
         Table table = _context.Tables.FirstOrDefault(u => u.TableId == id && u.IsActive == true);
-        if (table == null) return 0;
+        if (table == null || table.TableStatus=="Occupied") return 0;
         table.IsActive = false;
 
         _context.SaveChanges();

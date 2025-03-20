@@ -113,16 +113,16 @@ public partial class PizzashopContext : DbContext
             entity.Property(e => e.Min).HasColumnName("min");
             entity.Property(e => e.ModifierGroupId).HasColumnName("modifier_group_id");
         });
-         modelBuilder.Entity<ModifierModifierGroup>(entity =>
-        {
-            entity.HasKey(e => e.ModifierModifierGroupsId).HasName("modifier_modifier_groups_pkey");
+        modelBuilder.Entity<ModifierModifierGroup>(entity =>
+       {
+           entity.HasKey(e => e.ModifierModifierGroupsId).HasName("modifier_modifier_groups_pkey");
 
-            entity.ToTable("modifier_modifier_groups");
+           entity.ToTable("modifier_modifier_groups");
 
-            entity.Property(e => e.ModifierModifierGroupsId).HasColumnName("modifier_modifier_groups_id");
-            entity.Property(e => e.ModifierGroupId).HasColumnName("modifier_group_id");
-            entity.Property(e => e.ModifierId).HasColumnName("modifier_id");
-        });
+           entity.Property(e => e.ModifierModifierGroupsId).HasColumnName("modifier_modifier_groups_id");
+           entity.Property(e => e.ModifierGroupId).HasColumnName("modifier_group_id");
+           entity.Property(e => e.ModifierId).HasColumnName("modifier_id");
+       });
         modelBuilder.Entity<Auditlog>(entity =>
         {
             entity.HasKey(e => e.AuditId).HasName("auditlog_pkey");
@@ -894,6 +894,9 @@ public partial class PizzashopContext : DbContext
                 .HasColumnType("timestamp with time zone")
                 .HasColumnName("expiry_time");
             entity.Property(e => e.CreatedBy).HasColumnName("created_by");
+            entity.Property(e => e.Status)
+                .HasColumnType("character varying")
+                .HasColumnName("status");
             entity.Property(e => e.Email)
                 .HasMaxLength(100)
                 .HasColumnName("email");

@@ -194,10 +194,9 @@ public class MenuRepository : IMenuRepository
         return item.CategoryId ?? 0;
     }
 
-    public int AddModifier(Modifier modifier)
+    public int AddModifier(Modifier modifier,List<int> ids)
     {
-
-        if (modifier.ModifierName == null || modifier.ModifierGroupId == null || modifier.Unit == null || modifier.Rate == 0 || modifier.Quantity == 0)
+        if (modifier.ModifierName == null  || modifier.Unit == null || modifier.Rate == 0 || modifier.Quantity == 0)
         {
             return 0;
         }
@@ -205,15 +204,17 @@ public class MenuRepository : IMenuRepository
         _context.Modifiers.Add(modifier);
         _context.SaveChanges();
 
+        foreach (var id in ids)
+        { 
         ModifierModifierGroup modifierModifierGroup = new ModifierModifierGroup
         {
-            ModifierGroupId = modifier.ModifierGroupId ?? 0,
+            ModifierGroupId = id,
             ModifierId = modifier.ModifierId
-
         };
         _context.ModifierModifierGroups.Add(modifierModifierGroup);
+        }
         _context.SaveChanges();
-        return modifier.ModifierGroupId ?? 0;
+        return ids[0] ;
     }
     public bool DeleteModifier(int id)
     {
@@ -248,18 +249,24 @@ public class MenuRepository : IMenuRepository
         _context.SaveChanges();
         return true;
     }
-    public Modifier ModifierDetails(int id)
+    public MenuModifiersViewModel ModifierDetails(int id)
     {
-        return _context.Modifiers.Find(id);
+        List<int> modifierModifierGroups=_context.ModifierModifierGroups.Where(m=>m.ModifierId==id).Select(m=>m.ModifierGroupId).ToList();
+        Modifier modifier=_context.Modifiers.Find(id);
+        MenuModifiersViewModel menuModifiersViewModel=new MenuModifiersViewModel{
+            ids=modifierModifierGroups,
+            ModifierName=modifier.ModifierName,
+            Rate=modifier.Rate,
+            Quantity=modifier.Quantity??0,
+            Unit=modifier.Unit,
+            Description=modifier.Description
+        };
+        return menuModifiersViewModel;
     }
 
     public int EditModifier(MenuModifiersViewModel menuModifiersViewModel)
     {
 
-        if (menuModifiersViewModel.ModifierName == null || menuModifiersViewModel.ModifierGroupId == null || menuModifiersViewModel.Unit == null || menuModifiersViewModel.Rate == 0 || menuModifiersViewModel.Quantity == 0)
-        {
-            return 0;
-        }
         Modifier modifier1 = _context.Modifiers.FirstOrDefault(c => c.ModifierId == menuModifiersViewModel.ModifierId && c.IsActive == true);
         if (modifier1 == null) return 0;
         modifier1.Description = menuModifiersViewModel.Description ?? modifier1.Description;
@@ -268,14 +275,35 @@ public class MenuRepository : IMenuRepository
         modifier1.Quantity = menuModifiersViewModel.Quantity == 0 ? modifier1.Quantity : menuModifiersViewModel.Quantity;
         modifier1.Unit = menuModifiersViewModel.Unit ?? modifier1.Unit;
 
-    
-        ModifierModifierGroup modifierModifierGroup = _context.ModifierModifierGroups.FirstOrDefault(mg => mg.ModifierGroupId == modifier1.ModifierGroupId && mg.ModifierId == menuModifiersViewModel.ModifierId);
+        List<ModifierModifierGroup> modifierModifierGroup = _context.ModifierModifierGroups.Where(mg => mg.ModifierId == menuModifiersViewModel.ModifierId).ToList();
+
+        foreach (var modifiersGroup in modifierModifierGroup)
+        {
+            if (!menuModifiersViewModel.ids.Contains(modifiersGroup.ModifierGroupId))
+            {
+                _context.ModifierModifierGroups.Remove(modifiersGroup);
+            }
+
+        }
+        foreach (int i in menuModifiersViewModel.ids)
+        {
+            ModifierModifierGroup modifierModifierGroup2 = _context.ModifierModifierGroups.FirstOrDefault(mg => mg.ModifierId == menuModifiersViewModel.ModifierId && mg.ModifierGroupId == i);
+            if (modifierModifierGroup2 == null)
+            {
+                ModifierModifierGroup modifierModifierGroup1 = new ModifierModifierGroup
+                {
+                    ModifierGroupId = i,
+                    ModifierId = menuModifiersViewModel.ModifierId
+                };
+                _context.ModifierModifierGroups.Add(modifierModifierGroup1);
+            }
+
+        }
        
-        modifierModifierGroup.ModifierGroupId = menuModifiersViewModel.ModifierGroupId ?? 0;
 
 
         _context.SaveChanges();
-        return menuModifiersViewModel.ModifierGroupId ?? 0;
+        return 1;
     }
 
     public int AddModifierGroup(JsonObject obj)

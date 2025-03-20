@@ -5,3 +5,14 @@
 <div class="content" id="content">@ViewData["Title"]</div>
 
 <p>Use this page to detail your site's privacy policy.</p>
+@section Scripts{
+<script>
+    var errorMessage=`@(ViewBag.error??"")`;
+    console.log(errorMessage);
+    if(errorMessage && errorMessage.trim()!=""){
+        console.log("in");
+        toastr.error("Unauthorized Access");
+    }
+</script>
+}
+

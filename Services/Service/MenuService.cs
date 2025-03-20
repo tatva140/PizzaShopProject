@@ -31,8 +31,8 @@ public class MenuService
     public int AddCategory(Category category){
         return _menuRepository.AddCategory(category);
     }
-    public int AddModifier(Modifier modifier){
-        return _menuRepository.AddModifier(modifier);
+    public int AddModifier(Modifier modifier,List<int> ids){
+        return _menuRepository.AddModifier(modifier,ids);
     }
     public bool EditCategory(Category category){
         return _menuRepository.EditCategory(category);
@@ -41,7 +41,7 @@ public class MenuService
     public Category CategoryDetails(int id){
         return _menuRepository.CategoryDetails(id);
     }
-    public Modifier ModifierDetails(int id){
+    public MenuModifiersViewModel ModifierDetails(int id){
         return _menuRepository.ModifierDetails(id);
     }
 

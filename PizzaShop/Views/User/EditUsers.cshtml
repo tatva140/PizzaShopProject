@@ -25,7 +25,7 @@
                 <div class="col-md-6">
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="firstname" name="FirstName" asp-for="FirstName"
-                            placeholder="First Name" readonly="@(Model.isActive? false:true)">
+                            placeholder="First Name">
                         <label for="firstname">First Name </label>
                         <span asp-validation-for="FirstName" class="text-danger"></span>
                     </div>
@@ -33,7 +33,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="LastName" placeholder="Last Name" asp-for="LastName" readonly="@(Model.isActive? false:true)">
+                        <input type="text" class="form-control" id="LastName" placeholder="Last Name" asp-for="LastName" >
                         <label for="lastname">Last Name</label>
                         <span asp-validation-for="LastName" class="text-danger"></span>
                     </div>
@@ -43,18 +43,17 @@
             <div class="row mt-2 ">
                 <div class="col-md-6">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="username" name="UserName" placeholder="User Name" asp-for="UserName" readonly="@(Model.isActive? false:true)">
+                        <input type="text" class="form-control" id="username" name="UserName" placeholder="User Name" asp-for="UserName" >
                         <label for="username">Username</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating mb-3">
-                   <select class="form-select" id="role" name="RoleId" asp-for="RoleId" disabled="@(Model.isActive? false:true)">
+                   <select class="form-select" id="role" name="RoleId" asp-for="RoleId" >
                             <option value="@Model.RoleId">@Model.RoleName</option>
                     </select>
                         <label for="role">Role</label>
                         <span asp-validation-for="RoleId" class="text-danger"></span>
-                        @if(Model.isActive==false){<input type="hidden" name="RoleId" value="@Model.RoleId" />}
 
                 </div>
                 </div>
@@ -63,16 +62,16 @@
                 <div class="col-md-6">
                     <div class="form-floating mb-3">
                             <input id="Email" asp-for="Email" class="form-control " type="email" name="Email"
-                                placeholder="Email" aria-label="Email" readonly="@(Model.isActive? false:true)">
+                                placeholder="Email" aria-label="Email">
                             <label for="email" class="form-label">Email</label>
                         <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
                 </div>
                <div class="col-md-6">
                      <div class="form-floating mb-3">
-                      <select class="form-select" id="status" name="isActive" asp-for="isActive" >
-                            <option value="True">Active</option>
-                            <option value="False">InActive</option>
+                      <select class="form-select" id="status" name="Status" asp-for="Status" >
+                            <option value="Active">Active</option>
+                            <option value="InActive">InActive</option>
                         </select>
                         <label for="status">Status</label>
                 </div>
@@ -94,7 +93,7 @@
                         <div class="flex" style="color: rgb(109, 21, 21);">Upload</div>
                     </div>
                     <input type="file" id="filename" class="form-control "  name="ProfileImg" asp-for="ProfileImg"
-                        style="opacity: 0.0; position: absolute; top:0; left: 0; bottom: 0; right:0; width: 100%; height:100%;" onchange="previewImage(this)" readonly="@(Model.isActive? false:true) "/>
+                        style="opacity: 0.0; position: absolute; top:0; left: 0; bottom: 0; right:0; width: 100%; height:100%;" onchange="previewImage(this)"  />
                     </div>
                 </div>
             </div>
@@ -102,32 +101,29 @@
                 <div class="col-md-4">
 
                     <div class="form-floating mb-3">
-                        <select class="form-select" id="country" name="Country" asp-for="Country" disabled="@(Model.isActive? false:true)">
+                        <select class="form-select" id="country" name="Country" asp-for="Country" >
                             <option value="@Model.Country">@Model.CountryName</option>
                         </select>
                         <label for="country" class="form-label">Country</label>
-                        @if(Model.isActive==false){<input type="hidden" name="Country" value="@Model.Country" asp-for="Country"/>}
                         
                     </div>
                 </div>
                 <div class="col-md-4">
 
                     <div class="form-floating mb-3">
-                          <select class="form-select" id="state" name="State" asp-for="State" disabled="@(Model.isActive? false:true)" >
+                          <select class="form-select" id="state" name="State" asp-for="State"  >
                              <option value="@Model.State">@Model.StateName</option>
                         </select>
                         <label for="state" class="form-label">State</label>
-                        @if(Model.isActive==false){<input type="hidden" name="State" value="@Model.State" asp-for="State"/>}
                     </div>
                 </div>
                 <div class="col-md-4">
 
                     <div class="form-floating mb-3">
-                         <select class="form-select" id="city" name="City" asp-for="City" disabled="@(Model.isActive? false:true)">
+                         <select class="form-select" id="city" name="City" asp-for="City" >
                               <option value="@Model.City">@Model.CityName</option>
                         </select>
                         <label for="city" class="form-label">City</label>
-                        @if(Model.isActive==false){<input type="hidden" name="City" value="@Model.City" asp-for="City"/>}
 
                     </div>
                 </div>
@@ -136,7 +132,7 @@
                 <div class="col-md-4">
                      <div class="form-floating mb-3">
                             <input id="ZipCode" asp-for="ZipCode" class="form-control " type="number" name="ZipCode"
-                                placeholder="ZipCode" aria-label="ZipCode" readOnly="@(Model.isActive? false:true)">
+                                placeholder="ZipCode" aria-label="ZipCode" >
                             <label for="ZipCode" class="form-label">ZipCode</label>
                         <span asp-validation-for="ZipCode" class="text-danger"></span>
                         </div>
@@ -145,14 +141,14 @@
                 <div class="col-md-4">
                     <div class="form-floating mb-3">
                             <input id="Address" asp-for="Address" class="form-control " type="text" name="Address"
-                                placeholder="Address" aria-label="Address" readonly="@(Model.isActive? false:true)" >
+                                placeholder="Address" aria-label="Address"  >
                             <label for="Address" class="form-label">Address</label>
                         </div>
                 </div>
                 <div class="col-md-4">
                    <div class="form-floating mb-3">
                             <input id="Phone" asp-for="Phone" class="form-control " type="number" name="Phone"
-                                placeholder="Phone" aria-label="Phone" readonly="@(Model.isActive? false:true)">
+                                placeholder="Phone" aria-label="Phone" >
                             <label for="Phone" class="form-label">Phone</label>
                         <span asp-validation-for="Phone" class="text-danger"></span>
                         </div>

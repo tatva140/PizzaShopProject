@@ -62,7 +62,7 @@
             <td>@user.Email</td>
             <td>@user.Phone</td>
             <td>@user.RoleName</td>
-            <td><span class="badge rounded-pill bg-success">@(user.isActive ? "Active" : "Inactive")</span></td>
+            <td><span class="badge rounded-pill bg-success">@user.Status</span></td>
             <td>
               <div class="d-flex align-items-center "> 
                <a asp-action="EditUsers" asp-controller="User" asp-route-email="@user.Email" asp-route-pageNumber="@ViewBag.PageNumber" asp-route-pageSize="@ViewBag.PageSize"><i class="fa-solid fa-pen me-3 ms-3" style="cursor: pointer;"></i></a>

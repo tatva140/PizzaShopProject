@@ -7,8 +7,8 @@ public interface ITaxAndFeesRepository
 {
     List<Tax> GetTaxes(string search, int pageNumber, int pageSize, out int totalRecords);
     int AddTax(Tax tax);
-    int DeleteTax(int id);
-    int EditTax(TaxAndFeesViewModel taxAndFeesViewModel);
+    CustomErrorViewModel DeleteTax(int id);
+    CustomErrorViewModel EditTax(TaxAndFeesViewModel taxAndFeesViewModel);
     Tax GetTaxDetails(int id);
 
 }

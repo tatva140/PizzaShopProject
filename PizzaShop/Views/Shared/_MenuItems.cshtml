@@ -20,11 +20,10 @@
                                     style=" color: rgb(30, 151, 231); border: 2px solid rgb(30, 151, 231);background-color: rgb(250, 250, 250); "><i
                                         class="fa-regular fa-plus me-2"></i>Add Category</button>
                             </div>
-                            <ul class=" overflow-auto mt-2 p-0" style="max-height: 500px;">
+                            <ul class="categoryLinks overflow-auto mt-2 p-0" style="max-height: 500px;">
                                 @foreach (var category in Model.categories)
                                 {
-                                    <a style="text-decoration: none; color: black;cursor: pointer;"
-                                        onclick="fetchItems(@category.CategoryId)">
+                                    <a onclick="fetchItems(@category.CategoryId)" class="@($"clist{@category.CategoryId}")">
                                         <li style="list-style: none;">
                                             <div class="d-flex align-items-center justify-content-between actionshover">
                                                 <div class="d-flex align-items-center justify-content-center mt-3">
@@ -60,10 +59,10 @@
                 style=" color: rgb(30, 151, 231); border: 2px solid rgb(30, 151, 231);background-color: rgb(250, 250, 250); "><i
                     class="fa-regular fa-plus"></i></button>
         </div>
-        <ul class="p-2 overflow-auto mt-2" style="max-height: 400px;">
+        <ul class="categoryLinks p-2 overflow-auto mt-2" style="max-height: 400px;">
             @foreach (var category in Model.categories)
             {
-                <a style="text-decoration: none; color: black;cursor: pointer;" onclick="fetchItems(@category.CategoryId)">
+                <a onclick="fetchItems(@category.CategoryId)" class="@($"clist{@category.CategoryId}")">
                     <li style="list-style: none;">
                         <div class="d-flex align-items-center justify-content-between actionshover">
                             <div class="d-flex align-items-center justify-content-center mt-3">
@@ -135,13 +134,11 @@
 </div>
 <div class="modal" id="editCategory">
     <div class="modal-dialog modal-dialog-centered ">
-
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Edit Category</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-
             <div class="modal-body">
                 <input type="text" class="form-control" id="categoryEditId" name="CategoryId" placeholder="CategoryId"
                     asp-for="@Model.category.CategoryId" hidden>
@@ -186,7 +183,7 @@
         </div>
     </div>
 </div>
-<partial name="_Notification"/>
+<partial name="_Notification" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
 <script
     src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
@@ -197,9 +194,15 @@
         if (categoryId == 0) {
             categoryId =@(Model.categories.Count > 0 ? Model.categories[0].CategoryId : 0);
         }
-        fetchItems(categoryId);
+        $(`.clist${categoryId}`).addClass("active");
+        fetchItems( categoryId);
     });
-    function fetchItems(id) {
+    function fetchItems( id) {
+        let links = document.querySelectorAll(".categoryLinks a");
+        links.forEach(link => {
+            link.classList.remove("active");
+        });
+        $(`.clist${id}`).addClass("active");
         $.ajax({
             url: "/Menu/CategoryItems",
             type: "GET",
@@ -260,7 +263,6 @@
             contentType: "application/json",
             data: JSON.stringify({ Name: Name, Description: Description, CategoryId: categoryId }),
             success: function (response) {
-                $("#items").html(response);
                 fetchItems(categoryId);
             }
         });

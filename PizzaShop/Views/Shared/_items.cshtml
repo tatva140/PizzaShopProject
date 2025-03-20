@@ -354,9 +354,9 @@
     src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
 <script>
 
-    function fetch(pageNumber, pageSize, totalPages, category) {
+    function fetch(pageNumber, pageSize, totalPages) {
         let selectedPage = $("#pageItemSize").val();
-        let cgoryId = category ? category : @Model.CategoryId;
+        let cgoryId =@Model.CategoryId;
         let itemsearch = document.getElementById("itemsearch").value;
 
         $.ajax({
@@ -476,7 +476,6 @@
         row.remove();
     }
     function addItem() {
-
         var formdata = new FormData($("#addItemForm")[0]);
         let profileImg = $(".itemfilename")[0].files[0];
         formdata.append("selectedModifierList", JSON.stringify(selectedModifierList));

@@ -112,21 +112,23 @@
                 <form id="editModifierForm">
                     <div class="row">
                         <div class="col-12">
-                                <input type="text" class="form-control" id="prevMGId" placeholder="Name" hidden>
+                            <input type="text" class="form-control" id="prevMGId" placeholder="Name" hidden>
                             <div class="row">
                                 <input type="text" class="form-control" id="modifierId" name="ModifierId"
                                     placeholder="Name" asp-for="@Model.ModifierId" hidden>
                                 <div class="col-12 col-lg-6">
-                                    <div class="form-floating mb-3">
-                                        <select class="form-select" id="modifierGroupId" name="ModifierGroupId"
-                                            asp-for="@Model.ModifierGroupId">
+                                    <div class="custom-select mb-3" style="position:relative;">
+                                        <div class="select-box" onclick="toggleOption()"
+                                            style="height:56px;border:0.5px solid grey;padding:10px;background-color:white;cursor:pointer;text-align:left;position: relative;border-radius:5px;">
+                                            Select ModifierGroup</div>
+                                        <div id="options"
+                                            style="cursor:pointer;z-index:1000;display: none;background-color:white;position:absolute;width:100%; border:0.5px solid grey;border-radius:5px;max-height: 150px;overflow-y: auto;">
                                             @foreach (var modifier in Model.modifierGroups)
                                             {
-                                                <option value="@modifier.ModifierGroupId">@modifier.ModifierGroupName
-                                                </option>
+                                                <div class="m-2"><input type="checkbox" class="mgcheck1 me-2"
+                                                        value="@modifier.ModifierGroupId">@modifier.ModifierGroupName</div>
                                             }
-                                        </select>
-                                        <label for="ModifierGroupId" class="form-label">Modifier Groups</label>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-12 col-lg-6">
@@ -238,16 +240,18 @@
                         <div class="col-12">
                             <div class="row">
                                 <div class="col-12 col-lg-6">
-                                    <div class="form-floating mb-3">
-                                        <select class="form-select" id="ModifierGroupId" name="ModifierGroupId"
-                                            asp-for="@Model.ModifierGroupId">
+                                    <div class="custom-select mb-3" style="position:relative;">
+                                        <div class="select-box" onclick="toggleOptions()"
+                                            style="height:56px;border:0.5px solid grey;padding:10px;background-color:white;cursor:pointer;text-align:left;position: relative;border-radius:5px;">
+                                            Select ModifierGroup</div>
+                                        <div id="opt"
+                                            style="cursor:pointer;z-index:1000;display: none;background-color:white;position:absolute;width:100%; border:0.5px solid grey;border-radius:5px;max-height: 150px;overflow-y: auto;">
                                             @foreach (var modifier in Model.modifierGroups)
                                             {
-                                                <option value="@modifier.ModifierGroupId">@modifier.ModifierGroupName
-                                                </option>
+                                                <div class="m-2"><input type="checkbox" class="mgcheck me-2"
+                                                        value="@modifier.ModifierGroupId">@modifier.ModifierGroupName</div>
                                             }
-                                        </select>
-                                        <label for="ModifierGroupId" class="form-label">Modifier Groups</label>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-12 col-lg-6">
@@ -318,13 +322,9 @@
 <script
     src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
 <script>
-
-
-    function fetchAllModifiers(pageNumber, pageSize, totalPages,modifierId) {
-        let mgID =modifierId ? modifierId: @Model.ModifierGroupId;
+    function fetchAllModifiers(pageNumber, pageSize, totalPages, modifierId) {
+        let mgID = modifierId ? modifierId : @Model.ModifierGroupId;
         let modifiersearch = document.getElementById("modifiersearch").value;
-
-
         let selectedPage = $("#pageSize").val();
         $.ajax({
             url: "/Menu/Modifiers",
@@ -335,13 +335,28 @@
                 $("#pageSize").val(selectedPage);
             }
         });
-
+    }
+    toggleDropdown = 0;
+    toggleDropdown1 = 0;
+    function toggleOption() {
+        toggleDropdown = !toggleDropdown;
+        if (toggleDropdown == 1) {
+            document.getElementById("options").style.display = "block";
+        } else {
+            document.getElementById("options").style.display = "none";
+        }
+    }
+    function toggleOptions() {
+        toggleDropdown1 = !toggleDropdown1;
+        if (toggleDropdown1 == 1) {
+            document.getElementById("opt").style.display = "block";
+        } else {
+            document.getElementById("opt").style.display = "none";
+        }
     }
     function setDel(id) {
         document.getElementById("mgroupId").value = id;
     }
-
-
     function deleteModifier() {
         let id = document.getElementById("mgroupId").value;
         $.ajax({
@@ -352,11 +367,12 @@
                 fetchAllModifiers(@Model.PageNumber,@Model.PageSize,@Model.TotalPages);
             }
         })
-
     }
     function editModifier() {
-        let editprevModifierId = document.getElementById("prevMGId").value;
-        let newModifierId=document.getElementById("modifierGroupId").value;
+        newmodifierGroupList = [];
+        $(".mgcheck1:checked").each(function (index, ele) {
+            newmodifierGroupList.push(ele.value);
+        })
         let pageNumber =@Model.PageNumber;
         let pageSize =@Model.PageSize;
         let selectedPage =@Model.SelectedPage;
@@ -364,6 +380,7 @@
         formdata.append("PageNumber", pageNumber);
         formdata.append("PageSize", pageSize);
         formdata.append("SelectedPage", selectedPage);
+        formdata.append("ids", JSON.stringify(newmodifierGroupList));
         if ($("#editModifierForm").valid()) {
             $.ajax({
                 url: "/Menu/EditModifier",
@@ -372,22 +389,19 @@
                 processData: false,
                 data: formdata,
                 success: function (response) {
-                    if (editprevModifierId != newModifierId) {
-                        fetchAllModifiers(1, 2, 1, newModifierId);
-                    } else {
-                        $("#rendermodifiers").html(response);
-
-                    }
+                    fetchModifiers(newmodifierGroupList[0]);
                     $(".modal").modal("hide");
-
                 }
             });
         }
     }
     function addModifer() {
-
+        modifierGroupList = [];
+        $(".mgcheck:checked").each(function (index, ele) {
+            modifierGroupList.push(ele.value);
+        })
         var formdata = new FormData($("#addModifierForm")[0]);
-
+        formdata.append("ids", JSON.stringify(modifierGroupList));
         if ($("#addModifierForm").valid()) {
             $.ajax({
                 url: "/Menu/AddModifier",
@@ -405,21 +419,21 @@
     function fetchModifierDetails(id) {
         document.getElementById("modifierId").value = id;
         let modifierName = document.getElementById("modifierGroupId");
-      
         $.ajax({
             url: "/Menu/ModifierDetails",
             type: "GET",
             data: { id: id },
             success: function (response) {
-                console.log(response);
                 $('#rate').val(response.rate);
                 $('#modifierName').val(response.name);
                 $('#unit').val(response.unit);
                 $('#quantity').val(response.quantity);
                 $('#description').val(response.description);
-                @* $("#modifierGroupId").val(response.modifierGroupId).change(); *@
-                $("#prevMGId").val(response.modifierGroupId);
-                @* $("#modifierGroupId").find("option:selected").text(response.modifierGroupName); *@
+                $(".mgcheck1").each(function (index, ele) {
+                    if(response.ids.includes(parseInt(ele.value))){
+                        $(this).prop("checked",true);
+                    }
+                })
             }
         });
     }
