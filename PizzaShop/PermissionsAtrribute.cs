@@ -42,11 +42,11 @@ public class PermissionsAtrribute : Attribute, IAuthorizationFilter
     {
         if(context.HttpContext.Request.Headers["X-Requested-With"]=="XMLHttpRequest"){
             context.Result=new JsonResult(new{
-                redirectUrl="/Dashboard/Index",
+                StatusCode=StatusCodes.Status401Unauthorized,
                 error="Unauthorized"
             });
         }else{
-            context.Result=new RedirectToActionResult("Index","Dashboard",new{message="Error"});
+            context.Result=new ForbidResult();
 
         }
         

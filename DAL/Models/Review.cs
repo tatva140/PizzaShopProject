@@ -14,4 +14,8 @@ public partial class Review
     public int? Service { get; set; }
 
     public int? Ambience { get; set; }
+
+    public int? OrderId { get; set; }
+    public virtual ICollection<Review> Reviews { get; } = new List<Review>();
+
 }

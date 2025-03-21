@@ -701,8 +701,11 @@ public partial class PizzashopContext : DbContext
             entity.HasKey(e => e.ReviewId).HasName("reviews_pkey");
 
             entity.ToTable("reviews");
+            entity.HasIndex(e => e.OrderId, "review_order_id");
+
 
             entity.Property(e => e.ReviewId).HasColumnName("review_id");
+            entity.Property(e => e.OrderId).HasColumnName("order_id");
             entity.Property(e => e.Ambience).HasColumnName("ambience");
             entity.Property(e => e.Comments).HasColumnName("comments");
             entity.Property(e => e.Food).HasColumnName("food");

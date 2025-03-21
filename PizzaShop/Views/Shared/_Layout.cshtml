@@ -74,7 +74,7 @@
                 <a asp-action="Index" asp-controller="TaxAndFees" data-path="/TaxAndFees">
                     <li><i class="fa-solid fa-file-invoice me-2"></i>Taxes and Fees</li>
                 </a>
-                <a href="#" data-path="/#">
+                <a asp-action="Index" asp-controller="Order" data-path="/Order">
                     <li><i class="fa-solid fa-bag-shopping me-2"></i>Orders</li>
                 </a>
                 <a href="#" data-path="/#">
@@ -132,6 +132,7 @@
                 link.classList.remove("active");
             }
         })
+       
     </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

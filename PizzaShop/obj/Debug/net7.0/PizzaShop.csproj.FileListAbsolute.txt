@@ -318,3 +318,6 @@ C:\Users\pca140\Desktop\RMSProject\PizzaShop\obj\Debug\net7.0\refint\PizzaShop.d
 C:\Users\pca140\Desktop\RMSProject\PizzaShop\obj\Debug\net7.0\PizzaShop.pdb
 C:\Users\pca140\Desktop\RMSProject\PizzaShop\obj\Debug\net7.0\PizzaShop.genruntimeconfig.cache
 C:\Users\pca140\Desktop\RMSProject\PizzaShop\obj\Debug\net7.0\ref\PizzaShop.dll
+C:\Users\pca140\Desktop\RMSProject\PizzaShop\bin\Debug\net7.0\EPPlus.dll
+C:\Users\pca140\Desktop\RMSProject\PizzaShop\bin\Debug\net7.0\Microsoft.IO.RecyclableMemoryStream.dll
+C:\Users\pca140\Desktop\RMSProject\PizzaShop\bin\Debug\net7.0\System.Xml.XPath.XmlDocument.dll

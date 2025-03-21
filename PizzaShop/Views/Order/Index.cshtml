@@ -1,0 +1,143 @@
+@model DAL.ViewModels.OrdersViewModel;
+@{
+    ViewData["Title"] = "ViewUser";
+    ViewData["HideLayout"] = "false";
+}
+
+<div class="content p-3" id="content">
+    <div class="row ">
+        <div class="col-md-2 p-0  ">
+            <h1 style="color: rgba(0, 102, 167, 1);">Orders</h1>
+        </div>
+
+        <div class="col-md-10 text-end p-0 ">
+            <div class="row d-flex align-items-center justify-content-md-end justify-content-start">
+                <div class="col-md-2 ">
+                    <div class=" ms-2 " style="position:relative; ">
+                        <form id="taxsearchForm" class="d-flex position-relative me-2">
+                            <input class="form-control fs-6 form-control-lg " type="text" aria-label="Search"
+                                placeholder="Search" id="ordersearch" name="search" value="@ViewBag.orderSearch">
+                            <button type="button" class="position-absolute  btn btn-link"
+                                style="margin:auto;top:3px;transition:transformY(140%);right:10px;"
+                                onclick="fetchOrders()"><i class="fa-solid fa-search"></i></button>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <select name="status" id="orderstatus" class="form-select " onchange="fetchOrders()">
+                        <option value="" selected>All Status</option>
+                        <option value="Pending">Pending</option>
+                        <option value="InProgress">In Progress</option>
+                        <option value="Served">Served</option>
+                        <option value="Completed">Completed</option>
+                        <option value="OnHold">OnHold</option>
+                        <option value="Cancelled">Cancelled</option>
+                        <option value="Failed">Failed</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <select name="time" id="ordertime" class="form-select " onchange="fetchOrders()">
+                        <option value="" selected>All Time</option>
+                        <option value="7">Last 7 Days</option>
+                        <option value="30">Last 30 Days</option>
+                        <option value="CurrMonth">Current Month</option>
+                    </select>
+                </div>
+                <div class="col-auto">
+                    <button class="btn btn-primary" type="button" onclick="generateExcel()">Export</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row d-flex align-items-top justify-content-md-end justify-content-start mb-3">
+        <div class="col-md-2 ">
+            <input type="date" class="form-control" id="from" >
+            <div id="fromerror" class="text-danger"></div>
+        </div>
+        <div class="col-md-2 ">
+            <input type="date" class="form-control" id="to" >
+            <div id="toerror" class="text-danger"></div>
+        </div>
+        <div class="col-auto">
+            <button class="btn btn-primary" type="button" onclick="fetchOrders()">Apply</button>
+        </div>
+        <div class="col-auto">
+            <button class="btn btn-primary" type="button" style="background-color: white;color:blue;"
+                onclick="clearFields()">Clear</button>
+        </div>
+    </div>
+
+    <div class="row mt-2" style="background-color: white; border-radius: 8px;">
+        <div id="renderorders"></div>
+    </div>
+
+</div>
+
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                url: "@Url.Action("Orders", "Order")",
+                method: "GET",
+                success: function (response) {
+                    $("#renderorders").html(response);
+                }
+            });
+        });
+        function fetchOrders() {
+            let ordersearch = document.getElementById("ordersearch").value;
+            let orderstatusfilter = document.getElementById("orderstatus").value;
+            let ordertimefilter = document.getElementById("ordertime").value;
+            let from = document.getElementById("from").value;
+            let to = document.getElementById("to").value;
+            if(from=="" && to!=""){
+                document.getElementById("fromerror").innerText="Please select from date";
+                return;
+            }else if(from!="" && to==""){
+                document.getElementById("toerror").innerText="Please select to date";
+                return;
+            }else if(from>to){
+                document.getElementById("toerror").innerText="To date should be greater than from date";
+                return;
+            }else if(from=="" && to==""){
+                document.getElementById("fromerror").innerText="";
+                document.getElementById("toerror").innerText="";
+                return;
+            }
+            $.ajax({
+                url: "/Order/Orders",
+                type: "GET",
+                data: { search: ordersearch, status: orderstatusfilter, time: ordertimefilter, from: from, to: to },
+                success: function (response) {
+                    $("#renderorders").html(response);
+                }
+            });
+        }
+        function clearFields() {
+            document.getElementById("from").value = "";
+            document.getElementById("to").value = "";
+            document.getElementById("fromerror").innerText="";
+                document.getElementById("toerror").innerText="";
+        }
+        function generateExcel(){
+             let ordersearch = document.getElementById("ordersearch").value;
+            let orderstatusfilter = document.getElementById("orderstatus").value;
+            let ordertimefilter = document.getElementById("ordertime").value;
+            let from = document.getElementById("from").value;
+            let to = document.getElementById("to").value;
+            $.ajax({
+                url: "/Order/ExcelUpload",
+                type: "POST",
+                contentType: "application/json",
+                data: { search: ordersearch, status: orderstatusfilter, time: ordertimefilter, from: from, to: to },
+                success: function (response) {
+                    console.log("hi");
+                }
+            });
+        }
+    </script>
+}

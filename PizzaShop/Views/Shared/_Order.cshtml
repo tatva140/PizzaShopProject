@@ -1,0 +1,101 @@
+@model List<DAL.ViewModels.OrdersViewModel>;
+<div class="table-responsive mt-4 ">
+  <table class="table" id="myTable">
+    <thead>
+      <tr>
+        <th>#Order <a asp-route-sortOrder="@ViewBag.sort" asp-action="Index"><i class="fa-solid fa-sort ms-1"></i></a>
+        </th>
+        <th>Date</th>
+        <th>Customer</th>
+        <th>Status</th>
+        <th>Payment Mode</th>
+        <th>Rating</th>
+        <th>Total Amount</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      @foreach (var order in Model)
+      {
+        <tr>
+          <td>
+            @order.OrderId
+          </td>
+          <td>@order.CreatedAt</td>
+          <td>
+           @order.CustomerName
+          </td>
+          <td>@order.OrderStatus</td>
+          <td>@order.PaymentMode</td>
+          <td>
+           @for (int i = 0; i < order.Rating; i++)
+            {
+              <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+            }
+            @for (int i = 0; i < 5 - order.Rating; i++)
+            {
+              <i class="fa-solid fa-star" style="color:gray;"></i>
+            }
+
+          </td>
+          <td>@order.TotalAmount</td>
+          <td>
+            <div class="d-flex align-items-center ">
+              <a><i class="fa-solid fa-pen me-3 ms-3" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#editTax"></i></a>
+              <i class="fa-solid fa-trash" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#deleteTax"></i>
+            </div>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
+@* <div>
+  <div class="d-flex flex-col justify-content-end mb-2">
+    <form method="get" id="pageSizeForm">
+      <label for="pageSize">Records per page:</label>
+      <select id="orderpageSize" name="pageSize"
+        onchange="fetchAllOrders(@Model.PageNumber,@Model.PageSize,@Model.TotalPages)">
+        <option value="2">2</option>
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="15">15</option>
+      </select>
+    </form>
+    <div class="ms-2">
+      @if (@Model.PageNumber > 1)
+      {
+        <a onclick="fetchAllOrders(@Model.PageNumber-1,@Model.PageSize,@Model.TotalPages)"
+          style="cursor:pointer;color:blue;">Previous</a>
+      }
+      Page @Model.PageNumber of @Model.TotalPages
+
+      @if (@Model.PageNumber < @Model.TotalPages)
+      {
+        <a onclick="fetchAllOrders(@Model.PageNumber+1,@Model.PageSize,@Model.TotalPages)"
+          style="cursor:pointer;color:blue;">Next</a>
+      }
+    </div>
+  </div>
+</div> *@
+
+
+<partial name="_Notification" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+<script>
+  function fetchAllOrders(pageNumber, pageSize, totalPages) {
+    let selectedPage = $("#orderpageSize").val();
+    $.ajax({
+      url: "/Order/Orders",
+      type: "GET",
+      data: { pageNumber: pageNumber, pageSize: pageSize, selectedPage: selectedPage },
+      success: function (response) {
+        $("#renderorders").html(response);
+        $("#orderpageSize").val(selectedPage);
+      }
+    });
+  }
+
+</script>

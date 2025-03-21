@@ -28,6 +28,7 @@ var jwtSettings = builder.Configuration.GetSection("Jwt");
 var key = Encoding.UTF8.GetBytes(jwtSettings["Key"]);
 
 builder.Services.AddScoped<JwtTokenService>();
+builder.Services.AddControllersWithViews();
 
 
 
@@ -45,12 +46,13 @@ builder.Services.AddScoped<ITableAndSectionRepository, TableAndSectionRepository
 builder.Services.AddScoped<TableAndSectionService>();
 builder.Services.AddScoped<ITaxAndFeesRepository, TaxAndFeesRepository>();
 builder.Services.AddScoped<TaxAndFeesService>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<OrderService>();
 
 builder.Services.AddScoped<PermissionService>();
 
 builder.Services.AddScoped<EncryptDecrypt>();
 
-builder.Services.AddControllersWithViews().AddSessionStateTempDataProvider();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
