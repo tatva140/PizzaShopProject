@@ -40,7 +40,7 @@
           "dependencies": {
             "EPPlus": {
               "target": "Package",
-              "version": "[5.8.3, )"
+              "version": "[7.7.0, )"
             },
             "Microsoft.AspNetCore.Mvc": {
               "target": "Package",
@@ -249,6 +249,10 @@
             "BCrypt.Net-Next": {
               "target": "Package",
               "version": "[4.0.3, )"
+            },
+            "EPPlus": {
+              "target": "Package",
+              "version": "[7.7.0, )"
             },
             "MailKit": {
               "target": "Package",

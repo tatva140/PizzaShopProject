@@ -10,6 +10,7 @@ public partial class Order
     public int? CustomerId { get; set; }
 
     public decimal? TotalAmount { get; set; }
+    public decimal? SubTotal { get; set; }
 
     public string? PaymentMode { get; set; }
 
@@ -40,6 +41,7 @@ public partial class Order
     public virtual ICollection<OrderTax> OrderTaxes { get; } = new List<OrderTax>();
 
     public virtual ICollection<Payment> Payments { get; } = new List<Payment>();
+    public virtual ICollection<OrderModifier> OrderModifiers { get; set; } = new List<OrderModifier>();
 
     public virtual User? UpdatedByNavigation { get; set; }
 }

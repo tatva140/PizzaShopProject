@@ -1,0 +1,132 @@
+@model DAL.ViewModels.OrdersListViewModel;
+@{
+    ViewData["Title"] = "OrderDetails";
+    ViewData["HideLayout"] = "false";
+}
+
+<div class="content p-3" id="content">
+    <div class="row d-flex align-items-start justify-content-center mb-3 vh-100">
+        <div class="col-lg-8 col-md-10 col-12">
+            <div class="row d-flex align-items-center justify-content-center mb-3 ">
+                <div class="col-6 p-0  ">
+                    <h1 style="color: rgba(0, 102, 167, 1);">Order Details</h1>
+                </div>
+                <div class="col-6  p-0 text-end">
+                    <a class="btn btn-primary" type="button" asp-action="Index" asp-controller="Order">Back</a>
+                </div>
+            </div>
+            <div style="background-color: white;" class="row p-2">
+                <div class="row d-flex align-items-center justify-contenty mb-3 ">
+                    <div class="col-lg-3   col-12 p-0 ">
+                        <h3>Order Summary</h3>
+                    </div>
+                    <div class="col-lg-7 col-6 p-0 ">
+                        <span class=" badge  bg-primary">@Model.OrderStatus</span>
+                    </div>
+
+                    <div class="col-lg-2 col-6 p-0 text-end">
+                        <button class="btn btn-primary" type="button">Export</button>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="d-flex align-items-center justify-content-start p-0 ">
+                        <h6>Invoice No:</h6>
+                        <div class=" ms-2">#1234</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="d-flex align-items-center justify-content-start p-0 ">
+                        <h6>Invoice No:</h6>
+                        <div class=" ms-2">#1234</div>
+                    </div>
+                </div>
+            </div>
+            <div class="row  mt-3 p-0">
+                <div class="col-md-6 col-12 p-0">
+                    <div style="background-color: white;" class="p-2 me-0 me-md-3">
+                        <h3>Customer Details</h3>
+                        <div>Name: @Model.CustomerName</div>
+                        <div>Phone: @(Model.PhoneNumber.Length!=0?Model.PhoneNumber:"-" )</div>
+                        <div>No.Of Persons: @Model.NoOfPersons</div>
+                        <div>Email: @Model.Email</div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-12 mt-md-0 mt-3  p-2" style="background-color: white;">
+                    <h3>Table Details</h3>
+                    <div>Table:</div>
+                    <div class="d-flex align-items-center justify-content-start">
+                       
+                     @foreach(var tb in Model.TableName){
+                        <span class="me-2">@tb</span>
+                    }
+                    </div>
+                    <div>Section: @Model.SectionName</div>
+
+                </div>
+            </div>
+            <div style="background-color: white;" class="row p-2 mt-3">
+                <div class="row  ">
+                    <div class="col-lg-3   col-12 p-0 ">
+                        <h3>Order Items</h3>
+                    </div>
+                </div>
+                <div class="row table-responsive p-2">
+                    <table class="table " id="">
+                        <thead>
+                            <tr>
+                                <th>Sr.No </th>
+                                <th>Name</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Total Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          @for(int  i=0;i<Model.itemLists.Count;i++){
+                                <tr >
+                                    <td>
+                                      @(i+1)
+                                    </td>
+                                    <td>
+                                       @Model.itemLists[i].ItemName
+                                    @foreach(var modifier in Model.modifierLists){
+                                        <li>@modifier.ModifierName</li>
+                                    }
+                                    </td>
+                                    <td>
+                                        @Model.itemLists[i].Quantity
+                                         @foreach(var modifier in Model.modifierLists){
+                                        <div>@modifier.Quantity</div>
+                                    }
+                                    </td>
+                                    <td>
+                                        @Model.itemLists[i].Rate
+                                         @foreach(var modifier in Model.modifierLists){
+                                        <div>@modifier.Rate</div>
+                                    }
+                                    </td>
+                                    <td>
+                                       @(Model.itemLists[i].Quantity * Model.itemLists[i].Rate)
+                                        @foreach(var modifier in Model.modifierLists){
+                                        <div>@(modifier.Quantity*modifier.Rate)</div>
+                                    }
+                                    </td>
+                                </tr>
+                           }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row text-end">
+                    <div>
+                        <div>SubTotal: @Model.SubTotal</div>
+                        @foreach(var tax in Model.taxLists){
+                            <div>@tax.TaxName: @((tax.Amount*Model.SubTotal)/100)</div>
+                        }
+                        <div>Total: @Model.TotalAmount</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

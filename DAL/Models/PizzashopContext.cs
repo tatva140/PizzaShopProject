@@ -503,8 +503,9 @@ public partial class PizzashopContext : DbContext
                 .HasMaxLength(100)
                 .HasColumnName("payment_mode");
             entity.Property(e => e.TotalAmount)
-                .HasPrecision(5, 2)
                 .HasColumnName("total_amount");
+            entity.Property(e => e.SubTotal)
+                .HasColumnName("sub_total");
             entity.Property(e => e.TotalDiscount)
                 .HasPrecision(5, 2)
                 .HasColumnName("total_discount");
@@ -546,11 +547,9 @@ public partial class PizzashopContext : DbContext
             entity.Property(e => e.OrderStatus).HasColumnName("Order_status");
             entity.Property(e => e.Quantity).HasColumnName("quantity");
             entity.Property(e => e.Rate)
-                .HasPrecision(5, 2)
                 .HasColumnName("rate");
             entity.Property(e => e.ReadyQuantity).HasColumnName("ready_quantity");
             entity.Property(e => e.Tax)
-                .HasPrecision(5, 2)
                 .HasColumnName("tax");
 
             entity.HasOne(d => d.Item).WithMany(p => p.OrderItems)
@@ -569,18 +568,27 @@ public partial class PizzashopContext : DbContext
             entity.ToTable("order_modifiers");
 
             entity.HasIndex(e => e.ModifierId, "IX_order_modifiers_modifier_id");
+            entity.HasIndex(e => e.ItemId, "IX_order_modifiers_item_id");
+            entity.HasIndex(e => e.OrderId, "IX_order_modifiers_order_id");
 
             entity.Property(e => e.OrderModifierId).HasColumnName("order_modifier_id");
             entity.Property(e => e.Instructions).HasColumnName("instructions");
             entity.Property(e => e.ModifierId).HasColumnName("modifier_id");
+            entity.Property(e => e.ItemId).HasColumnName("item_id");
+            entity.Property(e => e.OrderId).HasColumnName("order_id");
             entity.Property(e => e.Quantity).HasColumnName("quantity");
             entity.Property(e => e.Rate)
-                .HasPrecision(5, 2)
                 .HasColumnName("rate");
 
             entity.HasOne(d => d.Modifier).WithMany(p => p.OrderModifiers)
                 .HasForeignKey(d => d.ModifierId)
                 .HasConstraintName("order_modifiers_modifier_id_fkey");
+            entity.HasOne(d => d.Item).WithMany(p => p.OrderModifiers)
+                .HasForeignKey(d => d.ItemId)
+                .HasConstraintName("order_modifiers_item_id_fkey");
+            entity.HasOne(d => d.Order).WithMany(p => p.OrderModifiers)
+                .HasForeignKey(d => d.OrderId)
+                .HasConstraintName("order_modifiers_order_id_fkey");
         });
 
         modelBuilder.Entity<OrderTax>(entity =>
@@ -839,7 +847,8 @@ public partial class PizzashopContext : DbContext
             entity.HasIndex(e => e.UpdatedBy, "IX_taxes_updated_by");
 
             entity.Property(e => e.TaxId).HasColumnName("tax_id");
-            entity.Property(e => e.Amount).HasColumnType("character varying").HasColumnName("amount");
+            entity.Property(e => e.Amount).HasColumnName("amount");
+
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("now()")
                 .HasColumnType("timestamp without time zone")

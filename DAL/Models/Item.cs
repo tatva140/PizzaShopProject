@@ -49,6 +49,7 @@ public partial class Item
     public virtual ICollection<ModifierItem> ModifierItems { get; } = new List<ModifierItem>();
 
     public virtual ICollection<OrderItem> OrderItems { get; } = new List<OrderItem>();
+    public virtual ICollection<OrderModifier> OrderModifiers { get; set; } = new List<OrderModifier>();
 
     public virtual User? UpdatedByNavigation { get; set; }
 }

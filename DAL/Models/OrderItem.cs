@@ -13,7 +13,7 @@ public partial class OrderItem
 
     public int? Quantity { get; set; }
 
-    public decimal Rate { get; set; }
+    public decimal? Rate { get; set; }
 
     public string? Instructions { get; set; }
 

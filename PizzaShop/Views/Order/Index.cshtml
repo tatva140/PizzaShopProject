@@ -51,11 +51,11 @@
     </div>
     <div class="row d-flex align-items-top justify-content-md-end justify-content-start mb-3">
         <div class="col-md-2 ">
-            <input type="date" class="form-control" id="from" >
+            <input type="date" class="form-control" id="from">
             <div id="fromerror" class="text-danger"></div>
         </div>
         <div class="col-md-2 ">
-            <input type="date" class="form-control" id="to" >
+            <input type="date" class="form-control" id="to">
             <div id="toerror" class="text-danger"></div>
         </div>
         <div class="col-auto">
@@ -94,19 +94,18 @@
             let ordertimefilter = document.getElementById("ordertime").value;
             let from = document.getElementById("from").value;
             let to = document.getElementById("to").value;
-            if(from=="" && to!=""){
-                document.getElementById("fromerror").innerText="Please select from date";
+            if (from == "" && to != "") {
+                document.getElementById("fromerror").innerText = "Please select from date";
                 return;
-            }else if(from!="" && to==""){
-                document.getElementById("toerror").innerText="Please select to date";
+            } else if (from != "" && to == "") {
+                document.getElementById("toerror").innerText = "Please select to date";
                 return;
-            }else if(from>to){
-                document.getElementById("toerror").innerText="To date should be greater than from date";
+            } else if (from > to) {
+                document.getElementById("toerror").innerText = "To date should be greater than from date";
                 return;
-            }else if(from=="" && to==""){
-                document.getElementById("fromerror").innerText="";
-                document.getElementById("toerror").innerText="";
-                return;
+            } else if (from == "" && to == "") {
+                document.getElementById("fromerror").innerText = "";
+                document.getElementById("toerror").innerText = "";
             }
             $.ajax({
                 url: "/Order/Orders",
@@ -120,11 +119,11 @@
         function clearFields() {
             document.getElementById("from").value = "";
             document.getElementById("to").value = "";
-            document.getElementById("fromerror").innerText="";
-                document.getElementById("toerror").innerText="";
+            document.getElementById("fromerror").innerText = "";
+            document.getElementById("toerror").innerText = "";
         }
-        function generateExcel(){
-             let ordersearch = document.getElementById("ordersearch").value;
+        function generateExcel() {
+            let ordersearch = document.getElementById("ordersearch").value;
             let orderstatusfilter = document.getElementById("orderstatus").value;
             let ordertimefilter = document.getElementById("ordertime").value;
             let from = document.getElementById("from").value;
@@ -132,10 +131,23 @@
             $.ajax({
                 url: "/Order/ExcelUpload",
                 type: "POST",
-                contentType: "application/json",
                 data: { search: ordersearch, status: orderstatusfilter, time: ordertimefilter, from: from, to: to },
+                xhrFields: {
+                    responseType: 'blob'
+                },
                 success: function (response) {
-                    console.log("hi");
+
+                    var blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                    var link = document.createElement('a');
+                    link.href = window.URL.createObjectURL(blob);
+                    link.download = "Orders.xlsx";
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    window.URL.revokeObjectURL(link.href);
+                },
+                error: function (response) {
+                    console.log(response);
                 }
             });
         }
