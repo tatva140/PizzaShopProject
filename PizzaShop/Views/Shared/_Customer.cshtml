@@ -1,0 +1,205 @@
+@model DAL.ViewModels.CustomersViewModel;
+<div class="table-responsive mt-4 ">
+    <table class="table" id="myTable">
+        <thead>
+            <tr>
+                <th>Name <a asp-route-sortOrder="@ViewBag.sort" asp-action="Index"><i
+                            class="fa-solid fa-sort ms-1"></i></a>
+                </th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Date</th>
+                <th>Total Order</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var customer in Model.Customers)
+            {
+                <tr onclick="history(@customer.CustomerId)" style="cursor: pointer;">
+                    <td>
+                        @(customer.CustomerFirstName + " " + customer.CustomerLastName)
+                    </td>
+                    <td>@customer.Email</td>
+                    <td>
+                        @(customer.Phone ?? "-")
+                    </td>
+                    <td>@customer.Date</td>
+                    <td>@customer.TotalOrders</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div>
+    <div class="d-flex flex-col justify-content-end mb-2">
+        <form method="get" id="pageSizeForm">
+            <label for="pageSize">Records per page:</label>
+            <select id="customerpageSize" name="pageSize"
+                onchange="fetchAllCustomers(@Model.PageNumber,@Model.PageSize,@Model.TotalPages)">
+                <option value="2">2</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+            </select>
+        </form>
+        <div class="ms-2">
+            @if (@Model.PageNumber > 1)
+            {
+                <a onclick="fetchAllCustomers(@Model.PageNumber-1,@Model.PageSize,@Model.TotalPages)"
+                    style="cursor:pointer;color:blue;">Previous</a>
+            }
+            Page @Model.PageNumber of @Model.TotalPages
+
+            @if (@Model.PageNumber < @Model.TotalPages)
+            {
+                <a onclick="fetchAllCustomers(@Model.PageNumber+1,@Model.PageSize,@Model.TotalPages)"
+                    style="cursor:pointer;color:blue;">Next</a>
+            }
+        </div>
+    </div>
+</div>
+<div class="modal" id="history">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Customer History</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center" style="background-color: #F2F2F2;">
+                <div class="row mb-2">
+                    <div class="col-md-6 form-floating ">
+                        <div class="d-flex align-items-center justify-content-between me-2 p-2 shadow rounded-md"
+                            style="background-color:white;border:1px solid grey; border-radius: 5px;">
+                            <div>Name:</div>
+                            <strong id="customerName">Ria</strong>
+                        </div>
+                    </div>
+                    <div class="col-md-6 form-floating ">
+                        <div class="d-flex align-items-center justify-content-between me-2 p-2 shadow rounded-md"
+                            style="background-color:white;border:1px solid grey; border-radius: 5px;">
+                            <div>Average Bill:</div>
+                            <strong id="avgBill">550</strong>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-md-6 form-floating ">
+                        <div class="d-flex align-items-center justify-content-between me-2 p-2 shadow rounded-md"
+                            style="background-color:white;border:1px solid grey; border-radius: 5px;">
+                            <div>Mobile No. :</div>
+                            <strong id="phone">6352634063</strong>
+                        </div>
+                    </div>
+                    <div class="col-md-6 form-floating ">
+                        <div class="d-flex align-items-center justify-content-between me-2 p-2 shadow rounded-md"
+                            style="background-color:white;border:1px solid grey; border-radius: 5px;">
+                            <div>Coming Since:</div>
+                            <strong id="comingSince">20-05-2025</strong>
+                        </div>
+                    </div>
+                </div>
+                <div class="row ">
+                    <div class="col-md-6 form-floating ">
+                        <div class="d-flex align-items-center justify-content-between me-2 p-2 shadow rounded-md"
+                            style="background-color:white;border:1px solid grey; border-radius: 5px;">
+                            <div>Max Order:</div>
+                            <strong id="maxorder">20</strong>
+                        </div>
+                    </div>
+                    <div class="col-md-6 form-floating ">
+                        <div class="d-flex align-items-center justify-content-between me-2 p-2 shadow rounded-md"
+                            style="background-color:white;border:1px solid grey; border-radius: 5px;">
+                            <div>Visits:</div>
+                            <strong id="visits">3</strong>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive mt-4 "></div>
+                <table class="table shadow rounded-md" style="background-color:white;border-radius: 5px;">
+                    <thead>
+                        <tr>
+                            <th>Order Date
+                            </th>
+                            <th>Order Type</th>
+                            <th>Payment</th>
+                            <th>Items</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyTable">
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+</div>
+
+<partial name="_Notification" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+<script>
+    function fetchAllCustomers(pageNumber, pageSize, totalPages) {
+        let selectedPage = $("#orderpageSize").val();
+        $.ajax({
+            url: "/Customer/Customers",
+            type: "GET",
+            data: { pageNumber: pageNumber, pageSize: pageSize, selectedPage: selectedPage },
+            success: function (response) {
+                $("#rendercustomers").html(response);
+                $("#customerpageSize").val(selectedPage);
+            }
+        });
+    }
+    function history(id) {
+        $("#history").modal("show");
+        $.ajax({
+            url: "/Customer/History",
+            type: "GET",
+            data: { id: id },
+            success: function (response) {
+                document.getElementById("comingSince").innerText = response.obj[0].comingSince;
+                document.getElementById("customerName").innerText = response.obj[0].customerName;
+                document.getElementById("phone").innerText = response.obj[0].phone;
+                sum = 0;
+                $.each(response.obj, function (i, ele) {
+                    sum += ele.amount;
+                });
+                avg = sum / response.obj.length;
+
+
+                document.getElementById("avgBill").innerText = avg;
+                document.getElementById("visits").innerText = response.obj.length;
+                document.getElementById("maxorder").innerText = Math.max(...response.obj.map(amount => amount.amount));
+                let div = document.getElementById("historyTable");
+                $.each(response.obj, function (i, ele) {
+                    let row = document.createElement("tr");
+                    let td1 = document.createElement("td");
+                    td1.append(ele.orderDate);
+                    let td2 = document.createElement("td");
+                    td2.append("Dinein");
+                    let td3 = document.createElement("td");
+                    td3.append(ele.payment ?? "Pending");
+                    let td4 = document.createElement("td");
+                    td4.append(ele.itemsCount);
+                    let td5 = document.createElement("td");
+                    td5.append(ele.amount);
+
+                    row.appendChild(td1);
+                    row.appendChild(td2);
+                    row.appendChild(td3);
+                    row.appendChild(td4);
+                    row.appendChild(td5);
+
+                    div.appendChild(row);
+
+
+                })
+            }
+        });
+    }
+
+</script>

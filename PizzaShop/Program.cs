@@ -48,6 +48,9 @@ builder.Services.AddScoped<ITaxAndFeesRepository, TaxAndFeesRepository>();
 builder.Services.AddScoped<TaxAndFeesService>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<OrderService>();
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+builder.Services.AddScoped<CustomerService>();
+
 
 builder.Services.AddScoped<PermissionService>();
 

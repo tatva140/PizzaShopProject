@@ -18,6 +18,22 @@ public class TablesAndSectionsController : Controller
     {
         return View();
     }
+    [PermissionsAtrribute("TablesAndSections", "CanAddEdit")]
+    public ActionResult AddEdit()
+    {
+        return Ok();
+    }
+    [PermissionsAtrribute("TablesAndSections", "CanDelete")]
+    public ActionResult Delete()
+    {
+        return Ok();
+    }
+    // [PermissionsAtrribute("TablesAndSections", "CanView")]
+    // public ActionResult View()
+    // {
+    //     return Ok();
+    // }
+
     [HttpGet]
     public IActionResult TablesAndSections(int sectionId, string search, int pageNumber = 1, int pageSize = 2, int selectedPage = 2)
     {
@@ -57,7 +73,6 @@ public class TablesAndSectionsController : Controller
         return PartialView("_Tables", tablesAndSectionViewModel);
     }
 
-    [PermissionsAtrribute("TablesAndSections", "CanAddEdit")]
     [HttpPost]
     public IActionResult AddSection(Section section)
     {
@@ -141,7 +156,7 @@ public class TablesAndSectionsController : Controller
         {
             TempData["error"] = "Table Cannot be edited";
         }
-         return RedirectToAction("Tables", new
+        return RedirectToAction("Tables", new
         {
             sectionId = isEdited,
             pageNumber = tablesAndSectionViewModel.PageNumber,

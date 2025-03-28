@@ -42,7 +42,7 @@ public class PermissionsAtrribute : Attribute, IAuthorizationFilter
     {
         if(context.HttpContext.Request.Headers["X-Requested-With"]=="XMLHttpRequest"){
             context.Result=new JsonResult(new{
-                StatusCode=StatusCodes.Status401Unauthorized,
+                StatusCode=StatusCodes.Status403Forbidden,
                 error="Unauthorized"
             });
         }else{

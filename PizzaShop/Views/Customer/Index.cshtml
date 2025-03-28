@@ -1,0 +1,158 @@
+@{
+    ViewData["Title"] = "ViewUser";
+    ViewData["HideLayout"] = "false";
+}
+<div class="content p-3" id="content">
+    <div class="row ">
+        <div class="col-md-2 p-0  ">
+            <h1 style="color: rgba(0, 102, 167, 1);">Customers</h1>
+        </div>
+
+        <div class="col-md-10 text-end p-0 ">
+            <div class="row d-flex align-items-center justify-content-md-end justify-content-start">
+                <div class="col-md-2 ">
+                    <div class=" ms-2 " style="position:relative; ">
+                        <form id="taxsearchForm" class="d-flex position-relative me-2">
+                            <input class="form-control fs-6 form-control-lg " type="text" aria-label="Search"
+                                placeholder="Search" id="customersearch" name="search" value="@ViewBag.customerSearch">
+                            <button type="button" class="position-absolute  btn btn-link"
+                                style="margin:auto;top:3px;transition:transformY(140%);right:10px;"
+                                onclick="customers()"><i class="fa-solid fa-search"></i></button>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <select name="time" id="customertime" class="form-select " onchange="customers()">
+                        <option value="" selected>All Time</option>
+                        <option value="today">Today</option>
+                        <option value="7">Last 7 Days</option>
+                        <option value="30">Last 30 Days</option>
+                        <option value="CurrMonth">Current Month</option>
+                        <option value="custom">Custom Date</option>
+                    </select>
+                </div>
+                <div class="col-auto">
+                    <button class="btn btn-primary" type="button" onclick="generateExcel()">Export</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2" style="background-color: white; border-radius: 8px;">
+        <div id="rendercustomers"></div>
+    </div>
+</div>
+
+<div class="modal" id="customDate">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Select Date Range</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center">
+                <div class="row">
+                    <div class="col-md-6 form-floating">
+                        <input type="date" class="form-control" id="custfrom">
+                        <label for="from">From</label>
+                        <div id="fromerror" class="text-danger"></div>
+                    </div>
+                    <div class="col-md-6 form-floating">
+                        <input type="date" class="form-control" id="custto">
+                        <label for="to">To</label>
+                        <div id="toerror" class="text-danger"></div>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex  align-items-center justify-content-center">
+                    <button type="button" class="btn btn-danger align-items center"
+                        onclick="customers()">Submit</button>
+                    <button type="button" class="btn btn-primary align-items center"
+                        data-bs-dismiss="modal">Cancel</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                url: "@Url.Action("Customers", "Customer")",
+                method: "GET",
+                success: function (response) {
+                    $("#rendercustomers").html(response);
+                }
+            });
+        });
+
+
+        function customers() {
+            if (document.getElementById("customertime").value == "custom") {
+                $("#customDate").modal("show");
+                document.getElementById("customertime").value = "";
+                $("#customertime").val("");
+
+                return;
+            }
+            let customersearch = document.getElementById("customersearch").value;
+            let customertimefilter = document.getElementById("customertime").value;
+            let from = document.getElementById("custfrom").value;
+            let to = document.getElementById("custto").value;
+            if (from == "" && to != "") {
+                document.getElementById("fromerror").innerText = "Please select from date";
+                return;
+            } else if (from != "" && to == "") {
+                document.getElementById("toerror").innerText = "Please select to date";
+                return;
+            } else if (from > to) {
+                document.getElementById("toerror").innerText = "To date should be greater than from date";
+                return;
+            } else if (from == "" && to == "") {
+                document.getElementById("fromerror").innerText = "";
+                document.getElementById("toerror").innerText = "";
+            }
+           
+            $.ajax({
+                url: "/Customer/Customers",
+                type: "GET",
+                data: { search: customersearch, time: customertimefilter, from: from, to: to },
+                success: function (response) {
+                    console.log(response);
+                    $("#rendercustomers").html(response);
+                }
+            });
+                $("#customDate").modal("hide");
+        }
+        function generateExcel() {
+            let customersearch = document.getElementById("customersearch").value;
+            let customertimefilter = document.getElementById("customertime").value;
+            let from = document.getElementById("custfrom").value;
+            let to = document.getElementById("custto").value;
+            $.ajax({
+                url: "/Customer/ExcelUpload",
+                type: "POST",
+                data: { search: customersearch, time: customertimefilter, from: from, to: to },
+                xhrFields: {
+                    responseType: 'blob'
+                },
+                success: function (response) {
+
+                    var blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                    var link = document.createElement('a');
+                    link.href = window.URL.createObjectURL(blob);
+                    link.download = "Customers.xlsx";
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    window.URL.revokeObjectURL(link.href);
+                },
+                error: function (response) {
+                    console.log(response);
+                }
+            });
+        }
+    </script>
+}

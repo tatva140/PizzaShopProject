@@ -31,6 +31,8 @@ public partial class Order
     public decimal? TotalDiscount { get; set; }
 
     public string? OrderStatus { get; set; }
+    public TimeSpan? Duration { get; set; }
+
 
     public virtual User? CreatedByNavigation { get; set; }
 

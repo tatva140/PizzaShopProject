@@ -46,9 +46,13 @@ public class OrdersListViewModel
     public int NoOfPersons { get; set; }
     public List<string> TableName { get; set; }
     public string SectionName { get; set; }
-   public List<OrderItemListViewModel>  itemLists {get;set;}
-   public List<OrderModifierListViewModel> modifierLists {get;set;}
-   public List<OrderTaxListViewModel> taxLists {get;set;}
+    public List<OrderItemListViewModel> itemLists { get; set; }
+    public List<OrderModifierListViewModel> modifierLists { get; set; }
+    public List<OrderTaxListViewModel> taxLists { get; set; }
+    public DateTime? PaidOn { get; set; }
+    public TimeSpan? OrderDuration { get; set; }
+
+
 
 
 }

@@ -16,6 +16,10 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Users\pca140\Desktop\RMSProject\PizzaShop
 build_property._RazorSourceGeneratorDebug = 
 
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Customer/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VzdG9tZXJcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Dashboard/ChangePassword.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGFzaGJvYXJkXENoYW5nZVBhc3N3b3JkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -56,6 +60,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJcT3JkZXJEZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Order/OrderPdf.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJcT3JkZXJQZGYuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/RolesAndPermissions/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9sZXNBbmRQZXJtaXNzaW9uc1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -66,6 +74,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Shared/_Customer.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9DdXN0b21lci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Shared/_EditItemModal.cshtml]

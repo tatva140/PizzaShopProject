@@ -1,0 +1,131 @@
+@model DAL.ViewModels.OrdersListViewModel;
+@{
+    ViewData["Title"] = "OrderDetails";
+    ViewData["HideLayout"] = "false";
+}
+<link rel="stylesheet"
+    href="@($"{Context.Request.Scheme}://{Context.Request.Host}/lib/bootstrap/dist/css/bootstrap.min.css")" />
+<link rel="stylesheet" href="@($"{Context.Request.Scheme}://{Context.Request.Host}/css/site.css")" />
+
+<div class="container" >
+    <div class="row d-flex align-items-start justify-content-center mb-3 vh-100">
+        <div class="col-lg-8 col-md-10 col-12">
+            <div class="d-flex overflow-hidden  align-items-center justify-content-center w-auto p-0 mt-3">
+                <img src="@($"{Context.Request.Scheme}://{Context.Request.Host}/images/logos/pizzashop_logo.png")" alt="Image" class="img-fluid me-2 "
+                    style="font: 16px; height: 55px;">
+                <h4 style="color:  rgba(0, 102, 167, 1);">PIZZASHOP</h4>
+            </div>
+            <div class="row  mt-3 p-0">
+                <div class="col-md-6 col-12 p-0">
+                    <div class=" me-0 me-md-3">
+                        <h4 style="color:  rgba(0, 102, 167, 1);">Customer Details</h4>
+                        <div>Name: @Model.CustomerName</div>
+                        <div>Phone: @(Model.PhoneNumber.Length != 0 ? Model.PhoneNumber : "-")</div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-12 mt-md-0 mt-3 mb-md-0 mb-3 p-0">
+                    <h4 style="color:  rgba(0, 102, 167, 1);">Order Details</h4>
+                    <div class="me-2"><strong>Invoice On:</strong> #1234</div>
+                    <div class=" me-2"><strong>Placed On:</strong> @Model.CreatedAt</div>
+                    <div>Section: @Model.SectionName</div>
+                    <div>Table:</div>
+                    <div class="d-flex align-items-center justify-content-start">
+
+                        @foreach (var tb in Model.TableName)
+                        {
+                            <span class="me-2">@tb</span>
+                        }
+                    </div>
+
+                </div>
+                <div class="row  ">
+                    <div class="col-lg-3   col-12 p-0 ">
+                        <h4 style="color:  rgba(0, 102, 167, 1);">Order Items</h4>
+                    </div>
+                </div>
+                <div class="row table-responsive p-2">
+                    <table class="table " id="">
+                        <thead style="background-color:  rgba(0, 102, 167, 1);color:white;">
+                            <tr>
+                                <th>Sr.No </th>
+                                <th>Name</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Total Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < Model.itemLists.Count; i++)
+                            {
+                                <tr>
+                                    <td>
+                                        @(i + 1)
+                                    </td>
+                                    <td>
+                                        @Model.itemLists[i].ItemName
+                                        @foreach (var modifier in Model.modifierLists)
+                                        {
+                                            <li>@modifier.ModifierName</li>
+                                        }
+                                    </td>
+                                    <td>
+                                        @Model.itemLists[i].Quantity
+                                        @foreach (var modifier in Model.modifierLists)
+                                        {
+                                            <div>@modifier.Quantity</div>
+                                        }
+                                    </td>
+                                    <td>
+                                        @Model.itemLists[i].Rate
+                                        @foreach (var modifier in Model.modifierLists)
+                                        {
+                                            <div>@modifier.Rate</div>
+                                        }
+                                    </td>
+                                    <td>
+                                        @(Model.itemLists[i].Quantity * Model.itemLists[i].Rate)
+                                        @foreach (var modifier in Model.modifierLists)
+                                        {
+                                            <div>@(modifier.Quantity* modifier.Rate)</div>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row p-0">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <strong class="text-start">SubTotal:</strong>
+                        <p class="text-end">@Model.SubTotal</p>
+                    </div>
+                    <div>
+                        @foreach (var tax in Model.taxLists)
+                        {
+                            <div class="d-flex align-items-center justify-content-between">
+
+                                <strong class="text-start">@tax.TaxName:</strong>
+                                <p class="text-end"> @((tax.Amount * Model.SubTotal) / 100)</p>
+                            </div>
+
+                        }
+                        <hr style="color:  rgba(0, 102, 167, 1);">
+                        <div class="d-flex align-items-center justify-content-between">
+
+                            <strong class="text-start " style="color:  rgba(0, 102, 167, 1);">Total Amount Due:</strong>
+                            <p class="text-end" style="color:  rgba(0, 102, 167, 1);">@Model.TotalAmount</p>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row p-0">
+                    <h4 style="color:  rgba(0, 102, 167, 1);">Payement Information</h4>
+                    <div>Payement Method: @(Model.CreatedAt == null ? "Pending" : @Model.PaymentMode)</div>
+                </div>
+                <div class="row p-0 align-items-center justify-content-center text-center mt-3">
+                    <h4 style="color:  rgba(0, 102, 167, 1);">THANK YOU!</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

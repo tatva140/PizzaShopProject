@@ -77,7 +77,7 @@
                 <a asp-action="Index" asp-controller="Order" data-path="/Order">
                     <li><i class="fa-solid fa-bag-shopping me-2"></i>Orders</li>
                 </a>
-                <a href="#" data-path="/#">
+                <a asp-action="Index" asp-controller="Customer" data-path="/Customer">
                     <li><i class="fa-solid fa-users-rectangle me-2"></i>Customers</li>
                 </a>
             </ul>
@@ -132,7 +132,32 @@
                 link.classList.remove("active");
             }
         })
-       
+       @* $(document).on('click','.checkPermissions',function(e){
+        debugger
+            let controller=$(this).data("controller");
+            let action=$(this).data("action");
+            let isModal=$(this).data("target");
+            let redirect=$(this).data("redirect");
+            $.ajax({
+                url: `/${controller}/${action}`,
+                method: "GET",
+                success: function (response) {
+                    console.log(response);
+                    if(isModal!=""){
+                        $(`#${isModal}`).modal("show");
+                    }else{
+                        window.href.location=`/${controller}/${redirect}`;
+                    }
+                },
+                error:function(response){
+                    console.log(response);
+                    if(response.statusCode===403){
+                        toastr.error("Access Denied");
+                    }
+                }
+            }) *@
+
+       })
     </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

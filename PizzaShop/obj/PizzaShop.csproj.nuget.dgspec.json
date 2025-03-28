@@ -116,8 +116,8 @@
               "C:\\Users\\pca140\\Desktop\\RMSProject\\DAL\\DAL.csproj": {
                 "projectPath": "C:\\Users\\pca140\\Desktop\\RMSProject\\DAL\\DAL.csproj"
               },
-              "C:\\Users\\pca140\\Desktop\\RMSProject\\Services\\Services.csproj": {
-                "projectPath": "C:\\Users\\pca140\\Desktop\\RMSProject\\Services\\Services.csproj"
+              "c:\\Users\\pca140\\Desktop\\RMSProject\\Services\\Services.csproj": {
+                "projectPath": "c:\\Users\\pca140\\Desktop\\RMSProject\\Services\\Services.csproj"
               }
             }
           }
@@ -180,6 +180,10 @@
               "target": "Package",
               "version": "[1.1.0, )"
             },
+            "Select.HtmlToPdf.NetCore": {
+              "target": "Package",
+              "version": "[24.1.0, )"
+            },
             "System.IdentityModel.Tokens.Jwt": {
               "target": "Package",
               "version": "[7.0.3, )"
@@ -208,14 +212,14 @@
         }
       }
     },
-    "C:\\Users\\pca140\\Desktop\\RMSProject\\Services\\Services.csproj": {
+    "c:\\Users\\pca140\\Desktop\\RMSProject\\Services\\Services.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\pca140\\Desktop\\RMSProject\\Services\\Services.csproj",
+        "projectUniqueName": "c:\\Users\\pca140\\Desktop\\RMSProject\\Services\\Services.csproj",
         "projectName": "Services",
-        "projectPath": "C:\\Users\\pca140\\Desktop\\RMSProject\\Services\\Services.csproj",
+        "projectPath": "c:\\Users\\pca140\\Desktop\\RMSProject\\Services\\Services.csproj",
         "packagesPath": "C:\\Users\\pca140\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\pca140\\Desktop\\RMSProject\\Services\\obj\\",
+        "outputPath": "c:\\Users\\pca140\\Desktop\\RMSProject\\Services\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\pca140\\AppData\\Roaming\\NuGet\\NuGet.Config"

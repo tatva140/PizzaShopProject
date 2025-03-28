@@ -1,6 +1,8 @@
 using DAL.Models;
 using DAL.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using SelectPdf;
 using Services.Service;
 
 namespace PizzaShop.Controllers;
@@ -54,4 +56,43 @@ public class OrderController : Controller
         OrdersListViewModel ordersListViewModel =_order.GetOrderDetails(id);
         return View(ordersListViewModel);
     }
+    
+    
+    public IActionResult OrderPdf( int id){
+        ViewData["selected"]="Orders";
+        OrdersListViewModel model=_order.GetOrderDetails(id);
+        var htmlContent = RenderViewToString("OrderPdf", model);
+        HtmlToPdf converter = new HtmlToPdf();
+        PdfDocument document = converter.ConvertHtmlString(htmlContent);
+        var stream = new MemoryStream();
+        document.Save(stream);
+        document.Close();
+        return File(stream.ToArray(), "application/pdf", "OrderDetails.pdf");
+    }
+    
+    private string RenderViewToString(string viewName, object model)
+    {
+        ViewData.Model = model;
+
+        using (var writer = new StringWriter())
+        {
+            var viewResult = HttpContext.RequestServices
+                .GetService(typeof(Microsoft.AspNetCore.Mvc.ViewEngines.ICompositeViewEngine)) 
+                as Microsoft.AspNetCore.Mvc.ViewEngines.ICompositeViewEngine;
+
+            var view = viewResult.FindView(ControllerContext, viewName, false).View;
+            var viewContext = new ViewContext(
+                ControllerContext,
+                view,
+                ViewData,
+                TempData,
+                writer,
+                new Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelperOptions()
+            );
+
+            view.RenderAsync(viewContext).Wait();
+            return writer.GetStringBuilder().ToString();
+        }
+    }
+    
 }

@@ -488,6 +488,7 @@ public partial class PizzashopContext : DbContext
             entity.HasIndex(e => e.UpdatedBy, "IX_orders_updated_by");
 
             entity.Property(e => e.OrderId).HasColumnName("order_id");
+            entity.Property(e => e.Duration).HasColumnName("duration");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("now()")
                 .HasColumnType("timestamp without time zone")

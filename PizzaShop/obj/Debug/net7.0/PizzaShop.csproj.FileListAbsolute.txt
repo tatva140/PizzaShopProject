@@ -1,3 +1,4 @@
+C:\Users\pca140\Desktop\RMSProject\PizzaShop\bin\Debug\net7.0\Select.Html.dep
 C:\Users\pca140\Desktop\RMSProject\PizzaShop\bin\Debug\net7.0\appsettings.Development.json
 C:\Users\pca140\Desktop\RMSProject\PizzaShop\bin\Debug\net7.0\appsettings.json
 C:\Users\pca140\Desktop\RMSProject\PizzaShop\bin\Debug\net7.0\PizzaShop.staticwebassets.runtime.json
@@ -105,6 +106,7 @@ C:\Users\pca140\Desktop\RMSProject\PizzaShop\bin\Debug\net7.0\NuGet.Packaging.dl
 C:\Users\pca140\Desktop\RMSProject\PizzaShop\bin\Debug\net7.0\NuGet.ProjectModel.dll
 C:\Users\pca140\Desktop\RMSProject\PizzaShop\bin\Debug\net7.0\NuGet.Protocol.dll
 C:\Users\pca140\Desktop\RMSProject\PizzaShop\bin\Debug\net7.0\NuGet.Versioning.dll
+C:\Users\pca140\Desktop\RMSProject\PizzaShop\bin\Debug\net7.0\Select.HtmlToPdf.dll
 C:\Users\pca140\Desktop\RMSProject\PizzaShop\bin\Debug\net7.0\System.CodeDom.dll
 C:\Users\pca140\Desktop\RMSProject\PizzaShop\bin\Debug\net7.0\System.Composition.AttributedModel.dll
 C:\Users\pca140\Desktop\RMSProject\PizzaShop\bin\Debug\net7.0\System.Composition.Convention.dll
