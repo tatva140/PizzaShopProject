@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -19,16 +19,28 @@
 <body style="background-color: rgb(250, 250, 250)">
     @if (ViewData["HideLayout"] == "false")
     {
-        <nav class="navbar navbar-expand-lg "  style="background-color:   rgba(0, 102, 167, 1);">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#" id="toggle" onclick="toggleFunc()"><i class="fa-solid fa-bars"
-                        style="color: #c4e1f7;font-size: 20px;"></i></a>
-                
-                <div class=" d-flex align-items-center justify-content-center">
-                    <div id="partialViewRender"></div>
 
-                    <a class="navToggle navbar-brand " id="navToggle"><i class="fa-solid fa-bars"
-                            style="color: #c4e1f7;font-size: 20px;"></i></a>
+        <nav class="navbar navbar-expand-lg " style="background-color:   rgba(0, 102, 167, 1);">
+            <div class="container-fluid">
+                <div class="d-flex   align-items-center justify-content-center w-auto p-0 ">
+                    <img src="~/images/logos/pizzashop_logo.png" alt="Image" class="img-fluid me-2 "
+                        style="font: 16px; height: 55px;background-color:white;">
+                    <h4 style="color: white;">PIZZASHOP</h4>
+                </div>
+                <div class="navlist d-flex   align-items-center justify-content-end w-auto p-0 ">
+                    <a class="btn me-2" style="border-radius:20px;color:white;border:1px solid white" data-path="/KOT" ><i
+                            class="fa-solid fa-clipboard-list me-2"></i>KOT</a>
+                    <a class="btn me-2" style="border-radius:20px;color:white;border:1px solid white" data-path="/WaitingToken" ><i
+                            class="fa-solid fa-clock me-2" style="color: #ffffff;"></i>Waiting
+                        List</a>
+                    <a class="btn me-2 allTab" asp-action="Tables" asp-controller="Tables" data-path="/Tables" 
+                        > <i class="fa-solid fa-square me-2 allIcon"
+                            ></i>Tables</a>
+                    <a class="btn " style="border-radius:20px;color:white;border:1px solid white" data-path="/Menu" ><i
+                            class="fa-solid fa-bell-concierge me-2" style="color: #ffffff;"></i>Menu</a>
+                    <div id="partialViewRender"></div>
+                    <a class="navToggle navbar-brand ms-2 " id="navToggle"><i class="fa-solid fa-bars"
+                            style="color: #c4e1f7;font-size: 25px;"></i></a>
                 </div>
             </div>
             <div class="navdropdown " id="navDropdown">
@@ -45,43 +57,7 @@
                 </ul>
             </div>
         </nav>
-        <div class="sidebar " id="sidebar">
-            <ul >
-                <li>
-                    <div class="d-flex overflow-hidden  align-items-center justify-content-center w-auto p-0 ">
-                        <img src="~/images/logos/pizzashop_logo.png" alt="Image" class="img-fluid me-2 "
-                            style="font: 10px; height: 40px;">
-                        <div style="color: rgb(30, 151, 231); font-weight: 700; font-size: 20px;">PIZZASHOP</div>
-                        <a class="text-end ms-3" id="close" onclick="toggleFunc()" style=" font-size: 25px;"><i
-                                class="fa-regular fa-circle-xmark"></i></a>
-                    </div>
-                </li>
-                <a asp-action="Index" asp-controller="Dashboard" data-path="/Dashboard">
-                    <li><i class="fa-solid fa-table me-2" class="active"></i>Dashboard</li>
-                </a>
-                <a  data-path="/User" data-redirect="" data-action="ViewPermission" data-controller="User" class="checkPermissions" style="cursor:pointer;">
-                    <li><i class="fa-solid fa-users me-2"></i>Users</li>
-                </a>
-                <a asp-action="Index" asp-controller="RolesAndPermissions" data-path="/RolesAndPermissions">
-                    <li><i class="fa-solid fa-user-plus me-2"></i>Role and Permission</li>
-                </a>
-                <a asp-action="Index" asp-controller="Menu" data-path="/Menu">
-                    <li><i class="fa-regular fa-rectangle-list me-2"></i>Menu</li>
-                </a>
-                <a asp-action="Index" asp-controller="TablesAndSections"data-path="/TablesAndSections" >
-                    <li><i class="fa-solid fa-table me-2"></i>Tables and Sections</li>
-                </a>
-                <a asp-action="Index" asp-controller="TaxAndFees" data-path="/TaxAndFees">
-                    <li><i class="fa-solid fa-file-invoice me-2"></i>Taxes and Fees</li>
-                </a>
-                <a asp-action="Index" asp-controller="Order" data-path="/Order">
-                    <li><i class="fa-solid fa-bag-shopping me-2"></i>Orders</li>
-                </a>
-                <a asp-action="Index" asp-controller="Customer" data-path="/Customer">
-                    <li><i class="fa-solid fa-users-rectangle me-2"></i>Customers</li>
-                </a>
-            </ul>
-        </div>
+
         <div class="modal" id="myModal">
             <div class="modal-dialog modal-dialog-centered ">
                 <div class="modal-content">
@@ -110,7 +86,7 @@
 
 
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/orderAppsite.js" asp-append-version="true"></script>
 
     <script>
         $(document).ready(function () {
@@ -122,44 +98,47 @@
                 }
             })
         });
-        let links=document.querySelectorAll(".sidebar a");
-        let currentUrl=window.location.pathname;
-        links.forEach(link=>{
-            let linkPath=link.dataset.path;
-            if(currentUrl.startsWith(linkPath)){
-                link.classList.add("active");
-            }else{
-                link.classList.remove("active");
+        let listlinks = document.querySelectorAll(".navlist a");
+        let currentUrl = window.location.pathname;
+        listlinks.forEach(link => {
+        let icons = link.querySelector("i");
+            let linkPath = link.dataset.path;
+            if (currentUrl.startsWith(linkPath)) {
+                link.classList.add("selectedTab");
+                icons.classList.add("selectedIcon");
+            } else {
+                link.classList.remove("selectedTab");
+                icons.classList.remove("selectedIcon");
             }
         })
-            
-       $(document).on('click','.checkPermissions',function(e){
-            let controller=$(this).data("controller");
-            let action=$(this).data("action");
-            let isModal=$(this).data("target");
-            let redirect=$(this).data("redirect");
+
+        $(document).on('click', '.checkPermissions', function (e) {
+            let controller = $(this).data("controller");
+            let action = $(this).data("action");
+            let isModal = $(this).data("target");
+            let redirect = $(this).data("redirect");
             console.log(controller);
             console.log(action);
             $.ajax({
                 url: `/${controller}/${action}`,
                 method: "GET",
                 success: function (response) {
-                    
-                    if(isModal!=""){
+
+                    if (isModal != "") {
                         $(`#${isModal}`).modal("show");
-                    }else{
-                        window.href.location=`/${controller}/${redirect}`;
+                    } else {
+                        window.href.location = `/${controller}/${redirect}`;
                     }
                 },
-                error:function(xhr){
-                    if(xhr.status===403){
+                error: function (xhr) {
+                    if (xhr.status === 403) {
                         toastr.error("Access Denied");
                     }
                 }
             })
-            })
+        })
 
-   
+
     </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

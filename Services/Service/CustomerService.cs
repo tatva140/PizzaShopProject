@@ -11,10 +11,10 @@ public class CustomerService
     {
         _customerRepository = customerRepository;
     }
-    public (List<CustomerListViewModel>, int totalRecords) GetCustomers(string search, string time, string from, string to, int pageNumber, int pageSize)
+    public (List<CustomerListViewModel>, int totalRecords) GetCustomers(string search,string sortOrder, string time, string from, string to, int pageNumber, int pageSize)
     {
         int totalRecords;
-        List<CustomerListViewModel> customers = _customerRepository.GetCustomers(search, time, from, to, pageNumber, pageSize, out totalRecords);
+        List<CustomerListViewModel> customers = _customerRepository.GetCustomers(search,sortOrder, time, from, to, pageNumber, pageSize, out totalRecords);
         return (customers, totalRecords);
     }
     public FileContentResult UploadExcel(string search, string time, string from, string to)

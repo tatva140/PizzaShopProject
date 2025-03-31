@@ -3,13 +3,15 @@
     <table class="table" id="myTable">
         <thead>
             <tr>
-                <th>Name <a asp-route-sortOrder="@ViewBag.sort" asp-action="Index"><i
-                            class="fa-solid fa-sort ms-1"></i></a>
+                <th>Name <a onclick="fetchAllCustomers(@Model.PageNumber,@Model.PageSize,@Model.TotalPages,this)"
+                        id="namesort"><i class="fa-solid fa-sort ms-1"></i></a>
                 </th>
                 <th>Email</th>
                 <th>Phone Number</th>
-                <th>Date</th>
-                <th>Total Order</th>
+                <th>Date <a onclick="fetchAllCustomers(@Model.PageNumber,@Model.PageSize,@Model.TotalPages,this)"
+                        id="datesort"><i class="fa-solid fa-sort ms-1"></i></a></th>
+                <th>Total Order <a onclick="fetchAllCustomers(@Model.PageNumber,@Model.PageSize,@Model.TotalPages,this)"
+                        id="totalordersort"><i class="fa-solid fa-sort ms-1"></i></a></th>
             </tr>
         </thead>
         <tbody>
@@ -142,12 +144,20 @@
 <script
     src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
 <script>
-    function fetchAllCustomers(pageNumber, pageSize, totalPages) {
-        let selectedPage = $("#orderpageSize").val();
+    function fetchAllCustomers(pageNumber, pageSize, totalPages, e) {
+        let sortOrder = "@ViewBag.sort";
+        if (e) {
+            if (sortOrder == `${e.id}desc`) {
+                sortOrder = e.id + "";
+            } else {
+                sortOrder = e.id + "desc";
+            }
+        }
+        let selectedPage = $("#customerpageSize").val();
         $.ajax({
             url: "/Customer/Customers",
             type: "GET",
-            data: { pageNumber: pageNumber, pageSize: pageSize, selectedPage: selectedPage },
+            data: { pageNumber: pageNumber, pageSize: pageSize, selectedPage: selectedPage,sortOrder:sortOrder },
             success: function (response) {
                 $("#rendercustomers").html(response);
                 $("#customerpageSize").val(selectedPage);

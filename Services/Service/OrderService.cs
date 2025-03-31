@@ -14,10 +14,10 @@ public class OrderService
         _orderRepository = orderRepository;
     }
 
-    public (List<OrdersListViewModel>, int totalRecords) GetOrders(string search, string status, string time, string from, string to, int pageNumber, int pageSize)
+    public (List<OrdersListViewModel>, int totalRecords) GetOrders(string search,string sortOrder, string status, string time, string from, string to, int pageNumber,int pageSize )
     {
         int totalRecords;
-        List<OrdersListViewModel> orders = _orderRepository.GetOrders(search, status, time, from, to, pageNumber, pageSize, out totalRecords);
+        List<OrdersListViewModel> orders = _orderRepository.GetOrders(search,sortOrder, status, time, from, to, pageNumber, pageSize, out totalRecords);
         return (orders, totalRecords);
     }
 

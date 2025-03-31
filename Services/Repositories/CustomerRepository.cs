@@ -13,7 +13,7 @@ public class CustomerRepository : ICustomerRepository
     {
         _context = context;
     }
-    public List<CustomerListViewModel> GetCustomers(string search, string time, string from, string to, int pageNumber, int pageSize, out int totalRecords)
+    public List<CustomerListViewModel> GetCustomers(string search,string sortOrder, string time, string from, string to, int pageNumber, int pageSize, out int totalRecords)
     {
         var query = _context.Customers.Where(m => m.IsActive == true).AsQueryable();
         if (from != null && to != null)
@@ -31,7 +31,7 @@ public class CustomerRepository : ICustomerRepository
         }
 
         var customers = query.OrderBy(e => e.CustomerId);
-        List<CustomerListViewModel> query1 = (from c in customers
+        var query1 = (from c in customers
 
                                               select new CustomerListViewModel
                                               {
@@ -42,9 +42,33 @@ public class CustomerRepository : ICustomerRepository
                                                   Email = c.Email,
                                                   Date = c.CreatedAt ?? DateTime.Now,
                                                   TotalOrders = (from o in _context.Orders where o.CustomerId == c.CustomerId select o.OrderId).Count(),
-                                              }).Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+                                              });
+        switch (sortOrder)
+        {
+            case "namesortdesc":
+                query1 = query1.OrderByDescending(u => u.CustomerFirstName);
+                break;
+            case "datesortdesc":
+                query1 = query1.OrderByDescending(u => u.Date);
+                break;
+            case "totalordersortdesc":
+                query1 = query1.OrderByDescending(u => u.TotalOrders);
+                break;
+            case "namesort":
+                query1 = query1.OrderBy(u => u.CustomerFirstName);
+                break;
+            case "datesort":
+                query1 = query1.OrderBy(u => u.Date);
+                break;
+            case "totalordersort":
+                query1 = query1.OrderBy(u => u.TotalOrders);
+                break;
+            default:
+                query1 = query1.OrderBy(u => u.CustomerFirstName);
+                break;
+        }
         totalRecords = query1.Count();
-        return query1;
+        return query1.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
     }
     public FileContentResult UploadExcel(string search, string time, string from, string to)
     {

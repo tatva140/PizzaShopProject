@@ -41,16 +41,14 @@ public class PermissionsAtrribute : Attribute, IAuthorizationFilter
     public void RedirectToNotFound(AuthorizationFilterContext context)
     {
         if(context.HttpContext.Request.Headers["X-Requested-With"]=="XMLHttpRequest"){
-            context.Result=new JsonResult(new{
-                StatusCode=StatusCodes.Status403Forbidden,
-                error="Unauthorized"
-            });
+            context.Result=new JsonResult(new{message="Unauthorized"}){
+                StatusCode=StatusCodes.Status403Forbidden
+                
+            };
         }else{
             context.Result=new ForbidResult();
 
         }
-        
-
     }
 
 }

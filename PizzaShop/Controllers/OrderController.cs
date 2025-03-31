@@ -20,9 +20,10 @@ public class OrderController : Controller
     }
 
     [HttpGet]
-    public IActionResult Orders(string search, string status, string time, string from, string to, int pageNumber = 1, int selectedPage = 2)
+    public IActionResult Orders(string search,string sortOrder, string status, string time, string from, string to, int pageNumber = 1, int selectedPage = 2)
     {
-        var (orders, totalRecords) = _order.GetOrders(search, status, time, from, to, pageNumber, selectedPage);
+        ViewBag.sort = sortOrder;
+        var (orders, totalRecords) = _order.GetOrders(search,sortOrder, status, time, from, to, pageNumber, selectedPage);
         int totalPage = (int)Math.Ceiling((double)totalRecords / selectedPage);
 
     OrdersViewModel model = new OrdersViewModel

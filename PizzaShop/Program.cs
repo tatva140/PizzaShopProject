@@ -50,6 +50,8 @@ builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<OrderService>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<CustomerService>();
+builder.Services.AddScoped<IOrderAppTablesRepository, OrderAppTablesRepository>();
+builder.Services.AddScoped<OrderAppTablesService>();
 
 
 builder.Services.AddScoped<PermissionService>();
@@ -62,8 +64,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     {
         options.Events = new JwtBearerEvents
         {
-           OnChallenge = context => {
-                if(!context.Handled){
+            OnChallenge = context =>
+            {
+                if (!context.Handled)
+                {
                     context.HandleResponse();
                     context.Response.Redirect("/Home/Index");
                 }
@@ -90,7 +94,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                             {
                                 HttpOnly = true,
                                 Secure = true,
-                                Expires =DateTime.UtcNow.AddHours(1)
+                                Expires = DateTime.UtcNow.AddHours(1)
                             });
                             httpContext.Response.Cookies.Delete("refreshToken");
 
@@ -98,10 +102,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                             {
                                 HttpOnly = true,
                                 Secure = true,
-                                Expires =newTokenResponse.expiryTime
+                                Expires = newTokenResponse.expiryTime
                             });
                             httpContext.Response.Redirect(httpContext.Request.Path);
-                           
+
                         }
                     }
                 }
@@ -138,16 +142,26 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+
+
+
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}"
+);
+
+app.MapControllerRoute(
+    name: "OrderApp",
+    pattern: "OrderApp{controller=Tables}/{action=Index}/{id?}"
+);
 
 app.Run();
-async Task<TokenResponse?> RefreshAccessToken(string refresh_token){
-    using var client=new HttpClient();
-    var requestContent=new StringContent($"\"{refresh_token}\"",Encoding.UTF8,"application/json");
-    var response=await client.PostAsync("http://localhost:5196/Home/RefreshToken/refresh_token",requestContent);
-    if(!response.IsSuccessStatusCode)return null;
-    var jsonResponse=await response.Content.ReadAsStringAsync();
+async Task<TokenResponse?> RefreshAccessToken(string refresh_token)
+{
+    using var client = new HttpClient();
+    var requestContent = new StringContent($"\"{refresh_token}\"", Encoding.UTF8, "application/json");
+    var response = await client.PostAsync("http://localhost:5196/Home/RefreshToken/refresh_token", requestContent);
+    if (!response.IsSuccessStatusCode) return null;
+    var jsonResponse = await response.Content.ReadAsStringAsync();
     return JsonSerializer.Deserialize<TokenResponse>(jsonResponse);
 }

@@ -1,0 +1,102 @@
+@model DAL.ViewModels.OrderAppTablesViewModel;
+@{
+    Layout = "~/OrderApp/Views/Shared/_LayoutOrderApp.cshtml";
+
+    ViewData["HideLayout"] = "false";
+
+}
+<div class="cont p-3">
+    <div class="row">
+        <div class="col-sm-6 col-12 ">
+            <h1 style="color: rgba(0, 102, 167, 1);">Table View</h1>
+        </div>
+        <div class="col-sm-6 col-12 ">
+            <div class="d-flex align-items-center justify-content-sm-end  justify-content-start  flex-wrap">
+                <div style="font-size: large;" class="me-3"><i class="fa-solid fa-circle me-2"
+                        style="color:grey;"></i>Available</div>
+                <div style="font-size: large;" class="me-3"><i class="fa-regular fa-circle me-2"
+                        style="color: #63E6BE;"></i>Selected</div>
+                <div style="font-size: large;" class="me-3"><i class="fa-solid fa-circle me-2"
+                        style="color: #63E6BE;"></i>Assigned</div>
+                <div style="font-size: large;" class="me-3"><i class="fa-solid fa-circle me-2"
+                        style="color: #74C0FC;"></i>Running</div>
+                <div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row ">
+        <div class="accordion accordion-flush" id="accordionFlushExample">
+            @foreach (var sec in Model.Sections)
+            {
+            <div class="accordion-item mt-2">
+                <div class="accordion-header p-3 " id="flush-headingOne">
+                    <div class="row">
+                        <div class="col-sm-6 col-12 ">
+                            <i class="fa-solid fa-angle-down p-2 me-2" type="button" data-bs-toggle="collapse"
+                                style="color:rgba(0, 102, 167, 1);border: 1px solid rgba(0, 102, 167, 1);; border-radius: 80%;"
+                                data-bs-target="#flush-collapseOne" aria-expanded="false"
+                                aria-controls="flush-collapseOne">
+                            </i><strong style="color:rgba(0, 102, 167, 1);font-size: large;">@sec.SectionName</strong>
+                        </div>
+                        <div class="col-sm-6 col-12 ">
+                            <div class="d-flex align-items-center justify-content-end    flex-wrap">
+                                <div style="font-size: large;" class="me-3"><i class="fa-solid fa-circle me-2"
+                                        style="color:grey;"></i>3</div>
+                                <div style="font-size: large;" class="me-3"><i class="fa-solid fa-circle me-2"
+                                        style="color: #63E6BE;"></i>2</div>
+                                <div style="font-size: large;" class="me-3"><i class="fa-solid fa-circle me-2"
+                                        style="color: #74C0FC;"></i>2</div>
+                                <button
+                                    style="font-size: large;color:rgba(0, 102, 167, 1);background-color:white;border:1px solid rgba(0, 102, 167, 1);"
+                                    class="me-3 p-1"><i class="fa-solid fa-plus me-2"
+                                        style="color:rgba(0, 102, 167, 1);"></i>Waiting Token</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="flush-collapseOne" class="accordion-collapse collapse show" aria-labelledby="flush-headingOne"
+                    data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">
+                        <div class="d-flex flex-wrap gap-3">
+                            @foreach(var details in sec.Tables){
+                            <div class="tablecard p-3 " style="width:250px;background-color: cyan;">
+                                <div class="row">
+                                    <div class="col-8">
+                                        @details.TableName
+                                    </div>
+                                    <div class="col-4">
+                                        @details.TotalAmount
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-8">
+                                        <i class="fa-solid fa-users"></i>
+                                    </div>
+                                    <div class="col-4">
+                                        <i class="fa-solid fa-clock"></i>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-8">
+                                      @details.Capacity
+                                    </div>
+                                    <div class="col-4">
+                                        @details.Duration
+                                    </div>
+                                </div>
+                            </div>
+                            }
+                        </div>
+                        <div class="row mt-2 me-2 d-flex align-items-center justify-content-end">
+                        <button class="btn  w-auto" style="color:white;background-color:rgba(0, 102, 167, 1);">Assign</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+
+</div>
+</div>

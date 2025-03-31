@@ -18,9 +18,9 @@ public class CustomerController : Controller
     }
 
     [HttpGet]
-    public IActionResult Customers(string search, string time, string from, string to, int pageNumber = 1, int selectedPage = 2)
+    public IActionResult Customers(string search,string sortOrder, string time, string from, string to, int pageNumber = 1, int selectedPage = 2)
     {
-        var (customers, totalRecords) = _customerService.GetCustomers(search, time, from, to, pageNumber, selectedPage);
+        var (customers, totalRecords) = _customerService.GetCustomers(search,sortOrder, time, from, to, pageNumber, selectedPage);
         int totalPage = (int)Math.Ceiling((double)totalRecords / selectedPage);
 
         CustomersViewModel model = new CustomersViewModel

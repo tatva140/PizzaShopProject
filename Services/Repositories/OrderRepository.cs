@@ -16,7 +16,7 @@ public class OrderRepository : IOrderRepository
         _context = context;
     }
 
-    public List<OrdersListViewModel> GetOrders(string search, string status, string time, string from, string to, int pageNumber, int pageSize, out int totalRecords)
+    public List<OrdersListViewModel> GetOrders(string search, string sortOrder, string status, string time, string from, string to, int pageNumber, int pageSize, out int totalRecords)
     {
         var query = _context.Orders.Where(m => m.IsActive == true).AsQueryable();
         if (from != null && to != null)
@@ -36,25 +36,56 @@ public class OrderRepository : IOrderRepository
             query = query.Where(m => m.CreatedAt.ToString().Contains(time == "7" ? DateTime.Now.AddDays(-7).ToString() : time == "30" ? DateTime.Now.AddDays(-30).ToString() : DateTime.Now.AddDays(-365).ToString()));
         }
 
-        var orders = query.OrderBy(e => e.OrderId);
-        List<OrdersListViewModel> query1 = (from o in orders
-                                            join c in _context.Customers on o.CustomerId equals c.CustomerId
-                                            join r in _context.Reviews on o.OrderId equals r.OrderId into reviews
-                                            from r in reviews.DefaultIfEmpty()
-                                            join p in _context.Payments on o.OrderId equals p.OrderId into payments
-                                            from p in payments.DefaultIfEmpty()
-                                            select new OrdersListViewModel
-                                            {
-                                                OrderId = o.OrderId,
-                                                PaymentMode = p.PaymentMode ?? "",
-                                                CustomerName = c.FirstName,
-                                                CreatedAt = o.CreatedAt,
-                                                TotalAmount = o.TotalAmount,
-                                                OrderStatus = o.OrderStatus,
-                                                Rating = (r.Ambience + r.Food + r.Service + r.Service) / 3 ?? 0
-                                            }).Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+
+
+        var query1 = (from o in query
+                      join c in _context.Customers on o.CustomerId equals c.CustomerId
+                      join r in _context.Reviews on o.OrderId equals r.OrderId into reviews
+                      from r in reviews.DefaultIfEmpty()
+                      join p in _context.Payments on o.OrderId equals p.OrderId into payments
+                      from p in payments.DefaultIfEmpty()
+                      select new OrdersListViewModel
+                      {
+                          OrderId = o.OrderId,
+                          PaymentMode = p.PaymentMode ?? "",
+                          CustomerName = c.FirstName,
+                          CreatedAt = o.CreatedAt,
+                          TotalAmount = o.TotalAmount,
+                          OrderStatus = o.OrderStatus,
+                          Rating = (r.Ambience + r.Food + r.Service + r.Service) / 3 ?? 0
+                      });
+        switch (sortOrder)
+        {
+            case "orderIddesc":
+                query1 = query1.OrderByDescending(u => u.OrderId);
+                break;
+            case "datesortdesc":
+                query1 = query1.OrderByDescending(u => u.CreatedAt);
+                break;
+            case "customersortdesc":
+                query1 = query1.OrderByDescending(u => u.CustomerName);
+                break;
+            case "amtsortdesc":
+                query1 = query1.OrderByDescending(u => u.TotalAmount);
+                break;
+            case "orderId":
+                query1 = query1.OrderBy(u => u.OrderId);
+                break;
+            case "datesort":
+                query1 = query1.OrderBy(u => u.CreatedAt);
+                break;
+            case "customersort":
+                query1 = query1.OrderBy(u => u.CustomerName);
+                break;
+            case "amtsort":
+                query1 = query1.OrderBy(u => u.TotalAmount);
+                break;
+            default:
+                query1 = query1.OrderBy(u => u.OrderId);
+                break;
+        }
         totalRecords = query.Count();
-        return query1;
+        return query1.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
     }
 
     public FileContentResult UploadExcel(string search, string status, string time, string from, string to)
@@ -247,7 +278,7 @@ public class OrderRepository : IOrderRepository
                      from r in reviews.DefaultIfEmpty()
                      join p in _context.Payments on o.OrderId equals p.OrderId into payments
                      from p in payments.DefaultIfEmpty()
-                        where o.OrderId == id
+                     where o.OrderId == id
                      select new OrdersListViewModel
                      {
                          OrderId = o.OrderId,
@@ -258,7 +289,7 @@ public class OrderRepository : IOrderRepository
                          NoOfPersons = c.NoOfPersons ?? 0,
                          CreatedAt = o.CreatedAt,
                          SubTotal = o.SubTotal,
-                         OrderStatus = o.OrderStatus??"",
+                         OrderStatus = o.OrderStatus ?? "",
                          TotalAmount = o.TotalAmount,
                          UpdatedAt = o.UpdatedAt,
                          Rating = (r.Ambience + r.Food + r.Service + r.Service) / 3 ?? 0,
@@ -272,7 +303,7 @@ public class OrderRepository : IOrderRepository
                                       select new OrderItemListViewModel
                                       {
                                           Quantity = i.Quantity,
-                                          Rate = it.Rate,
+                                          Rate = i.Rate,
                                           ItemName = it.Name
                                       }).ToList(),
                          modifierLists = (from i in _context.OrderItems
@@ -283,7 +314,7 @@ public class OrderRepository : IOrderRepository
                                           {
                                               ModifierName = mod.ModifierName,
                                               Quantity = m.Quantity,
-                                              Rate = mod.Rate
+                                              Rate = m.Rate
                                           }).ToList(),
                          taxLists = (from i in _context.Orders
                                      join t in _context.OrderTaxes on i.OrderId equals t.OrderId
@@ -292,7 +323,7 @@ public class OrderRepository : IOrderRepository
                                      select new OrderTaxListViewModel
                                      {
                                          TaxName = tax.TaxName,
-                                         Amount = tax.Amount
+                                         Amount = t.TaxAmount
                                      }).ToList(),
                          PaymentMode = p.PaymentMode ?? "",
                          PaidOn = p.CreatedAt,

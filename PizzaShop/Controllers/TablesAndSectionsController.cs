@@ -28,11 +28,11 @@ public class TablesAndSectionsController : Controller
     {
         return Ok();
     }
-    // [PermissionsAtrribute("TablesAndSections", "CanView")]
-    // public ActionResult View()
-    // {
-    //     return Ok();
-    // }
+    [PermissionsAtrribute("TablesAndSections", "CanView")]
+    public ActionResult CanView()
+    {
+        return Ok();
+    }
 
     [HttpGet]
     public IActionResult TablesAndSections(int sectionId, string search, int pageNumber = 1, int pageSize = 2, int selectedPage = 2)

@@ -53,6 +53,10 @@
       "PackagePath": "staticwebassets\\images\\QR.png"
     },
     {
+      "Id": "C:\\Users\\pca140\\Desktop\\RMSProject\\PizzaShop\\wwwroot\\images\\a70f0a6c-6dc0-46e1-b55a-ca746dac9d36_download.jfif",
+      "PackagePath": "staticwebassets\\images\\a70f0a6c-6dc0-46e1-b55a-ca746dac9d36_download.jfif"
+    },
+    {
       "Id": "C:\\Users\\pca140\\Desktop\\RMSProject\\PizzaShop\\wwwroot\\images\\ae02e165-44cb-4035-b0c5-d4fac43427a6_download.jfif",
       "PackagePath": "staticwebassets\\images\\ae02e165-44cb-4035-b0c5-d4fac43427a6_download.jfif"
     },
@@ -75,6 +79,10 @@
     {
       "Id": "C:\\Users\\pca140\\Desktop\\RMSProject\\PizzaShop\\wwwroot\\images\\e7e87db5-d13e-4f90-b606-e8234fb8f880_download.jfif",
       "PackagePath": "staticwebassets\\images\\e7e87db5-d13e-4f90-b606-e8234fb8f880_download.jfif"
+    },
+    {
+      "Id": "C:\\Users\\pca140\\Desktop\\RMSProject\\PizzaShop\\wwwroot\\images\\f544e0d3-c94a-487c-b493-2352036d867c_download.jfif",
+      "PackagePath": "staticwebassets\\images\\f544e0d3-c94a-487c-b493-2352036d867c_download.jfif"
     },
     {
       "Id": "C:\\Users\\pca140\\Desktop\\RMSProject\\PizzaShop\\wwwroot\\images\\f9ed0cd7-ce1d-478b-be74-1797207cf70a_download.jfif",
@@ -151,6 +159,10 @@
     {
       "Id": "C:\\Users\\pca140\\Desktop\\RMSProject\\PizzaShop\\wwwroot\\images\\transperent-pizza.png",
       "PackagePath": "staticwebassets\\images\\transperent-pizza.png"
+    },
+    {
+      "Id": "C:\\Users\\pca140\\Desktop\\RMSProject\\PizzaShop\\wwwroot\\js\\orderAppsite.js",
+      "PackagePath": "staticwebassets\\js\\orderAppsite.js"
     },
     {
       "Id": "C:\\Users\\pca140\\Desktop\\RMSProject\\PizzaShop\\wwwroot\\js\\site.js",

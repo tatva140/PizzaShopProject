@@ -1,16 +1,22 @@
 @model DAL.ViewModels.OrdersViewModel;
+
 <div class="table-responsive mt-4 ">
   <table class="table" id="myTable">
     <thead>
       <tr>
-        <th>#Order <a asp-route-sortOrder="@ViewBag.sort" asp-action="Index"><i class="fa-solid fa-sort ms-1"></i></a>
+        <th>#Order <a onclick="fetchAllOrders(@Model.PageNumber,@Model.PageSize,@Model.TotalPages,this)" id="orderId"><i
+              class="fa-solid fa-sort ms-1"></i></a>
         </th>
-        <th>Date</th>
-        <th>Customer</th>
+        <th>Date <a onclick="fetchAllOrders(@Model.PageNumber,@Model.PageSize,@Model.TotalPages,this)" id="datesort"><i
+              class="fa-solid fa-sort ms-1"></i></a>
+        </th>
+        <th>Customer <a onclick="fetchAllOrders(@Model.PageNumber,@Model.PageSize,@Model.TotalPages,this)"
+            id="customersort"><i class="fa-solid fa-sort ms-1"></i></a></th>
         <th>Status</th>
         <th>Payment Mode</th>
         <th>Rating</th>
-        <th>Total Amount</th>
+        <th>Total Amount <a onclick="fetchAllOrders(@Model.PageNumber,@Model.PageSize,@Model.TotalPages,this)"
+            id="amtsort"><i class="fa-solid fa-sort ms-1"></i></a></th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -41,8 +47,8 @@
           <td>@order.TotalAmount</td>
           <td>
             <div class="d-flex align-items-center justify-content-bewtween">
-              <a asp-action="OrderPdf" asp-route-id="@order.OrderId"><i class="fa-regular fa-file ms-1 me-3" style="cursor: pointer;"
-                  ></i></a>
+              <a asp-action="OrderPdf" asp-route-id="@order.OrderId"><i class="fa-regular fa-file ms-1 me-3"
+                  style="cursor: pointer;"></i></a>
               <i class="fa-solid fa-eye" style="cursor: pointer;" onclick="orderDetails(@order.OrderId)"></i>
             </div>
           </td>
@@ -86,12 +92,20 @@
 <script
   src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
 <script>
-  function fetchAllOrders(pageNumber, pageSize, totalPages) {
+  function fetchAllOrders(pageNumber, pageSize, totalPages, e) {
+    let sortOrder = "@ViewBag.sort";
+    if (e) {
+      if (sortOrder == `${e.id}desc`) {
+        sortOrder = e.id + "";
+      } else {
+        sortOrder = e.id + "desc";
+      }
+    }
     let selectedPage = $("#orderpageSize").val();
     $.ajax({
       url: "/Order/Orders",
       type: "GET",
-      data: { pageNumber: pageNumber, pageSize: pageSize, selectedPage: selectedPage },
+      data: { pageNumber: pageNumber, pageSize: pageSize, selectedPage: selectedPage, sortOrder: sortOrder },
       success: function (response) {
         $("#renderorders").html(response);
         $("#orderpageSize").val(selectedPage);
@@ -101,5 +115,5 @@
   function orderDetails(id) {
     window.location.href = "/Order/OrderDetails?id=" + id;
   }
- 
+
 </script>

@@ -87,15 +87,21 @@ public partial class PizzashopContext : DbContext
             entity.HasIndex(e => e.CustomerId, "IX_allocated_tables_customer_id");
 
             entity.HasIndex(e => e.TableId, "IX_allocated_tables_table_id");
+            entity.HasIndex(e => e.OrderId, "IX_allocated_tables_order_id");
 
             entity.Property(e => e.AllocatedTableId).HasColumnName("allocated_table_id");
             entity.Property(e => e.CustomerId).HasColumnName("customer_id");
             entity.Property(e => e.TableId).HasColumnName("table_id");
+            entity.Property(e => e.OrderId).HasColumnName("order_id");
 
             entity.HasOne(d => d.Customer).WithMany(p => p.AllocatedTables)
                 .HasForeignKey(d => d.CustomerId)
                 .HasConstraintName("allocated_tables_customer_id_fkey");
-
+            entity.HasOne(d => d.Order).WithMany(p => p.AllocatedTables)
+                .HasForeignKey(d => d.OrderId)
+                .HasConstraintName("allocated_tables_order_id_fkey");
+            entity.Property(e => e.NoOfPersons)
+                           .HasColumnName("noOfPersons");
             entity.HasOne(d => d.Table).WithMany(p => p.AllocatedTables)
                 .HasForeignKey(d => d.TableId)
                 .HasConstraintName("allocated_tables_table_id_fkey");
@@ -579,6 +585,7 @@ public partial class PizzashopContext : DbContext
             entity.Property(e => e.OrderId).HasColumnName("order_id");
             entity.Property(e => e.Quantity).HasColumnName("quantity");
             entity.Property(e => e.Rate)
+            .HasPrecision(5, 2)
                 .HasColumnName("rate");
 
             entity.HasOne(d => d.Modifier).WithMany(p => p.OrderModifiers)
@@ -613,6 +620,8 @@ public partial class PizzashopContext : DbContext
             entity.HasOne(d => d.Tax).WithMany(p => p.OrderTaxes)
                 .HasForeignKey(d => d.TaxId)
                 .HasConstraintName("order_tax_tax_id_fkey");
+            entity.Property(e => e.TaxAmount)
+            .HasColumnName("tax");
         });
 
         modelBuilder.Entity<Payment>(entity =>

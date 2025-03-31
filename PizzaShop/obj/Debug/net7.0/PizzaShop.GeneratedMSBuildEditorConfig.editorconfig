@@ -16,6 +16,14 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Users\pca140\Desktop\RMSProject\PizzaShop
 build_property._RazorSourceGeneratorDebug = 
 
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/OrderApp/Views/Shared/_LayoutOrderApp.cshtml]
+build_metadata.AdditionalFiles.TargetPath = T3JkZXJBcHBcVmlld3NcU2hhcmVkXF9MYXlvdXRPcmRlckFwcC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/OrderApp/Views/Tables/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = T3JkZXJBcHBcVmlld3NcVGFibGVzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Customer/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VzdG9tZXJcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 

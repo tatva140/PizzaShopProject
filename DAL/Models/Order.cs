@@ -44,6 +44,7 @@ public partial class Order
 
     public virtual ICollection<Payment> Payments { get; } = new List<Payment>();
     public virtual ICollection<OrderModifier> OrderModifiers { get; set; } = new List<OrderModifier>();
+    public virtual ICollection<AllocatedTable> AllocatedTables { get; set; } = new List<AllocatedTable>();
 
     public virtual User? UpdatedByNavigation { get; set; }
 }
