@@ -50,7 +50,7 @@ public class OrdersListViewModel
     public List<OrderModifierListViewModel> modifierLists { get; set; }
     public List<OrderTaxListViewModel> taxLists { get; set; }
     public DateTime? PaidOn { get; set; }
-    public TimeSpan? OrderDuration { get; set; }
+    public DateTime? OrderDuration { get; set; }
 
 
 

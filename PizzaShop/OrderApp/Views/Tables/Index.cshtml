@@ -13,90 +13,261 @@
         <div class="col-sm-6 col-12 ">
             <div class="d-flex align-items-center justify-content-sm-end  justify-content-start  flex-wrap">
                 <div style="font-size: large;" class="me-3"><i class="fa-solid fa-circle me-2"
-                        style="color:grey;"></i>Available</div>
+                        style="color:rgb(211, 205, 205);"></i>Available</div>
                 <div style="font-size: large;" class="me-3"><i class="fa-regular fa-circle me-2"
                         style="color: #63E6BE;"></i>Selected</div>
                 <div style="font-size: large;" class="me-3"><i class="fa-solid fa-circle me-2"
                         style="color: #63E6BE;"></i>Assigned</div>
                 <div style="font-size: large;" class="me-3"><i class="fa-solid fa-circle me-2"
                         style="color: #74C0FC;"></i>Running</div>
-                <div>
-                </div>
             </div>
         </div>
     </div>
+
     <div class="row ">
         <div class="accordion accordion-flush" id="accordionFlushExample">
             @foreach (var sec in Model.Sections)
             {
-            <div class="accordion-item mt-2">
-                <div class="accordion-header p-3 " id="flush-headingOne">
-                    <div class="row">
-                        <div class="col-sm-6 col-12 ">
-                            <i class="fa-solid fa-angle-down p-2 me-2" type="button" data-bs-toggle="collapse"
-                                style="color:rgba(0, 102, 167, 1);border: 1px solid rgba(0, 102, 167, 1);; border-radius: 80%;"
-                                data-bs-target="#flush-collapseOne" aria-expanded="false"
-                                aria-controls="flush-collapseOne">
-                            </i><strong style="color:rgba(0, 102, 167, 1);font-size: large;">@sec.SectionName</strong>
+                <div class="accordion-item mt-2">
+                    <div class="accordion-header p-3 " id="flush-headingOne">
+                        <div class="row">
+                            <div class="col-sm-6 col-12 ">
+                                <i class="fa-solid fa-angle-down p-2 me-2" type="button" data-bs-toggle="collapse"
+                                    style="color:rgba(0, 102, 167, 1);border: 1px solid rgba(0, 102, 167, 1);; border-radius: 80%;"
+                                    data-bs-target="@($"#section{@sec.SectionId}")" aria-expanded="false"
+                                    aria-controls="flush-collapseOne">
+                                </i><strong style="color:rgba(0, 102, 167, 1);font-size: large;">@sec.SectionName</strong>
+                            </div>
+                            <div class="col-sm-6 col-12 ">
+                                <div class="d-flex align-items-center justify-content-end    flex-wrap">
+                                    <div style="font-size: large;" class="me-3"><i class="fa-solid fa-circle me-2"
+                                            style="color:rgb(211, 205, 205);"></i>@sec.Available</div>
+                                    <div style="font-size: large;" class="me-3"><i class="fa-solid fa-circle me-2"
+                                            style="color: #63E6BE;"></i>@sec.Assigned</div>
+                                    <div style="font-size: large;" class="me-3"><i class="fa-solid fa-circle me-2"
+                                            style="color: #74C0FC;"></i>@sec.Running</div>
+                                    <button
+                                        style="font-size: large;color:rgba(0, 102, 167, 1);background-color:white;border:1px solid rgba(0, 102, 167, 1);"
+                                        class="me-3 p-1"><i class="fa-solid fa-plus me-2"
+                                            style="color:rgba(0, 102, 167, 1);"></i>Waiting Token</button>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-sm-6 col-12 ">
-                            <div class="d-flex align-items-center justify-content-end    flex-wrap">
-                                <div style="font-size: large;" class="me-3"><i class="fa-solid fa-circle me-2"
-                                        style="color:grey;"></i>3</div>
-                                <div style="font-size: large;" class="me-3"><i class="fa-solid fa-circle me-2"
-                                        style="color: #63E6BE;"></i>2</div>
-                                <div style="font-size: large;" class="me-3"><i class="fa-solid fa-circle me-2"
-                                        style="color: #74C0FC;"></i>2</div>
-                                <button
-                                    style="font-size: large;color:rgba(0, 102, 167, 1);background-color:white;border:1px solid rgba(0, 102, 167, 1);"
-                                    class="me-3 p-1"><i class="fa-solid fa-plus me-2"
-                                        style="color:rgba(0, 102, 167, 1);"></i>Waiting Token</button>
+                    </div>
+                    <div id="@($"section{@sec.SectionId}")" class="accordion-collapse collapse "
+                        aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                        <div class="accordion-body">
+                            <div class="d-flex flex-wrap gap-3">
+                                @foreach (var details in sec.Tables)
+                                {
+                                    <div class="@($"tablecard{@details.Status}") p-3"
+                                        onclick="tableselect(@details.TableId,'@details.Status',this)" id="@details.TableId">
+                                        <div class="row">
+                                            <div class="col-8">
+                                                @details.TableName
+                                            </div>
+                                            <div class="col-4">
+                                                @(details?.TotalAmount!=null ? ("₹" + details?.TotalAmount) : "")
+                                            </div>
+                                        </div>
+                                        <div class="row mt-2">
+                                            <div class="col-8">
+                                                <i class="fa-solid fa-users"></i>
+                                            </div>
+                                            <div class="col-4">
+                                                <i class="fa-solid fa-clock"></i>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-2">
+                                            <div class="col-4">
+                                                @details.Capacity
+                                            </div>
+                                            <div class="col-7 text-end " style="word-wrap: break-word;">
+                                                @if (details?.Duration.Days != null)
+                                                {
+                                                    @(details?.Duration.Days + "days " )
+                                                    ;
+                                                }
+                                                @if (details?.Duration.Hours != null)
+                                                {
+                                                    @(details?.Duration.Hours + "hr " )
+                                                    ;
+                                                }
+                                                @if (details?.Duration.Minutes != null)
+                                                {
+                                                    @(details?.Duration.Minutes + "mins ")
+                                                    ;
+                                                }
+                                                @if (details?.Duration.Seconds != null)
+                                                {
+                                                    @(details?.Duration.Seconds + "secs ")
+                                                    ;
+                                                }
+                                                @if (details.Duration == null)
+                                                {
+                                                    @("0 mins ")
+                                                    ;
+                                                }
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                            <div class="row mt-2 me-2 d-flex align-items-center justify-content-end">
+                                <button class="btn  w-auto" style="color:white;background-color:rgba(0, 102, 167, 1);"
+                                    onclick="openAssignModal(@sec.SectionId,'@sec.SectionName')">Assign</button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div id="flush-collapseOne" class="accordion-collapse collapse show" aria-labelledby="flush-headingOne"
-                    data-bs-parent="#accordionFlushExample">
-                    <div class="accordion-body">
-                        <div class="d-flex flex-wrap gap-3">
-                            @foreach(var details in sec.Tables){
-                            <div class="tablecard p-3 " style="width:250px;background-color: cyan;">
-                                <div class="row">
-                                    <div class="col-8">
-                                        @details.TableName
-                                    </div>
-                                    <div class="col-4">
-                                        @details.TotalAmount
-                                    </div>
-                                </div>
-                                <div class="row mt-2">
-                                    <div class="col-8">
-                                        <i class="fa-solid fa-users"></i>
-                                    </div>
-                                    <div class="col-4">
-                                        <i class="fa-solid fa-clock"></i>
-                                    </div>
-                                </div>
-                                <div class="row mt-2">
-                                    <div class="col-8">
-                                      @details.Capacity
-                                    </div>
-                                    <div class="col-4">
-                                        @details.Duration
-                                    </div>
-                                </div>
-                            </div>
-                            }
-                        </div>
-                        <div class="row mt-2 me-2 d-flex align-items-center justify-content-end">
-                        <button class="btn  w-auto" style="color:white;background-color:rgba(0, 102, 167, 1);">Assign</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
             }
         </div>
     </div>
 
+
 </div>
+<div class="modal" id="assignModal">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content">
+            <div class="ms-3 mt-3 text-start">
+                <h4 style="color: rgba(0, 102, 167, 1);">Waiting List</h4>
+            </div>
+            <div class="modal-body text-center ms-3 me-3 mt-2 p-0">
+                <input type="text" id="sectionId" hidden>
+                <div id="waitingTokenList"></div>
+                <div class="  text-start p-0">
+                    <h4 style="color: rgba(0, 102, 167, 1);">Customer Details</h4>
+                </div>
+                <form asp-action="Logout" asp-controller="Dashboard">
+                    <div id="customerDetails"></div>
+                    <div class="modal-footer d-flex  align-items-center justify-content-end">
+                        <button type="button" class="btn btn-primary align-items center"
+                         onclick="assignCustomerTable()">Assign</button>
+                        <button type="button" class="btn btn-light align-items center"
+                            data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
+@section Scripts {
+    <script>
+        $(".tablecardAssigned").addClass("assignedtable");
+        $(".tablecardRunning").addClass("runningtable");
+        $(".tablecardAvailable").addClass("availabletable");
+        selectedTables = [];
+        function tableselect(id, status, e) {
+            if (status == "Available") {
+                if (selectedTables.includes(id)) {
+                    $(e).removeClass("selectedtable");
+                    selectedTables = selectedTables.filter(table => table != id);
+                } else {
+                    selectedTables.push(id);
+                    $(e).addClass("selectedtable");
+                }
+            } else {
+                toastr.error(`Table Already ${status}`);
+            }
+        }
+        function openAssignModal(id, sectionName) {
+            if (selectedTables.length == 0) {
+                toastr.error("Select Atleast 1 table.");
+            } else {
+                document.getElementById("sectionId").value = id;
+                $("#assignModal").modal("show");
+                $.ajax({
+                    url: "/Tables/WaitingTokenList",
+                    type: "Get",
+                    success: function (response) {
+                        $("#waitingTokenList").html(response);
+                    }
+                });
+                $.ajax({
+                    url: "/Tables/CustomerDetails",
+                    type: "Get",
+                    data: { email: "" },
+                    success: function (response) {
+                        $("#customerDetails").html(response);
+                        let sectionDropdown = document.getElementById("Section");
+                        let option = document.createElement("option");
+                        option.value = sectionName;
+                        option.text = sectionName;
+                        sectionDropdown.disabled = true;
+                        sectionDropdown.add(option);
+                        sectionDropdown.value = sectionName;
+                        document.getElementById("NoOfPerson").value = 0;
+                    }
+                });
+
+            }
+        }
+        function fetchCustomer() {
+            id = document.getElementById("sectionId").value;
+            email = document.getElementById("Email").value;
+            
+            $.ajax({
+                url: "/Tables/CustomerDetails",
+                type: "Get",
+                data: { email: email },
+                success: function (response) {
+                    if (response.message != "Error") {
+                        document.getElementById("Email").value = response.message.email;
+                        document.getElementById("Name").value = response.message.firstName + " " + response.message.lastName;
+                        document.getElementById("Phone").value = response.message.phone;
+                    } else {
+                        toastr.error("No Data Found.");
+                        document.getElementById("Email").value = "";
+                        document.getElementById("Name").value = "";
+                        document.getElementById("Phone").value = "";
+                        document.getElementById("NoOfPerson").value = 0;
+                    }
+
+                }
+            });
+        }
+        function fetchWaitingTokenCustomer(email) {
+            id = document.getElementById("sectionId").value;
+            
+            $.ajax({
+                url: "/Tables/WaitingTokenCustomerDetails",
+                type: "Get",
+                data: { email: email },
+                success: function (response) {
+                    if (response.message != "Error") {
+                        document.getElementById("Email").value = response.message.email;
+                        document.getElementById("Name").value = response.message.firstName + " " + response.message.lastName;
+                        document.getElementById("Phone").value = response.message.phone;
+                    } else {
+                        toastr.error("No Data Found.");
+                        document.getElementById("Email").value = "";
+                        document.getElementById("Name").value = "";
+                        document.getElementById("Phone").value = "";
+                        document.getElementById("NoOfPerson").value = 0;
+                    }
+
+                }
+            });
+        }
+        function assignCustomerTable(){
+            id = document.getElementById("sectionId").value;
+            email=document.getElementById("Email").value;
+            name=document.getElementById("Name").value;
+            phone=document.getElementById("Phone").value;
+            noOfPersons=document.getElementById("NoOfPerson").value;
+            waitingTokenId=document.getElementById("waitingTokenId").value;
+            console.log(email);
+             $.ajax({
+                url: "/Tables/AssignTable",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({ email: email,name:name,phone:phone,noOfPersons:noOfPersons,sectionId:id,selectedTables:selectedTables,waitingTokenId:waitingTokenId }),
+                success: function (response) {
+                   console.log(response);
+                }
+            });
+        }
+
+    </script>
+}

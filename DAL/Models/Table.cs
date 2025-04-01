@@ -10,6 +10,8 @@ public partial class Table
     public string? TableName { get; set; }
 
     public int? SectionId { get; set; }
+    public int? CurrentOrderId { get; set; }
+    public int? CurrentCustomerId { get; set; }
 
     public int? Capacity { get; set; }
 

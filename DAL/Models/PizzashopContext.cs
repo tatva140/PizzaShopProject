@@ -494,7 +494,6 @@ public partial class PizzashopContext : DbContext
             entity.HasIndex(e => e.UpdatedBy, "IX_orders_updated_by");
 
             entity.Property(e => e.OrderId).HasColumnName("order_id");
-            entity.Property(e => e.Duration).HasColumnName("duration");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("now()")
                 .HasColumnType("timestamp without time zone")
@@ -522,6 +521,9 @@ public partial class PizzashopContext : DbContext
             entity.Property(e => e.UpdatedAt)
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("updated_at");
+            entity.Property(e => e.Duration)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("duration");
             entity.Property(e => e.UpdatedBy).HasColumnName("updated_by");
 
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.OrderCreatedByNavigations)
@@ -814,6 +816,8 @@ public partial class PizzashopContext : DbContext
             entity.HasIndex(e => e.UpdatedBy, "IX_tables_updated_by");
 
             entity.Property(e => e.TableId).HasColumnName("table_id");
+            entity.Property(e => e.CurrentCustomerId).HasColumnName("currcustomer_id");
+            entity.Property(e => e.CurrentOrderId).HasColumnName("currorder_id");
             entity.Property(e => e.Capacity).HasColumnName("capacity");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("now()")

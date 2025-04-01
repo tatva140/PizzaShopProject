@@ -1,0 +1,42 @@
+@model DAL.ViewModels.WaitingTokenListViewModel
+
+<div>
+    <div class="row">
+        <div class="row table-responsive ">
+            <table class="table " id="">
+                <thead style="background-color:  rgba(0, 102, 167, 1);color:white;">
+                    <tr>
+                        <th></th>
+                        <th>Id </th>
+                        <th>Name</th>
+                        <th>No Of Persons</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var waitingToken in Model.waitingTokens)
+                    {
+                        <input type="text" id="waitingTokenId" value="@waitingToken.WaitingTokenId" hidden>
+                        <tr>
+                            <td>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                        id="flexRadioDefault1" onclick="fetchWaitingTokenCustomer('@waitingToken.Email')">
+                                </div>
+                            </td>
+                            <td>
+                                @waitingToken.WaitingTokenId
+                            </td>
+                            <td>
+                                @(waitingToken.FirstName + " " + waitingToken.LastName)
+                            </td>
+                            <td>
+                                @waitingToken.NoOfPersons
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

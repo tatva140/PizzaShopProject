@@ -260,3 +260,17 @@ visibility: visible;
 .selectedIcon{
   color: rgba(0, 102, 167, 1);
 }
+
+.availabletable{
+  background-color: #FAFAFA;
+}
+.assignedtable{
+  background-color: #F2FAEC;
+}
+.runningtable{
+  background-color:#E0F2FF;
+}
+.selectedtable{
+  background-color: #FAFAFA;
+  border: 2px solid #92D05A;
+}

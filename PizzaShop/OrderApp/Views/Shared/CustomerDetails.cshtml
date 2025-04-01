@@ -1,0 +1,50 @@
+            <div class="row ">
+                 <div class="col-12">
+                    <div class="form-floating mb-3">
+                        <input id="Email" asp-for="Email" class="form-control " type="email" 
+                            placeholder="Email" aria-label="Email" onblur="fetchCustomer()">
+                        <label for="email" class="form-label">Email</label>
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="Name" asp-for="FirstName"
+                            placeholder="Name">
+                        <label for="firstname">Name</label>
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+
+                </div>
+                  <div class="col-12">
+                    <div class="form-floating mb-3">
+                        <input id="Phone" asp-for="Phone" class="form-control " type="number" 
+                            placeholder="Phone" aria-label="Phone">
+                        <label for="Phone" class="form-label">Phone</label>
+                        <span asp-validation-for="Phone" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-2 ">
+               <div class="col-md-6">
+                    <div class="form-floating mb-3">
+                        <input id="NoOfPerson" asp-for="NoOfPersons" class="form-control " type="number" 
+                            placeholder="NoOfPerson" aria-label="NoOfPerson">
+                        <label for="NoOfPerson" class="form-label">NoOfPerson</label>
+                        <span asp-validation-for="NoOfPerson" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating mb-3">
+                        <select class="form-select" id="Section" asp-for="SectionId">
+                        </select>
+                        <label for="Section" class="form-label">Section</label>
+                        <span asp-validation-for="SectionId" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+ 
+
+           
+        
