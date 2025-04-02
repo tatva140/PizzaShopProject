@@ -18,6 +18,8 @@ public partial class WaitingToken
     public bool? IsActive { get; set; }
 
     public bool? Isassign { get; set; }
+    public int? SectionId { get; set; }
+
 
     public int? UpdatedBy { get; set; }
 

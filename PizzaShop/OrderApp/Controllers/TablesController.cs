@@ -26,25 +26,26 @@ public class TablesController : Controller
         OrderAppTablesViewModel orderAppTablesViewModels = _orderAppTablesService.GetTablesAndSections(sections);
         return View("~/OrderApp/Views/Tables/Index.cshtml", orderAppTablesViewModels);
     }
-    public IActionResult WaitingTokenList()
+    public IActionResult WaitingTokenList(int id)
     {
-        WaitingTokenListViewModel waitingTokenListViewModels = _orderAppTablesService.WaitingTokenList();
+        WaitingTokenListViewModel waitingTokenListViewModels = _orderAppTablesService.WaitingTokenList(id);
         return View("~/OrderApp/Views/Shared/WaitingTokenListView.cshtml", waitingTokenListViewModels);
     }
     public IActionResult CustomerDetails(string email)
     {
+        OrderAppCustomerViewModel orderAppCustomerViewModel = new OrderAppCustomerViewModel();
         if (email != null)
         {
-            OrderAppCustomerViewModel orderAppCustomerViewModel = _orderAppTablesService.CustomerDetails(email);
+            orderAppCustomerViewModel = _orderAppTablesService.CustomerDetails(email);
             if (orderAppCustomerViewModel == null)
             {
                 return Ok(new { message = "Error" });
 
             }
-            return Ok(new { message = orderAppCustomerViewModel });
+            return View("~/OrderApp/Views/Shared/CustomerDetails.cshtml", orderAppCustomerViewModel);
         }
 
-        return View("~/OrderApp/Views/Shared/CustomerDetails.cshtml");
+        return View("~/OrderApp/Views/Shared/CustomerDetails.cshtml", orderAppCustomerViewModel);
 
     }
     public IActionResult WaitingTokenCustomerDetails(string email)
@@ -55,23 +56,23 @@ public class TablesController : Controller
             return Ok(new { message = "Error" });
 
         }
-        return Ok(new { message = orderAppCustomerViewModel });
-
+        return View("~/OrderApp/Views/Shared/CustomerDetails.cshtml", orderAppCustomerViewModel);
     }
 
     [HttpPost]
     public IActionResult AssignTable([FromBody] JsonObject obj)
     {
-
         string data = obj.ToJsonString();
         AssignCustomerTablesViewModel assignCustomerTablesViewModel = JsonConvert.DeserializeObject<AssignCustomerTablesViewModel>(data);
-        CustomErrorViewModel  added = _orderAppTablesService.AssignTable(assignCustomerTablesViewModel);
-        // if (orderAppCustomerViewModel == null)
-        // {
-        //     return Ok(new { message = "Error" });
-
-        // }
-        return Ok(new { message = "Added" });
-
+        CustomErrorViewModel added = _orderAppTablesService.AssignTable(assignCustomerTablesViewModel);
+        if (added.Status == false)
+        {
+            TempData["error"] = added.Message;
+        }
+        else
+        {
+            TempData["success"] = added.Message;
+        }
+        return Ok(new { message = added.Message, added.Status });
     }
 }

@@ -37,7 +37,7 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        if (Request.Cookies.ContainsKey("jwtToken"))
+        if (Request.Cookies.ContainsKey("refreshToken"))
         {
             return RedirectToAction("Index", "Dashboard");
         }
@@ -54,7 +54,7 @@ public class HomeController : Controller
             if (isValidUser)
             {
 
-                DateTime refreshTokenExpiryTime = model.RememberMe ? DateTime.UtcNow.AddDays(30) : DateTime.UtcNow.AddDays(7);
+                DateTime refreshTokenExpiryTime = model.RememberMe ? DateTime.UtcNow.AddDays(30) : DateTime.UtcNow.AddHours(1);
 
                 string token = _jwtTokenService.GenerateToken(model.Email);
                 string refresh_token = _jwtTokenService.GenerateRefreshToken();
@@ -64,7 +64,7 @@ public class HomeController : Controller
                 {
                     HttpOnly = true,
                     Secure = true,
-                    Expires = refreshTokenExpiryTime
+                    Expires = refreshTokenExpiryTime,
                 });
 
                 Response.Cookies.Append("email", model.Email, new CookieOptions

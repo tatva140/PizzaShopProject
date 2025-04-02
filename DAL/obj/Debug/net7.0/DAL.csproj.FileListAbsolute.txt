@@ -1,5 +1,5 @@
-C:\Users\pca140\Desktop\RMSProject\DAL\bin\Debug\net7.0\DAL.deps.json
-C:\Users\pca140\Desktop\RMSProject\DAL\bin\Debug\net7.0\DAL.runtimeconfig.json
+c:\Users\pca140\Desktop\RMSProject\DAL\bin\Debug\net7.0\DAL.deps.json
+c:\Users\pca140\Desktop\RMSProject\DAL\bin\Debug\net7.0\DAL.runtimeconfig.json
 C:\Users\pca140\Desktop\RMSProject\DAL\bin\Debug\net7.0\DAL.dll
 C:\Users\pca140\Desktop\RMSProject\DAL\bin\Debug\net7.0\DAL.pdb
 C:\Users\pca140\Desktop\RMSProject\DAL\obj\Debug\net7.0\DAL.csproj.AssemblyReference.cache
@@ -10,5 +10,5 @@ C:\Users\pca140\Desktop\RMSProject\DAL\obj\Debug\net7.0\DAL.csproj.CoreCompileIn
 C:\Users\pca140\Desktop\RMSProject\DAL\obj\Debug\net7.0\DAL.dll
 C:\Users\pca140\Desktop\RMSProject\DAL\obj\Debug\net7.0\refint\DAL.dll
 C:\Users\pca140\Desktop\RMSProject\DAL\obj\Debug\net7.0\DAL.pdb
-C:\Users\pca140\Desktop\RMSProject\DAL\obj\Debug\net7.0\DAL.genruntimeconfig.cache
-C:\Users\pca140\Desktop\RMSProject\DAL\obj\Debug\net7.0\ref\DAL.dll
+c:\Users\pca140\Desktop\RMSProject\DAL\obj\Debug\net7.0\DAL.genruntimeconfig.cache
+c:\Users\pca140\Desktop\RMSProject\DAL\obj\Debug\net7.0\ref\DAL.dll

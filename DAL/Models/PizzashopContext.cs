@@ -1006,6 +1006,7 @@ public partial class PizzashopContext : DbContext
             entity.HasIndex(e => e.Email, "waiting_token_email_key").IsUnique();
 
             entity.Property(e => e.WaitingTokenId).HasColumnName("waiting_token_id");
+            entity.Property(e => e.SectionId).HasColumnName("section_id");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("now()")
                 .HasColumnType("timestamp without time zone")

@@ -64,15 +64,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     {
         options.Events = new JwtBearerEvents
         {
-            OnChallenge = context =>
-            {
-                if (!context.Handled)
-                {
-                    context.HandleResponse();
-                    context.Response.Redirect("/Home/Index");
-                }
-                return Task.CompletedTask;
-            },
+
             OnMessageReceived = context =>
             {
                 context.Token = context.Request.Cookies["jwtToken"];
@@ -89,26 +81,36 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                         var newTokenResponse = await RefreshAccessToken(refreshToken);
                         if (newTokenResponse != null)
                         {
-                            httpContext.Response.Cookies.Delete("jwtToken");
                             httpContext.Response.Cookies.Append("jwtToken", newTokenResponse.jwtToken, new CookieOptions
                             {
                                 HttpOnly = true,
                                 Secure = true,
-                                Expires = DateTime.UtcNow.AddHours(1)
-                            });
-                            httpContext.Response.Cookies.Delete("refreshToken");
-
-                            httpContext.Response.Cookies.Append("refreshToken", newTokenResponse.refreshToken, new CookieOptions
-                            {
-                                HttpOnly = true,
-                                Secure = true,
-                                Expires = newTokenResponse.expiryTime
+                                Expires = DateTime.UtcNow.AddDays(30)
                             });
                             httpContext.Response.Redirect(httpContext.Request.Path);
-
+                            return;
                         }
                     }
                 }
+                context.Response.Redirect("/Home/Index");
+                return ;
+            },
+            OnChallenge = context =>
+            {
+                var token = context.Request.Cookies["jwtToken"];
+                if (!context.Handled)
+                {
+                    context.HandleResponse();
+                    if (token != null)
+                    {
+                        context.Response.Redirect(context.Request.Path);
+                    }
+                    else
+                    {
+                        context.Response.Redirect("/Home/Index");
+                    }
+                }
+                return Task.CompletedTask;
             }
         };
         options.TokenValidationParameters = new TokenValidationParameters

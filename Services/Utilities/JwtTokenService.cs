@@ -62,18 +62,18 @@ public class JwtTokenService : IJwtService
     public TokenResponse RefreshToken(string refreshToken)
     {
         User user = _context.Users.FirstOrDefault(u => u.RefreshToken == refreshToken && u.IsActive == true);
-        string newRefreshToken = GenerateRefreshToken();
-        user.RefreshToken = newRefreshToken;
-        DateTime refreshTokenExpiryTime = user.RememberMe ?? false ? DateTime.UtcNow.AddDays(30) : DateTime.UtcNow.AddDays(7);
+        // string newRefreshToken = GenerateRefreshToken();
+        // user.RefreshToken = newRefreshToken;
+        // DateTime refreshTokenExpiryTime = user.RememberMe ?? false ? DateTime.UtcNow.AddDays(30) : DateTime.UtcNow.AddHours(1);
         var newjwtToken = GenerateToken(user.Email);
         
-        user.ExpiryTime = refreshTokenExpiryTime;
+        // user.ExpiryTime = refreshTokenExpiryTime;
         _context.SaveChanges();
         return new TokenResponse
         {
             jwtToken = newjwtToken,
-            refreshToken = newRefreshToken,
-            expiryTime = refreshTokenExpiryTime
+            // expiryTime = refreshTokenExpiryTime,
+            // refreshToken = newRefreshToken,
         };
 
     }

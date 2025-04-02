@@ -3,8 +3,8 @@ C:\Users\pca140\Desktop\RMSProject\PizzaShop\bin\Debug\net7.0\appsettings.Develo
 C:\Users\pca140\Desktop\RMSProject\PizzaShop\bin\Debug\net7.0\appsettings.json
 C:\Users\pca140\Desktop\RMSProject\PizzaShop\bin\Debug\net7.0\PizzaShop.staticwebassets.runtime.json
 C:\Users\pca140\Desktop\RMSProject\PizzaShop\bin\Debug\net7.0\PizzaShop.exe
-C:\Users\pca140\Desktop\RMSProject\PizzaShop\bin\Debug\net7.0\PizzaShop.deps.json
-C:\Users\pca140\Desktop\RMSProject\PizzaShop\bin\Debug\net7.0\PizzaShop.runtimeconfig.json
+c:\Users\pca140\Desktop\RMSProject\PizzaShop\bin\Debug\net7.0\PizzaShop.deps.json
+c:\Users\pca140\Desktop\RMSProject\PizzaShop\bin\Debug\net7.0\PizzaShop.runtimeconfig.json
 C:\Users\pca140\Desktop\RMSProject\PizzaShop\bin\Debug\net7.0\PizzaShop.dll
 C:\Users\pca140\Desktop\RMSProject\PizzaShop\bin\Debug\net7.0\PizzaShop.pdb
 C:\Users\pca140\Desktop\RMSProject\PizzaShop\bin\Debug\net7.0\Azure.Core.dll
@@ -321,9 +321,9 @@ C:\Users\pca140\Desktop\RMSProject\PizzaShop\obj\Debug\net7.0\staticwebassets.de
 C:\Users\pca140\Desktop\RMSProject\PizzaShop\obj\Debug\net7.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
 C:\Users\pca140\Desktop\RMSProject\PizzaShop\obj\Debug\net7.0\scopedcss\bundle\PizzaShop.styles.css
 C:\Users\pca140\Desktop\RMSProject\PizzaShop\obj\Debug\net7.0\scopedcss\projectbundle\PizzaShop.bundle.scp.css
-C:\Users\pca140\Desktop\RMSProject\PizzaShop\obj\Debug\net7.0\PizzaShop.csproj.CopyComplete
+c:\Users\pca140\Desktop\RMSProject\PizzaShop\obj\Debug\net7.0\PizzaShop.csproj.CopyComplete
 C:\Users\pca140\Desktop\RMSProject\PizzaShop\obj\Debug\net7.0\PizzaShop.dll
 C:\Users\pca140\Desktop\RMSProject\PizzaShop\obj\Debug\net7.0\refint\PizzaShop.dll
 C:\Users\pca140\Desktop\RMSProject\PizzaShop\obj\Debug\net7.0\PizzaShop.pdb
-C:\Users\pca140\Desktop\RMSProject\PizzaShop\obj\Debug\net7.0\PizzaShop.genruntimeconfig.cache
-C:\Users\pca140\Desktop\RMSProject\PizzaShop\obj\Debug\net7.0\ref\PizzaShop.dll
+c:\Users\pca140\Desktop\RMSProject\PizzaShop\obj\Debug\net7.0\PizzaShop.genruntimeconfig.cache
+c:\Users\pca140\Desktop\RMSProject\PizzaShop\obj\Debug\net7.0\ref\PizzaShop.dll

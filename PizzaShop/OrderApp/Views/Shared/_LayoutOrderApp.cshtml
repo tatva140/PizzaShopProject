@@ -27,7 +27,7 @@
                         style="font: 16px; height: 55px;background-color:white;">
                     <h4 style="color: white;">PIZZASHOP</h4>
                 </div>
-                <div class="navlist d-flex   align-items-center justify-content-end w-auto p-0 ">
+                <div class="navlinklist d-flex   align-items-center justify-content-end w-auto p-0 ">
                     <a class="btn me-2" style="border-radius:20px;color:white;border:1px solid white" data-path="/KOT" ><i
                             class="fa-solid fa-clipboard-list me-2"></i>KOT</a>
                     <a class="btn me-2" style="border-radius:20px;color:white;border:1px solid white" data-path="/WaitingToken" ><i
@@ -86,7 +86,7 @@
 
 
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/orderAppsite.js" asp-append-version="true"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
     <script>
@@ -99,27 +99,26 @@
                 }
             })
         });
-        let listlinks = document.querySelectorAll(".navlist a");
-        let currentUrl = window.location.pathname;
-        listlinks.forEach(link => {
-        let icons = link.querySelector("i");
-            let linkPath = link.dataset.path;
+         listlink = document.querySelectorAll(".navlinklist a");
+         currentUrl = window.location.pathname;
+        listlink.forEach(link => {
+         icons = link.querySelector("i");
+             linkPath = link.dataset.path;
             if (currentUrl.startsWith(linkPath)) {
                 link.classList.add("selectedTab");
-                icons.classList.add("selectedIcon");
+                icons?.classList.add("selectedIcon");
             } else {
                 link.classList.remove("selectedTab");
-                icons.classList.remove("selectedIcon");
+                icons?.classList.remove("selectedIcon");
             }
         })
 
         $(document).on('click', '.checkPermissions', function (e) {
-            let controller = $(this).data("controller");
-            let action = $(this).data("action");
-            let isModal = $(this).data("target");
-            let redirect = $(this).data("redirect");
-            console.log(controller);
-            console.log(action);
+             controller = $(this).data("controller");
+             action = $(this).data("action");
+             isModal = $(this).data("target");
+             redirect = $(this).data("redirect");
+            
             $.ajax({
                 url: `/${controller}/${action}`,
                 method: "GET",

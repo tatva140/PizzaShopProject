@@ -6,7 +6,7 @@ namespace Services.Interfaces;
 public interface IOrderAppTablesRepository
 {
     OrderAppTablesViewModel GetTablesAndSections(List<Section> sections);
-    WaitingTokenListViewModel WaitingTokenList();
+    WaitingTokenListViewModel WaitingTokenList(int id);
     OrderAppCustomerViewModel CustomerDetails(string email);
     OrderAppCustomerViewModel WaitingTokenCustomerDetails(string email);
     CustomErrorViewModel AssignTable(AssignCustomerTablesViewModel assignCustomerTablesViewModel);

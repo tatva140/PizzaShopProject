@@ -16,12 +16,16 @@
                 <tbody>
                     @foreach (var waitingToken in Model.waitingTokens)
                     {
-                        <input type="text" id="waitingTokenId" value="@waitingToken.WaitingTokenId" hidden>
+                        @if(Model.waitingTokens.Count==0){
+                            <div>No Records Found</div>
+                            return;
+                        }
+                        <input type="text" id="waitingTokenId" value="" hidden>
                         <tr>
                             <td>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                        id="flexRadioDefault1" onclick="fetchWaitingTokenCustomer('@waitingToken.Email')">
+                                    <input class="form-check-input radiobtn" type="radio" name="flexRadioDefault" 
+                                        id="flexRadioDefault1" onclick="fetchWaitingTokenCustomer('@waitingToken.Email',@waitingToken.WaitingTokenId)">
                                 </div>
                             </td>
                             <td>
