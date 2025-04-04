@@ -1,9 +1,7 @@
 @model DAL.ViewModels.OrderAppTablesViewModel;
 @{
     Layout = "~/OrderApp/Views/Shared/_LayoutOrderApp.cshtml";
-
     ViewData["HideLayout"] = "false";
-
 }
 <div class="cont p-3">
     <div class="row">
@@ -23,7 +21,6 @@
             </div>
         </div>
     </div>
-
     <div class="row ">
         <div class="accordion accordion-flush" id="accordionFlushExample">
             @foreach (var sec in Model.Sections)
@@ -48,8 +45,10 @@
                                             style="color: #74C0FC;"></i>@sec.Running</div>
                                     <button
                                         style="font-size: large;color:rgba(0, 102, 167, 1);background-color:white;border:1px solid rgba(0, 102, 167, 1);"
-                                        class="me-3 p-1" onclick="openWaitingTokenModel(@sec.SectionId,'@sec.SectionName')"><i class="fa-solid fa-plus me-2"
-                                            style="color:rgba(0, 102, 167, 1);" ></i>Waiting Token</button>
+                                        class="me-3 p-1"
+                                        onclick="openWaitingTokenModel(@sec.SectionId,'@sec.SectionName')"><i
+                                            class="fa-solid fa-plus me-2" style="color:rgba(0, 102, 167, 1);"></i>Waiting
+                                        Token</button>
                                 </div>
                             </div>
                         </div>
@@ -126,8 +125,6 @@
             }
         </div>
     </div>
-
-
 </div>
 <div class="modal fade modal-right" id="assignModal">
     <div class="modal-dialog modal-right">
@@ -157,7 +154,7 @@
         </div>
     </div>
 </div>
-<div class="modal " id="waitingTokenModal">
+<div class="modal" id="waitingTokenModal">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content  ">
             <div class="modal-header">
@@ -167,13 +164,13 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body text-center ms-3 me-3 mt-2 p-0">
-                <input type="text" id="sectionId" hidden>
-                
+                <input type="text" id="waitingTokensectionId" hidden>
+
                 <form id="waitingTokenForm">
                     <div id="waitingTokenCustDetails"></div>
                     <div class="modal-footer d-flex  align-items-center justify-content-end">
                         <button type="button" class="btn btn-primary align-items center"
-                            onclick="assignCustomerTable()">Save</button>
+                            onclick="addWaitingToken()">Save</button>
                         <button type="button" class="btn btn-light align-items center"
                             data-bs-dismiss="modal">Cancel</button>
                     </div>
@@ -197,9 +194,11 @@
         totalCapacity = [];
         waitingTokenId = 0;
         sectionId;
-        function tableselect(id, status, capacity,secId, e) {
-            if(secId!=sectionId){
-                for(let i=0;i<selectedTables.length;i++){
+        customerSectionId = 0;
+        customerSectionName = 0;
+        function tableselect(id, status, capacity, secId, e) {
+            if (secId != sectionId) {
+                for (let i = 0; i < selectedTables.length; i++) {
                     $(`#${selectedTables[i]}`).removeClass("selectedtable");
                 }
                 selectedTables = [];
@@ -213,7 +212,7 @@
                 } else {
                     selectedTables.push(id);
                     totalCapacity.push({ id: id, noOfPersons: capacity });
-                    sectionId=secId;
+                    sectionId = secId;
                     $(e).addClass("selectedtable");
                 }
             } else {
@@ -224,12 +223,14 @@
             if (selectedTables.length == 0) {
                 toastr.error("Select Atleast 1 table.");
             } else {
+                customerSectionId = id;
+                customerSectionName = sectionName;
                 $("#assignModal").modal("show");
                 document.getElementById("sectionId").value = id;
                 $.ajax({
                     url: "/Tables/WaitingTokenList",
                     type: "Get",
-                    data: {id:id},
+                    data: { id: id },
                     success: function (response) {
                         $("#waitingTokenList").html(response);
                     }
@@ -240,25 +241,24 @@
                     data: { email: "" },
                     success: function (response) {
                         $("#customerDetails").html(response);
-                        let sectionDropdown = document.getElementById("SectionsName");
-                        let option = document.createElement("option");
-                        option.value = sectionName;
-                        option.text = sectionName;
-                        sectionDropdown.disabled = true;
-                        sectionDropdown.add(option);
-                        sectionDropdown.value = sectionName;
-                        document.getElementById("NoOfPerson").value = 0;
+                        let sectionDropdown = document.querySelectorAll(".sectionsName");
+                        sectionDropdown.forEach(dropdown => {
+                            dropdown.disabled = true;
+                            let option = document.createElement("option");
+                            option.value = customerSectionId;
+                            option.text = customerSectionName;
+                            dropdown.add(option);
+                            dropdown.value = customerSectionId;
+                        });
+
                     }
                 });
 
             }
         }
-        function fetchCustomer() {
+        function fetchCustomer(e) {
             $(".radiobtn").prop("checked", false);
-            id = document.getElementById("sectionId").value;
-            console.log(id);
-            email = document.getElementById("Email").value;
-            sectionName = document.getElementById("sectionname").value;
+            email = e.target.value;
             waitingTokenId = 0;
             $.ajax({
                 url: "/Tables/CustomerDetails",
@@ -268,15 +268,15 @@
                     if (response.message != "Error") {
                         $("#customerDetails").html(response);
                         $("#waitingTokenCustDetails").html(response);
-                        let sectionDropdown = document.getElementById("SectionsName");
-                        let option = document.createElement("option");
-                        console.log(option);
-                        option.value = id;
-                        option.text = sectionName;
-                        sectionDropdown.disabled = true;
-                        sectionDropdown.add(option);
-                        sectionDropdown.value = sectionName;
-                        console.log(sectionDropdown);
+                        let sectionDropdown = document.querySelectorAll(".sectionsName");
+                        sectionDropdown.forEach(dropdown => {
+                            dropdown.disabled = true;
+                            let option = document.createElement("option");
+                            option.value = customerSectionId;
+                            option.text = customerSectionName;
+                            dropdown.add(option);
+                            dropdown.value = customerSectionId;
+                        });
                         document.getElementById("NoOfPerson").value = 0;
                     } else {
                         document.getElementById("Name").value = "";
@@ -288,9 +288,9 @@
             });
         }
         function fetchWaitingTokenCustomer(email, waitingToken) {
-            id = document.getElementById("sectionId").value;
+
             waitingTokenId = waitingToken;
-            sectionName = document.getElementById("sectionname").value;
+
             $.ajax({
                 url: "/Tables/WaitingTokenCustomerDetails",
                 type: "Get",
@@ -298,13 +298,15 @@
                 success: function (response) {
                     if (response.message != "Error") {
                         $("#customerDetails").html(response);
-                        let sectionDropdown = document.getElementById("SectionsName");
-                        let option = document.createElement("option");
-                        option.value = sectionName;
-                        option.text = sectionName;
-                        sectionDropdown.disabled = true;
-                        sectionDropdown.add(option);
-                        sectionDropdown.value = sectionName;
+                        let sectionDropdown = document.querySelectorAll(".sectionsName");
+                        sectionDropdown.forEach(dropdown => {
+                            dropdown.disabled = true;
+                            let option = document.createElement("option");
+                            option.value = customerSectionId;
+                            option.text = customerSectionName;
+                            dropdown.add(option);
+                            dropdown.value = customerSectionId;
+                        });
                     } else {
                         document.getElementById("Name").value = "";
                         document.getElementById("Phone").value = "";
@@ -316,14 +318,13 @@
         function assignCustomerTable() {
             sum = 0;
             id = document.getElementById("sectionId").value;
-            email = document.getElementById("Email").value;
-            name = document.getElementById("Name").value;
-            phone = document.getElementById("Phone").value;
-            noOfPersons = document.getElementById("NoOfPerson").value;
+            var formdata = new FormData($("#assignTableForm")[0]);
+            formdata.append("sectionId", id);
+            formdata.append("selectedTables",JSON.stringify(selectedTables));
             for (let i = 0; i < totalCapacity.length; i++) {
                 sum += totalCapacity[i].noOfPersons;
             }
-            if (sum < noOfPersons) {
+            if (sum < formdata.get("NoOfPersons")) {
                 toastr.error("NoOfPersons exceeds the table capacity.");
                 return;
             }
@@ -332,37 +333,65 @@
                 $.ajax({
                     url: "/Tables/AssignTable",
                     type: "POST",
-                    contentType: "application/json",
-                    data: JSON.stringify({ email: email, name: name, phone: phone, noOfPersons: noOfPersons, sectionId: id, selectedTables: selectedTables, waitingTokenId: waitingTokenId }),
+                    contentType:false,
+                    processData:false,
+                    data:formdata,
                     success: function (response) {
-                        if (response.status == true) {
+                            if(response.message="Added"){
                             window.location.href = "/Tables";
-                        } else {
-                            toastr.error(response.message);
-                        }
+                            }
                     }
                 });
             }
         }
-        function openWaitingTokenModel(id,sectionName){
-            console.log("here");
-             $("#waitingTokenModal").modal("show");
-                document.getElementById("sectionId").value = id;
-                $.ajax({
-                    url: "/Tables/CustomerDetails",
-                    type: "Get",
-                    data: { email: "" },
-                    success: function (response) {
-                        $("#waitingTokenCustDetails").html(response);
-                        let sectionDropdown = document.getElementById("SectionsName");
+        function openWaitingTokenModel(id, sectionName) {
+            customerSectionId = id;
+            customerSectionName = sectionName;
+            $("#waitingTokenModal").modal("show");
+            document.getElementById("waitingTokensectionId").value = id;
+            $.ajax({
+                url: "/Tables/CustomerDetails",
+                type: "Get",
+                data: { email: "" },
+                success: function (response) {
+                    $("#waitingTokenCustDetails").html(response);
+                    let sectionDropdown = document.querySelectorAll(".sectionsName");
+                    sectionDropdown.forEach(dropdown => {
+                        dropdown.disabled = true;
                         let option = document.createElement("option");
-                        option.value = id;
-                        option.text = sectionName;
-                        sectionDropdown.disabled = true;
-                        sectionDropdown.add(option);
-                        sectionDropdown.value = id;
+                        option.value = customerSectionId;
+                        option.text = customerSectionName;
+                        dropdown.add(option);
+                        dropdown.value = customerSectionId;
+                    });
+
+                }
+            });
+        }
+        function addWaitingToken() {
+            id = document.getElementById("waitingTokensectionId").value;
+
+            var formdata = new FormData($("#waitingTokenForm")[0]);
+            formdata.append("sectionId", id);
+
+            if ($("#waitingTokenForm").valid()) {
+                $.ajax({
+                    url: '/Tables/AddWaitingToken',
+                    type: "POST",
+                    contentType: false,
+                    processData: false,
+                    data: formdata,
+                    success: function (response) {
+                        if (response.status == false) {
+                            toastr.error(response.message);
+                        } else {
+                            toastr.success(response.message);
+                        }
+                        $(".modal").modal("hide");
                     }
                 });
+            }
+
         }
     </script>
 }

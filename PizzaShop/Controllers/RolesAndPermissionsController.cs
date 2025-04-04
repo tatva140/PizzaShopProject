@@ -1,5 +1,6 @@
 using DAL.Models;
 using DAL.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -7,6 +8,7 @@ using Services.Service;
 
 namespace PizzaShop.Controllers;
 
+[Authorize]
 public class RolesAndPermissionsController:Controller
 {
     private readonly UserService _userService;
@@ -20,13 +22,15 @@ public class RolesAndPermissionsController:Controller
    
     public ActionResult Index()
     {
-        List<Role> roles= _userService.GetRoles().ToList();
+        List<Role> roles= _userService.GetRoles("").ToList();
         return View(roles);
     }
     public ActionResult Permissions(int id)
     {
-        PermissionsViewModel permissions= _rolesAndPermissionsServices.GetPermissions(id);
+        string token=HttpContext.Request.Cookies["jwtToken"];
 
+        PermissionsViewModel permissions= _rolesAndPermissionsServices.GetPermissions(id,token);
+        
         return View(permissions);
     }
 

@@ -3,9 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using Services.Service;
 using Services.Utilities;
 using DAL.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 namespace PizzaShop.Controllers;
 
-
+[Authorize]
 public class UserController : Controller
 {
 
@@ -24,17 +25,17 @@ public class UserController : Controller
         _emailSettings = emailSettings;
         _fileUploads = fileUploads;
     }
-    [PermissionsAtrribute("User", "CanAddEdit")]
+    [PermissionsAtrribute("Users", "CanAddEdit")]
     public ActionResult AddEdit()
     {
         return Ok();
     }
-    [PermissionsAtrribute("User", "CanDelete")]
+    [PermissionsAtrribute("Users", "CanDelete")]
     public ActionResult Delete()
     {
         return Ok();
     }
-    [PermissionsAtrribute("User", "CanView")]
+    [PermissionsAtrribute("Users", "CanView")]
     public ActionResult ViewPermission()
     {
         return Ok();
@@ -122,7 +123,8 @@ public class UserController : Controller
     }
     public ActionResult GetRoles()
     {
-        List<Role> roles = _userService.GetRoles();
+        string token=HttpContext.Request.Cookies["jwtToken"];
+        List<Role> roles = _userService.GetRoles(token);
         return Json(roles);
     }
 

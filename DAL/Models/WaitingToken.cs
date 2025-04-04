@@ -14,6 +14,8 @@ public partial class WaitingToken
     public string Email { get; set; } = null!;
 
     public int? NoOfPersons { get; set; }
+    public string? Phone { get; set; }
+
 
     public bool? IsActive { get; set; }
 

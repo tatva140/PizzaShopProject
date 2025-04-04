@@ -4,16 +4,16 @@
     <div class="d-flex align-items-center justify-content-end p-2">
         <div class=" ms-2 " style="position:relative; ">
             <form id="itemsearchForm" class="d-flex position-relative me-2">
-                <input class="form-control fs-6 form-control-lg " type="text" aria-label="Search" placeholder="Search"
+                <input class="form-control  " type="text" aria-label="Search" placeholder="Search"
                     id="itemsearch" name="search" value="@ViewBag.ItemSearch">
                 <button type="button" class="position-absolute  btn btn-link"
-                    style="margin:auto;top:3px;transition:transformY(140%);right:10px;"
+                    style="margin:auto;transition:transformY(140%);right:8px;"
                     onclick="fetch(@Model.PageNumber,@Model.PageSize,@Model.TotalPages)"><i
                         class="fa-solid fa-search"></i></button>
             </form>
         </div>
-        <button class=" me-2 " data-bs-toggle="modal" data-bs-target="#deleteItems"
-            style="background-color: white; border-radius: 5px;"><i class="fa fa-trash"></i></button>
+        <button class="btn btn-light  me-2 " data-bs-toggle="modal" data-bs-target="#deleteItems"
+            style="background-color: white;border:1.5px solid black;"><i class="fa fa-trash" style="font-size: 16px;"></i></button>
         <button class="addItem btn btn-primary " data-bs-toggle="modal" data-bs-target="#addItem"
             onclick="showModifierGroups()">+ New Item</button>
     </div>
@@ -41,7 +41,7 @@
             @foreach (var item in Model.items)
             {
                 <input type="=" text hidden id="categoryItemId" value="@item.CategoryId">
-                <tr class="check" data-id="@item.ItemId">
+                <tr  data-id="@item.ItemId">
                     <td>
                         <div class="form-check">
                             <input class="form-check-input individualCheck" type="checkbox" value="">

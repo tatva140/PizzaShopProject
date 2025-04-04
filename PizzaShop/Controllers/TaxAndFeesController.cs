@@ -1,10 +1,12 @@
 using DAL.Models;
 using DAL.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Service;
 
 namespace PizzaShop.Controllers;
 
+[Authorize]
 public class TaxAndFeesController : Controller
 {
     private readonly TaxAndFeesService _taxAndFeesService;

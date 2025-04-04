@@ -1,0 +1,54 @@
+@model DAL.ViewModels.OrderAppKOTViewModel;
+@{
+    Layout = "~/OrderApp/Views/Shared/_LayoutOrderApp.cshtml";
+    ViewData["HideLayout"] = "false";
+}
+<div class="cont p-3">
+    <div class="row">
+        <h1 style="color: rgba(0, 102, 167, 1);">KOT</h1>
+    </div>
+    <div class="row bg-white ms-1 shadow">
+        <div class="ms-3 mt-2 mb-2">
+            <nav>
+                <div class="nav nav-tabs" role="tablist">
+                    @foreach (var categories in Model.categories)
+                    {
+                        <button class="nav-link " data-bs-toggle="tab" data-bs-target="#nav-home" type="button"
+                            role="tab" aria-controls="nav-home" aria-selected="true" onclick="getOrders(@categories.CategoryId,'@categories.Name')">@categories.Name</button>
+                    }
+                </div>
+            </nav>
+        </div>
+    </div>
+
+ <div id="renderOrders"></div>
+</div>
+</div>
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script>
+         @* $(document).ready(function () {
+            $.ajax({
+                url: "@Url.Action("GetOrders", "KOT")",
+                method: "GET",
+                success: function (response) {
+                    $("#renderOrders").html(response);
+                }
+            });
+        }); *@
+        function getOrders(categoryId, categoryName) {
+            $.ajax({
+                url: "@Url.Action("GetOrders", "KOT")",
+                type: "GET",
+                data: { categoryId: categoryId },
+                success: function (response) {
+                    $("#renderOrders").html(response);
+                }
+            });
+        }
+    </script>
+}

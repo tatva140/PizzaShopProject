@@ -10,4 +10,6 @@ public class PermissionsViewModel
 
     public int RoleId {get;set;}
 
+    public string CurrUserRole {get;set;}
+
 }

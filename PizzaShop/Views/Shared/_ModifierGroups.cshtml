@@ -1,51 +1,47 @@
 @model DAL.ViewModels.MenuModifiersViewModel;
 
 <div class="row mt-3 ms-1 ">
-    <div class="row mt-3 mb-3" id="categoryaccordian">
-        <div class=" col p-0">
-            <div class="accordion accordion-flush mt-md-2 mt-0 shadow rounded-lg " id="accordionFlushExample">
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="flush-headingOne">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne"
-                            style="color:rgb(30, 151, 231);font-weight: 700; font-size: 25px;">
-                            Modifier Group
-                        </button>
-                    </h2>
-                    <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
-                        data-bs-parent="#accordionFlushExample">
-                        <div class="accordion-body ">
-                            <div class="text-end">
-                                <button class="me-3" id="add" data-bs-toggle="modal" data-bs-target="#addModifierGroup"
-                                    style=" color: rgb(30, 151, 231); border: 2px solid rgb(30, 151, 231);background-color: rgb(250, 250, 250); "><i
-                                        class="fa-regular fa-plus me-2"></i>Add Modifier Group</button>
-                            </div>
-                            <ul class="modifierLinks overflow-auto mt-2 p-0" style="max-height: 500px;">
-                                @foreach (var mg in Model.modifierGroups)
-                                {
-                                    <a onclick="fetchModifiers(@mg.ModifierGroupId)"
-                                        class="@($"mlist{@mg.ModifierGroupId}")">
-                                        <li style="list-style: none;">
-                                            <div class="d-flex align-items-center justify-content-between actionshover">
-                                                <div class="d-flex align-items-center justify-content-center mt-3">
-                                                    <i class="fa-solid fa-table me-2"></i>
-                                                    <div>@mg.ModifierGroupName</div>
-                                                </div>
-                                                <div
-                                                    class="d-flex align-items-center justify-content-end me-2 actions mt-3">
-                                                    <i class="fa-solid fa-pen me-3 ms-3" style="cursor: pointer; "
-                                                        data-bs-toggle="modal" data-bs-target="#editModifierGroup"
-                                                        onclick="setEditId(@mg.ModifierGroupId)"></i>
-                                                    <i class="fa-solid fa-trash" style="cursor: pointer;"
-                                                        data-bs-toggle="modal" data-bs-target="#deleteModifierGroup"
-                                                        onclick="delId(@mg.ModifierGroupId)"></i>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </a>
-                                }
-                            </ul>
+    <div class=" col-12 p-0 mb-2" id="categoryaccordian">
+        <div class="accordion accordion-flush mt-md-2 mt-0 shadow rounded-lg " id="accordionFlushExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingOne">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne"
+                        style="color:rgb(30, 151, 231);font-weight: 700; font-size: 25px;">
+                        Modifier Group
+                    </button>
+                </h2>
+                <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
+                    data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body ">
+                        <div class="text-end">
+                            <button class="me-3" id="add" data-bs-toggle="modal" data-bs-target="#addModifierGroup"
+                                style=" color: rgb(30, 151, 231); border: 2px solid rgb(30, 151, 231);background-color: rgb(250, 250, 250); "><i
+                                    class="fa-regular fa-plus me-2"></i>Add Modifier Group</button>
                         </div>
+                        <ul class="modifierLinks overflow-auto mt-2 p-0" style="max-height: 500px;">
+                            @foreach (var mg in Model.modifierGroups)
+                            {
+                                <a onclick="fetchModifiers(@mg.ModifierGroupId)" class="@($"mlist{@mg.ModifierGroupId}")">
+                                    <li style="list-style: none;">
+                                        <div class="d-flex align-items-center justify-content-between actionshover">
+                                            <div class="d-flex align-items-center justify-content-center mt-3">
+                                                <i class="fa-solid fa-table me-2"></i>
+                                                <div>@mg.ModifierGroupName</div>
+                                            </div>
+                                            <div class="d-flex align-items-center justify-content-end me-2 actions mt-3">
+                                                <i class="fa-solid fa-pen me-3 ms-3" style="cursor: pointer; "
+                                                    data-bs-toggle="modal" data-bs-target="#editModifierGroup"
+                                                    onclick="setEditId(@mg.ModifierGroupId)"></i>
+                                                <i class="fa-solid fa-trash" style="cursor: pointer;" data-bs-toggle="modal"
+                                                    data-bs-target="#deleteModifierGroup"
+                                                    onclick="delId(@mg.ModifierGroupId)"></i>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </a>
+                            }
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -84,15 +80,15 @@
         </ul>
     </div>
     <div class="col border bg-white shadow rounded-lg">
-        <div class="row">
-            <div class="col  p-2  ">
-                <div class="d-flex align-items-center justify-content-between p-2">
-                    <div style="color: rgb(30, 151, 231); font-weight: 700; font-size: 25px; ">Modifiers
-                    </div>
-                    <button class="addItembtn btn btn-primary " data-bs-toggle="modal" data-bs-target="#addModifier">+
-                        New
-                        Modifier</button>
+        <div class="row p-2">
+            <div class="col-md-6 ">
+                <div style="color: rgb(30, 151, 231); font-weight: 700; font-size: 25px; ">Modifiers
                 </div>
+            </div>
+            <div class="col-md-6">
+                <button class="addItembtn btn btn-primary " data-bs-toggle="modal" data-bs-target="#addModifier">+
+                    New
+                    Modifier</button>
             </div>
         </div>
         <div id="rendermodifiers"></div>
@@ -265,19 +261,47 @@
                 $("#renderModifierTable").html(response);
             }
         });
-        $("tbody tr").each(function () {
-            let row = $(this);
-            let existingSelection = selectedItems.includes(row.data("id"));
-            let isSelected = row.find(".individual");
-            if (existingSelection) {
-                isSelected.prop("checked", true);
-            } else {
-                isSelected.prop("checked", false);
-            }
-
-        });
+        setTimeout(function () {
+            checkSelected = document.querySelectorAll(".check");
+            $(checkSelected).each(function (i, ele) {
+                let row = $(this);
+                let existingSelection = selectedItems.some(s => s.id == row.data("id"));
+                let isSelected = row.find(".individual");
+                if (existingSelection) {
+                    isSelected.prop("checked", true);
+                } else {
+                    isSelected.prop("checked", false);
+                }
+            });
+        }, 50);
     }
-
+    function allModifier(pageNumber, pageSize, totalPages) {
+        let selectedPage = $("#pageSizeTable").val();
+        if (@Model.modifier.Count> 0) {
+            $.ajax({
+                url: "/Menu/ModifierTable",
+                type: "GET",
+                data: { pageNumber: pageNumber, pageSize: pageSize, selectedPage: selectedPage },
+                success: function (response) {
+                    $("#renderModifierTable").html(response);
+                    $("#pageSizeTable").val(selectedPage);
+                }
+            });
+            setTimeout(function () {
+                checkSelected = document.querySelectorAll(".check");
+                $(checkSelected).each(function (i, ele) {
+                    let row = $(this);
+                    let existingSelection = selectedItems.some(s => s.id == row.data("id"));
+                    let isSelected = row.find(".individual");
+                    if (existingSelection) {
+                        isSelected.prop("checked", true);
+                    } else {
+                        isSelected.prop("checked", false);
+                    }
+                });
+            }, 50);
+        }
+    }
     selectedItems = [];
     function saveExistingModifiers(flag) {
         //0-edit,1-add
@@ -314,11 +338,25 @@
             modifierDiv.appendChild(chip);
         })
     }
-    function removeChip(ele) {
-        let chip = ele.parentElement;
-        let id = chip.getAttribute("id");
-        selectedItems = selectedItems.filter(item => item.id != id);
-        chip.remove();
+    function removeChip(ele, state = "chips") {
+        if (state == "checkbox") {
+            if (ele.checked == false) {
+                let id = ele.dataset.id;
+                let chip = document.querySelector(`.chip[id="${id}"]`);
+                if(chip == null) {
+                    return;
+                }
+                selectedItems = selectedItems.filter(item => item.id != id);
+                chip.remove();
+            }
+        }
+        else if (state == "chips") {
+            let chip = ele.parentElement;
+            let id = chip.getAttribute("id");
+            selectedItems = selectedItems.filter(item => item.id != id);
+            chip.remove();
+        }
+
     }
 
     function addModifierGroup() {

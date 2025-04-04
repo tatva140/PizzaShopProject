@@ -1,11 +1,13 @@
 using System.Text.Json.Nodes;
 using DAL.Models;
 using DAL.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Service;
 
 namespace PizzaShop.Controllers;
 
+[Authorize]
 public class TablesAndSectionsController : Controller
 {
     private readonly TableAndSectionService _tableAndSectionService;

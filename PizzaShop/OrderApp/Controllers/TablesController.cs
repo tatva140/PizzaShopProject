@@ -22,17 +22,20 @@ public class TablesController : Controller
     }
     public IActionResult Index()
     {
+        ViewData["Icon"] = "false";
         List<Section> sections = _tableAndSectionService.GetSections();
         OrderAppTablesViewModel orderAppTablesViewModels = _orderAppTablesService.GetTablesAndSections(sections);
         return View("~/OrderApp/Views/Tables/Index.cshtml", orderAppTablesViewModels);
     }
     public IActionResult WaitingTokenList(int id)
     {
+        ViewData["Icon"] = "false";
         WaitingTokenListViewModel waitingTokenListViewModels = _orderAppTablesService.WaitingTokenList(id);
         return View("~/OrderApp/Views/Shared/WaitingTokenListView.cshtml", waitingTokenListViewModels);
     }
     public IActionResult CustomerDetails(string email)
     {
+        ViewData["Icon"] = "false";
         OrderAppCustomerViewModel orderAppCustomerViewModel = new OrderAppCustomerViewModel();
         if (email != null)
         {
@@ -50,6 +53,7 @@ public class TablesController : Controller
     }
     public IActionResult WaitingTokenCustomerDetails(string email)
     {
+        ViewData["Icon"] = "false";
         OrderAppCustomerViewModel orderAppCustomerViewModel = _orderAppTablesService.WaitingTokenCustomerDetails(email);
         if (orderAppCustomerViewModel == null)
         {
@@ -60,19 +64,24 @@ public class TablesController : Controller
     }
 
     [HttpPost]
-    public IActionResult AssignTable([FromBody] JsonObject obj)
+    public IActionResult AssignTable(OrderAppCustomerViewModel orderAppCustomerViewModel , string selectedTables)
     {
-        string data = obj.ToJsonString();
-        AssignCustomerTablesViewModel assignCustomerTablesViewModel = JsonConvert.DeserializeObject<AssignCustomerTablesViewModel>(data);
-        CustomErrorViewModel added = _orderAppTablesService.AssignTable(assignCustomerTablesViewModel);
-        if (added.Status == false)
-        {
-            TempData["error"] = added.Message;
+        ViewData["Icon"] = "false";
+        List<int> selectedTables1 = JsonConvert.DeserializeObject<List<int>>(selectedTables);
+        orderAppCustomerViewModel.selectedTables=selectedTables1;
+        CustomErrorViewModel added = _orderAppTablesService.AssignTable(orderAppCustomerViewModel);
+        if(added.Status==false){
+            TempData["error"]=added.Message;
+        }else{
+            TempData["success"]=added.Message;
         }
-        else
-        {
-            TempData["success"] = added.Message;
-        }
-        return Ok(new { message = added.Message, added.Status });
+        return Ok(new { message = "Added" });
+    }
+    [HttpPost]
+    public IActionResult AddWaitingToken(OrderAppCustomerViewModel orderAppCustomerViewModel)
+    {
+        ViewData["Icon"] = "false";
+        CustomErrorViewModel added = _orderAppTablesService.AddWaitingToken(orderAppCustomerViewModel);
+        return Ok(new { message = added.Message, added.Status  });
     }
 }

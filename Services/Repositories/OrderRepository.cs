@@ -33,7 +33,11 @@ public class OrderRepository : IOrderRepository
         }
         if (time != null)
         {
-            query = query.Where(m => m.CreatedAt.ToString().Contains(time == "7" ? DateTime.Now.AddDays(-7).ToString() : time == "30" ? DateTime.Now.AddDays(-30).ToString() : DateTime.Now.AddDays(-365).ToString()));
+             query = query.Where(m => time == "7" ? m.CreatedAt.Value.Date >= DateTime.Now.Date.AddDays(-7): 
+                                      time == "30" ? m.CreatedAt.Value.Date >= DateTime.Now.Date.AddDays(-30) : 
+                                      time == "today" ? m.CreatedAt.Value.Date == DateTime.Now.Date : 
+                                      time == "CurrMonth" ? m.CreatedAt.Value.Month == DateTime.Now.Month && m.CreatedAt.Value.Year == DateTime.Now.Year : 
+                                      m.CreatedAt.Value.Date >= DateTime.Now.Date.AddDays(-365).ToUniversalTime());
         }
 
 

@@ -9,5 +9,6 @@ public interface IOrderAppTablesRepository
     WaitingTokenListViewModel WaitingTokenList(int id);
     OrderAppCustomerViewModel CustomerDetails(string email);
     OrderAppCustomerViewModel WaitingTokenCustomerDetails(string email);
-    CustomErrorViewModel AssignTable(AssignCustomerTablesViewModel assignCustomerTablesViewModel);
+    CustomErrorViewModel AssignTable(OrderAppCustomerViewModel orderAppCustomerViewModel);
+    CustomErrorViewModel AddWaitingToken(OrderAppCustomerViewModel orderAppCustomerViewModel);
 }

@@ -7,23 +7,26 @@
 
 <div class="content p-3" id="content">
     <div class="row ">
-      <div class="col-md-6 p-0  ">
-          <h1  style="color: rgb(30, 151, 231);font-weight: 600;">Users</h1>
-      </div>
+     <div class="col-md-2 p-0  ">
+            <h1 style="color: rgba(0, 102, 167, 1);">Users</h1>
+        </div>
       
-      <div class="col-md-6 text-end p-0 ">
-        <div class="d-flex align-items-center justify-content-md-end justify-content-start">
-         <div class=" ms-2 " style="position:relative; ">
-            <form id="searchForm" class="d-flex position-relative me-2">
-              <input class="form-control fs-6 form-control-lg " type="text" aria-label="Search"
+      <div class="col-md-10 text-end p-0">
+        <div class="row d-flex align-items-center justify-content-md-end justify-content-start">
+          <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 mt-2">
+         <div class="" style="position:relative; ">
+            <form id="searchForm" class="d-flex position-relative ">
+              <input class="form-control " type="text" aria-label="Search"
                   placeholder="Search" id="search" name="search" value="@ViewBag.Search">
               <button type="submit" class="position-absolute  btn btn-link" style="margin:auto;top:3px;transition:transformY(140%);right:10px;" onclick="fetchSearchedUser()"><i
                   class="fa-solid fa-search"></i></button>
             </form>
         </div>
+        </div>
+      <div class="col-auto  mt-2 p=0">
      
         <a class="btn btn-primary " asp-action="AddUser" asp-controller="User" style="background-color: rgba(9, 9, 172, 0.692);color:white">+ Add User</a>
-
+</div>
       </div>
       </div>
     </div>
@@ -66,7 +69,7 @@
             <td>
               <div class="d-flex align-items-center "> 
                <a asp-action="EditUsers" asp-controller="User" asp-route-email="@user.Email" asp-route-pageNumber="@ViewBag.PageNumber" asp-route-pageSize="@ViewBag.PageSize"><i class="fa-solid fa-pen me-3 ms-3" style="cursor: pointer;"></i></a>
-                  <i class="fa-solid fa-trash" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="setDeleteId(@user.UserId)"></i></div>
+                  <i class="fa-solid fa-trash" style="cursor: pointer;"  onclick="setDeleteId(@user.UserId,'@user.RoleName')"></i></div>
             </td> 
           </tr>
             }
@@ -121,9 +124,15 @@
   </div>
 @section Scripts {
   <script>
-    function setDeleteId(id)
+    function setDeleteId(id,roleName)
     {
+      if(roleName=="Admin"){
+        toastr.error("Cannot delete Admin");
+      }else{
+        $("#deleteModal").show();
       document.getElementById("deleteForm").action='@Url.Action("DeleteUser","User")' + '?id=' + id +'&pageNumber=' + @ViewBag.PageNumber + '&pageSize=' + @ViewBag.PageSize;
+
+      }
     }
     function submitForm()
     {

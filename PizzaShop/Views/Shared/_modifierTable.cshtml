@@ -21,9 +21,9 @@
             <tr class="check" data-id="@m.ModifierId" data-name="@m.ModifierName">
                 <td>
                     <div class="form-check">
-                        <input class="form-check-input individual" type="checkbox" data-id="@m.ModifierId">
-                        <label class="form-check-label ms-2" for="flexCheckDefault">
-                            <div style="word-wrap: break-word;">@m.ModifierName
+                        <input class="form-check-input individual" type="checkbox" data-id="@m.ModifierId" onchange="removeChip(this,'checkbox')">
+                        <label class="form-check-label ms-2" for="flexCheckDefault" >
+                            <div style="word-wrap: break-word;">@m.ModifierName 
                             </div>
                         </label>
                     </div>
@@ -84,19 +84,6 @@
             $(".all").prop("checked", false);
         }
     })
-    function allModifier(pageNumber, pageSize, totalPages) {
-        let selectedPage = $("#pageSizeTable").val();
-        if (@Model.modifier.Count> 0) {
-            $.ajax({
-                url: "/Menu/ModifierTable",
-                type: "GET",
-                data: {  pageNumber: pageNumber, pageSize: pageSize, selectedPage: selectedPage },
-                success: function (response) {
-                    $("#renderModifierTable").html(response);
-                    $("#pageSizeTable").val(selectedPage);
-                }
-            });
-        }
-    }
+   
     
 </script>

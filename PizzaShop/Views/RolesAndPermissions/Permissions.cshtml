@@ -75,8 +75,15 @@
     <script>
       let parentCheckbox=document.querySelector(".allChecked");
       let checkboxes=document.querySelectorAll(".isSelected");
-
-      parentCheckbox.addEventListener("change",function(){
+      currRole='@Model.CurrUserRole';
+      Role='@Model.RoleName';
+      parentCheckbox.addEventListener("change",function(){  
+        if(currRole.trim() === 'Account Manager'.trim() && Role.trim() === 'Admin'.trim())
+        {
+          toastr.error("You cannot change the permissions of this role");
+          parentCheckbox.checked=false;
+          return;
+        }
         let isChecked=this.checked;
         checkboxes.forEach(i=>{
             i.checked=isChecked;
@@ -85,6 +92,12 @@
       
       checkboxes.forEach(function(i){
       i.addEventListener("change",function(){
+        if(currRole.trim() === 'Account Manager'.trim() && Role.trim() === 'Admin'.trim())
+        {
+          toastr.error("You cannot change the permissions of this role");
+          i.checked=false;
+          return;
+        }
         let allChecked=true;
         checkboxes.forEach(i=>{
             if(!i.checked)

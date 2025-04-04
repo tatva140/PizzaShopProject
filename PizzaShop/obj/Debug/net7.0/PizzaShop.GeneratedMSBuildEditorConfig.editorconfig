@@ -9,193 +9,201 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = PizzaShop
 build_property.RootNamespace = PizzaShop
-build_property.ProjectDir = c:\Users\pca140\Desktop\RMSProject\PizzaShop\
+build_property.ProjectDir = C:\Users\pca140\Desktop\RMSProject\PizzaShop\
 build_property.RazorLangVersion = 7.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = c:\Users\pca140\Desktop\RMSProject\PizzaShop
+build_property.MSBuildProjectDirectory = C:\Users\pca140\Desktop\RMSProject\PizzaShop
 build_property._RazorSourceGeneratorDebug = 
 
-[c:/Users/pca140/Desktop/RMSProject/PizzaShop/OrderApp/Views/Shared/CustomerDetails.cshtml]
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/OrderApp/Views/KOT/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = T3JkZXJBcHBcVmlld3NcS09UXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/OrderApp/Views/Shared/CustomerDetails.cshtml]
 build_metadata.AdditionalFiles.TargetPath = T3JkZXJBcHBcVmlld3NcU2hhcmVkXEN1c3RvbWVyRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/pca140/Desktop/RMSProject/PizzaShop/OrderApp/Views/Shared/WaitingTokenListView.cshtml]
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/OrderApp/Views/Shared/KOTOrders.cshtml]
+build_metadata.AdditionalFiles.TargetPath = T3JkZXJBcHBcVmlld3NcU2hhcmVkXEtPVE9yZGVycy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/OrderApp/Views/Shared/WaitingTokenListView.cshtml]
 build_metadata.AdditionalFiles.TargetPath = T3JkZXJBcHBcVmlld3NcU2hhcmVkXFdhaXRpbmdUb2tlbkxpc3RWaWV3LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/pca140/Desktop/RMSProject/PizzaShop/OrderApp/Views/Shared/_LayoutOrderApp.cshtml]
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/OrderApp/Views/Shared/_LayoutOrderApp.cshtml]
 build_metadata.AdditionalFiles.TargetPath = T3JkZXJBcHBcVmlld3NcU2hhcmVkXF9MYXlvdXRPcmRlckFwcC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/pca140/Desktop/RMSProject/PizzaShop/OrderApp/Views/Shared/_Notification.cshtml]
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/OrderApp/Views/Shared/_Notification.cshtml]
 build_metadata.AdditionalFiles.TargetPath = T3JkZXJBcHBcVmlld3NcU2hhcmVkXF9Ob3RpZmljYXRpb24uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/pca140/Desktop/RMSProject/PizzaShop/OrderApp/Views/Shared/_ValidationScriptsPartial.cshtml]
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/OrderApp/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = T3JkZXJBcHBcVmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/pca140/Desktop/RMSProject/PizzaShop/OrderApp/Views/Tables/Index.cshtml]
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/OrderApp/Views/Tables/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = T3JkZXJBcHBcVmlld3NcVGFibGVzXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/pca140/Desktop/RMSProject/PizzaShop/OrderApp/Views/_ViewImports.cshtml]
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/OrderApp/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = T3JkZXJBcHBcVmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/pca140/Desktop/RMSProject/PizzaShop/OrderApp/Views/_ViewStart.cshtml]
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/OrderApp/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = T3JkZXJBcHBcVmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Customer/Index.cshtml]
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Customer/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VzdG9tZXJcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Dashboard/ChangePassword.cshtml]
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Dashboard/ChangePassword.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGFzaGJvYXJkXENoYW5nZVBhc3N3b3JkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Dashboard/Index.cshtml]
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Dashboard/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGFzaGJvYXJkXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Dashboard/UserProfile.cshtml]
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Dashboard/UserProfile.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGFzaGJvYXJkXFVzZXJQcm9maWxlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Home/ForgotPassword.cshtml]
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Home/ForgotPassword.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxGb3Jnb3RQYXNzd29yZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Home/Index.cshtml]
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Home/Privacy.cshtml]
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Home/ResetPassword.cshtml]
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Home/ResetPassword.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxSZXNldFBhc3N3b3JkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Menu/Index.cshtml]
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Menu/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVudVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Order/Index.cshtml]
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Order/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Order/OrderDetails.cshtml]
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Order/OrderDetails.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJcT3JkZXJEZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Order/OrderPdf.cshtml]
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Order/OrderPdf.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJcT3JkZXJQZGYuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/RolesAndPermissions/Index.cshtml]
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/RolesAndPermissions/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9sZXNBbmRQZXJtaXNzaW9uc1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/RolesAndPermissions/Permissions.cshtml]
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/RolesAndPermissions/Permissions.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9sZXNBbmRQZXJtaXNzaW9uc1xQZXJtaXNzaW9ucy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Shared/Error.cshtml]
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Shared/_Customer.cshtml]
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Shared/_Customer.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9DdXN0b21lci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Shared/_EditItemModal.cshtml]
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Shared/_EditItemModal.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9FZGl0SXRlbU1vZGFsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Shared/_items.cshtml]
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Shared/_items.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9pdGVtcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Shared/_MenuItems.cshtml]
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Shared/_MenuItems.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9NZW51SXRlbXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Shared/_ModifierGroups.cshtml]
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Shared/_ModifierGroups.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Nb2RpZmllckdyb3Vwcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Shared/_Modifiers.cshtml]
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Shared/_Modifiers.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Nb2RpZmllcnMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Shared/_modifierTable.cshtml]
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Shared/_modifierTable.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9tb2RpZmllclRhYmxlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Shared/_Notification.cshtml]
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Shared/_Notification.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Ob3RpZmljYXRpb24uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Shared/_Order.cshtml]
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Shared/_Order.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9PcmRlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Shared/_PageNotFound.cshtml]
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Shared/_PageNotFound.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9QYWdlTm90Rm91bmQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Shared/_Sections.cshtml]
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Shared/_Sections.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9TZWN0aW9ucy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Shared/_Tables.cshtml]
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Shared/_Tables.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9UYWJsZXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Shared/_TaxAndFees.cshtml]
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Shared/_TaxAndFees.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9UYXhBbmRGZWVzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Shared/_UserInfo.cshtml]
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Shared/_UserInfo.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Vc2VySW5mby5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Shared/_ValidationScriptsPartial.cshtml]
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/TablesAndSections/Index.cshtml]
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/TablesAndSections/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFibGVzQW5kU2VjdGlvbnNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/TaxAndFees/Index.cshtml]
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/TaxAndFees/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGF4QW5kRmVlc1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/User/AddUser.cshtml]
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/User/AddUser.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxBZGRVc2VyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/User/EditUsers.cshtml]
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/User/EditUsers.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxFZGl0VXNlcnMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/User/Index.cshtml]
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/User/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/_ViewImports.cshtml]
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/_ViewStart.cshtml]
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Shared/_Layout.cshtml]
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-dhnvmxdneb

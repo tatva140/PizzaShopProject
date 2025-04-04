@@ -25,10 +25,10 @@ public class OrderAppTablesRepository : IOrderAppTablesRepository
         {
             SectionId = section.SectionId,
             SectionName = section.SectionName,
-            Available = section.Tables.Count(t => t.TableStatus == "Available"),
-            Assigned = section.Tables.Count(t => t.TableStatus == "Occupied"),
-            Running = section.Tables.Count(t => t.TableStatus == "Running"),
-            Selected = section.Tables.Count(t => t.TableStatus == "Selected"),
+            Available = section.Tables.Where(t=>t.IsActive==true).Count(t => t.TableStatus == "Available"),
+            Assigned = section.Tables.Where(t=>t.IsActive==true).Count(t => t.TableStatus == "Assigned"),
+            Running = section.Tables.Where(t=>t.IsActive==true).Count(t => t.TableStatus == "Running"),
+            Selected = section.Tables.Where(t=>t.IsActive==true).Count(t => t.TableStatus == "Selected"),
             Tables = section.Tables.Where(s => s.IsActive == true).Select(table => new OrderAppTableListViewModel
             {
                 TableId = table.TableId,
@@ -47,7 +47,7 @@ public class OrderAppTablesRepository : IOrderAppTablesRepository
     public WaitingTokenListViewModel WaitingTokenList(int id)
     {
         List<WaitingToken> waitingTokens = (from w in _context.WaitingTokens
-                                            where w.IsActive == true && w.Isassign == false && w.SectionId==id
+                                            where w.IsActive == true && w.Isassign == false && w.SectionId == id
                                             select new WaitingToken
                                             {
                                                 WaitingTokenId = w.WaitingTokenId,
@@ -72,7 +72,6 @@ public class OrderAppTablesRepository : IOrderAppTablesRepository
         {
             EmailAddress = customer.Email,
             FirstName = customer.FirstName,
-            LastName = customer.LastName,
             Phone = customer.Phone,
             NoOfPersons = customer.NoOfPersons ?? 0
         };
@@ -86,18 +85,17 @@ public class OrderAppTablesRepository : IOrderAppTablesRepository
         {
             EmailAddress = customer.Email,
             FirstName = customer.FirstName,
-            LastName = customer.LastName,
             NoOfPersons = customer.NoOfPersons ?? 0
         };
         return orderAppCustomerViewModel;
     }
 
-    public CustomErrorViewModel AssignTable(AssignCustomerTablesViewModel assignCustomerTablesViewModel)
+    public CustomErrorViewModel AssignTable(OrderAppCustomerViewModel orderAppCustomerViewModel)
     {
-        if (assignCustomerTablesViewModel.waitingTokenId != 0)
+        if (orderAppCustomerViewModel.waitingTokenId != 0)
         {
 
-            WaitingToken waitingToken = _context.WaitingTokens.Find(assignCustomerTablesViewModel.waitingTokenId);
+            WaitingToken waitingToken = _context.WaitingTokens.Find(orderAppCustomerViewModel.waitingTokenId);
             if (waitingToken == null)
             {
                 return new CustomErrorViewModel { Message = "No waiting Token", Status = false };
@@ -105,9 +103,10 @@ public class OrderAppTablesRepository : IOrderAppTablesRepository
             else
             {
                 waitingToken.Isassign = true;
+                waitingToken.SectionId = orderAppCustomerViewModel.SectionId;
             }
         }
-        Customer customer = _context.Customers.Where(c => c.Email == assignCustomerTablesViewModel.email).FirstOrDefault();
+        Customer customer = _context.Customers.Where(c => c.Email == orderAppCustomerViewModel.EmailAddress).FirstOrDefault();
         if (customer != null)
         {
             Table table = _context.Tables.Where(t => t.CurrentCustomerId == customer.CustomerId && t.TableStatus == "Running").FirstOrDefault();
@@ -116,12 +115,13 @@ public class OrderAppTablesRepository : IOrderAppTablesRepository
                 return new CustomErrorViewModel { Message = "This Customer Has A Running Order", Status = false };
             }
 
-            customer.Email = assignCustomerTablesViewModel.email;
-            customer.FirstName = assignCustomerTablesViewModel.name;
-            customer.Phone = assignCustomerTablesViewModel.phone ?? customer.Phone;
-            customer.NoOfPersons = assignCustomerTablesViewModel.noOfPersons;
+            customer.Email = orderAppCustomerViewModel.EmailAddress;
+            customer.FirstName = orderAppCustomerViewModel.FirstName;
+            customer.LastName = orderAppCustomerViewModel.FirstName;
+            customer.Phone = orderAppCustomerViewModel.Phone ?? customer.Phone;
+            customer.NoOfPersons = orderAppCustomerViewModel.NoOfPersons;
 
-            foreach (var tables in assignCustomerTablesViewModel.selectedTables)
+            foreach (var tables in orderAppCustomerViewModel.selectedTables)
             {
                 Table table1 = _context.Tables.Find(tables);
                 table1.CurrentCustomerId = customer.CustomerId;
@@ -133,15 +133,15 @@ public class OrderAppTablesRepository : IOrderAppTablesRepository
         {
             Customer customer1 = new Customer
             {
-                Email = assignCustomerTablesViewModel.email,
-                FirstName = assignCustomerTablesViewModel.name,
-                LastName = assignCustomerTablesViewModel.name,
-                Phone = assignCustomerTablesViewModel.phone,
-                NoOfPersons = assignCustomerTablesViewModel.noOfPersons
+                Email = orderAppCustomerViewModel.EmailAddress,
+                FirstName = orderAppCustomerViewModel.FirstName,
+                LastName = orderAppCustomerViewModel.FirstName,
+                Phone = orderAppCustomerViewModel.Phone,
+                NoOfPersons = orderAppCustomerViewModel.NoOfPersons
             };
             _context.Customers.Add(customer1);
             _context.SaveChanges();
-            foreach (var table in assignCustomerTablesViewModel.selectedTables)
+            foreach (var table in orderAppCustomerViewModel.selectedTables)
             {
                 Table table2 = _context.Tables.Find(table);
                 table2.CurrentCustomerId = customer1.CustomerId;
@@ -151,7 +151,39 @@ public class OrderAppTablesRepository : IOrderAppTablesRepository
             _context.SaveChanges();
 
         }
-        return new CustomErrorViewModel() { Message = "Added", Status = true };
+        return new CustomErrorViewModel() { Message = "Assigned Table", Status = true };
 
+    }
+
+    public CustomErrorViewModel AddWaitingToken(OrderAppCustomerViewModel orderAppCustomerViewModel)
+    {
+        WaitingToken waitingToken = _context.WaitingTokens.Where(w=>w.Email==orderAppCustomerViewModel.EmailAddress).FirstOrDefault();
+        if (waitingToken != null)
+        {
+            if (waitingToken.Isassign == false)
+            {
+                return new CustomErrorViewModel { Message = "A waiting Token has already been generated for this customer!", Status = false };
+            }
+            waitingToken.FirstName = orderAppCustomerViewModel.FirstName;
+            waitingToken.LastName = orderAppCustomerViewModel.FirstName;
+            waitingToken.NoOfPersons = orderAppCustomerViewModel.NoOfPersons;
+            waitingToken.Phone= orderAppCustomerViewModel.Phone;
+            waitingToken.SectionId=orderAppCustomerViewModel.SectionId;
+            waitingToken.Isassign= false;
+
+        }else{
+            WaitingToken waitingToken1=new WaitingToken{
+                FirstName=orderAppCustomerViewModel.FirstName,
+                LastName=orderAppCustomerViewModel.FirstName,
+                Phone=orderAppCustomerViewModel.Phone,
+                Email=orderAppCustomerViewModel.EmailAddress,
+                NoOfPersons=orderAppCustomerViewModel.NoOfPersons,
+                SectionId=orderAppCustomerViewModel.SectionId,
+                Isassign=false,
+            };
+            _context.WaitingTokens.Add(waitingToken1);
+        }
+        _context.SaveChanges();
+        return new CustomErrorViewModel(){Message="Waiting Token Added",Status=true};
     }
 }

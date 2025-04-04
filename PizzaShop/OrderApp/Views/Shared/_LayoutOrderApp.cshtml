@@ -16,7 +16,8 @@
 </head>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 
-<body style="background-color: rgb(250, 250, 250)">
+<body style="background-color: rgb(245,245,245)">
+   
     @if (ViewData["HideLayout"] == "false")
     {
 
@@ -28,17 +29,16 @@
                     <h4 style="color: white;">PIZZASHOP</h4>
                 </div>
                 <div class="navlinklist d-flex   align-items-center justify-content-end w-auto p-0 ">
-                    <a class="btn me-2" style="border-radius:20px;color:white;border:1px solid white" data-path="/KOT" ><i
-                            class="fa-solid fa-clipboard-list me-2"></i>KOT</a>
-                    <a class="btn me-2" style="border-radius:20px;color:white;border:1px solid white" data-path="/WaitingToken" ><i
-                            class="fa-solid fa-clock me-2" style="color: #ffffff;"></i>Waiting
+                    <a class="btn me-2 allTab"  asp-action="Index" asp-controller="KOT" data-path="/KOT"><i
+                            class="fa-solid fa-clipboard-list me-2 allIcon"></i>KOT</a>
+                    <a class="btn me-2" style="border-radius:20px;color:white;border:1px solid white"
+                        data-path="/WaitingToken"><i class="fa-solid fa-clock me-2" style="color: #ffffff;"></i>Waiting
                         List</a>
-                    <a class="btn me-2 allTab" asp-action="Tables" asp-controller="Tables" data-path="/Tables" 
-                        > <i class="fa-solid fa-square me-2 allIcon"
-                            ></i>Tables</a>
-                    <a class="btn " style="border-radius:20px;color:white;border:1px solid white" data-path="/Menu" ><i
+                    <a class="btn me-2 allTab" asp-action="Index" asp-controller="Tables" data-path="/Tables"> <i
+                            class="fa-solid fa-square me-2 allIcon"></i>Tables</a>
+                    <a class="btn " style="border-radius:20px;color:white;border:1px solid white" data-path="/Menu"><i
                             class="fa-solid fa-bell-concierge me-2" style="color: #ffffff;"></i>Menu</a>
-                    <div id="partialViewRender"></div>
+                    <div id="userInfoPartialView"></div>
                     <a class="navToggle navbar-brand ms-2 " id="navToggle"><i class="fa-solid fa-bars"
                             style="color: #c4e1f7;font-size: 25px;"></i></a>
                 </div>
@@ -91,19 +91,21 @@
 
     <script>
         $(document).ready(function () {
+            var flag=@ViewData["Icon"]
             $.ajax({
                 url: "@Url.Action("UserInfo", "Dashboard")",
                 method: "GET",
+                data: {flag:flag},
                 success: function (response) {
-                    $("#partialViewRender").html(response);
+                    $("#userInfoPartialView").html(response);
                 }
             })
         });
-         listlink = document.querySelectorAll(".navlinklist a");
-         currentUrl = window.location.pathname;
+        listlink = document.querySelectorAll(".navlinklist a");
+        currentUrl = window.location.pathname;
         listlink.forEach(link => {
-         icons = link.querySelector("i");
-             linkPath = link.dataset.path;
+            icons = link.querySelector("i");
+            linkPath = link.dataset.path;
             if (currentUrl.startsWith(linkPath)) {
                 link.classList.add("selectedTab");
                 icons?.classList.add("selectedIcon");
@@ -114,11 +116,11 @@
         })
 
         $(document).on('click', '.checkPermissions', function (e) {
-             controller = $(this).data("controller");
-             action = $(this).data("action");
-             isModal = $(this).data("target");
-             redirect = $(this).data("redirect");
-            
+            controller = $(this).data("controller");
+            action = $(this).data("action");
+            isModal = $(this).data("target");
+            redirect = $(this).data("redirect");
+
             $.ajax({
                 url: `/${controller}/${action}`,
                 method: "GET",

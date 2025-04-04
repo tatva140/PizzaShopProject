@@ -935,6 +935,8 @@ public partial class PizzashopContext : DbContext
                 .IsRequired()
                 .HasDefaultValueSql("true")
                 .HasColumnName("is_active");
+            entity.Property(e => e.IsLoggedIn)
+                .HasColumnName("is_loggedin");
             entity.Property(e => e.RememberMe)
                 .HasDefaultValueSql("false")
                 .HasColumnName("remember_me");
@@ -1027,6 +1029,9 @@ public partial class PizzashopContext : DbContext
             entity.Property(e => e.LastName)
                 .HasMaxLength(100)
                 .HasColumnName("last_name");
+            entity.Property(e => e.Phone)
+           .HasColumnType("character varying")
+           .HasColumnName("phone");
             entity.Property(e => e.NoOfPersons).HasColumnName("no_of_persons");
             entity.Property(e => e.UpdatedAt)
                 .HasColumnType("timestamp without time zone")

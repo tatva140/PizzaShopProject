@@ -17,22 +17,20 @@ public class PermissionService
         {
             return false;
         }
-        var query = (from p in _context.Permissions
-                     join r in _context.Roles on role equals r.RoleName
-                     where r.RoleName == role && p.Name == entity
-                     select p);
+        var roleId=_context.Roles.Where(r=>r.RoleName==role).Select(r=>r.RoleId).FirstOrDefault();
+        var query = _context.Permissions.Where(p=>p.RoleId==roleId && p.Name==entity).FirstOrDefault();
         bool value;
         if (action == "CanAddEdit")
         {
-            value = query.Select(p => p.CanAddEdit).FirstOrDefault();
+            value = query.CanAddEdit;
         }
         else if (action == "CanDelete")
         {
-            value = query.Select(p => p.CanDelete).FirstOrDefault();
+            value = query.CanDelete;
         }
         else
         {
-            value = query.Select(p => p.CanView).FirstOrDefault();
+            value = query.CanView;
 
         }
 

@@ -49,11 +49,20 @@ public class HomeController : Controller
     {
         if (ModelState.IsValid)
         {
-            bool isValidUser = _userService.ValidateUser(model.Email, model.Password);
+            CustomErrorViewModel isValidUser = _userService.ValidateUser(model.Email, model.Password);
             _userService.SetRememberMe(model.Email, model.RememberMe);
-            if (isValidUser)
+            if (isValidUser.Message == "FirstLogin")
             {
-
+                Response.Cookies.Append("email", model.Email, new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,
+                    Expires = DateTime.Now.AddHours(1)
+                });
+                return RedirectToAction("ChangePassword","Dashboard",new {firstTime=true});
+            }
+            else if (isValidUser.Status == true)
+            {
                 DateTime refreshTokenExpiryTime = model.RememberMe ? DateTime.UtcNow.AddDays(30) : DateTime.UtcNow.AddHours(1);
 
                 string token = _jwtTokenService.GenerateToken(model.Email);
@@ -107,7 +116,7 @@ public class HomeController : Controller
             return View();
         }
         string email = _encryptDecrypt.Encrypt(model.Email);
-        string resetLink = Url.Action("ResetPassword", "Home", new { email = email }, Request.Scheme);
+        string? resetLink = Url.Action("ResetPassword", "Home", new { code = email, expiryTime = DateTime.Now.AddHours(24) }, Request.Scheme);
         await _emailService.SendForgotPasswordEmail(model.Email, _emailSettings.host, _emailSettings.SenderEmail, _emailSettings.SenderPassword, _emailSettings.SMTPPort, resetLink);
         ViewBag.Message = "A reset password link has been sent on this email";
         return View(model);
@@ -115,9 +124,15 @@ public class HomeController : Controller
 
     [HttpGet]
 
-    public IActionResult ResetPassword([FromQuery] string email)
+    public IActionResult ResetPassword([FromQuery] string code, [FromQuery] DateTime expiryTime)
     {
-        string emailDecrypt = _encryptDecrypt.Decrypt(email);
+        if (expiryTime < DateTime.Now)
+        {
+            TempData["error"] = "Reset link expired.";
+            return RedirectToAction("Index");
+
+        }
+        string emailDecrypt = _encryptDecrypt.Decrypt(code);
         var model = new ResetPasswordViewModel
         {
             Email = emailDecrypt
@@ -127,7 +142,6 @@ public class HomeController : Controller
     }
 
     [HttpPost]
-    // [Route("ResetPassword")]
     public IActionResult ResetPassword(ResetPasswordViewModel model)
     {
         string password = BCrypt.Net.BCrypt.HashPassword(model.newPassword);

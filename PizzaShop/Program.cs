@@ -52,6 +52,9 @@ builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<CustomerService>();
 builder.Services.AddScoped<IOrderAppTablesRepository, OrderAppTablesRepository>();
 builder.Services.AddScoped<OrderAppTablesService>();
+builder.Services.AddScoped<IKOTRepository, KOTRepository>();
+builder.Services.AddScoped<KOTService>();
+
 
 
 builder.Services.AddScoped<PermissionService>();
@@ -64,7 +67,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     {
         options.Events = new JwtBearerEvents
         {
-
             OnMessageReceived = context =>
             {
                 context.Token = context.Request.Cookies["jwtToken"];
@@ -93,10 +95,16 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     }
                 }
                 context.Response.Redirect("/Home/Index");
-                return ;
+                return;
             },
             OnChallenge = context =>
             {
+                if (context.Request.Headers["Referer"].ToString().Contains("firstTime"))
+                {
+                    context.HandleResponse();
+                    context.Response.Redirect(context.Request.Headers["Referer"]);
+                    return Task.CompletedTask;
+                }
                 var token = context.Request.Cookies["jwtToken"];
                 if (!context.Handled)
                 {

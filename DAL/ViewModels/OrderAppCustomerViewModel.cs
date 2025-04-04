@@ -8,7 +8,6 @@ public class OrderAppCustomerViewModel
     [RegularExpression(@"^(?=.*[A-Za-z]).*$", ErrorMessage = "Must contain at least one letter.")]
     public string FirstName {get;set;}
     
-    public string LastName {get;set;}
 
     [EmailAddress]
     [Required(ErrorMessage = "Email is Required")]
@@ -24,5 +23,10 @@ public class OrderAppCustomerViewModel
     [RegularExpression(@"^\d{10}$", ErrorMessage = "Invalid Mobile Number.")]
     public string Phone {get;set;}
 
-    public string SectionName {get;set;}
+    public List<int> selectedTables {get;set;}
+
+    public int waitingTokenId {get;set;}
+
+
+
 }

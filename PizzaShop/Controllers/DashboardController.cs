@@ -8,7 +8,7 @@ using System.Net.Http.Headers;
 using DAL.Models;
 using Microsoft.Extensions.FileProviders;
 
-[Authorize]
+
 public class DashboardController : Controller
 {
     private readonly UserService _userService;
@@ -24,6 +24,7 @@ public class DashboardController : Controller
         _fileUploads = fileUploads;
     }
 
+[Authorize]
     public IActionResult Index(string message)
     {
         if(message!=""){
@@ -33,6 +34,7 @@ public class DashboardController : Controller
 
     }
 
+[Authorize]
     [HttpGet]
     public ActionResult UserProfile()
     {
@@ -41,6 +43,8 @@ public class DashboardController : Controller
         return View(user);
 
     }
+
+
     public IActionResult Logout()
     {
         Response.Cookies.Delete("jwtToken");
@@ -49,6 +53,7 @@ public class DashboardController : Controller
         return RedirectToAction("Index", "Home");
     }
 
+[Authorize]
     [HttpPost]
     public IActionResult UserProfile(UserProfileViewModel model, IFormFile profileImg)
     {
@@ -76,26 +81,46 @@ public class DashboardController : Controller
 
     }
 
+
     [HttpGet]
-    public IActionResult UserInfo()
+    public IActionResult UserInfo(string flag)
     {
+        LayoutViewModel layoutViewModel=new LayoutViewModel();
+        if(User.Identity.IsAuthenticated==true)
+        {
+
         string email = Request.Cookies["email"];
         UserProfileViewModel user = _userService.GetUserInfo(email);
-        LayoutViewModel layoutViewModel = new LayoutViewModel
+        layoutViewModel = new LayoutViewModel
         {
             Email = user.Email,
-            ProfileImg = user.ProfileImg ?? "~/images/Default_pfp.svg.png"
+            ProfileImg = user.ProfileImg ?? "~/images/Default_pfp.svg.png",
+            Role=user.RoleName,
+            Flag=flag
         };
+        }
 
         return PartialView("_UserInfo", layoutViewModel);
     }
-    public IActionResult ChangePassword()
+
+    public IActionResult ChangePassword(bool firstTime=false)
     {
+        if(firstTime)
+        {
+            ViewBag.FirstTime=firstTime;
+            TempData["error"] = "Please change your password";
+            return View();
+        }
+        if(!User.Identity.IsAuthenticated)
+        {
+            return Unauthorized();
+        }
         return View();
     }
 
+
     [HttpPost]
-    public IActionResult ChangePassword(ResetPasswordViewModel model)
+    public IActionResult ChangePassword(ResetPasswordViewModel model, bool firstTime)
     {
         string email = Request.Cookies["email"];
         string password = BCrypt.Net.BCrypt.HashPassword(model.newPassword);
@@ -107,6 +132,10 @@ public class DashboardController : Controller
             return View();
         }
         TempData["success"] = "Changed Password Successfully";
+        if(firstTime==true)
+        {
+        return RedirectToAction("Index", "Home");
+        }
         return View();
     }
 }

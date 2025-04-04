@@ -4,7 +4,8 @@ using DAL.ViewModels;
 using Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
-
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 public class UserRepository : IUserRepository
 {
@@ -52,7 +53,8 @@ public class UserRepository : IUserRepository
                         ZipCode = u.ZipCode,
                         isActive = u.IsActive,
                         ProfileImg = u.ProfileImg,
-                        Password = u.Password
+                        Password = u.Password,
+                        isLoggedIn = u.IsLoggedIn
                     }).FirstOrDefault();
 
         return user;
@@ -62,7 +64,7 @@ public class UserRepository : IUserRepository
         var query = _context.Users;
         var users = from u in _context.Users
                     join r in _context.Roles on u.RoleId equals r.RoleId
-                    where u.IsActive==true
+                    where u.IsActive == true
                     select new UserProfileViewModel
                     {
                         UserId = u.UserId,
@@ -79,7 +81,7 @@ public class UserRepository : IUserRepository
                         ZipCode = u.ZipCode,
                         isActive = u.IsActive,
                         ProfileImg = u.ProfileImg,
-                        Status=u.Status
+                        Status = u.Status
                     };
         switch (sortOrder)
         {
@@ -104,11 +106,11 @@ public class UserRepository : IUserRepository
     public string GetUserRole(string email)
     {
         string? role = (from u in _context.Users
-                       join r in _context.Roles on u.RoleId equals r.RoleId
-                       where u.Email == email
-                       select r.RoleName)
+                        join r in _context.Roles on u.RoleId equals r.RoleId
+                        where u.Email == email
+                        select r.RoleName)
                     .FirstOrDefault();
-        return role??"";
+        return role ?? "";
     }
     public bool DeleteUser(int id)
     {
@@ -123,6 +125,7 @@ public class UserRepository : IUserRepository
         User? user = _context.Users.FirstOrDefault(u => u.Email == email);
         if (user == null || user.IsActive == false) return;
         user.Password = newPassword;
+        user.IsLoggedIn = true;
         _context.SaveChanges();
     }
 
@@ -140,7 +143,7 @@ public class UserRepository : IUserRepository
     }
     public bool UpdateProfile(UserProfileViewModel userProfileViewModel)
     {
-        User? user = _context.Users.FirstOrDefault(u => u.Email == userProfileViewModel.Email && u.IsActive==true);
+        User? user = _context.Users.FirstOrDefault(u => u.Email == userProfileViewModel.Email && u.IsActive == true);
         if (user == null) return false;
         user.FirstName = userProfileViewModel.FirstName ?? user.FirstName;
         user.LastName = userProfileViewModel.LastName ?? user.LastName;
@@ -171,8 +174,26 @@ public class UserRepository : IUserRepository
         _context.SaveChanges();
         return true;
     }
-    public List<Role> GetRoles()
+    public List<Role> GetRoles(string token)
     {
+        if (token != "")
+        {
+            var handler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadToken(token) as System.IdentityModel.Tokens.Jwt.JwtSecurityToken;
+            string roleName = "";
+            if (jwtToken != null)
+            {
+                var roleClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+                if (roleClaim != null)
+                {
+                    roleName = roleClaim;
+                }
+            }
+            if (roleName == "Account Manager")
+            {
+                return _context.Roles.Where(r => r.RoleName == "Chef" || r.RoleName == "Account Manager").ToList();
+            }
+        }
         return _context.Roles.ToList();
     }
     public bool AddUser(AddUserViewModel addUserViewModel)
@@ -195,8 +216,9 @@ public class UserRepository : IUserRepository
             ProfileImg = addUserViewModel.ProfileImg ?? "",
             RoleId = addUserViewModel.RoleId,
             Password = addUserViewModel.Password,
-            Status="Active",
+            Status = "Active",
             UpdatedAt = DateTime.Now,
+            IsLoggedIn = false
         };
         _context.Users.Add(user);
         _context.SaveChanges();

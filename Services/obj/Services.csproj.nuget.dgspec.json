@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\pca140\\Desktop\\RMSProject\\Services\\Services.csproj": {}
+    "c:\\Users\\pca140\\Desktop\\RMSProject\\Services\\Services.csproj": {}
   },
   "projects": {
-    "c:\\Users\\pca140\\Desktop\\RMSProject\\DAL\\DAL.csproj": {
+    "C:\\Users\\pca140\\Desktop\\RMSProject\\DAL\\DAL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\pca140\\Desktop\\RMSProject\\DAL\\DAL.csproj",
+        "projectUniqueName": "C:\\Users\\pca140\\Desktop\\RMSProject\\DAL\\DAL.csproj",
         "projectName": "DAL",
-        "projectPath": "c:\\Users\\pca140\\Desktop\\RMSProject\\DAL\\DAL.csproj",
+        "projectPath": "C:\\Users\\pca140\\Desktop\\RMSProject\\DAL\\DAL.csproj",
         "packagesPath": "C:\\Users\\pca140\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\pca140\\Desktop\\RMSProject\\DAL\\obj\\",
+        "outputPath": "C:\\Users\\pca140\\Desktop\\RMSProject\\DAL\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\pca140\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -91,14 +91,14 @@
         }
       }
     },
-    "C:\\Users\\pca140\\Desktop\\RMSProject\\Services\\Services.csproj": {
+    "c:\\Users\\pca140\\Desktop\\RMSProject\\Services\\Services.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\pca140\\Desktop\\RMSProject\\Services\\Services.csproj",
+        "projectUniqueName": "c:\\Users\\pca140\\Desktop\\RMSProject\\Services\\Services.csproj",
         "projectName": "Services",
-        "projectPath": "C:\\Users\\pca140\\Desktop\\RMSProject\\Services\\Services.csproj",
+        "projectPath": "c:\\Users\\pca140\\Desktop\\RMSProject\\Services\\Services.csproj",
         "packagesPath": "C:\\Users\\pca140\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\pca140\\Desktop\\RMSProject\\Services\\obj\\",
+        "outputPath": "c:\\Users\\pca140\\Desktop\\RMSProject\\Services\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\pca140\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -113,8 +113,8 @@
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "c:\\Users\\pca140\\Desktop\\RMSProject\\DAL\\DAL.csproj": {
-                "projectPath": "c:\\Users\\pca140\\Desktop\\RMSProject\\DAL\\DAL.csproj"
+              "C:\\Users\\pca140\\Desktop\\RMSProject\\DAL\\DAL.csproj": {
+                "projectPath": "C:\\Users\\pca140\\Desktop\\RMSProject\\DAL\\DAL.csproj"
               }
             }
           }

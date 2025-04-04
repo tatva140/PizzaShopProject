@@ -16,26 +16,36 @@ public class UserService
         _userRepository = userRepository;
         _encryptDecrypt = encryptDecrypt;
     }
-    public void SetRememberMe(string email,bool RememberMe){
-        _userRepository.SetRememberMe(email,RememberMe);
+    public void SetRememberMe(string email, bool RememberMe)
+    {
+        _userRepository.SetRememberMe(email, RememberMe);
     }
-    public bool ValidateUser(string email, string password)
+    public CustomErrorViewModel ValidateUser(string email, string password)
     {
         UserProfileViewModel user = _userRepository.GetByEmail(email);
+        if(user.isLoggedIn==false){
+            return new CustomErrorViewModel { Message = "FirstLogin", Status = false };
+        }
         if (user == null || user.isActive == false)
         {
-            return false;
+            return new CustomErrorViewModel { Message = "Inactive", Status = false };
         }
         bool userPassword = BCrypt.Net.BCrypt.Verify(password, user.Password);
-        return userPassword;
+        if (userPassword == false)
+        {
+            return new CustomErrorViewModel { Message = "Password does not match", Status = false };
+        }
+        return new CustomErrorViewModel { Message = "LoggedIn", Status = true };
+
     }
-    public List<string> GetAllEmail(){
+    public List<string> GetAllEmail()
+    {
         return _userRepository.GetAllEmail();
     }
     public bool ValidateUserByEmail(string email)
     {
         UserProfileViewModel user = _userRepository.GetByEmail(email);
-        if (user == null || user.isActive == false || user.Status=="InActive")
+        if (user == null || user.isActive == false || user.Status == "InActive")
         {
             return false;
         }
@@ -46,10 +56,10 @@ public class UserService
         UserProfileViewModel user = _userRepository.GetByEmail(email);
         return user;
     }
-    public (List<UserProfileViewModel>, int totalRecords) GetAllUser(string search,string sortOrder, int pageNumber, int pageSize)
+    public (List<UserProfileViewModel>, int totalRecords) GetAllUser(string search, string sortOrder, int pageNumber, int pageSize)
     {
         int totalRecords;
-        List<UserProfileViewModel> users = _userRepository.GetAllUser(search,sortOrder, pageNumber, pageSize, out totalRecords);
+        List<UserProfileViewModel> users = _userRepository.GetAllUser(search, sortOrder, pageNumber, pageSize, out totalRecords);
         return (users, totalRecords);
     }
     public string GetUserRole(string email)
@@ -93,9 +103,9 @@ public class UserService
     {
         return _userRepository.GetCityByState(stateId);
     }
-    public List<Role> GetRoles()
+    public List<Role> GetRoles(string token)
     {
-        return _userRepository.GetRoles();
+        return _userRepository.GetRoles(token);
     }
     public bool AddUser(AddUserViewModel addUserViewModel)
     {

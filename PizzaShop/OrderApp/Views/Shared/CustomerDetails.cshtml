@@ -4,7 +4,7 @@
                  <div class="col-12">
                     <div class="form-floating mb-3">
                         <input id="Email" asp-for="@Model.EmailAddress" class="form-control " type="email" 
-                            placeholder="Email" aria-label="Email" onchange="fetchCustomer()">
+                            placeholder="Email" aria-label="Email" onchange="fetchCustomer(event)">
                         <label for="email" class="form-label">Email</label>
                         <span asp-validation-for="EmailAddress" class="text-danger text-start"></span>
                     </div>
@@ -39,7 +39,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating mb-3">
-                        <select class="form-select" id="SectionsName" >
+                        <select class="form-select sectionsName" asp-for="@Model.SectionId" id="SectionsName">
                         </select>
                         <label for="Section" class="form-label">Section</label>
                         

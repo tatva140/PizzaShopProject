@@ -8,7 +8,7 @@ public interface IUserRepository
     UserProfileViewModel GetByEmail(string email);
     void ResetPassword(string newPassword, string email);
     string GetUserRole(string email);
-    List<Role> GetRoles();
+    List<Role> GetRoles(string token);
 
     List<UserProfileViewModel> GetAllUser(string search, string sortOrder, int pageNumber, int pageSize, out int totalRecords);
     bool DeleteUser(int id);

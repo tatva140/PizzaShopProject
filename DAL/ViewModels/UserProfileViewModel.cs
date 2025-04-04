@@ -39,4 +39,5 @@ public class UserProfileViewModel
     public string? RoleName { get; set; }
     public int RoleId { get; set; }
     public bool isActive { get; set; }
+    public bool isLoggedIn { get; set; }
 }

@@ -14,9 +14,9 @@ public class RolesAndPermissionsServices
         _rolesAndPermissions = rolesAndPermissions;
     }
 
-    public PermissionsViewModel GetPermissions([FromQuery] int id)
+    public PermissionsViewModel GetPermissions([FromQuery] int id,string token)
     {
-        return _rolesAndPermissions.GetPermissions(id);
+        return _rolesAndPermissions.GetPermissions(id,token);
     }
 
     public bool EditPermissions(List<Permission> permissions)

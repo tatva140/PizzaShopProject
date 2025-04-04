@@ -21,9 +21,8 @@
     {
         <nav class="navbar navbar-expand-lg "  style="background-color:   rgba(0, 102, 167, 1);">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#" id="toggle" onclick="toggleFunc()"><i class="fa-solid fa-bars"
+                <a class="navbar-brand" href="#" id="toggle" ><i class="fa-solid fa-bars"
                         style="color: #c4e1f7;font-size: 20px;"></i></a>
-                
                 <div class=" d-flex align-items-center justify-content-center">
                     <div id="partialViewRender"></div>
 
@@ -52,14 +51,14 @@
                         <img src="~/images/logos/pizzashop_logo.png" alt="Image" class="img-fluid me-2 "
                             style="font: 10px; height: 40px;">
                         <div style="color: rgb(30, 151, 231); font-weight: 700; font-size: 20px;">PIZZASHOP</div>
-                        <a class="text-end ms-3" id="close" onclick="toggleFunc()" style=" font-size: 25px;"><i
+                        <a class="text-end ms-3" id="close" style=" font-size: 25px;"><i
                                 class="fa-regular fa-circle-xmark"></i></a>
                     </div>
                 </li>
                 <a asp-action="Index" asp-controller="Dashboard" data-path="/Dashboard">
                     <li><i class="fa-solid fa-table me-2" class="active"></i>Dashboard</li>
                 </a>
-                <a  data-path="/User" data-redirect="" data-action="ViewPermission" data-controller="User" class="checkPermissions" style="cursor:pointer;">
+                <a  data-path="/User" data-redirect="Index" data-action="ViewPermission" data-controller="User" class="checkPermissions" style="cursor:pointer;">
                     <li><i class="fa-solid fa-users me-2"></i>Users</li>
                 </a>
                 <a asp-action="Index" asp-controller="RolesAndPermissions" data-path="/RolesAndPermissions">
@@ -134,21 +133,20 @@
         })
             
        $(document).on('click','.checkPermissions',function(e){
+            e.preventDefault();
             let controller=$(this).data("controller");
             let action=$(this).data("action");
             let isModal=$(this).data("target");
             let redirect=$(this).data("redirect");
-            console.log(controller);
-            console.log(action);
+            console.log(redirect);
             $.ajax({
                 url: `/${controller}/${action}`,
                 method: "GET",
                 success: function (response) {
-                    
-                    if(isModal!=""){
+                    if(isModal){
                         $(`#${isModal}`).modal("show");
-                    }else{
-                        window.href.location=`/${controller}/${redirect}`;
+                    }else if(redirect){
+                        window.location.href=`/${controller}/${redirect}`;
                     }
                 },
                 error:function(xhr){

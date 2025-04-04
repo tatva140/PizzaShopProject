@@ -1,5 +1,6 @@
 using DAL.Models;
 using DAL.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SelectPdf;
@@ -7,6 +8,7 @@ using Services.Service;
 
 namespace PizzaShop.Controllers;
 
+[Authorize]
 public class OrderController : Controller
 {
     private readonly OrderService _order;

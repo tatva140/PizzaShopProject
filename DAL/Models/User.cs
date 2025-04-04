@@ -26,6 +26,7 @@ public partial class User
     public DateTime? ExpiryTime { get; set; }
 
     public bool IsActive { get; set; }
+    public bool IsLoggedIn { get; set; }
     public bool? RememberMe { get; set; }
 
     public int? CreatedBy { get; set; }

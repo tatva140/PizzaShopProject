@@ -27,7 +27,11 @@ public class CustomerRepository : ICustomerRepository
 
         if (time != null && time != "custom")
         {
-            query = query.Where(m => m.CreatedAt.ToString().Contains(time == "7" ? DateTime.Now.AddDays(-7).ToString() : time == "30" ? DateTime.Now.AddDays(-30).ToString() : time == "today" ? DateTime.UtcNow.ToString() : DateTime.Now.AddDays(-365).ToString()));
+            query = query.Where(m => time == "7" ? m.CreatedAt.Value.Date >= DateTime.Now.Date.AddDays(-7): 
+                                      time == "30" ? m.CreatedAt.Value.Date >= DateTime.Now.Date.AddDays(-30) : 
+                                      time == "today" ? m.CreatedAt.Value.Date == DateTime.Now.Date : 
+                                      time == "CurrMonth" ? m.CreatedAt.Value.Month == DateTime.Now.Month && m.CreatedAt.Value.Year == DateTime.Now.Year : 
+                                      m.CreatedAt.Value.Date >= DateTime.Now.Date.AddDays(-365).ToUniversalTime());
         }
 
         var customers = query.OrderBy(e => e.CustomerId);
@@ -67,7 +71,13 @@ public class CustomerRepository : ICustomerRepository
                 query1 = query1.OrderBy(u => u.CustomerFirstName);
                 break;
         }
+        if(query1!=null)
+        {
         totalRecords = query1.Count();
+
+        }else{
+            totalRecords = 0;
+        }
         return query1.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
     }
     public FileContentResult UploadExcel(string search, string time, string from, string to)

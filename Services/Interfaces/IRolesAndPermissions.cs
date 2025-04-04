@@ -5,7 +5,7 @@ namespace Services.Interfaces;
 
 public interface IRolesAndPermissions
 {
-  PermissionsViewModel GetPermissions(int id);
+  PermissionsViewModel GetPermissions(int id,string token);
   
   bool EditPermissions(List<Permission> permissions);
 }

@@ -4,16 +4,16 @@
     <div class="d-flex align-items-center justify-content-end p-2">
         <div class=" ms-2 " style="position:relative; ">
             <form id="modifiersearchForm" class="d-flex position-relative me-2">
-                <input class="form-control fs-6 form-control-lg " type="text" aria-label="Search" placeholder="Search"
+                <input class="form-control  " type="text" aria-label="Search" placeholder="Search"
                     id="modifiersearch" name="search" value="@ViewBag.ModifierSearch">
                 <button type="button" class="position-absolute  btn btn-link"
-                    style="margin:auto;top:3px;transition:transformY(140%);right:10px;"
+                    style="margin:auto;transition:transformY(140%);right:8px;"
                     onclick="fetchAllModifiers(@Model.PageNumber,@Model.PageSize,@Model.TotalPages)"><i
                         class="fa-solid fa-search"></i></button>
             </form>
         </div>
-        <button class=" me-2 " data-bs-toggle="modal" data-bs-target="#removeModifiers"
-            style="background-color: white; border-radius: 5px;"><i class="fa fa-trash"></i></button>
+        <button class="btn btn-light me-2 " data-bs-toggle="modal" data-bs-target="#removeModifiers"
+            style="background-color: white;border:1.5px solid black;"><i class="fa fa-trash" style="font-size: 16px;"></i></button>
         <button class="addItem btn btn-primary " data-bs-toggle="modal" data-bs-target="#addModifier">+ New
             Modifier</button>
     </div>
@@ -40,7 +40,7 @@
             @foreach (var m in Model.modifier)
             {
                 <input type="=" text hidden id="mgId" value="@m.ModifierGroupId">
-                <tr class="check" data-id="@m.ModifierId">
+                <tr  data-id="@m.ModifierId">
                     <td>
                         <div class="form-check">
                             <input class="form-check-input indCheck" type="checkbox" value="">

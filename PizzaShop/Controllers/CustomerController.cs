@@ -1,9 +1,11 @@
 using DAL.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Service;
 
 namespace PizzaShop.Controllers;
 
+[Authorize]
 public class CustomerController : Controller
 {
     private readonly CustomerService _customerService;

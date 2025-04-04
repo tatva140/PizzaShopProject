@@ -22,7 +22,10 @@ public class OrderAppTablesService
     public OrderAppCustomerViewModel WaitingTokenCustomerDetails(string email){
         return _orderAppTablesRepository.WaitingTokenCustomerDetails(email);
     }
-    public CustomErrorViewModel AssignTable(AssignCustomerTablesViewModel assignCustomerTablesViewModel){
-        return _orderAppTablesRepository.AssignTable(assignCustomerTablesViewModel);
+    public CustomErrorViewModel AssignTable(OrderAppCustomerViewModel orderAppCustomerViewModel){
+        return _orderAppTablesRepository.AssignTable(orderAppCustomerViewModel);
+    }
+    public CustomErrorViewModel AddWaitingToken(OrderAppCustomerViewModel orderAppCustomerViewModel){
+        return _orderAppTablesRepository.AddWaitingToken(orderAppCustomerViewModel);
     }
 }
