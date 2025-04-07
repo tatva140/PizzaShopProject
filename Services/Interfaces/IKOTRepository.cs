@@ -4,5 +4,6 @@ namespace Services.Interfaces;
 
 public interface IKOTRepository
 {
-    // List<OrderAppKOTViewModel> GetOrders(int categoryId);
+    OrderAppKOTViewModel GetOrders(int categoryId,string status);
+    void MarkAsPrepared(List<OrderAppKOTViewModel.MarkAsPrepared> orderAppKOTViewModels);
 }

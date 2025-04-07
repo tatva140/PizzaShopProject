@@ -80,7 +80,7 @@
                                         </div>
                                         <div class="row mt-2">
                                             <div class="col-4">
-                                                @details.Capacity
+                                                @details?.Capacity
                                             </div>
                                             <div class="col-7 text-end " style="word-wrap: break-word;">
                                                 @if (details?.Duration.Days != null)
@@ -103,7 +103,7 @@
                                                     @(details?.Duration.Seconds + "secs ")
                                                     ;
                                                 }
-                                                @if (details.Duration == null)
+                                                @if (details?.Duration == null)
                                                 {
                                                     @("0 mins ")
                                                     ;

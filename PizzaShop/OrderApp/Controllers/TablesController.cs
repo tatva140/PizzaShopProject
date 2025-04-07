@@ -31,7 +31,7 @@ public class TablesController : Controller
     {
         ViewData["Icon"] = "false";
         WaitingTokenListViewModel waitingTokenListViewModels = _orderAppTablesService.WaitingTokenList(id);
-        return View("~/OrderApp/Views/Shared/WaitingTokenListView.cshtml", waitingTokenListViewModels);
+        return View("~/OrderApp/Views/Shared/_WaitingTokenListView.cshtml", waitingTokenListViewModels);
     }
     public IActionResult CustomerDetails(string email)
     {
@@ -45,10 +45,10 @@ public class TablesController : Controller
                 return Ok(new { message = "Error" });
 
             }
-            return View("~/OrderApp/Views/Shared/CustomerDetails.cshtml", orderAppCustomerViewModel);
+            return View("~/OrderApp/Views/Shared/_CustomerDetails.cshtml", orderAppCustomerViewModel);
         }
 
-        return View("~/OrderApp/Views/Shared/CustomerDetails.cshtml", orderAppCustomerViewModel);
+        return View("~/OrderApp/Views/Shared/_CustomerDetails.cshtml", orderAppCustomerViewModel);
 
     }
     public IActionResult WaitingTokenCustomerDetails(string email)
@@ -60,7 +60,7 @@ public class TablesController : Controller
             return Ok(new { message = "Error" });
 
         }
-        return View("~/OrderApp/Views/Shared/CustomerDetails.cshtml", orderAppCustomerViewModel);
+        return View("~/OrderApp/Views/Shared/_CustomerDetails.cshtml", orderAppCustomerViewModel);
     }
 
     [HttpPost]

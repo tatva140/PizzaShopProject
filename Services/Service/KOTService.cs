@@ -10,9 +10,13 @@ public class KOTService
     {
         _kotRepository = kotRepository;
     }
-    // public List<OrderAppKOTViewModel> GetOrders(int categoryId)
-    // {
-    //     return _kotRepository.GetOrders(categoryId);
-    // }
+    public OrderAppKOTViewModel GetOrders(int categoryId,string status)
+    {
+        return _kotRepository.GetOrders(categoryId,status);
+    }
+    public void MarkAsPrepared(List<OrderAppKOTViewModel.MarkAsPrepared> orderAppKOTViewModels)
+    {
+        _kotRepository.MarkAsPrepared(orderAppKOTViewModels);
+    }
     
 }

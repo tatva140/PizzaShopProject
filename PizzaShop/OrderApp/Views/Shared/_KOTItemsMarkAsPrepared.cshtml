@@ -1,0 +1,103 @@
+@model List<DAL.ViewModels.OrderAppKOTViewModel.KOTItemListViewModel>;
+<div class="modal-body ">
+    <div class="row table-responsive p-2 overflow-y-auto" style="height: 300px;">
+        <table class="table " id="">
+            <thead style="background-color:  rgba(0, 102, 167, 1);color:white;">
+                <tr>
+                    <th>Item </th>
+                    <th>Quantity</th>
+                </tr>
+            </thead>
+            <tbody id="orderItemsContainer">
+
+                @foreach (var items in Model)
+                {
+                    <tr class="check" data-id="@items.ItemId">
+                        <input id="itemIdCheck" value="@items.ItemId" hidden>
+                        <input id="capacity" value="@items.Quantity" hidden>
+                        <td>
+                            <div class="form-check">
+                                <input class="form-check-input checkSelect" type="checkbox" value="">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    @items.ItemName
+                                </label>
+                            </div>
+                        </td>
+                        <td><div style="border:1px solid rgba(0, 102, 167, 1);border-radius:5px; width: 80px;" class="text-center">
+                            <div class="p-0 m-0"><i class="fa fa-minus me-2 ms-0" onclick="minusCapacity(@items.ItemId)"></i><span id="@items.ItemId" > 1 </span><i class="fa fa-plus ms-2 me-0" onclick="plusCapacity(@items.ItemId)"></i></div>
+                        </div>
+                        </td>
+
+                    @if (items.modifiers.Count != 0)
+                    {
+                        <tr>
+                            <td>
+                                @foreach (var modifier in items.modifiers)
+                                {
+                                    <li class="p-1 ms-3">@modifier.ModifierName</li>
+                                }
+                            </td>
+                        </tr>
+                    }
+                    </tr>
+                }
+
+
+
+            </tbody>
+        </table>
+    </div>
+    <form>
+        <div class="modal-footer d-flex  align-items-center justify-content-end">
+            <button type="button" class="btn btn-danger align-items center" data-bs-dismiss="modal" onclick="markAsPrepared()">Mark As
+                Prepared</button>
+            <button type="button" class="btn btn-primary align-items center" data-bs-dismiss="modal">Cancel</button>
+        </div>
+    </form>
+</div>
+<script>
+    quantity=[];
+    function plusCapacity(id) {
+        var capacity = document.getElementById("capacity");
+        var quantity = document.getElementById(id);
+        if(quantity.textContent<capacity.value)
+        {
+        quantity.textContent = parseInt(quantity.textContent) + 1;
+
+        }
+    }
+    function minusCapacity(id) {
+        var quantity = document.getElementById(id);
+
+        if (quantity.textContent > 0) {
+            quantity.textContent = parseInt(quantity.textContent) - 1;
+        }
+    }
+    function markAsPrepared(){
+        var checkboxes = document.querySelectorAll('.checkSelect:checked');
+        console.log(checkboxes);
+        var quantities = Array.from(document.querySelectorAll('.checkSelect:checked')).map(checkbox => {
+            return checkbox.closest('tr').querySelector('td:nth-child(2) span');
+        });
+        console.log(quantities);
+        var orderItems = [];
+        for (var i = 0; i < checkboxes.length; i++) {
+            var itemId = checkboxes[i].closest('tr').dataset.id;
+            var quantity = quantities[i].textContent;
+            orderItems.push({ itemId: itemId, quantity: quantity });
+        }
+        console.log(orderItems);
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("MarkAsPrepared", "KOT")',
+            data: JSON.stringify(orderItems),
+            contentType: "application/json",
+            success: function (response) {
+                console.log(response);
+            },
+            error: function (error) {
+                console.error(error);
+            }
+        });
+    }
+</script>

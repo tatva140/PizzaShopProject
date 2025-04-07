@@ -20,16 +20,16 @@ build_property._RazorSourceGeneratorDebug =
 build_metadata.AdditionalFiles.TargetPath = T3JkZXJBcHBcVmlld3NcS09UXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/pca140/Desktop/RMSProject/PizzaShop/OrderApp/Views/Shared/CustomerDetails.cshtml]
-build_metadata.AdditionalFiles.TargetPath = T3JkZXJBcHBcVmlld3NcU2hhcmVkXEN1c3RvbWVyRGV0YWlscy5jc2h0bWw=
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/OrderApp/Views/Shared/_CustomerDetails.cshtml]
+build_metadata.AdditionalFiles.TargetPath = T3JkZXJBcHBcVmlld3NcU2hhcmVkXF9DdXN0b21lckRldGFpbHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/pca140/Desktop/RMSProject/PizzaShop/OrderApp/Views/Shared/KOTOrders.cshtml]
-build_metadata.AdditionalFiles.TargetPath = T3JkZXJBcHBcVmlld3NcU2hhcmVkXEtPVE9yZGVycy5jc2h0bWw=
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/OrderApp/Views/Shared/_KOTItemsMarkAsPrepared.cshtml]
+build_metadata.AdditionalFiles.TargetPath = T3JkZXJBcHBcVmlld3NcU2hhcmVkXF9LT1RJdGVtc01hcmtBc1ByZXBhcmVkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/pca140/Desktop/RMSProject/PizzaShop/OrderApp/Views/Shared/WaitingTokenListView.cshtml]
-build_metadata.AdditionalFiles.TargetPath = T3JkZXJBcHBcVmlld3NcU2hhcmVkXFdhaXRpbmdUb2tlbkxpc3RWaWV3LmNzaHRtbA==
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/OrderApp/Views/Shared/_KOTOrders.cshtml]
+build_metadata.AdditionalFiles.TargetPath = T3JkZXJBcHBcVmlld3NcU2hhcmVkXF9LT1RPcmRlcnMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/pca140/Desktop/RMSProject/PizzaShop/OrderApp/Views/Shared/_LayoutOrderApp.cshtml]
@@ -42,6 +42,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/pca140/Desktop/RMSProject/PizzaShop/OrderApp/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = T3JkZXJBcHBcVmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/OrderApp/Views/Shared/_WaitingTokenListView.cshtml]
+build_metadata.AdditionalFiles.TargetPath = T3JkZXJBcHBcVmlld3NcU2hhcmVkXF9XYWl0aW5nVG9rZW5MaXN0Vmlldy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/pca140/Desktop/RMSProject/PizzaShop/OrderApp/Views/Tables/Index.cshtml]

@@ -11,10 +11,12 @@
         <div class="ms-3 mt-2 mb-2">
             <nav>
                 <div class="nav nav-tabs" role="tablist">
+                     <button class="nav-link active" data-bs-toggle="tab"  type="button"
+                              aria-selected="true"  onclick="getOrders(0,'All','InProgress')">All</button>
                     @foreach (var categories in Model.categories)
                     {
-                        <button class="nav-link " data-bs-toggle="tab" data-bs-target="#nav-home" type="button"
-                            role="tab" aria-controls="nav-home" aria-selected="true" onclick="getOrders(@categories.CategoryId,'@categories.Name')">@categories.Name</button>
+                        <button class="nav-link " type="button" data-bs-toggle="tab"
+                             onclick="getOrders(@categories.CategoryId,'@categories.Name','InProgress')">@categories.Name</button>
                     }
                 </div>
             </nav>
@@ -31,7 +33,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script>
-         @* $(document).ready(function () {
+         $(document).ready(function () {
             $.ajax({
                 url: "@Url.Action("GetOrders", "KOT")",
                 method: "GET",
@@ -39,12 +41,13 @@
                     $("#renderOrders").html(response);
                 }
             });
-        }); *@
-        function getOrders(categoryId, categoryName) {
+            getOrders(0,'All','InProgress');
+        });
+        function getOrders(categoryId, categoryName,status) {
             $.ajax({
                 url: "@Url.Action("GetOrders", "KOT")",
                 type: "GET",
-                data: { categoryId: categoryId },
+                data: { categoryId: categoryId, categoryName: categoryName,status:status },
                 success: function (response) {
                     $("#renderOrders").html(response);
                 }
