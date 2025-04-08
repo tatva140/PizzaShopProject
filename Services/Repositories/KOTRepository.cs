@@ -47,15 +47,17 @@ public class KOTRepository : IKOTRepository
                     tables = tables,
                     Instruction = o.Instructions ?? "",
                     items = orderedItems
-                    .Where(oi => oi.OrderId == o.OrderId && 
-                                 ((status == "InProgress" && (oi.Quantity - oi.ReadyQuantity) > 0) || 
+                    .Where(oi => oi.OrderId == o.OrderId &&
+                                 ((status == "InProgress" && (oi.Quantity - oi.ReadyQuantity) > 0) ||
                                   (status != "InProgress" && oi.ReadyQuantity > 0)))
                         .Select(oi => new OrderAppKOTViewModel.KOTItemListViewModel
                         {
                             ItemId = oi.ItemId ?? 0,
                             ItemName = _context.Items.FirstOrDefault(i => i.ItemId == oi.ItemId)?.Name ?? string.Empty,
-                            Quantity =(status=="InProgress" ? ( oi.Quantity - oi.ReadyQuantity): oi.ReadyQuantity) ?? 0,
+                            Quantity = (status == "InProgress" ? (oi.Quantity - oi.ReadyQuantity) : oi.ReadyQuantity) ?? 0,
                             Rate = oi.Rate ?? 0,
+                            Status = status,
+                            OrderId = o.OrderId,
                             modifiers = _context.OrderModifiers
                                 .Where(mi => mi.ItemId == oi.ItemId && mi.OrderId == o.OrderId)
                                 .Select(mi => new OrderAppKOTViewModel.KOTModifierListViewModel
@@ -80,32 +82,39 @@ public class KOTRepository : IKOTRepository
     {
         foreach (var item in orderAppKOTViewModels)
         {
-            OrderItem? orderItem = _context.OrderItems.FirstOrDefault(oi => oi.ItemId == item.ItemId);
+            OrderItem? orderItem = _context.OrderItems.FirstOrDefault(oi => oi.ItemId == item.ItemId && oi.OrderId == item.OrderId);
             if (orderItem != null)
             {
-                orderItem.ReadyQuantity =orderItem.ReadyQuantity+ item.Quantity;
+                if (item.Status == "InProgress")
+                {
+                    orderItem.ReadyQuantity = orderItem.ReadyQuantity + item.Quantity;
+                }
+                else
+                {
+                    orderItem.ReadyQuantity = orderItem.ReadyQuantity - item.Quantity;
+                }
                 _context.SaveChanges();
             }
         }
-            int? orderId= _context.OrderItems
-                .Where(oi => oi.ItemId == orderAppKOTViewModels.FirstOrDefault().ItemId)
-                .Select(oi => oi.OrderId)
-                .FirstOrDefault();
-            var readyItems= _context.OrderItems
-                .Where(oi => oi.OrderId == orderId && oi.ReadyQuantity == oi.Quantity)
-                .ToList();
-            var orderItems = _context.OrderItems
-                .Where(oi => oi.OrderId == orderId)
-                .ToList();
-            if (readyItems.Count == orderItems.Count)   
+        var readyItems = _context.OrderItems
+            .Where(oi => oi.OrderId == orderAppKOTViewModels.FirstOrDefault().OrderId && oi.ReadyQuantity == oi.Quantity)
+            .ToList();
+        var orderItems = _context.OrderItems
+            .Where(oi => oi.OrderId == orderAppKOTViewModels.FirstOrDefault().OrderId)
+            .ToList();
+        Order order = _context.Orders.FirstOrDefault(o => o.OrderId == orderAppKOTViewModels.FirstOrDefault().OrderId);
+        if (order != null)
+        {
+            if (readyItems.Count == orderItems.Count)
             {
-                Order order = _context.Orders.FirstOrDefault(o => o.OrderId == orderId);
-                if (order != null)
-                {
-                    order.OrderStatus = "Served";
-                    _context.SaveChanges();
-                }
+                order.OrderStatus = "Served";
             }
-        
+            else
+            {
+                order.OrderStatus = "InProgress";
+            }
+            _context.SaveChanges();
+        }
+
     }
 }

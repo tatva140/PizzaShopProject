@@ -7,6 +7,7 @@ public class OrderAppKOTViewModel
     public List<Category> categories { get; set; }
     public string CategoryName { get; set; }
     public int CategoryId { get; set; }
+
     public List<MarkAsPrepared> markAsPreparedItems { get; set; }
 
     public List<KOTOrdersListViewModel> kOTOrdersListViewModels { get; set; }
@@ -25,16 +26,20 @@ public class OrderAppKOTViewModel
         public string Instruction { get; set; }
 
 
+
     }
     public class KOTItemListViewModel
     {
         public int ItemId { get; set; }
+        public int OrderId { get; set; }
         public string ItemName { get; set; }
         public int Quantity { get; set; }
         public decimal Rate { get; set; }
         public decimal Amount { get; set; }
 
         public List<KOTModifierListViewModel> modifiers { get; set; }
+    public string Status { get; set; }
+
 
     }
     public class KOTModifierListViewModel
@@ -49,6 +54,8 @@ public class OrderAppKOTViewModel
     public class MarkAsPrepared
     {
         public int ItemId { get; set; }
+        public int OrderId { get; set; }
         public int Quantity { get; set; }
+        public string Status { get; set; }
     }
 }

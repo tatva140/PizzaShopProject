@@ -1,34 +1,34 @@
 @model DAL.ViewModels.OrderAppKOTViewModel;
 <div class="row mt-3 bg-white shadow ms-1 p-3">
-    <div class="row d-flex align-items-center justify-content-between flex-wrap">
+    <div class="row d-flex align-items-center justify-content-between flex-wrap g-0">
         <div class="col-md-6 ">
             <h2 style="color: rgba(0, 102, 167, 1);">@Model.CategoryName</h2>
         </div>
         <div class="col-md-6 p-0 text-end">
-            <div class="d-flex justify-content-end flex-wrap p-0" style="word-wrap: break-word;">
-                <button class="btn  me-2 " type="button" 
+            <div class="d-flex justify-content-end flex-wrap p-0 " style="word-wrap: break-word;">
+                <button class="btn  me-2 InProgress" type="button" 
                     onclick="getOrders(@Model.CategoryId,'@Model.CategoryName','InProgress')">In Progress</button>
-                <button class="btn  me-2" type="button" 
+                <button class="btn  me-2 Ready" type="button" 
                     onclick="getOrders(@Model.CategoryId,'@Model.CategoryName','Ready')">Ready</button>
                 <div class="">
-                    <button class="btn me-2" type="button" style="background-color: rgba(0, 102, 167, 1);color:white">
+                    <button class="btn me-2" type="button" style="background-color: rgba(0, 102, 167, 1);color:white" onclick="cardPrev()">
                         <i class="fa-solid fa-angle-left"></i>
                     </button>
-                    <button class="btn  me-2" type="button" style="background-color: rgba(0, 102, 167, 1);color:white">
+                    <button class="btn  " type="button" style="background-color: rgba(0, 102, 167, 1);color:white" onclick="cardNext()">
                         <i class="fa-solid fa-angle-right"></i>
                     </button>
                 </div>
             </div>
         </div>
     </div>
-    <div class="row  mt-2 g-0 ">
+    <div class="cardList d-flex flex-row gap-2  mt-2 g-0 overflow-auto overflow-x-hidden">
         @foreach (var order in Model.kOTOrdersListViewModels)
         {
             @if (order.items.Count == 0)
             {
                 continue;
             }
-            <div class="" style="width:336px;border-style: dotted;" onclick="openOrderModal(@order.OrderId)">
+            <div class="card" style="min-width:336px;max-width:336px;border-style: dotted;" onclick="openOrderModal(@order.OrderId)">
                 <div class="p-2" style="background-color: rgb(231, 229, 229); ">
                     <div class="d-flex align-items-center justify-content-between">
                     <div class="" style="color:rgba(0, 102, 167, 1); ">
@@ -92,7 +92,7 @@
                                     </li>
                                     @if (modifiers.Instruction != null)
                                     {
-                                        <span>Instruction: @modifiers.Instruction</span>
+                                        <span style="color:rgba(0, 102, 167, 1) ;font-weight: 600;">Instruction:</span> @modifiers.Instruction
                                     }
                                 </ul>
                             </div>
@@ -103,7 +103,7 @@
                     @if (order.Instruction != null)
                     {
 
-                        <span>Order Instruction: @order.Instruction</span>
+                        <span style="color:rgba(0, 102, 167, 1) ;font-weight: 600;">Order Instruction:</span> @order.Instruction
                     }
                 </div>
             </div>
@@ -125,7 +125,6 @@
     function openOrderModal(orderId) {
         var kotorders = JSON.parse('@Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.kOTOrdersListViewModels, new System.Text.Json.JsonSerializerOptions { ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve }))');
         var order = kotorders.$values.find(o => o.OrderId === orderId);
-
         var orderItems = order.items.$values;
         var orderModal = new bootstrap.Modal(document.getElementById('orderModal'));
         var orderIdElement = document.getElementById('orderId');
@@ -137,12 +136,31 @@
             contentType: 'application/json',
             data: JSON.stringify(orderItems), 
             success: function (response) {
-                console.log(response);
                 $("#orderItemsContainer").html(response);
             },
-           
         });
-
+    }
+    function cardPrev() {
+        var cardList = document.querySelector('.cardList');
+        cardList.scrollLeft -= 340;
+        cardList.style.transition = "scroll-left 0.5s ease-in-out";
+        cardList.animate({
+            scrollLeft: cardList.scrollLeft - 340
+        }, {
+            duration: 500,
+            easing: 'ease-in-out'
+        });
+    }
+    function cardNext() {
+        var cardList = document.querySelector('.cardList');
+        cardList.scrollLeft += 340; 
+        cardList.style.transition = "scroll-right 0.5s ease-in-out";
+        cardList.animate({
+            scrollLeft: cardList.scrollLeft + 340
+        }, {
+            duration: 500,
+            easing: 'ease-in-out'
+        });
 
     }
 </script>

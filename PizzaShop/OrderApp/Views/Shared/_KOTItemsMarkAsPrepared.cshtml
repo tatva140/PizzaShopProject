@@ -1,65 +1,71 @@
 @model List<DAL.ViewModels.OrderAppKOTViewModel.KOTItemListViewModel>;
-<div class="modal-body ">
-    <div class="row table-responsive p-2 overflow-y-auto" style="height: 300px;">
-        <table class="table " id="">
-            <thead style="background-color:  rgba(0, 102, 167, 1);color:white;">
-                <tr>
-                    <th>Item </th>
-                    <th>Quantity</th>
-                </tr>
-            </thead>
-            <tbody id="orderItemsContainer">
+<div class="modal-body " >
 
-                @foreach (var items in Model)
-                {
-                    <tr class="check" data-id="@items.ItemId">
-                        <td>
-                            <div class="form-check">
-                                <input class="form-check-input checkSelect" type="checkbox" value="">
-                                <label class="form-check-label" for="flexCheckDefault">
-                                    @items.ItemName
-                                </label>
-                            </div>
-                        </td>
-                        <td><div style="border:1px solid rgba(0, 102, 167, 1);border-radius:5px; width: 80px;" class="text-center">
-                            <div class="p-0 m-0"><i class="fa fa-minus me-2 ms-0" onclick="minusCapacity(@items.ItemId)"></i><span id="@items.ItemId" > 1 </span><i class="fa fa-plus ms-2 me-0" onclick="plusCapacity(@items.ItemId,@items.Quantity)"></i></div>
-                        </div>
-                        </td>
-
-                    @if (items.modifiers.Count != 0)
-                    {
-                        <tr>
-                            <td>
-                                @foreach (var modifier in items.modifiers)
-                                {
-                                    <li class="p-1 ms-3">@modifier.ModifierName</li>
-                                }
-                            </td>
-                        </tr>
-                    }
-                    </tr>
-                }
-
-
-
-            </tbody>
-        </table>
+    <div class="d-flex align-items-center justify-content-between " id="">
+        <strong>Item </strong>
+        <strong>Quantity</strong>
     </div>
-    <form>
-        <div class="modal-footer d-flex  align-items-center justify-content-end">
-            <button type="button" class="btn btn-danger align-items center" data-bs-dismiss="modal" onclick="markAsPrepared()">Mark As
-                Prepared</button>
-            <button type="button" class="btn btn-primary align-items center" data-bs-dismiss="modal">Cancel</button>
-        </div>
-    </form>
+    <hr>
+    <div id="orderItemsContainer" style="height:200px;overflow-y:scroll;" class="overflow-auto">
+
+        @foreach (var items in Model)
+        {
+            <div class="check " data-id="@items.ItemId" >
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="form-check">
+                        <input class="form-check-input checkSelect" type="checkbox" value="">
+                        <label class="form-check-label" for="flexCheckDefault">
+                            @items.ItemName
+                        </label>
+                    </div>
+                    <div style="border:1px solid rgba(0, 102, 167, 1);border-radius:5px; width: 80px;" class="text-center">
+                        <div class="p-0 m-0"><i class="fa fa-minus me-2 ms-0"
+                                onclick="minusCapacity(@items.ItemId)"></i><span id="@items.ItemId"> 1 </span><i
+                                class="fa fa-plus ms-2 me-0" onclick="plusCapacity(@items.ItemId,@items.Quantity)"></i>
+                    </div>
+                </div>
+            </div>
+                @if (items.modifiers.Count != 0)
+                {
+                <div>
+                    <ul>
+                        @foreach (var modifier in items.modifiers)
+                        {
+                            <li class=" ms-3">@modifier.ModifierName</li>
+                        }
+                    </ul>
+                </div>
+            }
+            </div>
+            <hr>
+        }
+    </div>
+</div>
+
+<form>
+    <div class="modal-footer d-flex  align-items-center justify-content-end">
+        @if(Model[0].Status=="InProgress"){
+
+        <button type="button" class="btn  align-items center" data-bs-dismiss="modal" style="background-color:rgba(0, 102, 167, 1);color:white;"
+            onclick="markAsPrepared()">Mark As
+            Prepared</button>
+        }else{
+             <button type="button" class="btn  align-items center" data-bs-dismiss="modal" style="background-color:rgba(0, 102, 167, 1);color:white;"
+            onclick="markAsPrepared()">Mark As
+            In Progress</button>
+        }
+        <button type="button" class="btn  align-items center" data-bs-dismiss="modal" style="border:1px solid rgba(0, 102, 167, 1) ;color:rgba(0, 102, 167, 1) ;">Cancel</button>
+    </div>
+</form>
 </div>
 <script>
-    quantity=[];
-    function plusCapacity(id,capacity) {
+    quantity = [];
+    status='@Model[0].Status';
+    orderId=@Model[0].OrderId;
+    function plusCapacity(id, capacity) {
         var quantity = document.getElementById(id);
-        if(quantity.textContent<capacity)
-        {
-        quantity.textContent = parseInt(quantity.textContent) + 1;
+        if (quantity.textContent < capacity) {
+            quantity.textContent = parseInt(quantity.textContent) + 1;
 
         }
     }
@@ -70,18 +76,19 @@
             quantity.textContent = parseInt(quantity.textContent) - 1;
         }
     }
-    function markAsPrepared(){
+    function markAsPrepared() {
+        debugger
         var checkboxes = document.querySelectorAll('.checkSelect:checked');
         console.log(checkboxes);
         var quantities = Array.from(document.querySelectorAll('.checkSelect:checked')).map(checkbox => {
-            return checkbox.closest('tr').querySelector('td:nth-child(2) span');
+            return checkbox.closest('.check').querySelector('span');
         });
         console.log(quantities);
         var orderItems = [];
         for (var i = 0; i < checkboxes.length; i++) {
-            var itemId = checkboxes[i].closest('tr').dataset.id;
+            var itemId = checkboxes[i].parentElement.parentElement.parentElement.dataset.id;
             var quantity = quantities[i].textContent;
-            orderItems.push({ itemId: itemId, quantity: quantity });
+            orderItems.push({ itemId: itemId, quantity: quantity,status:status,orderId:orderId });
         }
         console.log(orderItems);
         $.ajax({
@@ -90,10 +97,14 @@
             data: JSON.stringify(orderItems),
             contentType: "application/json",
             success: function (response) {
-                console.log(response);
+                if(response.success==true)
+                {
+                    getOrders(categoryIdValue, categoryNameValue, status);
+                    toastr.success("Order Marked As Prepared");
+                }
             },
             error: function (error) {
-                console.error(error);
+                toastr.error("Failed to mark order as prepared");
             }
         });
     }

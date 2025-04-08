@@ -47,9 +47,7 @@ public class KOTController : Controller
     {
         ViewData["Icon"] = "false";
         string order = orderItems.ToJsonString();
-        List<OrderAppKOTViewModel.KOTItemListViewModel> orderAppKOTViewModels = JsonConvert.DeserializeObject<List<OrderAppKOTViewModel.KOTItemListViewModel>>(order);
-
-
+        List<KOTItemListViewModel> orderAppKOTViewModels = JsonConvert.DeserializeObject<List<KOTItemListViewModel>>(order);
         return View("~/OrderApp/Views/Shared/_KOTItemsMarkAsPrepared.cshtml", orderAppKOTViewModels);
     }
 
@@ -57,7 +55,7 @@ public class KOTController : Controller
     public IActionResult MarkAsPrepared([FromBody] JsonArray orderItems)
     {
         string order = orderItems.ToJsonString();
-        List<OrderAppKOTViewModel.MarkAsPrepared> orderAppKOTViewModels = JsonConvert.DeserializeObject<List<OrderAppKOTViewModel.MarkAsPrepared>>(order);
+        List<MarkAsPrepared> orderAppKOTViewModels = JsonConvert.DeserializeObject<List<MarkAsPrepared>>(order);
         _kotService.MarkAsPrepared(orderAppKOTViewModels);
         return Json(new { success = true });
     }

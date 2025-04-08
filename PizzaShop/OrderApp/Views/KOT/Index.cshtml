@@ -33,25 +33,30 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script>
+        var categoryIdValue;
+        var categoryNameValue;
         $(document).ready(function () {
-            $.ajax({
-                url: "@Url.Action("GetOrders", "KOT")",
-                method: "GET",
-                success: function (response) {
-                    $("#renderOrders").html(response);
-                }
-            });
             getOrders(0, 'All', 'InProgress');
+           
         });
         function getOrders(categoryId, categoryName, status) {
-           
-         console.log(categoryId);
+            categoryIdValue=categoryId;
+            categoryNameValue=categoryName;
             $.ajax({
                 url: "@Url.Action("GetOrders", "KOT")",
                 type: "GET",
                 data: { categoryId: categoryId, categoryName: categoryName, status: status },
                 success: function (response) {
                     $("#renderOrders").html(response);
+                    if (status == "InProgress") {
+                        $("#renderOrders").find(".InProgress").addClass("selectedStatus");
+                        $("#renderOrders").find(".Ready").removeClass("selectedStatus");
+                        $("#renderOrders").find(".Ready").addClass("status");
+                    } else {
+                        $("#renderOrders").find(".Ready").addClass("selectedStatus");
+                        $("#renderOrders").find(".InProgress").removeClass("selectedStatus");
+                        $("#renderOrders").find(".InProgress").addClass("status");
+                    }
                 }
             });
         }
