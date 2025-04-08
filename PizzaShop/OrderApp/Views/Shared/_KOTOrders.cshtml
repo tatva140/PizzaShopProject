@@ -6,9 +6,9 @@
         </div>
         <div class="col-md-6 p-0 text-end">
             <div class="d-flex justify-content-end flex-wrap p-0" style="word-wrap: break-word;">
-                <button class="btn  me-2" type="button" style="background-color: rgba(0, 102, 167, 1);color:white"
+                <button class="btn  me-2 " type="button" 
                     onclick="getOrders(@Model.CategoryId,'@Model.CategoryName','InProgress')">In Progress</button>
-                <button class="btn  me-2" type="button" style="background-color: rgba(0, 102, 167, 1);color:white"
+                <button class="btn  me-2" type="button" 
                     onclick="getOrders(@Model.CategoryId,'@Model.CategoryName','Ready')">Ready</button>
                 <div class="">
                     <button class="btn me-2" type="button" style="background-color: rgba(0, 102, 167, 1);color:white">
@@ -21,37 +21,37 @@
             </div>
         </div>
     </div>
-
-
-    <div class="row ms-1  mt-2 d-flex flex-row flex-wrap gap-3">
+    <div class="row  mt-2 g-0 ">
         @foreach (var order in Model.kOTOrdersListViewModels)
         {
             @if (order.items.Count == 0)
             {
-                break;
+                continue;
             }
-            <div class="" style="width:300px;border-style: dotted;" onclick="openOrderModal(@order.OrderId)">
-                <div class="row " style="background-color: rgb(231, 229, 229)">
-                    <div class="col-2 " style="color:rgba(0, 102, 167, 1); ">
+            <div class="" style="width:336px;border-style: dotted;" onclick="openOrderModal(@order.OrderId)">
+                <div class="p-2" style="background-color: rgb(231, 229, 229); ">
+                    <div class="d-flex align-items-center justify-content-between">
+                    <div class="" style="color:rgba(0, 102, 167, 1); ">
                         <strong>#@order.OrderId</strong>
                     </div>
-                    <div class="col-10 text-end">
-                        @if (order?.Duration.Days != null)
+                    <div class="text-end">
+                        <i class="fa-regular fa-clock" style="font-size: 16px;"></i>
+                        @if (order?.Duration.Days != 0)
                         {
                             @(order?.Duration.Days + "days ")
                             ;
                         }
-                        @if (order?.Duration.Hours != null)
+                        @if (order?.Duration.Hours != 0)
                         {
                             @(order?.Duration.Hours + "hr ")
                             ;
                         }
-                        @if (order?.Duration.Minutes != null)
+                        @if (order?.Duration.Minutes != 0)
                         {
                             @(order?.Duration.Minutes + "mins ")
                             ;
                         }
-                        @if (order?.Duration.Seconds != null)
+                        @if (order?.Duration.Seconds != 0)
                         {
                             @(order?.Duration.Seconds + "secs ")
                             ;
@@ -63,19 +63,19 @@
                         }
 
                     </div>
+                    </div>
                     <div class="col">
                         @order.SectionName
                         @foreach (var tables in order.tables)
                         {
-                            <span class=" ms-2">@tables.TableName</span>
+                            <span class="ms-2">@tables.TableName</span>
                         }
                     </div>
                 </div>
-                <div class="row p-0   overflow-y-auto overflow-x-hidden" style="height:150px;">
+                <div class=" p-2 overflow-y-auto overflow-x-hidden" style="height:150px; ">
                     @foreach (var items in order.items)
                     {
-
-                        <div class="row  ">
+                        <div class="row mt-1">
                             <div class="col-8">
                                 @items.ItemName
                             </div>
@@ -85,23 +85,21 @@
                         </div>
                         @foreach (var modifiers in items.modifiers)
                         {
-                            <div class="row ">
-                                <div class="col-12  " style="word-wrap: break-word;">
-                                    <ul>
-                                        <li>
-                                            @modifiers.ModifierName
-                                        </li>
-                                        @if (modifiers.Instruction != null)
-                                        {
-                                            <span>Instruction: @modifiers.Instruction</span>
-                                        }
-                                    </ul>
-                                </div>
+                            <div>
+                                <ul class="mt-0 mb-0">
+                                    <li>
+                                        @modifiers.ModifierName
+                                    </li>
+                                    @if (modifiers.Instruction != null)
+                                    {
+                                        <span>Instruction: @modifiers.Instruction</span>
+                                    }
+                                </ul>
                             </div>
                         }
                     }
                 </div>
-                <div class="row" style="background-color: rgb(231, 229, 229);height:48px;word-wrap: break-word;">
+                <div class="p-2" style="background-color: rgb(231, 229, 229);min-height:64px;word-wrap: break-word;">
                     @if (order.Instruction != null)
                     {
 
@@ -132,7 +130,6 @@
         var orderModal = new bootstrap.Modal(document.getElementById('orderModal'));
         var orderIdElement = document.getElementById('orderId');
         orderIdElement.innerHTML = "Order Id: #" + orderId;
-        console.log(orderItems);
         $("#orderModal").modal('show');
         $.ajax({
             url: '@Url.Action("GetOrderItems", "KOT")',

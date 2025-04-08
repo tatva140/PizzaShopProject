@@ -138,7 +138,6 @@
             let action=$(this).data("action");
             let isModal=$(this).data("target");
             let redirect=$(this).data("redirect");
-            console.log(redirect);
             $.ajax({
                 url: `/${controller}/${action}`,
                 method: "GET",

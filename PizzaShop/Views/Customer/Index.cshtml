@@ -13,11 +13,11 @@
                 <div class="col-xl-2 col-lg-3 col-md-4 mt-2">
                     <div class="" style="position:relative; ">
                         <form id="taxsearchForm" class="d-flex position-relative ">
-                            <input class="form-control  " type="text" aria-label="Search"
-                                placeholder="Search" id="customersearch" name="search" value="@ViewBag.customerSearch">
+                            <input class="form-control  " type="text" aria-label="Search" placeholder="Search"
+                                id="customersearch" name="search" value="@ViewBag.customerSearch">
                             <button type="button" class="position-absolute  btn btn-link"
-                                style="margin:auto; transition:transformY(100%);right:8px;"
-                                onclick="customers()"><i class="fa-solid fa-search"></i></button>
+                                style="margin:auto; transition:transformY(100%);right:8px;" onclick="customers()"><i
+                                    class="fa-solid fa-search"></i></button>
                         </form>
                     </div>
                 </div>
@@ -32,7 +32,8 @@
                     </select>
                 </div>
                 <div class="col-auto mt-2">
-                    <button class="btn btn-primary" type="button" onclick="generateExcel()">Export</button>
+                    <button class="btn btn-primary" type="button" onclick="generateExcel()"><i
+                            class="fa-solid fa-arrow-up-right-from-square me-2 "></i>Export</button>
                 </div>
             </div>
         </div>
@@ -114,7 +115,7 @@
                 document.getElementById("fromerror").innerText = "";
                 document.getElementById("toerror").innerText = "";
             }
-           console.log(customertimefilter);
+            console.log(customertimefilter);
             $.ajax({
                 url: "/Customer/Customers",
                 type: "GET",
@@ -124,7 +125,7 @@
                     $("#rendercustomers").html(response);
                 }
             });
-                $("#customDate").modal("hide");
+            $("#customDate").modal("hide");
         }
         function generateExcel() {
             let customersearch = document.getElementById("customersearch").value;

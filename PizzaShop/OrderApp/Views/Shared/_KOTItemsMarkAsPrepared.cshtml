@@ -13,8 +13,6 @@
                 @foreach (var items in Model)
                 {
                     <tr class="check" data-id="@items.ItemId">
-                        <input id="itemIdCheck" value="@items.ItemId" hidden>
-                        <input id="capacity" value="@items.Quantity" hidden>
                         <td>
                             <div class="form-check">
                                 <input class="form-check-input checkSelect" type="checkbox" value="">
@@ -24,7 +22,7 @@
                             </div>
                         </td>
                         <td><div style="border:1px solid rgba(0, 102, 167, 1);border-radius:5px; width: 80px;" class="text-center">
-                            <div class="p-0 m-0"><i class="fa fa-minus me-2 ms-0" onclick="minusCapacity(@items.ItemId)"></i><span id="@items.ItemId" > 1 </span><i class="fa fa-plus ms-2 me-0" onclick="plusCapacity(@items.ItemId)"></i></div>
+                            <div class="p-0 m-0"><i class="fa fa-minus me-2 ms-0" onclick="minusCapacity(@items.ItemId)"></i><span id="@items.ItemId" > 1 </span><i class="fa fa-plus ms-2 me-0" onclick="plusCapacity(@items.ItemId,@items.Quantity)"></i></div>
                         </div>
                         </td>
 
@@ -57,10 +55,9 @@
 </div>
 <script>
     quantity=[];
-    function plusCapacity(id) {
-        var capacity = document.getElementById("capacity");
+    function plusCapacity(id,capacity) {
         var quantity = document.getElementById(id);
-        if(quantity.textContent<capacity.value)
+        if(quantity.textContent<capacity)
         {
         quantity.textContent = parseInt(quantity.textContent) + 1;
 

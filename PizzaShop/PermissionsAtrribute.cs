@@ -30,7 +30,6 @@ public class PermissionsAtrribute : Attribute, IAuthorizationFilter
 
         var user = context.HttpContext.User;
         var role = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
-        Console.Write(role);
         if (string.IsNullOrEmpty(role) || !permissionService.HasPermission(role, _entity, _action))
         {
             RedirectToNotFound(context);

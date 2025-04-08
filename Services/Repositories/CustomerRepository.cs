@@ -229,7 +229,7 @@ public class CustomerRepository : ICustomerRepository
                 worksheet.Cells[row, 1].Value = e.CustomerId;
                 worksheet.Cells[row, 2].Value = e.CustomerFirstName + " " + e.CustomerLastName;
                 worksheet.Cells[row, 3].Value = e.Email;
-                worksheet.Cells[row, 4].Value = e.Date.ToString("dd/MM/yyyy");
+                worksheet.Cells[row, 4].Value = e.Date.ToString("yyyy-MM-dd") ?? "N/A";
                 worksheet.Cells[row, 5].Value = e.Phone;
                 worksheet.Cells[row, 6].Value = e.TotalOrders;
 
