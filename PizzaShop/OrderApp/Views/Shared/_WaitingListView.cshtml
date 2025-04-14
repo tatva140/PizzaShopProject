@@ -1,0 +1,120 @@
+@model DAL.ViewModels.WaitingTokenListViewModel
+
+
+<div class="row  bg-white ms-1 mt-3 shadow p-2">
+    <div class="row table-responsive ">
+        <table class="table " id="">
+            <thead style="background-color:  rgba(0, 102, 167, 1);color:white;">
+                <tr>
+                    <th>#TokenNo</th>
+                    <th>Created At </th>
+                    <th>Waiting Time</th>
+                    <th>Name</th>
+                    <th>No Of Persons</th>
+                    <th>Phone Number</th>
+                    <th>Email</th>
+                    <th>Action</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var waitingToken in Model.waitingTokens)
+                {
+                    @if (Model.waitingTokens.Count == 0)
+                    {
+                        <div>No Records Found</div>
+                        return;
+                    }
+                    <input type="text" id="waitingTokenId" value="" hidden>
+                    <tr>
+
+                        <td>
+                            @waitingToken.WaitingTokenId
+                        </td>
+                        <td>
+                            @waitingToken.CreatedAt
+                        </td>
+                        <td>
+                            @waitingToken.CreatedAt
+                        </td>
+                        <td>
+                            @waitingToken.FirstName
+                        </td>
+                        <td>
+                            @waitingToken.NoOfPersons
+                        </td>
+                        <td>
+                            @waitingToken.Phone
+                        </td>
+                        <td>
+                            @waitingToken.Email
+                        </td>
+                        <td>
+
+                            <div class="d-flex align-items-center ">
+                                <i class="fa-solid fa-pen  me-3 " data-bs-toggle="modal" style="cursor:pointer"
+                                    onclick="openEditModal(@waitingToken.WaitingTokenId)"></i>
+                                <i class="fa-regular fa-trash-can me-3" data-bs-toggle="modal" style="cursor:pointer"
+                                    onclick="deleteModal(@waitingToken.WaitingTokenId)"></i>
+                                <i class="fa-regular fa-user" data-bs-toggle="modal" style="cursor:pointer"
+                                    onclick="assignTableModal(@waitingToken.WaitingTokenId,@waitingToken.NoOfPersons)"></i>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="modal " id="delModal">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <img src="~/images/toppng.com-warning-icon-2400x2400.png" alt="Image" class="img-fluid me-2"
+                    style="font: 30px; height: 80px;">
+                <h3>Are you sure you want to cancel the Waiting Token?</h3>
+                <form>
+                    <input type="text" id="delWaitingToken" hidden>
+                    <div class="modal-footer d-flex  align-items-center justify-content-center">
+                        <button type="button" class="btn btn-danger align-items center" data-bs-dismiss="modal"
+                            onclick="deleteWaitingToken()">Yes</button>
+                        <button type="button" class="btn btn-primary align-items center"
+                            data-bs-dismiss="modal">No</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function deleteModal(id) {
+            $("#delModal").modal("show");
+            document.getElementById("delWaitingToken").value = id;
+        }
+        function openEditModal(id) {
+            $("#waitingTokenModal").modal("show");
+            fetchCustomer(null, id);
+
+        }
+        function deleteWaitingToken() {
+            id = document.getElementById("delWaitingToken").value;
+            console.log(id);
+            $.ajax({
+                url: '/WaitingToken/DeleteWaitingToken',
+                type: "POST",
+                data: { id: id },
+                success: function (response) {
+                    if (response.status == false) {
+                        toastr.error(response.message);
+                    } else {
+                        toastr.success(response.message);
+                        $("#delModal").modal("hide");
+                        waitingList(sectionIdValue);
+                    }
+                }
+            });
+        }
+    </script>
+}

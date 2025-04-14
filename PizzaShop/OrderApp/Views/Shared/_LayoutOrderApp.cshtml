@@ -23,6 +23,7 @@
 
         <nav class="navbar navbar-expand-lg " style="background-color:   rgba(0, 102, 167, 1);">
             <div class="container-fluid">
+                
                 <div class="d-flex   align-items-center justify-content-center w-auto p-0 ">
                     <img src="~/images/logos/pizzashop_logo.png" alt="Image" class="img-fluid me-2 "
                         style="font: 16px; height: 55px;background-color:white;">
@@ -32,12 +33,12 @@
                     <a class="btn me-2 allTab"  asp-action="Index" asp-controller="KOT" data-path="/KOT"><i
                             class="fa-solid fa-clipboard-list me-2 allIcon"></i>KOT</a>
                     <a class="btn me-2 allTab" asp-action="Index" asp-controller="WaitingToken" data-path="/WaitingToken"
-                        data-path="/WaitingToken"><i class="fa-solid fa-clock me-2" style="color: #ffffff;"></i>Waiting
+                        data-path="/WaitingToken"><i class="fa-solid fa-clock me-2 allIcon" ></i>Waiting
                         List</a>
                     <a class="btn me-2 allTab" asp-action="Index" asp-controller="Tables" data-path="/Tables"> <i
                             class="fa-solid fa-square me-2 allIcon"></i>Tables</a>
-                    <a class="btn " style="border-radius:20px;color:white;border:1px solid white" data-path="/Menu"><i
-                            class="fa-solid fa-bell-concierge me-2" style="color: #ffffff;"></i>Menu</a>
+                    <a class="btn allTab" asp-action="Index" asp-controller="OrderMenu" data-path="/OrderMenu"><i
+                            class="fa-solid fa-bell-concierge me-2 allIcon" ></i>Menu</a>
                     <div id="userInfoPartialView"></div>
                     <a class="navToggle navbar-brand ms-2 " id="navToggle"><i class="fa-solid fa-bars"
                             style="color: #c4e1f7;font-size: 25px;"></i></a>

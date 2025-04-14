@@ -25,10 +25,10 @@ public class OrderAppTablesRepository : IOrderAppTablesRepository
         {
             SectionId = section.SectionId,
             SectionName = section.SectionName,
-            Available = section.Tables.Where(t=>t.IsActive==true).Count(t => t.TableStatus == "Available"),
-            Assigned = section.Tables.Where(t=>t.IsActive==true).Count(t => t.TableStatus == "Assigned"),
-            Running = section.Tables.Where(t=>t.IsActive==true).Count(t => t.TableStatus == "Running"),
-            Selected = section.Tables.Where(t=>t.IsActive==true).Count(t => t.TableStatus == "Selected"),
+            Available = section.Tables.Where(t => t.IsActive == true).Count(t => t.TableStatus == "Available"),
+            Assigned = section.Tables.Where(t => t.IsActive == true).Count(t => t.TableStatus == "Assigned"),
+            Running = section.Tables.Where(t => t.IsActive == true).Count(t => t.TableStatus == "Running"),
+            Selected = section.Tables.Where(t => t.IsActive == true).Count(t => t.TableStatus == "Selected"),
             Tables = section.Tables.Where(s => s.IsActive == true).Select(table => new OrderAppTableListViewModel
             {
                 TableId = table.TableId,
@@ -46,16 +46,38 @@ public class OrderAppTablesRepository : IOrderAppTablesRepository
 
     public WaitingTokenListViewModel WaitingTokenList(int id)
     {
-        List<WaitingToken> waitingTokens = (from w in _context.WaitingTokens
-                                            where w.IsActive == true && w.Isassign == false && w.SectionId == id
-                                            select new WaitingToken
-                                            {
-                                                WaitingTokenId = w.WaitingTokenId,
-                                                FirstName = w.FirstName,
-                                                LastName = w.LastName,
-                                                NoOfPersons = w.NoOfPersons ?? 0,
-                                                Email = w.Email
-                                            }).ToList();
+
+        List<WaitingToken> waitingTokens;
+        if (id == 0)
+        {
+            waitingTokens = (from w in _context.WaitingTokens
+                             where w.IsActive == true && w.Isassign == false
+                             select new WaitingToken
+                             {
+                                 WaitingTokenId = w.WaitingTokenId,
+                                 FirstName = w.FirstName,
+                                 LastName = w.LastName,
+                                 NoOfPersons = w.NoOfPersons ?? 0,
+                                 Email = w.Email,
+                                 CreatedAt = w.CreatedAt,
+                                 Phone = w.Phone
+                             }).ToList();
+        }
+        else
+        {
+            waitingTokens = (from w in _context.WaitingTokens
+                             where w.IsActive == true && w.Isassign == false && w.SectionId == id
+                             select new WaitingToken
+                             {
+                                 WaitingTokenId = w.WaitingTokenId,
+                                 FirstName = w.FirstName,
+                                 LastName = w.LastName,
+                                 NoOfPersons = w.NoOfPersons ?? 0,
+                                 Email = w.Email,
+                                 CreatedAt = w.CreatedAt,
+                                 Phone = w.Phone
+                             }).ToList();
+        }
         WaitingTokenListViewModel waitingTokenListViewModel = new WaitingTokenListViewModel
         {
             waitingTokens = waitingTokens
@@ -72,20 +94,24 @@ public class OrderAppTablesRepository : IOrderAppTablesRepository
         {
             EmailAddress = customer.Email,
             FirstName = customer.FirstName,
-            Phone = customer.Phone,
+            Phone = customer.Phone ?? "",
             NoOfPersons = customer.NoOfPersons ?? 0
         };
         return orderAppCustomerViewModel;
     }
-    public OrderAppCustomerViewModel WaitingTokenCustomerDetails(string email)
+    public OrderAppCustomerViewModel WaitingTokenCustomerDetails(int id)
     {
-        WaitingToken customer = _context.WaitingTokens.FirstOrDefault(c => c.Email == email && c.IsActive == true);
+        WaitingToken customer = _context.WaitingTokens.FirstOrDefault(c => c.WaitingTokenId == id && c.IsActive == true);
         if (customer == null) return null;
+        Section section=_context.Sections.Where(s=>s.SectionId==customer.SectionId).FirstOrDefault();
         OrderAppCustomerViewModel orderAppCustomerViewModel = new OrderAppCustomerViewModel
         {
             EmailAddress = customer.Email,
             FirstName = customer.FirstName,
-            NoOfPersons = customer.NoOfPersons ?? 0
+            NoOfPersons = customer.NoOfPersons ?? 0,
+            Phone = customer.Phone ?? "",
+            SectionId=customer.SectionId??0,
+            SectionName=section.SectionName
         };
         return orderAppCustomerViewModel;
     }
@@ -104,6 +130,7 @@ public class OrderAppTablesRepository : IOrderAppTablesRepository
             {
                 waitingToken.Isassign = true;
                 waitingToken.SectionId = orderAppCustomerViewModel.SectionId;
+                _context.SaveChanges();
             }
         }
         Customer customer = _context.Customers.Where(c => c.Email == orderAppCustomerViewModel.EmailAddress).FirstOrDefault();
@@ -157,33 +184,40 @@ public class OrderAppTablesRepository : IOrderAppTablesRepository
 
     public CustomErrorViewModel AddWaitingToken(OrderAppCustomerViewModel orderAppCustomerViewModel)
     {
-        WaitingToken waitingToken = _context.WaitingTokens.Where(w=>w.Email==orderAppCustomerViewModel.EmailAddress).FirstOrDefault();
-        if (waitingToken != null)
+        WaitingToken waitingToken = _context.WaitingTokens.Where(w => w.Email == orderAppCustomerViewModel.EmailAddress).FirstOrDefault();
+        if (waitingToken != null && orderAppCustomerViewModel.EditFlag == false)
         {
             if (waitingToken.Isassign == false)
             {
                 return new CustomErrorViewModel { Message = "A waiting Token has already been generated for this customer!", Status = false };
             }
+        }
+        else if (waitingToken != null && orderAppCustomerViewModel.EditFlag == true)
+        {
             waitingToken.FirstName = orderAppCustomerViewModel.FirstName;
             waitingToken.LastName = orderAppCustomerViewModel.FirstName;
             waitingToken.NoOfPersons = orderAppCustomerViewModel.NoOfPersons;
-            waitingToken.Phone= orderAppCustomerViewModel.Phone;
-            waitingToken.SectionId=orderAppCustomerViewModel.SectionId;
-            waitingToken.Isassign= false;
+            waitingToken.Phone = orderAppCustomerViewModel.Phone;
+            waitingToken.SectionId = orderAppCustomerViewModel.SectionId;
+            waitingToken.Isassign = false;
+            return new CustomErrorViewModel() { Message = "Waiting Token Edited", Status = true };
 
-        }else{
-            WaitingToken waitingToken1=new WaitingToken{
-                FirstName=orderAppCustomerViewModel.FirstName,
-                LastName=orderAppCustomerViewModel.FirstName,
-                Phone=orderAppCustomerViewModel.Phone,
-                Email=orderAppCustomerViewModel.EmailAddress,
-                NoOfPersons=orderAppCustomerViewModel.NoOfPersons,
-                SectionId=orderAppCustomerViewModel.SectionId,
-                Isassign=false,
+        }
+        else
+        {
+            WaitingToken waitingToken1 = new WaitingToken
+            {
+                FirstName = orderAppCustomerViewModel.FirstName,
+                LastName = orderAppCustomerViewModel.FirstName,
+                Phone = orderAppCustomerViewModel.Phone,
+                Email = orderAppCustomerViewModel.EmailAddress,
+                NoOfPersons = orderAppCustomerViewModel.NoOfPersons,
+                SectionId = orderAppCustomerViewModel.SectionId,
+                Isassign = false,
             };
             _context.WaitingTokens.Add(waitingToken1);
         }
         _context.SaveChanges();
-        return new CustomErrorViewModel(){Message="Waiting Token Added",Status=true};
+        return new CustomErrorViewModel() { Message = "Waiting Token Added", Status = true };
     }
 }

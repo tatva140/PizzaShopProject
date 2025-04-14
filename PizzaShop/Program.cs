@@ -54,6 +54,11 @@ builder.Services.AddScoped<IOrderAppTablesRepository, OrderAppTablesRepository>(
 builder.Services.AddScoped<OrderAppTablesService>();
 builder.Services.AddScoped<IKOTRepository, KOTRepository>();
 builder.Services.AddScoped<KOTService>();
+builder.Services.AddScoped<IWaitingTokenRepository, WaitingTokenRepository>();
+builder.Services.AddScoped<WaitingTokenService>();
+builder.Services.AddScoped<IOrderAppMenuRepository, OrderAppMenuRepository>();
+builder.Services.AddScoped<OrderAppMenuService>();
+
 
 
 

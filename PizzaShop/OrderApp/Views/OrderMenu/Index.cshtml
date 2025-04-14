@@ -1,0 +1,93 @@
+@model DAL.ViewModels.OrderAppMenuViewModel;
+@{
+    Layout = "~/OrderApp/Views/Shared/_LayoutOrderApp.cshtml";
+    ViewData["HideLayout"] = "false";
+}
+<div class="">
+    <div style="z-index:-1;margin-top:70px;margin-left:0px;position:fixed;background-color:white;height: 100%;
+  width: 250px;">
+        <ul class="p-0 mt-2" style="list-style-type: none;">
+            <li><strong style="font-size: 20px;" class="ms-3">Category</strong></li>
+            <li class="fav mt-2 p-2 ms-2" onclick="itemFetch(-1)" role="button" tabindex="0" style="cursor: pointer;">
+            Favourite Items
+            </li>
+            <li class="allItems mt-2 p-2 ms-2" onclick="itemFetch(0)" role="button" tabindex="0" style="cursor: pointer;">
+            All
+            </li>
+            @foreach (var categories in Model.categories)
+            {
+            <li class="@($"all{@categories.CategoryId} all") mt-2 p-2 ms-2" role="button" tabindex="0"
+                onclick="itemFetch(@categories.CategoryId)" style="cursor: pointer;">
+                @categories.Name
+            </li>
+            }
+        </ul>
+    </div>
+</div>
+<div style="margin-left: 250px; padding: 20px;">
+    <div style=" margin-top: 88px;">
+        <div class="row d-flex align-items-center  justify-content-start">
+            <div class="col-6 mt-2">
+                <div class="w-50" style="position:relative; ">
+                    <form id="taxsearchForm" class="d-flex position-relative ">
+                        <input class="form-control  " type="text" aria-label="Search" placeholder="Search"
+                            id="customersearch" name="search" value="@ViewBag.customerSearch">
+                        <button type="button" class="position-absolute  btn btn-link"
+                            style="margin:auto; transition:transformY(100%);right:8px;" onclick="customers()"><i
+                                class="fa-solid fa-search"></i></button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="d-flex align-items-center justify-content-end    flex-wrap">
+                    <div style="font-size: large;" class="me-3"><i class="fa-solid fa-circle me-2"
+                            style="color:rgb(11, 146, 11)"></i>Vegetarian</div>
+                    <div style="font-size: large;" class="me-3"><i class="fa-solid fa-circle me-2"
+                            style="color: red;"></i>Non-Vegetarian</div>
+                    <div style="font-size: large;" class="me-3"><i class="fa-solid fa-circle me-2"
+                            style="color: orange"></i>Vegan</div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div id="itemCard"></div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            itemFetch(0);
+        });
+        function itemFetch(id) {
+            if (id == 0) {
+                $(".all").removeClass("activeCategory");
+                $(`.fav`).removeClass("activeCategory");
+
+                $(`.allItems`).addClass("activeCategory");
+            } else if (id == -1) {
+                $(".all").removeClass("activeCategory");
+                $(`.allItems`).removeClass("activeCategory");
+
+                $(`.fav`).addClass("activeCategory");
+
+            } else {
+                $(`.allItems`).removeClass("activeCategory");
+                $(`.fav`).removeClass("activeCategory");
+
+                $(".all").removeClass("activeCategory");
+                $(`.all${id}`).addClass("activeCategory");
+            }
+
+            $.ajax({
+                url: "/OrderMenu/GetItems",
+                type: "GET",
+                data: { id: id },
+                success: function (response) {
+                    $("#itemCard").html(response);
+                }
+            });
+        }
+    </script>
+}

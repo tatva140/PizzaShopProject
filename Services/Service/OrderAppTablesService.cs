@@ -19,8 +19,8 @@ public class OrderAppTablesService
     public OrderAppCustomerViewModel CustomerDetails(string email){
         return _orderAppTablesRepository.CustomerDetails(email);
     }
-    public OrderAppCustomerViewModel WaitingTokenCustomerDetails(string email){
-        return _orderAppTablesRepository.WaitingTokenCustomerDetails(email);
+    public OrderAppCustomerViewModel WaitingTokenCustomerDetails(int id){
+        return _orderAppTablesRepository.WaitingTokenCustomerDetails(id);
     }
     public CustomErrorViewModel AssignTable(OrderAppCustomerViewModel orderAppCustomerViewModel){
         return _orderAppTablesRepository.AssignTable(orderAppCustomerViewModel);

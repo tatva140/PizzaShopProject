@@ -294,7 +294,7 @@
             $.ajax({
                 url: "/Tables/WaitingTokenCustomerDetails",
                 type: "Get",
-                data: { email: email },
+                data: { waitingTokenId: waitingTokenId },
                 success: function (response) {
                     if (response.message != "Error") {
                         $("#customerDetails").html(response);

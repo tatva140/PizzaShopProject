@@ -1,0 +1,77 @@
+@model DAL.ViewModels.OrderAppMenuViewModel;
+<div class=" mt-5 ms-2 ">
+    <div class="d-flex align-items-center justify-content-conter gap-3 flex-wrap">
+        @foreach (var items in Model.items)
+        {
+
+            <div class="p-0 mt-2 position-relative"
+                style="height: 70px;width:300px; background-color:white;border-radius: 10px;">
+                <div class="d-flex flex-align-items-center justify-content-start p-0 pl-0" style="height: 100%;">
+                    <div style="border-radius: 15px; height: 70px; width: 70px;"
+                        class="shadow d-flex justify-content-center align-items-center">
+                        <img src="~/images/dining-menu.png" class="img-fluid" style="height: 70px; width: 70px;">
+                    </div>
+                    <div class="d-flex flex-column align-items-start justify-content-center ms-2 " style="width:230px;">
+                        <div class="mb-1">@items.Name</div>
+                        <div class="mt-1 d-flex align-items-center justify-content-between w-100">
+                            <div>@("₹" + items.Rate)</div>
+                            <div>
+                                @if(items.Isfavourite==true){
+
+                                <i class="fa-solid fa-heart me-3" style="cursor: pointer;" onclick="fav(this,@items.ItemId)"></i>
+                                }else{
+
+                                <i class="fa-regular fa-heart me-3" style="cursor: pointer;" onclick="fav(this,@items.ItemId)"></i>
+                                }
+                                </div>
+                        </div>
+                    </div>
+                </div>
+                @if (items.ItemType == "veg")
+                {
+
+                    <div
+                        style="position: absolute; top: 0; right: 0; width: 0; height: 0; border-left: 30px solid transparent; border-top: 30px solid green;">
+                    </div>
+                }
+                else if (items.ItemType == "non-veg")
+                {
+                    <div
+                        style="position: absolute; top: 0; right: 0; width: 0; height: 0; border-left: 30px solid transparent; border-top: 30px solid red;">
+                    </div>
+
+                }
+                else
+                {
+                    <div
+                        style="position: absolute; top: 0; right: 0; width: 0; height: 0; border-left: 30px solid transparent; border-top: 30px solid orange;">
+                    </div>
+
+                }
+            </div>
+        }
+
+    </div>
+</div>
+<script>
+    function fav(e,id) {
+        console.log(id);
+        e.classList.toggle("fa-solid");
+        e.classList.toggle("fa-regular");
+        flag=false;
+        if (e.classList.contains("fa-regular"))
+        {
+            flag=false;
+        }else{
+            flag=true;
+        }
+        $.ajax({
+            url: "/OrderMenu/FavouriteItem",
+            type: "GET",
+            data: { id: id,flag:flag },
+            success: function (response) {
+                itemFetch(-1);
+            }
+        });
+    }
+</script>

@@ -51,10 +51,10 @@ public class TablesController : Controller
         return View("~/OrderApp/Views/Shared/_CustomerDetails.cshtml", orderAppCustomerViewModel);
 
     }
-    public IActionResult WaitingTokenCustomerDetails(string email)
+    public IActionResult WaitingTokenCustomerDetails(int waitingTokenId)
     {
         ViewData["Icon"] = "false";
-        OrderAppCustomerViewModel orderAppCustomerViewModel = _orderAppTablesService.WaitingTokenCustomerDetails(email);
+        OrderAppCustomerViewModel orderAppCustomerViewModel = _orderAppTablesService.WaitingTokenCustomerDetails(waitingTokenId);
         if (orderAppCustomerViewModel == null)
         {
             return Ok(new { message = "Error" });

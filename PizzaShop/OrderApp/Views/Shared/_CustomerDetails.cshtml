@@ -32,7 +32,7 @@
                     <div class="form-floating mb-3">
                         <input id="NoOfPerson" asp-for="@Model.NoOfPersons" class="form-control " type="number" 
                             placeholder="NoOfPerson" aria-label="NoOfPerson">
-                        <label for="NoOfPerson" class="form-label">NoOfPerson</label>
+                        <label for="NoOfPerson" class="form-label">NoOfPerson </label>
                         <span asp-validation-for="NoOfPersons" class="text-danger text-start"></span>
                     </div>
                     
@@ -40,6 +40,11 @@
                 <div class="col-md-6">
                     <div class="form-floating mb-3">
                         <select class="form-select sectionsName" asp-for="@Model.SectionId" id="SectionsName">
+                            @if( Model.SectionName!=null){
+                            <option value="@Model.SectionId">@Model.SectionName</option>
+                            }else{
+                            <option>Select Section</option>
+                            }
                         </select>
                         <label for="Section" class="form-label">Section</label>
                         

@@ -1,0 +1,284 @@
+@model DAL.ViewModels.OrderAppTablesViewModel;
+@{
+    Layout = "~/OrderApp/Views/Shared/_LayoutOrderApp.cshtml";
+    ViewData["HideLayout"] = "false";
+}
+<div class="cont p-3">
+    <div class="row">
+        <div class="col-sm-6 col-12 ">
+            <h1 style="color: rgba(0, 102, 167, 1);">Waiting List</h1>
+        </div>
+        <div class="col-sm-6 col-12 text-end">
+            <a class="btn y" style="color: rgba(0, 102, 167, 1);border: 1.5px solid rgba(0, 102, 167, 1);"
+                onclick="openWaitingTokenModel()">+ Waiting Token</a>
+        </div>
+    </div>
+
+    <div class="row bg-white ms-1 shadow">
+        <div class="ms-3 mt-2 mb-2">
+            <nav>
+                <div class="nav nav-tabs" role="tablist">
+                    <button class="nav-link active all" data-bs-toggle="tab" type="button" aria-selected="true"
+                        onclick="waitingList(0)">All</button>
+                    @foreach (var sections in Model.Sections)
+                    {
+                        <button class="nav-link " type="button" data-bs-toggle="tab" id="@($"tab{@sections.SectionId}")"
+                            onclick="waitingList(@sections.SectionId)">@sections.SectionName</button>
+                    }
+                </div>
+            </nav>
+        </div>
+    </div>
+    <div id="renderWaitingTokens"></div>
+</div>
+</div>
+<div class="modal" id="waitingTokenModal" tabindex="-1" aria-labelledby="waitingTokenModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="waitingTokenModalLabel" style="color: rgba(0, 102, 167, 1);">Waiting Token
+                    Details</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center ms-3 me-3 mt-2 p-0">
+                <form id="waitingForm">
+                    <div id="waitingTokenCustDetails"></div>
+                    <div class="modal-footer d-flex align-items-center justify-content-end">
+                        <button type="button" class="btn btn-primary" onclick="addWaitingToken()"
+                            data-bs-dismiss="modal">Save</button>
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal " id="assignTable">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="waitingTokenModalLabel" style="color: rgba(0, 102, 167, 1);">Assign Table
+                </h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <form id="assignForm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <select class="form-select sect" onchange="fetchTables(this)">
+                                    @foreach (var sections in Model.Sections)
+                                    {
+                                        <option value="@sections.SectionId">@sections.SectionName</option>
+                                    }
+                                </select>
+                                <label for="Section" class="form-label">Section</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="custom-select mb-3" style="position:relative;">
+                                <div class="select-box" onclick="toggle()"
+                                    style="height:56px;border:0.5px solid grey;padding:10px;background-color:white;cursor:pointer;text-align:left;position: relative;border-radius:5px;">
+                                    Select Tables</div>
+                                <div id="opt"
+                                    style="cursor:pointer;z-index:1000;display: none;background-color:white;position:absolute;width:100%; border:0.5px solid grey;border-radius:5px;max-height: 150px;overflow-y: auto;text-align:left;">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="text" id="wtId" hidden>
+                    <input type="text" id="noOfPersons" hidden>
+                    <div class="modal-footer d-flex  align-items-center justify-content-end">
+                        <button type="button" class="btn  align-items center" onclick="assignTable()"
+                            style="background-color:rgba(0, 102, 167, 1);color:white ;">Assign</button>
+                        <button type="button" class="btn  align-items center" data-bs-dismiss="modal"
+                            style="color: rgba(0, 102, 167, 1);border: 1.5px solid rgba(0, 102, 167, 1);">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script>
+        var sectionIdValue;
+        var sectionNameValue;
+        var editFlag;
+        sections = JSON.parse('@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Sections))');
+        $(document).ready(function () {
+            waitingList(0);
+        });
+        checkboxToggle = false;
+        function openWaitingTokenModel() {
+            $("#waitingTokenModal").modal("show");
+            fetchCustomer();
+        }
+        function fetchCustomer(e, id) {
+            if (e != null) {
+                email = e.target.value;
+            } else {
+                email = "";
+            }
+            if (!id) {
+                $.ajax({
+                    url: "/Tables/CustomerDetails",
+                    type: "GET",
+                    data: { email: email },
+                    success: function (response) {
+                        if (response.message != "Error") {
+                            $("#waitingTokenCustDetails").html(response);
+                            sectionDiv = document.getElementById("SectionsName");
+                            sections.forEach(function (section) {
+                                sectionDiv.innerHTML += `<option value="${section.SectionId}">${section.SectionName}</option>`;
+                            });
+                            $("#Email").prop("readonly", false);
+                            editFlag = false;
+                        } else {
+                            document.getElementById("Name").value = "";
+                            document.getElementById("Phone").value = "";
+                            document.getElementById("NoOfPerson").value = 0;
+                        }
+                    }
+                });
+            } else {
+                $.ajax({
+                    url: "/Tables/WaitingTokenCustomerDetails",
+                    type: "GET",
+                    data: { waitingTokenId: id },
+                    success: function (response) {
+                        if (response.message != "Error") {
+                            $("#waitingTokenCustDetails").html(response);
+                            $("#Email").prop("readonly", true);
+                            editFlag = true;
+                        } else {
+                            document.getElementById("Name").value = "";
+                            document.getElementById("Phone").value = "";
+                            document.getElementById("NoOfPerson").value = 0;
+                        }
+                    }
+                });
+            }
+        }
+        function addWaitingToken() {
+            id = document.getElementById("SectionsName").value;
+            var formdata = new FormData($("#waitingForm")[0]);
+            formdata.append("sectionId", id);
+            formdata.append("editFlag", editFlag);
+
+            if ($("#waitingForm").valid()) {
+                $.ajax({
+                    url: '/Tables/AddWaitingToken',
+                    type: "POST",
+                    contentType: false,
+                    processData: false,
+                    data: formdata,
+                    success: function (response) {
+                        $(".modal").modal("hide");
+                        if (response.status == false) {
+                            toastr.error(response.message);
+                        } else {
+                            toastr.success(response.message);
+                            waitingList(id);
+                        }
+                    }
+                });
+            }
+
+        }
+        function waitingList(id) {
+            sectionIdValue = id;
+            $.ajax({
+                url: "/WaitingToken/WaitingTokenList",
+                type: "Get",
+                data: { id: id },
+                success: function (response) {
+                    $("#renderWaitingTokens").html(response);
+                    $(".nav-link").removeClass("active");
+                    if (id == 0) {
+                        $(`.all`).addClass("active");
+                    } else {
+                        $(`#tab${id}`).addClass("active");
+                    }
+                }
+            });
+        }
+        function assignTableModal(id, noOfPersons) {
+            $("#assignTable").modal("show");
+            document.getElementById("wtId").value = id;
+            document.getElementById("noOfPersons").value = noOfPersons;
+            sectId = document.querySelector(".sect");
+            fetchTables(sectId);
+        }
+        function fetchTables(e) {
+            document.getElementById("opt").style.display = "none";
+            checkboxToggle = false;
+            id = e.value;
+            $.ajax({
+                url: "/WaitingToken/AvailableTables",
+                type: "Get",
+                data: { id: id },
+                success: function (response) {
+                    let optionsHtml = '';
+                    response.tables.forEach(function (table) {
+                        optionsHtml += `<div><input type="checkbox" class="tcheck me-2 ms-2" value="${table.tableId}" data-capacity="${table.capacity}">${table.tableName}</div>`;
+                    });
+                    document.getElementById("opt").innerHTML = optionsHtml;
+                }
+            });
+        }
+        function toggle() {
+            checkboxToggle = !checkboxToggle;
+            if (checkboxToggle == true) {
+                document.getElementById("opt").style.display = "block";
+            } else {
+                document.getElementById("opt").style.display = "none";
+
+            }
+        }
+        tables = [];
+        totalCapacity = [];
+        function assignTable() {
+            sum = 0;
+            waitingTokenId = document.getElementById("wtId").value;
+            noOfPersons = parseInt(document.getElementById("noOfPersons").value);
+            $(".tcheck:checked").each(function (index, ele) {
+                tables.push(ele.value);
+                totalCapacity.push(ele.dataset.capacity);
+            })
+            id = document.querySelector(".sect").value;
+            var formdata = new FormData($("#assignForm")[0]);
+            formdata.append("sectionId", id);
+            formdata.append("selectedTables", JSON.stringify(tables));
+            formdata.append("waitingTokenId", waitingTokenId);
+            for (let i = 0; i < totalCapacity.length; i++) {
+                sum += totalCapacity[i];
+            }
+            if (sum < noOfPersons) {
+                toastr.error("NoOfPersons exceeds the table capacity.");
+                return;
+            }
+            $.ajax({
+                url: "/WaitingToken/AssignTable",
+                type: "POST",
+                contentType: false,
+                processData: false,
+                data: formdata,
+                success: function (response) {
+                    $("#assignTable").modal("hide");
+                    if(response.status==false){
+                        toastr.error(response.message);
+                    }else{
+                        toastr.success(response.message);
+                        waitingList(id);
+                    }
+                }
+            });
+
+        }
+    </script>
+}

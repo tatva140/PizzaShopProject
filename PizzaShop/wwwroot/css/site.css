@@ -109,7 +109,7 @@ z-index:0;
   background-color: white;
   padding-left: 0;
 }
-.navToggle{
+.navToggle {
   display: none;
 }
 
@@ -127,6 +127,7 @@ z-index:0;
   .navToggle {
   display: block;
 }
+
 }
 #close{
   display: none;
@@ -305,5 +306,9 @@ visibility: visible;
   border:1px solid rgba(0, 102, 167, 1);
   background-color: white;
 }
-
-
+.activeCategory{
+  background-color: rgba(0, 102, 167, 1);
+  color: white;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+}

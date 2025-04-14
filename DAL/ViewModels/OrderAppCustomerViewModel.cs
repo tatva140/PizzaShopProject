@@ -27,6 +27,10 @@ public class OrderAppCustomerViewModel
 
     public int waitingTokenId {get;set;}
 
+    public bool EditFlag {get;set;}
+
+    public string SectionName {get;set;}
+
 
 
 }
