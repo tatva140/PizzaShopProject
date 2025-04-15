@@ -16,6 +16,21 @@ public class OrderController : Controller
     {
         _order = order;
     }
+     [PermissionsAtrribute("Order", "CanAddEdit")]
+    public ActionResult AddEdit()
+    {
+        return Ok();
+    }
+    [PermissionsAtrribute("Order", "CanDelete")]
+    public ActionResult Delete()
+    {
+        return Ok();
+    }
+    [PermissionsAtrribute("Order", "CanView")]
+    public ActionResult ViewPermission()
+    {
+        return Ok();
+    }
     public IActionResult Index()
     {
         return View();

@@ -63,28 +63,28 @@
                                     </td>
                                     <td>
                                         @Model.itemLists[i].ItemName
-                                        @foreach (var modifier in Model.modifierLists)
+                                        @foreach (var modifier in Model.itemLists[i].modifierLists)
                                         {
                                             <li>@modifier.ModifierName</li>
                                         }
                                     </td>
                                     <td>
                                         @Model.itemLists[i].Quantity
-                                        @foreach (var modifier in Model.modifierLists)
+                                        @foreach (var modifier in Model.itemLists[i].modifierLists)
                                         {
                                             <div>@modifier.Quantity</div>
                                         }
                                     </td>
                                     <td>
                                         @Model.itemLists[i].Rate
-                                        @foreach (var modifier in Model.modifierLists)
+                                        @foreach (var modifier in Model.itemLists[i].modifierLists)
                                         {
                                             <div>@modifier.Rate</div>
                                         }
                                     </td>
                                     <td>
                                         @(Model.itemLists[i].Quantity * Model.itemLists[i].Rate)
-                                        @foreach (var modifier in Model.modifierLists)
+                                        @foreach (var modifier in Model.itemLists[i].modifierLists)
                                         {
                                             <div>@(modifier.Quantity* modifier.Rate)</div>
                                         }

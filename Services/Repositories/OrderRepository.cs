@@ -33,11 +33,11 @@ public class OrderRepository : IOrderRepository
         }
         if (time != null)
         {
-             query = query.Where(m => time == "7" ? m.CreatedAt.Value.Date >= DateTime.Now.Date.AddDays(-7): 
-                                      time == "30" ? m.CreatedAt.Value.Date >= DateTime.Now.Date.AddDays(-30) : 
-                                      time == "today" ? m.CreatedAt.Value.Date == DateTime.Now.Date : 
-                                      time == "CurrMonth" ? m.CreatedAt.Value.Month == DateTime.Now.Month && m.CreatedAt.Value.Year == DateTime.Now.Year : 
-                                      m.CreatedAt.Value.Date >= DateTime.Now.Date.AddDays(-365).ToUniversalTime());
+            query = query.Where(m => time == "7" ? m.CreatedAt.Value.Date >= DateTime.Now.Date.AddDays(-7) :
+                                     time == "30" ? m.CreatedAt.Value.Date >= DateTime.Now.Date.AddDays(-30) :
+                                     time == "today" ? m.CreatedAt.Value.Date == DateTime.Now.Date :
+                                     time == "CurrMonth" ? m.CreatedAt.Value.Month == DateTime.Now.Month && m.CreatedAt.Value.Year == DateTime.Now.Year :
+                                     m.CreatedAt.Value.Date >= DateTime.Now.Date.AddDays(-365).ToUniversalTime());
         }
 
 
@@ -308,18 +308,19 @@ public class OrderRepository : IOrderRepository
                                       {
                                           Quantity = i.Quantity,
                                           Rate = i.Rate,
-                                          ItemName = it.Name
+                                          ItemName = it.Name,
+                                          modifierLists = _context.OrderModifiers
+                                .Where(mi => mi.ItemId == i.ItemId && mi.OrderId == id)
+                                .Select(mi => new OrderModifierListViewModel
+                                {
+                                    ModifierName =
+                                         _context.Modifiers.FirstOrDefault(m => m.ModifierId == mi.ModifierId).ModifierName,
+
+                                    Rate = mi.Rate,
+                                    Quantity = mi.Quantity ?? 0,
+                                }).ToList()
                                       }).ToList(),
-                         modifierLists = (from i in _context.OrderItems
-                                          join m in _context.OrderModifiers on i.ItemId equals m.ItemId
-                                          join mod in _context.Modifiers on m.ModifierId equals mod.ModifierId
-                                          where m.OrderId == id
-                                          select new OrderModifierListViewModel
-                                          {
-                                              ModifierName = mod.ModifierName,
-                                              Quantity = m.Quantity,
-                                              Rate = m.Rate
-                                          }).ToList(),
+
                          taxLists = (from i in _context.Orders
                                      join t in _context.OrderTaxes on i.OrderId equals t.OrderId
                                      join tax in _context.Taxes on t.TaxId equals tax.TaxId

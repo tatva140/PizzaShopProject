@@ -1,10 +1,13 @@
 using DAL.Models;
 using DAL.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Services.Service;
 
 namespace PizzaShop.OrderApp.Controllers;
+
+[Authorize(Roles="Account Manager")]
 
 public class WaitingTokenController:Controller
 {
@@ -19,6 +22,7 @@ public class WaitingTokenController:Controller
         _orderAppTablesService=orderAppTablesService;
 
     }
+
 
      public IActionResult Index()
     {

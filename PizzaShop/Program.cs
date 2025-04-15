@@ -15,7 +15,7 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using System.Text.Json;
 using Azure;
-// Ensure this using directive is present
+using Microsoft.AspNetCore.Http; // Ensure this using directive is present
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,6 +58,7 @@ builder.Services.AddScoped<IWaitingTokenRepository, WaitingTokenRepository>();
 builder.Services.AddScoped<WaitingTokenService>();
 builder.Services.AddScoped<IOrderAppMenuRepository, OrderAppMenuRepository>();
 builder.Services.AddScoped<OrderAppMenuService>();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 
 
@@ -94,7 +95,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                                 Secure = true,
                                 Expires = DateTime.UtcNow.AddDays(30)
                             });
-                            httpContext.Response.Redirect(httpContext.Request.Path);
+                            httpContext.Response.Redirect(context.Request.Headers["Referer"]);
                             return;
                         }
                     }

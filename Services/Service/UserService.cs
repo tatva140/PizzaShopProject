@@ -23,12 +23,12 @@ public class UserService
     public CustomErrorViewModel ValidateUser(string email, string password)
     {
         UserProfileViewModel user = _userRepository.GetByEmail(email);
-        if(user.isLoggedIn==false){
-            return new CustomErrorViewModel { Message = "FirstLogin", Status = false };
-        }
-        if (user == null || user.isActive == false)
+        if (user == null || user.isActive == false )
         {
             return new CustomErrorViewModel { Message = "Inactive", Status = false };
+        }
+        if(user.isLoggedIn==false){
+            return new CustomErrorViewModel { Message = "FirstLogin", Status = false };
         }
         bool userPassword = BCrypt.Net.BCrypt.Verify(password, user.Password);
         if (userPassword == false)

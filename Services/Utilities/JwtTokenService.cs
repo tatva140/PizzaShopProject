@@ -85,6 +85,15 @@ public class JwtTokenService : IJwtService
         user.ExpiryTime = refreshTokenExpiryTime;
         _context.SaveChanges();
     }
+
+    public string GetRoleFromToken(string token)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var jwtToken = tokenHandler.ReadJwtToken(token);
+
+        var roleClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
+        return roleClaim?.Value;
+    }
     public bool Validate(string jwtToken, out JwtSecurityToken jwtSecurityToken)
     {
         jwtSecurityToken = null;

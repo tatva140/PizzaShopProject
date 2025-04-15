@@ -1,8 +1,11 @@
 using DAL.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Service;
 
 namespace PizzaShop.OrderApp.Controllers;
+
+[Authorize(Roles = "Account Manager")]
 
 public class OrderMenuController : Controller
 {
@@ -11,9 +14,18 @@ public class OrderMenuController : Controller
     {
         _orderAppMenuService = orderAppMenuService;
     }
-    public IActionResult Index()
+
+    public IActionResult Index(int id)
     {
         ViewData["Icon"] = "false";
+        if (id != 0)
+        {
+            ViewData["showModal"] = "true";
+        }
+        else
+        {
+            ViewData["showModal"] = "false";
+        }
         OrderAppMenuViewModel orderAppMenuViewModel = _orderAppMenuService.GetCategories();
         return View("~/OrderApp/Views/OrderMenu/Index.cshtml", orderAppMenuViewModel);
     }
@@ -26,9 +38,18 @@ public class OrderMenuController : Controller
 
     }
 
-    public IActionResult FavouriteItem(int id,bool flag){
+    public IActionResult FavouriteItem(int id, bool flag)
+    {
         ViewData["Icon"] = "false";
-        _orderAppMenuService.FavouriteItem(id,flag);
-        return Ok(new {message="Favourite"});
+        _orderAppMenuService.FavouriteItem(id, flag);
+        return Ok(new { message = "Favourite" });
+    }
+
+    public IActionResult OrderBrief()
+    {
+        ViewData["Icon"] = "false";
+
+        return View("~/OrderApp/Views/Shared/_OrderPreview.cshtml");
+
     }
 }

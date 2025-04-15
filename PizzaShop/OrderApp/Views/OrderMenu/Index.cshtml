@@ -3,91 +3,178 @@
     Layout = "~/OrderApp/Views/Shared/_LayoutOrderApp.cshtml";
     ViewData["HideLayout"] = "false";
 }
-<div class="">
-    <div style="z-index:-1;margin-top:70px;margin-left:0px;position:fixed;background-color:white;height: 100%;
-  width: 250px;">
+<div style="margin-top:70px;">
+    <div style="margin-left:0px;position:fixed;background-color:white;height: 100%;
+  width: 250px;" id="categorySidebar">
         <ul class="p-0 mt-2" style="list-style-type: none;">
             <li><strong style="font-size: 20px;" class="ms-3">Category</strong></li>
             <li class="fav mt-2 p-2 ms-2" onclick="itemFetch(-1)" role="button" tabindex="0" style="cursor: pointer;">
-            Favourite Items
+                Favourite Items
             </li>
-            <li class="allItems mt-2 p-2 ms-2" onclick="itemFetch(0)" role="button" tabindex="0" style="cursor: pointer;">
-            All
+            <li class="allItems mt-2 p-2 ms-2" onclick="itemFetch(0)" role="button" tabindex="0"
+                style="cursor: pointer;">
+                All
             </li>
             @foreach (var categories in Model.categories)
             {
-            <li class="@($"all{@categories.CategoryId} all") mt-2 p-2 ms-2" role="button" tabindex="0"
-                onclick="itemFetch(@categories.CategoryId)" style="cursor: pointer;">
-                @categories.Name
-            </li>
+                <li class="@($"all{@categories.CategoryId} ") mt-2 p-2 ms-2 catTab" role="button" tabindex="0"
+                    data-id="@categories.CategoryId" onclick="itemFetch(@categories.CategoryId)" style="cursor: pointer;">
+                    @categories.Name
+                </li>
             }
         </ul>
     </div>
-</div>
-<div style="margin-left: 250px; padding: 20px;">
-    <div style=" margin-top: 88px;">
-        <div class="row d-flex align-items-center  justify-content-start">
-            <div class="col-6 mt-2">
-                <div class="w-50" style="position:relative; ">
-                    <form id="taxsearchForm" class="d-flex position-relative ">
-                        <input class="form-control  " type="text" aria-label="Search" placeholder="Search"
-                            id="customersearch" name="search" value="@ViewBag.customerSearch">
-                        <button type="button" class="position-absolute  btn btn-link"
-                            style="margin:auto; transition:transformY(100%);right:8px;" onclick="customers()"><i
-                                class="fa-solid fa-search"></i></button>
-                    </form>
-                </div>
-            </div>
-            <div class="col-6">
-                <div class="d-flex align-items-center justify-content-end    flex-wrap">
-                    <div style="font-size: large;" class="me-3"><i class="fa-solid fa-circle me-2"
-                            style="color:rgb(11, 146, 11)"></i>Vegetarian</div>
-                    <div style="font-size: large;" class="me-3"><i class="fa-solid fa-circle me-2"
-                            style="color: red;"></i>Non-Vegetarian</div>
-                    <div style="font-size: large;" class="me-3"><i class="fa-solid fa-circle me-2"
-                            style="color: orange"></i>Vegan</div>
-                </div>
-            </div>
 
+    <div id="responsiveCategorySlider" class=" p-2 ms-4 me-4" style="margin-top: 100px;">
+        <h3 style="color: rgba(0, 102, 167, 1);;">Category</h3>
+        <div class="  bg-light rounded shadow-sm p-2">
+            <div class="d-flex overflow-auto"
+                style="white-space: nowrap; scrollbar-width: none; -ms-overflow-style: none;">
+                <button class="btn me-2 px-3 py-2 " onclick="itemFetch(-1)" id="favButton">Favourite Items</button>
+                <button class="btn  me-2 px-3 py-2" onclick="itemFetch(0)" id="allButton">All</button>
+                @foreach (var category in Model.categories)
+                {
+                    <button class="btn  me-2 px-3 py-2 categorytBtn" onclick="itemFetch(@category.CategoryId)"
+                        id="@category.CategoryId">
+                        @category.Name
+                    </button>
+                }
+            </div>
         </div>
-        <div class="row">
-            <div id="itemCard"></div>
+    </div>
+
+    <div id="itemsDiv">
+        <div class="row  ">
+            <div class=" col">
+                <div class="row d-flex align-items-center  justify-content-start">
+                    <div class="col-xl-6 col-md-8  p-0">
+                        <div class="w-75" style="position:relative; ">
+                            <form id="taxsearchForm" class="d-flex position-relative ">
+                                <input class="form-control  " type="text" aria-label="Search" placeholder="Search"
+                                    id="customersearch" name="search" value="@ViewBag.customerSearch">
+                                <button type="button" class="position-absolute  btn btn-link"
+                                    style="margin:auto; transition:transformY(100%);right:8px;" onclick="customers()"><i
+                                        class="fa-solid fa-search"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-md-4 mt-md-0 mt-3">
+                        <div class="d-flex align-items-center justify-content-end    flex-wrap">
+                            <div style="font-size: large;" class="me-3"><i class="fa-solid fa-circle me-2"
+                                    style="color:rgb(11, 146, 11)"></i>Vegetarian</div>
+                            <div style="font-size: large;" class="me-3"><i class="fa-solid fa-circle me-2"
+                                    style="color: red;"></i>Non-Vegetarian</div>
+                            <div style="font-size: large;" class="me-3"><i class="fa-solid fa-circle me-2"
+                                    style="color: orange"></i>Vegan</div>
+                        </div>
+                    </div>
+
+                </div>
+                <div id="itemCardrender" class=""></div>
+
+            </div>
+            @if (ViewData["showModal"] == "true")
+            {
+                <div style="background-color: white; border-radius: 10px;" class="col-md-6 align-self-start" id="orderPrev">
+                    <div  class="orderBrief mt-1 "></div>
+                </div>
+                <div id="orderPrevIcon" style="position: fixed; bottom: 20px; right:10px; z-index: 1000;" class=" text-end">
+                    <img src="~/images/icons/dinner-table.svg" class="img-fluid rounded-pill " style="height: 70px; width: 70px;background-color: #0be0fc;" onclick="openPrevModal()">
+                </div>
+            }
+        </div>
+    </div>
+</div>
+</div>
+<div class="modal " id="orderPrevModal">
+    <div class="modal-dialog   modal-dialog-scrollable modal-fullscreen-md-down">
+        <div class="modal-content">
+             <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+           <div class="orderBrief"></div>
+           </div>
         </div>
     </div>
 </div>
 @section Scripts {
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script>
         $(document).ready(function () {
+            show =@ViewData["showModal"];
             itemFetch(0);
+            if (show == true) {
+                console.log("here");
+                $.ajax({
+                    url: "/OrderMenu/OrderBrief",
+                    type: "GET",
+                    success: function (response) {
+                        $(".orderBrief").html(response);
+                    }
+                });
+            }
         });
         function itemFetch(id) {
             if (id == 0) {
-                $(".all").removeClass("activeCategory");
+                $(".catTab").removeClass("activeCategory");
                 $(`.fav`).removeClass("activeCategory");
-
                 $(`.allItems`).addClass("activeCategory");
+                $('#allButton').css('background-color', 'rgba(0, 102, 167, 1)');
+                $('#allButton').css('color', 'white');
+                $('#favButton').removeAttr('style');
+                $(`#${id}`).removeAttr('style');
+                $('.categorytBtn').removeAttr('style');
             } else if (id == -1) {
-                $(".all").removeClass("activeCategory");
+                $(".catTab").removeClass("activeCategory");
                 $(`.allItems`).removeClass("activeCategory");
-
                 $(`.fav`).addClass("activeCategory");
+                $('#favButton').css('background-color', 'rgba(0, 102, 167, 1)');
+                $('#favButton').css('color', 'white');
+                $('#allButton').removeAttr('style');
+                $(`#${id}`).removeAttr('style');
+                $('.categorytBtn').removeAttr('style');
 
             } else {
                 $(`.allItems`).removeClass("activeCategory");
                 $(`.fav`).removeClass("activeCategory");
 
-                $(".all").removeClass("activeCategory");
+                $(".catTab").removeClass("activeCategory");
                 $(`.all${id}`).addClass("activeCategory");
+                $('#allButton').removeAttr('style');
+                $('.categorytBtn').removeAttr('style');
+                $('#favButton').removeAttr('style');
+                $(`#${id}`).css('background-color', 'rgba(0, 102, 167, 1)');
+                $(`#${id}`).css('color', 'white');
             }
-
             $.ajax({
                 url: "/OrderMenu/GetItems",
                 type: "GET",
                 data: { id: id },
                 success: function (response) {
-                    $("#itemCard").html(response);
+                    $("#itemCardrender").html(response);
                 }
             });
+        }
+        $(document).on('click', 'ul', function (event) {
+            const target = $(event.target);
+            if (target.hasClass('catTab')) {
+                const categoryId = target.data('id');
+                itemFetch(categoryId);
+            } else if (target.hasClass('fav') || target.hasClass('allItems')) {
+                const categoryId = target.hasClass('fav') ? -1 : 0;
+                itemFetch(categoryId);
+            }
+        });
+        function openPrevModal(){
+            $("#orderPrevModal").modal("show");
+            
         }
     </script>
 }

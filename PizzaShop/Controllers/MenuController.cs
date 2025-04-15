@@ -21,6 +21,21 @@ public class MenuController : Controller
         _menuService = menuService;
         _fileUploads = fileUploads;
     }
+     [PermissionsAtrribute("Menu", "CanAddEdit")]
+    public ActionResult AddEdit()
+    {
+        return Ok();
+    }
+    [PermissionsAtrribute("Menu", "CanDelete")]
+    public ActionResult Delete()
+    {
+        return Ok();
+    }
+    [PermissionsAtrribute("Menu", "CanView")]
+    public ActionResult ViewPermission()
+    {
+        return Ok();
+    }
     public ActionResult Index()
     {
         return View();

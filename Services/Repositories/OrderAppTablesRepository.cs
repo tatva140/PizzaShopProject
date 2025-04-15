@@ -35,6 +35,7 @@ public class OrderAppTablesRepository : IOrderAppTablesRepository
                 TableName = table.TableName,
                 Status = table.TableStatus,
                 Capacity = table.Capacity ?? 0,
+                CustomerId=table.CurrentCustomerId??0,
                 TotalAmount = _context.Orders.Where(order => order.OrderId == table.CurrentOrderId).Select(o => o.TotalAmount).FirstOrDefault(),
                 Duration = _context.Orders.Where(order => order.OrderId == table.CurrentOrderId).Select(o => o.Duration).FirstOrDefault().HasValue ? (DateTime.Now - _context.Orders.Where(order => order.OrderId == table.CurrentOrderId).Select(o => o.Duration).FirstOrDefault().Value) : TimeSpan.Zero
             }).ToList(),

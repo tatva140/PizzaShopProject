@@ -24,7 +24,7 @@ public class DashboardController : Controller
         _fileUploads = fileUploads;
     }
 
-[Authorize]
+// [Authorize(Roles="Admin,Account Manager")]
     public IActionResult Index(string message)
     {
         if(message!=""){

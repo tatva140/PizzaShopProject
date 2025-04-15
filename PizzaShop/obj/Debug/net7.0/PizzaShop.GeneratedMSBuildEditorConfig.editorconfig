@@ -48,6 +48,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = T3JkZXJBcHBcVmlld3NcU2hhcmVkXF9Ob3RpZmljYXRpb24uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/pca140/Desktop/RMSProject/PizzaShop/OrderApp/Views/Shared/_OrderPreview.cshtml]
+build_metadata.AdditionalFiles.TargetPath = T3JkZXJBcHBcVmlld3NcU2hhcmVkXF9PcmRlclByZXZpZXcuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/pca140/Desktop/RMSProject/PizzaShop/OrderApp/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = T3JkZXJBcHBcVmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 

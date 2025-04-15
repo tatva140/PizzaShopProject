@@ -312,3 +312,49 @@ visibility: visible;
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
 }
+#itemsDiv{
+  margin-left: 250px;
+  padding: 20px;
+}
+#responsiveCategorySlider{
+  display: none;
+}
+@media (max-width:1550px){
+ #responsiveCategorySlider{
+  display: block;
+ }
+  #categorySidebar{
+    display: none;
+  }
+  #itemsDiv{
+    margin-left: 20px;
+    margin-right: 20px;
+    
+  }
+}
+#responsiveTabs{
+  display: none;
+}
+@media (max-width:745px){
+  /* .srch{
+    display: none;
+  } */
+  #orderAppTabs{
+    display: none;
+  }
+  #responsiveTabs{
+    display: block;
+  }
+}
+#orderPrevIcon{
+  display: none;
+}
+@media (max-width:1040px){
+  #orderPrevIcon{
+    display: block;
+  }
+  #orderPrev{
+    display: none;
+  }
+  
+}

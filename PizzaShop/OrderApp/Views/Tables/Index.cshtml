@@ -60,7 +60,7 @@
                                 @foreach (var details in sec.Tables)
                                 {
                                     <div class="@($"tablecard{@details.Status}") p-3"
-                                        onclick="tableselect(@details.TableId,'@details.Status',@details.Capacity,@sec.SectionId,this)"
+                                        onclick="tableselect(@details.TableId,'@details.Status',@details.Capacity,@sec.SectionId,@details.CustomerId,this)"
                                         id="@details.TableId">
                                         <div class="row">
                                             <div class="col-8">
@@ -196,7 +196,7 @@
         sectionId;
         customerSectionId = 0;
         customerSectionName = 0;
-        function tableselect(id, status, capacity, secId, e) {
+        function tableselect(id, status, capacity, secId,custId, e) {
             if (secId != sectionId) {
                 for (let i = 0; i < selectedTables.length; i++) {
                     $(`#${selectedTables[i]}`).removeClass("selectedtable");
@@ -216,7 +216,7 @@
                     $(e).addClass("selectedtable");
                 }
             } else {
-                toastr.error(`Table Already ${status}`);
+                window.location.href="/OrderMenu?id="+custId;
             }
         }
         function openAssignModal(id, sectionName) {

@@ -47,7 +47,6 @@ public class OrdersListViewModel
     public List<string> TableName { get; set; }
     public string SectionName { get; set; }
     public List<OrderItemListViewModel> itemLists { get; set; }
-    public List<OrderModifierListViewModel> modifierLists { get; set; }
     public List<OrderTaxListViewModel> taxLists { get; set; }
     public DateTime? PaidOn { get; set; }
     public DateTime? OrderDuration { get; set; }

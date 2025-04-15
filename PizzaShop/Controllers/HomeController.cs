@@ -50,6 +50,11 @@ public class HomeController : Controller
         if (ModelState.IsValid)
         {
             CustomErrorViewModel isValidUser = _userService.ValidateUser(model.Email, model.Password);
+            if (isValidUser.Message == "Inactive")
+            {
+                TempData["error"] = isValidUser.Message;
+                return RedirectToAction("Index");
+            }
             _userService.SetRememberMe(model.Email, model.RememberMe);
             if (isValidUser.Message == "FirstLogin")
             {
@@ -59,7 +64,7 @@ public class HomeController : Controller
                     Secure = true,
                     Expires = DateTime.Now.AddHours(1)
                 });
-                return RedirectToAction("ChangePassword","Dashboard",new {firstTime=true});
+                return RedirectToAction("ChangePassword", "Dashboard", new { firstTime = true });
             }
             else if (isValidUser.Status == true)
             {
@@ -88,7 +93,15 @@ public class HomeController : Controller
                     Secure = true,
                     Expires = refreshTokenExpiryTime
                 });
-                return RedirectToAction("Index", "Dashboard");
+                var role = _jwtTokenService.GetRoleFromToken(token);
+                if (role == "Chef")
+                {
+                    return RedirectToAction("Index", "KOT");
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Dashboard");
+                }
             }
             ViewBag.Message = "Invalid credentials";
             return View(model);

@@ -17,6 +17,8 @@ public class OrderAppTablesViewModel
         public decimal? TotalAmount { get; set; }
         public TimeSpan Duration { get; set; }
 
+        public int CustomerId {get;set;}
+
     }
     public class SectionListViewModel
     {

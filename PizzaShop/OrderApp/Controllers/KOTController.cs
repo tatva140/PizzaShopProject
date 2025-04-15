@@ -2,6 +2,7 @@ using System.Runtime.InteropServices.JavaScript;
 using System.Text.Json.Nodes;
 using DAL.Models;
 using DAL.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using NuGet.Protocol;
@@ -10,6 +11,7 @@ using static DAL.ViewModels.OrderAppKOTViewModel;
 
 namespace PizzaShop.OrderApp.Controllers;
 
+[Authorize(Roles="Chef,Account Manager")]
 public class KOTController : Controller
 {
     private readonly KOTService _kotService;

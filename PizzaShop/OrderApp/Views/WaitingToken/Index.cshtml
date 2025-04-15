@@ -101,6 +101,8 @@
     </div>
 </div>
 @section Scripts {
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
     <script
         src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
@@ -251,6 +253,10 @@
                 totalCapacity.push(ele.dataset.capacity);
             })
             id = document.querySelector(".sect").value;
+            if(id==null || tables.length==0 ){
+                toastr.warning("Please select sections and tables");
+                return;
+            }
             var formdata = new FormData($("#assignForm")[0]);
             formdata.append("sectionId", id);
             formdata.append("selectedTables", JSON.stringify(tables));

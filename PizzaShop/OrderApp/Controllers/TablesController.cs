@@ -9,6 +9,7 @@ using Services.Service;
 
 namespace PizzaShop.OrderApp;
 
+[Authorize(Roles="Account Manager")]
 
 public class TablesController : Controller
 {
@@ -20,6 +21,7 @@ public class TablesController : Controller
         _orderAppTablesService = orderAppTablesService;
         _tableAndSectionService = tableAndSectionService;
     }
+
     public IActionResult Index()
     {
         ViewData["Icon"] = "false";

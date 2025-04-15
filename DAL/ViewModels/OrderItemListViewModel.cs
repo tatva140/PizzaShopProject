@@ -12,4 +12,6 @@ public class OrderItemListViewModel
 
     public decimal? Rate { get; set; }
     public string ItemName { get; set; }
+    public List<OrderModifierListViewModel> modifierLists { get; set; }
+
 }

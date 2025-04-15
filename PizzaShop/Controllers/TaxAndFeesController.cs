@@ -15,6 +15,21 @@ public class TaxAndFeesController : Controller
         _taxAndFeesService = taxAndFeesService;
     }
 
+     [PermissionsAtrribute("TaxAndFees", "CanAddEdit")]
+    public ActionResult AddEdit()
+    {
+        return Ok();
+    }
+    [PermissionsAtrribute("TaxAndFees", "CanDelete")]
+    public ActionResult Delete()
+    {
+        return Ok();
+    }
+    [PermissionsAtrribute("TaxAndFees", "CanView")]
+    public ActionResult ViewPermission()
+    {
+        return Ok();
+    }
     public ActionResult Index()
     {
         return View();

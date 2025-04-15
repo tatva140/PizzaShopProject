@@ -16,11 +16,7 @@ public class TablesAndSectionsController : Controller
     {
         _tableAndSectionService = tableAndSectionService;
     }
-    public ActionResult Index()
-    {
-        return View();
-    }
-    [PermissionsAtrribute("TablesAndSections", "CanAddEdit")]
+     [PermissionsAtrribute("TablesAndSections", "CanAddEdit")]
     public ActionResult AddEdit()
     {
         return Ok();
@@ -31,11 +27,16 @@ public class TablesAndSectionsController : Controller
         return Ok();
     }
     [PermissionsAtrribute("TablesAndSections", "CanView")]
-    public ActionResult CanView()
+    public ActionResult ViewPermission()
     {
         return Ok();
     }
 
+    public ActionResult Index()
+    {
+        return View();
+    }
+   
     [HttpGet]
     public IActionResult TablesAndSections(int sectionId, string search, int pageNumber = 1, int pageSize = 2, int selectedPage = 2)
     {

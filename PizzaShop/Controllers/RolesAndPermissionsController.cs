@@ -19,7 +19,21 @@ public class RolesAndPermissionsController:Controller
         _userService=userService;
         _rolesAndPermissionsServices=rolesAndPermissionsServices;
     }
-   
+     [PermissionsAtrribute("RolesAndPermissions", "CanAddEdit")]
+    public ActionResult AddEdit()
+    {
+        return Ok();
+    }
+    [PermissionsAtrribute("RolesAndPermissions", "CanDelete")]
+    public ActionResult Delete()
+    {
+        return Ok();
+    }
+    [PermissionsAtrribute("RolesAndPermissions", "CanView")]
+    public ActionResult ViewPermission()
+    {
+        return Ok();
+    }
     public ActionResult Index()
     {
         List<Role> roles= _userService.GetRoles("").ToList();
