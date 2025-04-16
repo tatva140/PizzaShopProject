@@ -321,7 +321,7 @@ public class OrderRepository : IOrderRepository
                                 }).ToList()
                                       }).ToList(),
 
-                         taxLists = (from i in _context.Orders
+                         taxLists = o.OrderStatus=="Completed" ? (from i in _context.Orders
                                      join t in _context.OrderTaxes on i.OrderId equals t.OrderId
                                      join tax in _context.Taxes on t.TaxId equals tax.TaxId
                                      where t.OrderId == id
@@ -329,7 +329,13 @@ public class OrderRepository : IOrderRepository
                                      {
                                          TaxName = tax.TaxName,
                                          Amount = t.TaxAmount
-                                     }).ToList(),
+                                     }).ToList() : (from t in _context.Taxes
+                                     where t.IsEnabled==true && t.IsActive==true
+                                     select new OrderTaxListViewModel
+                                     {
+                                         TaxName = t.TaxName,
+                                         Amount = t.Amount
+                                     }).ToList() ,
                          PaymentMode = p.PaymentMode ?? "",
                          PaidOn = p.CreatedAt,
                          OrderDuration = o.Duration,

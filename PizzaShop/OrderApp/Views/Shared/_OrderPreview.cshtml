@@ -1,10 +1,16 @@
+@model DAL.ViewModels.OrderAppMenuViewModel;
 <div class="row mt-3">
     <div class="d-flex align-items-start justify-content-start  ">
         <img src="~/images/icons/dinner-table.svg" class="img-fluid p-1"
             style="height: 50px; width: 50px;background-color: #0be0fc;">
         <div class="d-flex flex-column align-items-start justify-content-center ms-2 ">
-            <div class="p-0">First Floor</div>
-            <div>Table: T2,T6</div>
+            <div class="p-0">@Model.SectionName</div>
+            <div>Table:
+                @foreach (var tables in Model.tables)
+                {
+                    @(tables.TableName + " ")
+                }
+            </div>
         </div>
         <div class="ms-auto d-flex align-items-center justify-content-end">
             <button class="me-2" style="border: 1px solid rgba(0, 102, 167, 1);background-color: white;"><i
@@ -29,149 +35,108 @@
         Amount
     </div>
 </div>
-<div class="row mt-2 me-2 p-2" style="border: 1px solid rgb(187, 176, 176);border-radius: 5px;margin-left:1px;">
-    <div class="col-6">
-        <div class="d-flex flex-column align-items-start justify-content-center  ">
-            <div>
-                <i class="fa-solid fa-angle-down me-1" type="button" data-bs-toggle="collapse" aria-expanded="false"
-                    aria-controls="flush-collapseOne" onclick="itemToggle()">
-                </i><strong>Margerita</strong>
+    <div id="itemrenderer"></div>
+
+    <hr>
+    <div class="row">
+        <div class="d-flex align-items-center justify-content-between">
+            <div class="text-start fs-5">SubTotal</div>
+           @if(Model.ordersListViewModel!=null){
+                <div class="text-end">@(Model.ordersListViewModel.SubTotal)</div>
+
+                }else{
+
+                <div class="text-end">0</div>
+                }
+        </div>
+        @foreach (var tax in Model.taxes)
+        {
+
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="text-start fs-8">@tax.TaxName</div>
+                @if(Model.ordersListViewModel!=null){
+                <div class="text-end">₹@(tax.Amount*Model.ordersListViewModel.SubTotal/100)</div>
+
+                }else{
+
+                <div class="text-end">0</div>
+                }
             </div>
-            <ul class="mb-0 " id="itemTogglediv">
-                <li><span class="me-5">Onion</span>₹20</li>
-            </ul>
+        }
+        <div class="d-flex align-items-center justify-content-between">
+            <div class="text-start fs-8"><input type="checkbox" class="me-2">SGST</div>
+            <div class="text-end"></div>
         </div>
-    </div>
-    <div class="col-2">
-        <div style="border:1px solid rgb(187, 176, 176);border-radius:5px; width: 80px;" class="text-center p-1">
-            <div class="p-0 m-0"><i class="fa fa-minus me-2 ms-0"></i><span> 1 </span><i
-                    class="fa fa-plus ms-2 me-0"></i>
-            </div>
+        <div class="d-flex align-items-center justify-content-between">
+            <div class="text-start fs-5">Total</div>
+              @if(Model.ordersListViewModel!=null){
+                <div class="text-end">@(Model.ordersListViewModel.TotalAmount)</div>
+
+                }else{
+
+                <div class="text-end">0</div>
+                }
         </div>
-    </div>
-    <div class="col-2 ms-4">
-        <div class="d-flex flex-column align-items-start justify-content-center  ">
-            <div class="fs-6">₹120.00</div>
-            <div class="fs-8 text-muted">₹20.00</div>
-        </div>
-    </div>
-    <div class="col-auto ms-2 mt-2">
-        <i class="fa fa-trash"></i>
-    </div>
-</div>
-<div class="row mt-2 me-2 p-2" style="border: 1px solid rgb(187, 176, 176);border-radius: 5px;margin-left:1px;">
-    <div class="col-6">
-        <div class="d-flex flex-column align-items-start justify-content-center  ">
-            <div>
-                <i class="fa-solid fa-angle-down me-1" type="button" data-bs-toggle="collapse" aria-expanded="false"
-                    aria-controls="flush-collapseOne">
-                </i><strong>Margerita</strong>
-            </div>
-            <ul class="mb-0 ">
-                <li><span class="me-5">Onion</span>₹20</li>
-            </ul>
-        </div>
-    </div>
-    <div class="col-2">
-        <div style="border:1px solid rgb(187, 176, 176);border-radius:5px; width: 80px;" class="text-center p-1">
-            <div class="p-0 m-0"><i class="fa fa-minus me-2 ms-0"></i><span> 1 </span><i
-                    class="fa fa-plus ms-2 me-0"></i>
-            </div>
-        </div>
-    </div>
-    <div class="col-2 ms-4">
-        <div class="d-flex flex-column align-items-start justify-content-center  ">
-            <div class="fs-6">₹120.00</div>
-            <div class="fs-8 text-muted">₹20.00</div>
-        </div>
-    </div>
-    <div class="col-auto ms-2 mt-2">
-        <i class="fa fa-trash"></i>
-    </div>
-</div>
-<div class="row mt-2 me-2 p-2" style="border: 1px solid rgb(187, 176, 176);border-radius: 5px;margin-left:1px;">
-    <div class="col-6">
-        <div class="d-flex flex-column align-items-start justify-content-center  ">
-            <div>
-                <i class="fa-solid fa-angle-down me-1" type="button" data-bs-toggle="collapse" aria-expanded="false"
-                    aria-controls="flush-collapseOne">
-                </i><strong>Margerita</strong>
-            </div>
-            <ul class="mb-0 ">
-                <li><span class="me-5">Onion</span>₹20</li>
-            </ul>
-        </div>
-    </div>
-    <div class="col-2">
-        <div style="border:1px solid rgb(187, 176, 176);border-radius:5px; width: 80px;" class="text-center p-1">
-            <div class="p-0 m-0"><i class="fa fa-minus me-2 ms-0"></i><span> 1 </span><i
-                    class="fa fa-plus ms-2 me-0"></i>
+        <div class="d-flex align-items-center justify-content-between">
+            <div class="text-start fs-8 text-muted">Payment Method</div>
+            <div class="d-flex align-items-center justify-content-center text-muted">
+                <input type="radio" class="me-1 " name="payment"> Cash
+                <input type="radio" class="me-1 ms-2 " name="payment"> Card
+                <input type="radio" class="me-1 ms-2 " name="payment"> UPI
             </div>
         </div>
     </div>
-    <div class="col-2 ms-4">
-        <div class="d-flex flex-column align-items-start justify-content-center  ">
-            <div class="fs-6">₹120.00</div>
-            <div class="fs-8 text-muted">₹20.00</div>
-        </div>
-    </div>
-    <div class="col-auto ms-2 mt-2">
-        <i class="fa fa-trash"></i>
-    </div>
-</div>
-<hr>
-<div class="row">
-    <div class="d-flex align-items-center justify-content-between">
-        <div class="text-start fs-5">SubTotal</div>
-        <div class="text-end">₹1250.00</div>
-    </div>
-    <div class="d-flex align-items-center justify-content-between">
-        <div class="text-start fs-8">GST</div>
-        <div class="text-end">₹25.00</div>
-    </div>
-    <div class="d-flex align-items-center justify-content-between">
-        <div class="text-start fs-8">CGST</div>
-        <div class="text-end">₹12.00</div>
-    </div>
-    <div class="d-flex align-items-center justify-content-between">
-        <div class="text-start fs-8"><input type="checkbox" class="me-1">SGST</div>
-    </div>
-     <div class="d-flex align-items-center justify-content-between">
-        <div class="text-start fs-5">Total</div>
-        <div class="text-end">₹1550.00</div>
-    </div>
-     <div class="d-flex align-items-center justify-content-between">
-        <div class="text-start fs-8 text-muted">Payment Method</div>
-        <div class="d-flex align-items-center justify-content-center text-muted">
-            <input type="radio" class="me-1 " name="payment"> Cash
-            <input type="radio" class="me-1 ms-2 " name="payment"> Card
-            <input type="radio" class="me-1 ms-2 " name="payment"> UPI
-        </div>
-    </div>
-</div>
+
+
 <div class="row mt-3">
-<div class="d-flex align-items-center justify-content-end">
-<button class="btn me-2 w-25" style="background-color: rgba(0, 102, 167, 1);color:white;">Save</button>
-<button class="btn me-2 w-25" style="border: 1px solid rgba(0, 102, 167, 1);color:rgba(0, 102, 167, 1);">Complete</button>
-<button class="btn w-25"  style="border: 1px solid rgba(0, 102, 167, 1);color:rgba(0, 102, 167, 1);">Generate Invoice</button>
-</div>
+    <div class="d-flex align-items-center justify-content-end">
+        <button class="btn me-2 w-25" style="background-color: rgba(0, 102, 167, 1);color:white;">Save</button>
+        <button class="btn me-2 w-25"
+            style="border: 1px solid rgba(0, 102, 167, 1);color:rgba(0, 102, 167, 1);">Complete</button>
+        <button class="btn w-25" style="border: 1px solid rgba(0, 102, 167, 1);color:rgba(0, 102, 167, 1);">Generate
+            Invoice</button>
+    </div>
 </div>
 <div class="row mt-2 mb-3">
     <div class="d-flex align-items-center justify-content-end ">
-<button class="btn w-25"  style="border: 1px solid rgba(0, 102, 167, 1);color:rgba(0, 102, 167, 1);">Cancel</button>
-</div>
+        <button class="btn w-25"
+            style="border: 1px solid rgba(0, 102, 167, 1);color:rgba(0, 102, 167, 1);">Cancel</button>
+    </div>
 
 </div>
 <script>
-    toggleFlag=true;
-    function itemToggle(){
-        toggleFlag=!toggleFlag;
-        if(toggleFlag){
-
-        document.getElementById("itemTogglediv").style.display="block";
+    var orders='@Model.ordersListViewModel';
+   var orderItems;
+    $(document).ready(function () {
+         if (orders!= '') {
+         orderItems = JSON.parse('@Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.ordersListViewModel, new System.Text.Json.JsonSerializerOptions { ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve }))');
+    
+        itemRender();
         }else{
-
-        document.getElementById("itemTogglediv").style.display="none";
+            $("#itemrenderer").html("");
         }
+    });
+    toggleFlag = true;
+    function itemToggle() {
+        toggleFlag = !toggleFlag;
+        if (toggleFlag) {
+
+            document.getElementById("itemTogglediv").style.display = "block";
+        } else {
+
+            document.getElementById("itemTogglediv").style.display = "none";
+        }
+    }
+    function itemRender() {
+        console.log(orderItems);
+        $.ajax({
+            url: "/OrderMenu/RenderOrderItem",
+            type: "POST",
+            contentType: 'application/json',
+            data: JSON.stringify(orderItems),
+            success: function (response) {
+                $("#itemrenderer").html(response);
+            }
+        });
     }
 </script>

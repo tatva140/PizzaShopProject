@@ -1,0 +1,40 @@
+@model DAL.ViewModels.OrderAppMenuViewModel;
+@foreach(var orderItems in Model.ordersListViewModel.itemLists){
+
+<div class="row mt-2 me-2 p-2" style="border: 1px solid rgb(187, 176, 176);border-radius: 5px;margin-left:1px;">
+    <div class="col-6">
+        <div class="d-flex flex-column align-items-start justify-content-center  ">
+            <div>
+                <i class="fa-solid fa-angle-down me-1" type="button" data-bs-toggle="collapse" aria-expanded="false"
+                    aria-controls="flush-collapseOne" onclick="itemToggle()">
+                </i><strong>@orderItems.ItemName</strong>
+            </div>
+            <ul class="mb-0 " id="itemTogglediv">
+                @foreach(var modifiers in orderItems.modifierLists){
+
+                <li><span class="me-5">@modifiers.ModifierName</span>@modifiers.Rate</li>
+                }
+            </ul>
+        </div>
+    </div>
+    <div class="col-2">
+        <div style="border:1px solid rgb(187, 176, 176);border-radius:5px; width: 80px;" class="text-center p-1">
+            <div class="p-0 m-0"><i class="fa fa-minus me-2 ms-0"></i><span> 1 </span><i
+                    class="fa fa-plus ms-2 me-0"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-2 ms-4">
+        <div class="d-flex flex-column align-items-start justify-content-center  ">
+            <div class="fs-6">₹@orderItems.Rate</div>
+             @foreach(var modifiers in orderItems.modifierLists){
+            <div class="fs-8 text-muted">₹@modifiers.Rate</div>
+            }
+        </div>
+    </div>
+    
+    <div class="col-auto ms-2 mt-2">
+        <i class="fa fa-trash"></i>
+    </div>
+</div>
+}

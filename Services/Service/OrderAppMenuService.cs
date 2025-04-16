@@ -8,9 +8,11 @@ public class OrderAppMenuService
 {
     private readonly IOrderAppMenuRepository _orderAppMenuRepository;
     private readonly IMenuRepository _menuRepository;
-    public OrderAppMenuService(IOrderAppMenuRepository orderAppMenuRepository,IMenuRepository menuRepository){
+    private readonly IOrderRepository _orderRepository;
+    public OrderAppMenuService(IOrderAppMenuRepository orderAppMenuRepository,IMenuRepository menuRepository,IOrderRepository orderRepository){
         _orderAppMenuRepository=orderAppMenuRepository;
         _menuRepository=menuRepository;
+        _orderRepository=orderRepository;
     }
 
     public OrderAppMenuViewModel GetCategories(){
@@ -34,4 +36,33 @@ public class OrderAppMenuService
         item.Isfavourite=flag;
         _orderAppMenuRepository.Update(item);
     }
+
+    public OrderAppMenuViewModel GetModifierDetails(int id){
+        OrderAppMenuViewModel orderAppMenuViewModel=_orderAppMenuRepository.GetModifierDetails(id);
+        return orderAppMenuViewModel;
+    }
+
+    public OrderAppMenuViewModel GetOrderPreview(int id)
+    {
+        List<Table> tables=_orderAppMenuRepository.GetCustomerTables(id);
+        Section section=_orderAppMenuRepository.GetSection(tables[0].SectionId??0);
+        OrdersListViewModel ordersListViewModel=new OrdersListViewModel();
+        if(tables[0].CurrentOrderId!=null){
+             ordersListViewModel=_orderRepository.GetOrderDetails(tables[0].CurrentOrderId??0);
+        }else{
+            ordersListViewModel=null;
+        }
+        List<Tax> taxes=_orderAppMenuRepository.GetTax();
+        OrderAppMenuViewModel orderAppMenuViewModel=new OrderAppMenuViewModel{
+            tables=tables,
+            SectionName=section.SectionName,
+            ordersListViewModel=ordersListViewModel,
+            taxes=taxes
+        };
+        return orderAppMenuViewModel;
+    }
+
+    // public void AddOrderItem(OrderAppMenuViewModel orderAppMenuViewModel){
+
+    // }
 }

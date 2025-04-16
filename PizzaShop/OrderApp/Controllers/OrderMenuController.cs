@@ -1,6 +1,9 @@
+using System.Runtime.InteropServices.JavaScript;
+using System.Text.Json.Nodes;
 using DAL.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Services.Service;
 
 namespace PizzaShop.OrderApp.Controllers;
@@ -26,6 +29,7 @@ public class OrderMenuController : Controller
         {
             ViewData["showModal"] = "false";
         }
+        ViewData["id"]=id;
         OrderAppMenuViewModel orderAppMenuViewModel = _orderAppMenuService.GetCategories();
         return View("~/OrderApp/Views/OrderMenu/Index.cshtml", orderAppMenuViewModel);
     }
@@ -45,11 +49,54 @@ public class OrderMenuController : Controller
         return Ok(new { message = "Favourite" });
     }
 
-    public IActionResult OrderBrief()
+    public IActionResult OrderBrief(int id)
     {
         ViewData["Icon"] = "false";
-
-        return View("~/OrderApp/Views/Shared/_OrderPreview.cshtml");
-
+        OrderAppMenuViewModel orderAppMenuViewModel = _orderAppMenuService.GetOrderPreview(id);
+        return View("~/OrderApp/Views/Shared/_OrderPreview.cshtml",orderAppMenuViewModel);
     }
+    public IActionResult GetModifierDetails(int id)
+    {
+        ViewData["Icon"] = "false";
+        OrderAppMenuViewModel orderAppMenuViewModel = _orderAppMenuService.GetModifierDetails(id);
+        return View("~/OrderApp/Views/Shared/_ModifiersCardList.cshtml",orderAppMenuViewModel);
+    }
+
+    [HttpPost]
+    public IActionResult RenderOrderItem([FromBody] JsonObject orderItems)
+    {
+        ViewData["Icon"] = "false";
+        string data = orderItems.ToJsonString();
+        OrdersListViewModel ordersListViewModel = JsonConvert.DeserializeObject<OrdersListViewModel>(data);
+        
+       OrderAppMenuViewModel orderAppMenuViewModel =new OrderAppMenuViewModel{
+        ordersListViewModel=ordersListViewModel
+       };
+        return View("~/OrderApp/Views/Shared/_OrderPrevItems.cshtml", orderAppMenuViewModel);
+    }
+
+    [HttpPost]
+    public IActionResult RenderNewOrderItem([FromBody] JsonArray orderItems)
+    {
+        ViewData["Icon"] = "false";
+        string data = orderItems.ToJsonString();
+        List<OrderItemListViewModel> orderItemListViewModels = JsonConvert.DeserializeObject<List<OrderItemListViewModel>>(data);
+
+       OrderAppMenuViewModel orderAppMenuViewModel =new OrderAppMenuViewModel{
+        ordersListViewModel=new OrdersListViewModel{
+            itemLists=orderItemListViewModels
+        }
+       };
+        return View("~/OrderApp/Views/Shared/_OrderPrevItems.cshtml", orderAppMenuViewModel);
+    }
+    // [HttpPost]
+    // public IActionResult AddOrderItem(int id,string modifierList){
+    //      List<int> selectedModifiers = JsonConvert.DeserializeObject<List<int>>(modifierList);
+    //      OrderAppMenuViewModel orderAppMenuViewModel=new OrderAppMenuViewModel{
+    //         modifierList=selectedModifiers,
+    //         id=id
+    //      };
+    //      _orderAppMenuService.AddOrderItem(orderAppMenuViewModel);
+    //      return Ok();
+    // }
 }

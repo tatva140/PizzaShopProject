@@ -1,20 +1,24 @@
 @model DAL.ViewModels.OrderAppMenuViewModel;
-<div class=" mt-5  ">
+<div class="overflow-auto mt-3" style="max-height:700px;scrollbar-width: thin;">
     <div class="d-flex align-items-center justify-content-conter gap-3 flex-wrap">
         @foreach (var items in Model.items)
         {
 
             <div class="p-0 mt-2 position-relative"
-                style="height: 70px;width:300px; background-color:white;border-radius: 10px;">
+                style="height: 70px;width:300px; background-color:white;border-radius: 10px;"
+                onclick="openModifierModal(@items.ItemId,'@items.Name',@items.Rate)">
                 <div class="d-flex flex-align-items-center justify-content-start p-0 pl-0" style="height: 100%;">
                     <div style="border-radius: 15px; height: 70px; width: 70px;"
                         class="shadow d-flex justify-content-center align-items-center">
-                        @if(items.ItemImg!=null){
-                        <img src="@Url.Content(items.ItemImg)" class="img-fluid rounded-pill" style="height: 70px; width: 70px;">
-
-                        }else{
-
-                        <img src="~/images/dining-menu.png" class="img-fluid rounded-pill" style="height: 70px; width: 70px;">
+                        @if (items.ItemImg != null)
+                        {
+                            <img src="@Url.Content(items.ItemImg)" class="img-fluid rounded-pill"
+                                style="height: 70px; width: 70px;">
+                        }
+                        else
+                        {
+                            <img src="~/images/dining-menu.png" class="img-fluid rounded-pill"
+                                style="height: 70px; width: 70px;">
                         }
                     </div>
                     <div class="d-flex flex-column align-items-start justify-content-center ms-2 " style="width:230px;">
@@ -22,14 +26,19 @@
                         <div class="mt-1 d-flex align-items-center justify-content-between w-100">
                             <div>@("₹" + items.Rate)</div>
                             <div>
-                                @if(items.Isfavourite==true){
+                                @if (items.Isfavourite == true)
+                                {
 
-                                <i class="fa-solid fa-heart me-3" style="cursor: pointer;" onclick="fav(this,@items.ItemId)"></i>
-                                }else{
-
-                                <i class="fa-regular fa-heart me-3" style="cursor: pointer;" onclick="fav(this,@items.ItemId)"></i>
+                                    <i class="fa-solid fa-heart me-3" style="cursor: pointer;"
+                                        onclick="fav(this,@items.ItemId)"></i>
                                 }
-                                </div>
+                                else
+                                {
+
+                                    <i class="fa-regular fa-heart me-3" style="cursor: pointer;"
+                                        onclick="fav(this,@items.ItemId)"></i>
+                                }
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -59,25 +68,90 @@
 
     </div>
 </div>
+<div class="modal " id="modifierModal">
+    <div class="modal-dialog   modal-dialog-scrollable modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="itemName"></h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="modifierRender"></div>
+            </div>
+            <form >
+                <input type="text" id="itemid" hidden>
+                <input type="text" id="itemRate" hidden>
+            <div class="modal-footer d-flex  align-items-center justify-content-end">
+                <button type="button" class="btn  align-items center" data-bs-dismiss="modal" style="background-color: rgba(0, 102, 167, 1);color:white;" onclick="addModifier()">Add</button>
+                <button type="button" class="btn  align-items center" data-bs-dismiss="modal" style="border: 1px solid rgba(0, 102, 167, 1);color:rgba(0, 102, 167, 1);;">Close</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
 <script>
-    function fav(e,id) {
-        console.log(id);
+    function fav(e, id) {
         e.classList.toggle("fa-solid");
         e.classList.toggle("fa-regular");
-        flag=false;
-        if (e.classList.contains("fa-regular"))
-        {
-            flag=false;
-        }else{
-            flag=true;
+        flag = false;
+        if (e.classList.contains("fa-regular")) {
+            flag = false;
+        } else {
+            flag = true;
         }
         $.ajax({
             url: "/OrderMenu/FavouriteItem",
             type: "GET",
-            data: { id: id,flag:flag },
+            data: { id: id, flag: flag },
             success: function (response) {
                 itemFetch(-1);
             }
         });
+    }
+    function openModifierModal(id, name,rate) {
+        $("#modifierModal").modal("show");
+        document.getElementById("itemName").innerText = name;
+        document.getElementById("itemid").value = id;
+        document.getElementById("itemRate").value = rate;
+        $.ajax({
+            url: "/OrderMenu/GetModifierDetails",
+            type: "GET",
+            data: { id: id },
+            success: function (response) {
+                $("#modifierRender").html(response);
+            }
+        });
+    }
+    itemLists=[];
+    items=[];
+    
+    function addModifier(){
+        items=[];
+        itemid=document.getElementById("itemid").value;
+        itemName=document.getElementById("itemName").innerText;
+        itemRate=document.getElementById("itemRate").value;
+        console.log(modifierList);
+        items.push({ItemId:itemid,ItemName:itemName,Rate:itemRate,modifierLists:modifierList});
+        @* if(itemLists.includes(items)){
+            return;
+        }
+        itemLists.push(items);
+        console.log(items); *@
+      
+
+         $.ajax({
+            url: "/OrderMenu/RenderNewOrderItem",
+            type: "POST",
+            contentType: 'application/json',
+            data: JSON.stringify(items),
+            success: function (response) {
+                console.log($("#itemrenderer"));
+                $("#itemrenderer").append(response);
+                modifierList=[];
+            }
+        });
+
+
+        
     }
 </script>

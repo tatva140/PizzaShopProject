@@ -26,7 +26,7 @@
     </div>
 
     <div id="responsiveCategorySlider" class=" p-2 ms-4 me-4" style="margin-top: 100px;">
-        <h3 style="color: rgba(0, 102, 167, 1);;">Category</h3>
+        <h3 style="color: rgba(0, 102, 167, 1);">Category</h3>
         <div class="  bg-light rounded shadow-sm p-2">
             <div class="d-flex overflow-auto"
                 style="white-space: nowrap; scrollbar-width: none; -ms-overflow-style: none;">
@@ -70,7 +70,7 @@
                     </div>
 
                 </div>
-                <div id="itemCardrender" class=""></div>
+                <div id="itemCardrender"></div>
 
             </div>
             @if (ViewData["showModal"] == "true")
@@ -109,18 +109,22 @@
     <script>
         $(document).ready(function () {
             show =@ViewData["showModal"];
+            id=@ViewData["id"];
             itemFetch(0);
             if (show == true) {
-                console.log("here");
-                $.ajax({
+              orderPrev(id);
+            }
+        });
+        function orderPrev(id){
+              $.ajax({
                     url: "/OrderMenu/OrderBrief",
                     type: "GET",
+                    data: {id:id},
                     success: function (response) {
                         $(".orderBrief").html(response);
                     }
                 });
-            }
-        });
+        }
         function itemFetch(id) {
             if (id == 0) {
                 $(".catTab").removeClass("activeCategory");

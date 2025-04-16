@@ -9,4 +9,9 @@ public interface IOrderAppMenuRepository
 
     Item GetItem(int id);
     void Update(Item item);
+    OrderAppMenuViewModel GetModifierDetails(int id);
+
+    List<Table> GetCustomerTables(int id);
+    Section GetSection(int id);
+    List<Tax> GetTax();
 }
