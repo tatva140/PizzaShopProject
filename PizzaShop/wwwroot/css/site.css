@@ -349,10 +349,14 @@ visibility: visible;
 #orderPrevIcon{
   display: none;
 }
+#orderPrevModal{
+  display: none;
+}
 @media (max-width:1040px){
   #orderPrevIcon{
     display: block;
   }
+ 
   #orderPrev{
     display: none;
   }

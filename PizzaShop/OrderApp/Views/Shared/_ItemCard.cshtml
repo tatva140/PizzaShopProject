@@ -68,7 +68,7 @@
 
     </div>
 </div>
-<div class="modal " id="modifierModal">
+<div class="modal " id="modifierModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog   modal-dialog-scrollable modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -78,13 +78,15 @@
             <div class="modal-body">
                 <div id="modifierRender"></div>
             </div>
-            <form >
+            <form>
                 <input type="text" id="itemid" hidden>
                 <input type="text" id="itemRate" hidden>
-            <div class="modal-footer d-flex  align-items-center justify-content-end">
-                <button type="button" class="btn  align-items center" data-bs-dismiss="modal" style="background-color: rgba(0, 102, 167, 1);color:white;" onclick="addModifier()">Add</button>
-                <button type="button" class="btn  align-items center" data-bs-dismiss="modal" style="border: 1px solid rgba(0, 102, 167, 1);color:rgba(0, 102, 167, 1);;">Close</button>
-            </div>
+                <div class="modal-footer d-flex  align-items-center justify-content-end">
+                    <button type="button" class="btn  align-items center"
+                        style="background-color: rgba(0, 102, 167, 1);color:white;" onclick="addModifier()">Add</button>
+                    <button type="button" class="btn  align-items center" data-bs-dismiss="modal"
+                        style="border: 1px solid rgba(0, 102, 167, 1);color:rgba(0, 102, 167, 1);;">Close</button>
+                </div>
             </form>
         </div>
     </div>
@@ -108,8 +110,9 @@
             }
         });
     }
-    function openModifierModal(id, name,rate) {
+    function openModifierModal(id, name, rate) {
         $("#modifierModal").modal("show");
+        modifierList = [];
         document.getElementById("itemName").innerText = name;
         document.getElementById("itemid").value = id;
         document.getElementById("itemRate").value = rate;
@@ -122,36 +125,57 @@
             }
         });
     }
-    itemLists=[];
-    items=[];
-    
-    function addModifier(){
-        items=[];
-        itemid=document.getElementById("itemid").value;
-        itemName=document.getElementById("itemName").innerText;
-        itemRate=document.getElementById("itemRate").value;
-        console.log(modifierList);
-        items.push({ItemId:itemid,ItemName:itemName,Rate:itemRate,modifierLists:modifierList});
-        @* if(itemLists.includes(items)){
+    itemLists = [];
+    items = [];
+    flag = true;
+    function addModifier() {
+        flag = true;
+        if (minmax.length > 0) {
+            for (let i = 0; i < minmax.length; i++) {
+                if (minmax[i].count < minmax[i].min) {
+                    flag = false;
+                } else if (minmax[i].count > minmax[i].max) {
+                    flag = false;
+                }
+            }
+        }
+        if (flag == false) {
+            toastr.error("Please select valid number of modifiers");
             return;
         }
-        itemLists.push(items);
-        console.log(items); *@
-      
+        items = [];
+        itemid = document.getElementById("itemid").value;
+        itemName = document.getElementById("itemName").innerText;
+        itemRate = document.getElementById("itemRate").value;
 
-         $.ajax({
+        if (itemLists.includes(itemid)) {
+            toastr.error("Item is already added.");
+            return;
+        }
+        items.push({ ItemId: itemid, ItemName: itemName, Rate: itemRate, modifierLists: modifierList });
+        itemLists.push(itemid);
+        $.ajax({
             url: "/OrderMenu/RenderNewOrderItem",
             type: "POST",
             contentType: 'application/json',
             data: JSON.stringify(items),
             success: function (response) {
-                console.log($("#itemrenderer"));
-                $("#itemrenderer").append(response);
-                modifierList=[];
+                $("#modifierModal").modal("hide").removeClass("show").hide();
+                $(".modal-backdrop").remove();
+                $(".itemrenderer").append(response);
+                modifierList = [];
+                total = 0;
+                itemVal = document.querySelector(`.itemQuantity${itemid}`).innerText;
+                modifierVal = document.querySelector(`.modifier${itemid}`).innerText;
+                taxes = document.querySelectorAll(".tax");
+                $(".subTotal").html((parseFloat(document.querySelectorAll(".subTotal")[0].innerText) + parseFloat(itemVal) + parseFloat(modifierVal)).toFixed(2));
+                taxes.forEach(ele => {
+                    ele.innerText = "₹" + (ele.dataset.tax * parseFloat(document.querySelectorAll(".subTotal")[0].innerText)) / 100;
+                    total += (ele.dataset.tax * parseFloat(document.querySelectorAll(".subTotal")[0].innerText)) / 100;
+                });
+                $(".total").html((parseFloat(document.querySelectorAll(".subTotal")[0].innerText) + total/2).toFixed(2) );
             }
         });
-
-
-        
     }
+
 </script>

@@ -35,14 +35,14 @@
         Amount
     </div>
 </div>
-    <div id="itemrenderer"></div>
+    <div class="itemrenderer"></div>
 
     <hr>
     <div class="row">
         <div class="d-flex align-items-center justify-content-between">
             <div class="text-start fs-5">SubTotal</div>
            @if(Model.ordersListViewModel!=null){
-                <div class="text-end">@(Model.ordersListViewModel.SubTotal)</div>
+                <div>₹<span class="text-end subTotal" data-value="@Model.ordersListViewModel.SubTotal" >@(Model.ordersListViewModel.SubTotal)</span></div>
 
                 }else{
 
@@ -55,7 +55,7 @@
             <div class="d-flex align-items-center justify-content-between">
                 <div class="text-start fs-8">@tax.TaxName</div>
                 @if(Model.ordersListViewModel!=null){
-                <div class="text-end">₹@(tax.Amount*Model.ordersListViewModel.SubTotal/100)</div>
+                <div class="text-end tax" data-tax="@tax.Amount">₹@(tax.Amount*Model.ordersListViewModel.SubTotal/100)</div>
 
                 }else{
 
@@ -70,7 +70,7 @@
         <div class="d-flex align-items-center justify-content-between">
             <div class="text-start fs-5">Total</div>
               @if(Model.ordersListViewModel!=null){
-                <div class="text-end">@(Model.ordersListViewModel.TotalAmount)</div>
+                <div >₹<span class="text-end total" >@(Model.ordersListViewModel.TotalAmount)</span></div>
 
                 }else{
 
@@ -110,33 +110,26 @@
     $(document).ready(function () {
          if (orders!= '') {
          orderItems = JSON.parse('@Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.ordersListViewModel, new System.Text.Json.JsonSerializerOptions { ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve }))');
-    
+      
         itemRender();
         }else{
-            $("#itemrenderer").html("");
+            $(".itemrenderer").html("");
         }
     });
-    toggleFlag = true;
-    function itemToggle() {
-        toggleFlag = !toggleFlag;
-        if (toggleFlag) {
-
-            document.getElementById("itemTogglediv").style.display = "block";
-        } else {
-
-            document.getElementById("itemTogglediv").style.display = "none";
-        }
-    }
+  
     function itemRender() {
-        console.log(orderItems);
+        orderItems.itemLists.$values.forEach(i=>{
+            itemLists.push(`${i.ItemId}`);
+        })
         $.ajax({
             url: "/OrderMenu/RenderOrderItem",
             type: "POST",
             contentType: 'application/json',
             data: JSON.stringify(orderItems),
             success: function (response) {
-                $("#itemrenderer").html(response);
+                $(".itemrenderer").html(response);
             }
         });
     }
+   
 </script>

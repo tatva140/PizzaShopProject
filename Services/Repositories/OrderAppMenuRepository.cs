@@ -58,6 +58,7 @@ public class OrderAppMenuRepository : IOrderAppMenuRepository
                                                                           select new ModifierGroupDetails
                                                                           {
                                                                               ModifierGroupName = m.ModifierGroupName,
+                                                                              ModifierGroupId=m.ModifierGroupId,
                                                                               Min = mmg.Min ?? 0,
                                                                               Max = mmg.Max ?? 0,
                                                                               modifiers = (from mg in _context.ModifierModifierGroups

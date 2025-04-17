@@ -16,7 +16,8 @@
         <div class="d-flex align-items-center justify-content-start gap-2 mt-2">
             @foreach (var modifiers in modifiergroups.modifiers)
                 {
-                    <div class="p-0 mt-2 position-relative" onclick="selectModifier(@modifiers.ModifierId,'@modifiers.ModifierName',@modifiers.Rate) ">
+                    <div class="p-0 mt-2 position-relative"
+                        onclick="selectModifier(@modifiers.ModifierId,'@modifiers.ModifierName',@modifiers.Rate,@modifiergroups.Min,@modifiergroups.Max,@modifiergroups.ModifierGroupId) ">
                         <div class="d-flex flex-column align-items-start justify-content-center p-2 "
                             style="width:150px;border:1px solid black;border-radius:10px;" id=@modifiers.ModifierId>
                             <div class="mb-1">@modifiers.ModifierName</div>
@@ -32,15 +33,40 @@
     </div>
 </div>
 <script>
-    modifierList=[];
-    function selectModifier(id,name,rate) {
-        console.log($(`#${id}`));
+    modifierList = [];
+    minmax = [];
+    count = 0;
+    function selectModifier(id, name, rate, min, max, modifierGroupId) {
+        if(!minmax.some(m=>m.modifierGroupId==modifierGroupId)){
+
+        minmax.push({ modifierGroupId: modifierGroupId, min: min, max: max, count: 0 });
+        }
         if ($(`#${id}`).hasClass("modifierSelect")) {
             $(`#${id}`).removeClass("modifierSelect");
-            modifierList=modifierList.filter(modifier=>modifier.id !=id);
+            modifierList = modifierList.filter(modifier => modifier.id != id);
+            minmax = minmax.map(ele => {
+
+                if (ele.modifierGroupId == modifierGroupId) {
+                   return{
+                        ...ele,count:ele.count-1
+                   };
+                }
+                return ele;
+            });
         } else {
             $(`#${id}`).addClass("modifierSelect");
-            modifierList.push({id:id,ModifierName:name,Rate:rate});
+            modifierList.push({ id: id, ModifierName: name, Rate: rate });
+            minmax = minmax.map(ele => {
+
+                if (ele.modifierGroupId == modifierGroupId) {
+                   return{
+                        ...ele,count:ele.count+1
+                   };
+                }
+                return ele;
+            });
+
         }
+       
     }
 </script>

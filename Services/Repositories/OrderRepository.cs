@@ -306,6 +306,7 @@ public class OrderRepository : IOrderRepository
                                       where i.OrderId == id
                                       select new OrderItemListViewModel
                                       {
+                                        ItemId=i.ItemId,
                                           Quantity = i.Quantity,
                                           Rate = i.Rate,
                                           ItemName = it.Name,
@@ -313,6 +314,7 @@ public class OrderRepository : IOrderRepository
                                 .Where(mi => mi.ItemId == i.ItemId && mi.OrderId == id)
                                 .Select(mi => new OrderModifierListViewModel
                                 {
+                                    ModifierId=mi.ModifierId??0,
                                     ModifierName =
                                          _context.Modifiers.FirstOrDefault(m => m.ModifierId == mi.ModifierId).ModifierName,
 

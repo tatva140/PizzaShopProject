@@ -20,6 +20,7 @@ public class OrderAppMenuViewModel
     {
         public string ModifierGroupName {get;set;}
         public List<Modifier> modifiers {get;set;}
+        public int ModifierGroupId {get;set;}
         public int Min {get;set;}
         public int Max {get;set;}
 
