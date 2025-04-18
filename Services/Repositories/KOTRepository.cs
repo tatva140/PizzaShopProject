@@ -97,10 +97,10 @@ public class KOTRepository : IKOTRepository
             }
         }
         var readyItems = _context.OrderItems
-            .Where(oi => oi.OrderId == orderAppKOTViewModels.FirstOrDefault().OrderId && oi.ReadyQuantity == oi.Quantity)
+            .Where(oi => oi.OrderId == orderAppKOTViewModels.FirstOrDefault()!.OrderId && oi.ReadyQuantity == oi.Quantity)
             .ToList();
         var orderItems = _context.OrderItems
-            .Where(oi => oi.OrderId == orderAppKOTViewModels.FirstOrDefault().OrderId)
+            .Where(oi => oi.OrderId == orderAppKOTViewModels.FirstOrDefault()!.OrderId)
             .ToList();
         Order order = _context.Orders.FirstOrDefault(o => o.OrderId == orderAppKOTViewModels.FirstOrDefault().OrderId);
         if (order != null)

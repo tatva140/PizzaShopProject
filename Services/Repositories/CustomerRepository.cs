@@ -266,16 +266,16 @@ public class CustomerRepository : ICustomerRepository
                      select new CustomersViewModel
                      {
                         CustomerName=c.FirstName,
-                         OrderDate = o.CreatedAt ?? DateTime.Now,
+                         OrderDate = o.CreatedAt.Value.Date ,
                          Payment = p.PaymentMode,
                          itemsCount = (from i in _context.OrderItems
-                                  where i.OrderId == id
+                                  where i.OrderId == o.OrderId
                                   select new OrderItemListViewModel
                                   {
                                       OrderItemsId=i.OrderItemsId
                                   }).Count(),
                         Amount=o.TotalAmount??0,
-                        comingSince=c.CreatedAt??DateTime.Now,
+                        comingSince=c.CreatedAt.Value.Date,
                         Phone=c.Phone
 
                      }).ToList();

@@ -19,7 +19,7 @@ public class MenuRepository : IMenuRepository
 
     public List<Category> GetCategories()
     {
-        return _context.Categories.Where(c => c.IsActive == true).ToList();
+        return _context.Categories.Where(c => c.IsActive).ToList();
     }
 
     public List<Item> GetCategoryItems(int id, string search, int pageNumber, int pageSize, out int totalRecords)
@@ -76,7 +76,7 @@ public class MenuRepository : IMenuRepository
 
     public int AddCategory(Category category)
     {
-        Category category1 = _context.Categories.FirstOrDefault(c => c.Name == category.Name && c.IsActive == true);
+        Category category1 = _context.Categories.FirstOrDefault(c => c.Name == category.Name && c.IsActive)!;
         if (category1 != null) return 0;
         _context.Categories.Add(category);
         _context.SaveChanges();
@@ -84,7 +84,7 @@ public class MenuRepository : IMenuRepository
     }
     public bool EditCategory(Category category)
     {
-        Category category1 = _context.Categories.FirstOrDefault(c => c.CategoryId == category.CategoryId);
+        Category category1 = _context.Categories.FirstOrDefault(c => c.CategoryId == category.CategoryId)!;
         if (category1 == null) return false;
         category1.IsActive = true;
         category1.Description = category.Description ?? category1.Description;

@@ -53,7 +53,7 @@
         <div class="d-flex overflow-hidden  align-items-center justify-content-between w-auto p-2 ">
             <div style="color: rgb(30, 151, 231); font-weight: 700; font-size: 25px; ">Sections
             </div>
-            <button class="text-end ms-3 " id="add" data-target="addSection" data-controller="TablesAndSections" data-action="AddEdit"
+            <button class="text-end ms-3 checkPermissions" id="add" data-target="addSection" data-controller="TablesAndSections" data-action="AddEdit"
                 style=" color: rgb(30, 151, 231); border: 2px solid rgb(30, 151, 231);background-color: rgb(250, 250, 250); "><i
                     class="fa-regular fa-plus"></i></button>
         </div>
@@ -81,6 +81,7 @@
         </ul>
     </div>
     <div class="col border bg-white shadow rounded-lg">
+        
         <div class="row">
             <div class="col  p-2  ">
                 <div class="d-flex align-items-center justify-content-between p-2">
@@ -171,7 +172,7 @@
         <div class="modal-content">
 
             <div class="modal-body text-center">
-                <img src="images/toppng.com-warning-icon-2400x2400.png" alt="Image" class="img-fluid me-2 "
+                <img src="~/images/toppng.com-warning-icon-2400x2400.png" alt="Image" class="img-fluid me-2 "
                     style="font: 30px; height: 80px;" class="">
                 <h3>Are you sure you want to delete this section?</h3>
 

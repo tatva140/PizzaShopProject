@@ -81,7 +81,7 @@ public class OrderMenuController : Controller
         ViewData["Icon"] = "false";
         string data = orderItems.ToJsonString();
         List<OrderItemListViewModel> orderItemListViewModels = JsonConvert.DeserializeObject<List<OrderItemListViewModel>>(data);
-
+        orderItemListViewModels.ForEach(o=>o.UId=o.ItemId+string.Join("",o.modifierLists.OrderBy(m=>m.ModifierId).Select(m=>m.ModifierId)));
        OrderAppMenuViewModel orderAppMenuViewModel =new OrderAppMenuViewModel{
         ordersListViewModel=new OrdersListViewModel{
             itemLists=orderItemListViewModels
@@ -89,14 +89,5 @@ public class OrderMenuController : Controller
        };
         return View("~/OrderApp/Views/Shared/_OrderPrevItems.cshtml", orderAppMenuViewModel);
     }
-    // [HttpPost]
-    // public IActionResult AddOrderItem(int id,string modifierList){
-    //      List<int> selectedModifiers = JsonConvert.DeserializeObject<List<int>>(modifierList);
-    //      OrderAppMenuViewModel orderAppMenuViewModel=new OrderAppMenuViewModel{
-    //         modifierList=selectedModifiers,
-    //         id=id
-    //      };
-    //      _orderAppMenuService.AddOrderItem(orderAppMenuViewModel);
-    //      return Ok();
-    // }
+    
 }

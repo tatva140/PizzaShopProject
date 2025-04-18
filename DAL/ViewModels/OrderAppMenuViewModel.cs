@@ -5,6 +5,8 @@ namespace DAL.ViewModels;
 public class OrderAppMenuViewModel
 {
     public int SectionId {get;set;}
+    public decimal TotalAmt {get;set;}
+    public decimal SubTotal {get;set;}
     public string SectionName {get;set;}
     public List<Table> tables {get;set;}
 

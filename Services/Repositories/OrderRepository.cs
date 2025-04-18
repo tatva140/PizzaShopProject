@@ -306,38 +306,40 @@ public class OrderRepository : IOrderRepository
                                       where i.OrderId == id
                                       select new OrderItemListViewModel
                                       {
-                                        ItemId=i.ItemId,
+                                          ItemId = i.ItemId,
                                           Quantity = i.Quantity,
                                           Rate = i.Rate,
                                           ItemName = it.Name,
+                                          UId=i.ItemId+string.Join("",_context.OrderModifiers.Where(mi=>mi.ItemId==i.ItemId && mi.OrderId==id).OrderBy(m=>m.ModifierId).Select(mi=>mi.ModifierId)),
                                           modifierLists = _context.OrderModifiers
                                 .Where(mi => mi.ItemId == i.ItemId && mi.OrderId == id)
                                 .Select(mi => new OrderModifierListViewModel
                                 {
-                                    ModifierId=mi.ModifierId??0,
+                                    ModifierId = mi.ModifierId ?? 0,
                                     ModifierName =
                                          _context.Modifiers.FirstOrDefault(m => m.ModifierId == mi.ModifierId).ModifierName,
 
                                     Rate = mi.Rate,
                                     Quantity = mi.Quantity ?? 0,
-                                }).ToList()
+                                }).ToList(),
+
                                       }).ToList(),
 
-                         taxLists = o.OrderStatus=="Completed" ? (from i in _context.Orders
-                                     join t in _context.OrderTaxes on i.OrderId equals t.OrderId
-                                     join tax in _context.Taxes on t.TaxId equals tax.TaxId
-                                     where t.OrderId == id
-                                     select new OrderTaxListViewModel
-                                     {
-                                         TaxName = tax.TaxName,
-                                         Amount = t.TaxAmount
-                                     }).ToList() : (from t in _context.Taxes
-                                     where t.IsEnabled==true && t.IsActive==true
-                                     select new OrderTaxListViewModel
-                                     {
-                                         TaxName = t.TaxName,
-                                         Amount = t.Amount
-                                     }).ToList() ,
+                         taxLists = o.OrderStatus == "Completed" ? (from i in _context.Orders
+                                                                    join t in _context.OrderTaxes on i.OrderId equals t.OrderId
+                                                                    join tax in _context.Taxes on t.TaxId equals tax.TaxId
+                                                                    where t.OrderId == id
+                                                                    select new OrderTaxListViewModel
+                                                                    {
+                                                                        TaxName = tax.TaxName,
+                                                                        Amount = t.TaxAmount
+                                                                    }).ToList() : (from t in _context.Taxes
+                                                                                   where t.IsEnabled == true && t.IsActive == true
+                                                                                   select new OrderTaxListViewModel
+                                                                                   {
+                                                                                       TaxName = t.TaxName,
+                                                                                       Amount = t.Amount
+                                                                                   }).ToList(),
                          PaymentMode = p.PaymentMode ?? "",
                          PaidOn = p.CreatedAt,
                          OrderDuration = o.Duration,

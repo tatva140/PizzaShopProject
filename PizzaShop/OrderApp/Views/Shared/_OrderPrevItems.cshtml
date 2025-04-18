@@ -2,16 +2,17 @@
 @foreach (var orderItems in Model.ordersListViewModel.itemLists)
 {
 
-    <div class="row mt-2 me-2 p-2 @($"items{@orderItems.ItemId}")"
+    <div class="row mt-2 me-2 p-2 @($"items{@orderItems.UId}")"
         style="border: 1px solid rgb(187, 176, 176);border-radius: 5px;margin-left:1px;">
         <div class="col-6">
             <div class="d-flex flex-column align-items-start justify-content-center  ">
                 <div>
+                    <input value="@orderItems.UId" id="@($"uid{@orderItems.ItemId}")" hidden>
                     <i class="fa-solid fa-angle-down me-1" type="button" data-bs-toggle="collapse" aria-expanded="false"
-                        aria-controls="flush-collapseOne" onclick="itemToggle(@orderItems.ItemId)">
+                        aria-controls="flush-collapseOne" onclick="itemToggle(@orderItems.UId)">
                     </i><strong>@orderItems.ItemName </strong>
                 </div>
-                <ul class="mb-0 " id="@($"itemTogglediv{@orderItems.ItemId}")">
+                <ul class="mb-0 " id="@($"itemTogglediv{@orderItems.UId}")">
                     @foreach (var modifiers in orderItems.modifierLists)
                     {
                         <li><span class="me-5">@modifiers.ModifierName</span>₹@modifiers.Rate</li>
@@ -22,22 +23,22 @@
         <div class="col-2">
             <div style="border:1px solid rgb(187, 176, 176);border-radius:5px; width: 80px;" class="text-center p-1">
                 <div class="p-0 m-0"><i class="fa fa-minus me-2 ms-0"
-                        onclick="minusQuantity(@orderItems.ItemId,@orderItems.Rate)"></i><span
-                        class="@($"quant{@orderItems.ItemId}")"> 1 </span><i class="fa fa-plus ms-2 me-0"
-                        onclick="plusQuantity(@orderItems.ItemId,@orderItems.Rate)"></i>
+                        onclick="minusQuantity(@orderItems.UId,@orderItems.Rate)"></i><span
+                        class="@($"quant{@orderItems.UId}")"> 1 </span><i class="fa fa-plus ms-2 me-0"
+                        onclick="plusQuantity(@orderItems.UId,@orderItems.Rate)"></i>
                 </div>
             </div>
         </div>
         <div class="col-2 ms-4">
             <div class="d-flex flex-column align-items-start justify-content-center  ">
-                <div> ₹<span class="fs-6 @($"itemQuantity{@orderItems.ItemId}")">@orderItems.Rate</span></div>
-                <div>₹<span class="fs-8 text-muted @($"modifier{@orderItems.ItemId}")">@(orderItems.modifierLists.Select(m
+                <div> ₹<span class="fs-6 @($"itemQuantity{@orderItems.UId}")">@orderItems.Rate</span></div>
+                <div>₹<span class="fs-8 text-muted @($"modifier{@orderItems.UId}")">@(orderItems.modifierLists.Select(m
                                             => m.Rate).Sum())</span></div>
         </div>
     </div>
 
         <div class="col-auto ms-2 mt-2">
-            <i class="fa fa-trash" onclick="removeItem(@orderItems.ItemId,@orderItems.Rate)"></i>
+            <i class="fa fa-trash" onclick="removeItem(@orderItems.UId,@orderItems.Rate)"></i>
         </div>
     </div>
 }
@@ -46,16 +47,15 @@
         total = 0;
         modifierVal = document.querySelector(`.modifier${id}`).innerText;
         taxes = document.querySelectorAll(".tax");
-        $(".subTotal").html(((document.querySelectorAll(".subTotal")[0].innerText) - rate - parseFloat(modifierVal)).toFixed(2));
+        quantity = document.querySelectorAll(`.quant${id}`)[0].innerText;
+        $(".subTotal").html(((document.querySelectorAll(".subTotal")[0].innerText) - rate*parseFloat(quantity) - parseFloat(modifierVal)).toFixed(2));
         taxes.forEach(ele => {
             ele.innerText = "₹" + (ele.dataset.tax * parseFloat(document.querySelectorAll(".subTotal")[0].innerText)) / 100;
             total += (ele.dataset.tax * parseFloat(document.querySelectorAll(".subTotal")[0].innerText)) / 100;
         });
-        console.log(total);
         $(".total").html((parseFloat(document.querySelectorAll(".subTotal")[0].innerText) + total / 2).toFixed(2));
         $(`.items${id}`).remove();
         itemLists.pop(id);
-
     }
     toggleFlag = true;
     function itemToggle(id) {

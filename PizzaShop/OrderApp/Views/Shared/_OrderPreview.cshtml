@@ -13,8 +13,8 @@
             </div>
         </div>
         <div class="ms-auto d-flex align-items-center justify-content-end">
-            <button class="me-2" style="border: 1px solid rgba(0, 102, 167, 1);background-color: white;"><i
-                    class="fa-solid fa-qrcode" style="color: rgba(0, 102, 167, 1);"></i></button>
+            <button class="me-2" style="border: 1px solid rgba(0, 102, 167, 1);background-color: white;" data-bs-toggle="modal" data-bs-target="#qrCodeModal"><i
+                    class="fa-solid fa-qrcode" style="color: rgba(0, 102, 167, 1);" ></i></button>
             <button class="me-2" style="border: 1px solid rgba(0, 102, 167, 1);background-color: white;"><i
                     class="fa-solid fa-user-plus" style="color: rgba(0, 102, 167, 1);"></i></button>
             <button class="" style="border: 1px solid rgba(0, 102, 167, 1);background-color: white;"><i
@@ -41,26 +41,17 @@
     <div class="row">
         <div class="d-flex align-items-center justify-content-between">
             <div class="text-start fs-5">SubTotal</div>
-           @if(Model.ordersListViewModel!=null){
-                <div>₹<span class="text-end subTotal" data-value="@Model.ordersListViewModel.SubTotal" >@(Model.ordersListViewModel.SubTotal)</span></div>
+        
+                <div>₹<span class="text-end subTotal" data-value="@Model.SubTotal" >@(Model.SubTotal)</span></div>
 
-                }else{
-
-                <div class="text-end">0</div>
-                }
+                
         </div>
         @foreach (var tax in Model.taxes)
         {
-
             <div class="d-flex align-items-center justify-content-between">
                 <div class="text-start fs-8">@tax.TaxName</div>
-                @if(Model.ordersListViewModel!=null){
-                <div class="text-end tax" data-tax="@tax.Amount">₹@(tax.Amount*Model.ordersListViewModel.SubTotal/100)</div>
+                <div class="text-end tax" data-tax="@tax.Amount">₹@(tax.Amount*Model.SubTotal/100)</div>
 
-                }else{
-
-                <div class="text-end">0</div>
-                }
             </div>
         }
         <div class="d-flex align-items-center justify-content-between">
@@ -69,13 +60,10 @@
         </div>
         <div class="d-flex align-items-center justify-content-between">
             <div class="text-start fs-5">Total</div>
-              @if(Model.ordersListViewModel!=null){
-                <div >₹<span class="text-end total" >@(Model.ordersListViewModel.TotalAmount)</span></div>
+             
+                <div >₹<span class="text-end total" >@(Model.TotalAmt)</span></div>
 
-                }else{
-
-                <div class="text-end">0</div>
-                }
+               
         </div>
         <div class="d-flex align-items-center justify-content-between">
             <div class="text-start fs-8 text-muted">Payment Method</div>
@@ -90,7 +78,7 @@
 
 <div class="row mt-3">
     <div class="d-flex align-items-center justify-content-end">
-        <button class="btn me-2 w-25" style="background-color: rgba(0, 102, 167, 1);color:white;">Save</button>
+        <button class="btn me-2 w-25" style="background-color: rgba(0, 102, 167, 1);color:white;" onclick="saveOrderItems()">Save</button>
         <button class="btn me-2 w-25"
             style="border: 1px solid rgba(0, 102, 167, 1);color:rgba(0, 102, 167, 1);">Complete</button>
         <button class="btn w-25" style="border: 1px solid rgba(0, 102, 167, 1);color:rgba(0, 102, 167, 1);">Generate
@@ -104,22 +92,38 @@
     </div>
 
 </div>
+<div class="modal" id="qrCodeModal">
+    <div class="modal-dialog modal-dialog-centered  modal-dialog-scrollable ">
+        <div class="modal-content">
+             <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+           <img src="~/images/qr-code.png">
+           </div>
+        </div>
+    </div>
+</div>
 <script>
     var orders='@Model.ordersListViewModel';
    var orderItems;
     $(document).ready(function () {
+        
          if (orders!= '') {
          orderItems = JSON.parse('@Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.ordersListViewModel, new System.Text.Json.JsonSerializerOptions { ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve }))');
-      
         itemRender();
         }else{
             $(".itemrenderer").html("");
         }
     });
-  
     function itemRender() {
+        existingModifierList=[];
+      
         orderItems.itemLists.$values.forEach(i=>{
-            itemLists.push(`${i.ItemId}`);
+            i.modifierLists.$values.forEach(m=>{
+            existingModifierList.push({id:m.ModifierId,ModifierName: m.ModifierName, Rate: m.Rate});
+        });
+            itemLists.push({ItemId:i.ItemId, ItemName: i.ItemName, Rate: i.Rate, modifierLists: existingModifierList});
         })
         $.ajax({
             url: "/OrderMenu/RenderOrderItem",
@@ -131,5 +135,7 @@
             }
         });
     }
-   
+   function saveOrderItems(){
+    console.log(itemLists);
+   }
 </script>

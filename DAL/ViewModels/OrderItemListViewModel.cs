@@ -9,6 +9,7 @@ public class OrderItemListViewModel
     public int? ItemId { get; set; }
 
     public int? Quantity { get; set; }
+    public string UId { get; set; }
 
     public decimal? Rate { get; set; }
     public string ItemName { get; set; }

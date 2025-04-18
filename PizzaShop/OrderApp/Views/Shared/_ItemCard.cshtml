@@ -116,6 +116,7 @@
         document.getElementById("itemName").innerText = name;
         document.getElementById("itemid").value = id;
         document.getElementById("itemRate").value = rate;
+        document.getElementById("itemRate").value = rate;
         $.ajax({
             url: "/OrderMenu/GetModifierDetails",
             type: "GET",
@@ -147,26 +148,29 @@
         itemid = document.getElementById("itemid").value;
         itemName = document.getElementById("itemName").innerText;
         itemRate = document.getElementById("itemRate").value;
-
-        if (itemLists.includes(itemid)) {
+        const hasModifiers=itemLists.some(i=>i.modifierLists.some(existing=>modifierList.some(newMod=>newMod.id===existing.id)));
+        
+        if (itemLists.some(i=>i.ItemId==itemid) && hasModifiers) {
             toastr.error("Item is already added.");
             return;
         }
         items.push({ ItemId: itemid, ItemName: itemName, Rate: itemRate, modifierLists: modifierList });
-        itemLists.push(itemid);
+        itemLists.push({ ItemId: itemid, ItemName: itemName, Rate: itemRate, modifierLists: modifierList });
         $.ajax({
             url: "/OrderMenu/RenderNewOrderItem",
             type: "POST",
             contentType: 'application/json',
             data: JSON.stringify(items),
             success: function (response) {
-                $("#modifierModal").modal("hide").removeClass("show").hide();
+                $(".modal").hide();
                 $(".modal-backdrop").remove();
+                $('body').removeClass('modal-open');
                 $(".itemrenderer").append(response);
+                uid = document.getElementById(`uid${itemid}`).value;
                 modifierList = [];
                 total = 0;
-                itemVal = document.querySelector(`.itemQuantity${itemid}`).innerText;
-                modifierVal = document.querySelector(`.modifier${itemid}`).innerText;
+                itemVal = document.querySelector(`.itemQuantity${uid}`).innerText;
+                modifierVal = document.querySelector(`.modifier${uid}`).innerText;
                 taxes = document.querySelectorAll(".tax");
                 $(".subTotal").html((parseFloat(document.querySelectorAll(".subTotal")[0].innerText) + parseFloat(itemVal) + parseFloat(modifierVal)).toFixed(2));
                 taxes.forEach(ele => {

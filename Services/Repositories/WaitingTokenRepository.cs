@@ -28,7 +28,6 @@ public class WaitingTokenRepository:IWaitingTokenRepository
     }
      public CustomErrorViewModel AssignTable(OrderAppCustomerViewModel orderAppCustomerViewModel)
     {
-       
             WaitingToken waitingToken = _context.WaitingTokens.Find(orderAppCustomerViewModel.waitingTokenId);
             if (waitingToken == null)
             {
